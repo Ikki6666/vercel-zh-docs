@@ -1,0 +1,693 @@
+---
+title: @vercel/functions API Reference (Node.js)
+product: vercel
+url: /docs/functions/functions-api-reference/vercel-functions-package
+canonical_url: "https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package"
+last_updated: 2026-07-27
+type: reference
+prerequisites:
+  - /docs/functions/functions-api-reference
+  - /docs/functions
+related:
+  - /docs/functions/runtimes/edge
+  - /docs/environment-variables/system-environment-variables
+  - /docs/functions/configuring-functions/duration
+  - /docs/observability/custom-metrics
+  - /docs/caching/cdn-cache/purge
+summary: Learn about available APIs when working with Vercel Functions.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+---
+
+# @vercel/functions API Reference (Node.js)
+
+## Install and use the package
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Version 15](https://nextjs.org/docs/app/guides/upgrading/version-15?from=related) — Upgrade your Next.js Application from Version 14 to 15.
+- [Efficiently manage database connection pools with Fluid compute](https://vercel.com/kb/guide/efficiently-manage-database-connection-pools-with-fluid-compute?from=related) — How to create high-performance database connection pools without leaking connections
+- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute?from=related) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
+- [Build a real-time chat app with WebSockets on Vercel](https://vercel.com/kb/guide/real-time-chat-websockets?from=related) — Build and deploy a single-room messaging app in Next.js with real-time chat, typing indicators, and live online user cou
+- [Sending Emails from an application on Vercel](https://vercel.com/kb/guide/sending-emails-from-an-application-on-vercel?from=related) — SMTP is the harder path inside Vercel Functions. Learn how to send emails over an HTTP API, which Next.js pattern fits y
+- [Can I use SMTP with Vercel?](https://vercel.com/kb/guide/serverless-functions-and-smtp?from=related) — Vercel Functions can open SMTP connections on the Node.js runtime. Learn which ports are open, why you must await the se
+- [Streaming](https://workflow-sdk.dev/docs/foundations/streaming?from=related) — Stream real-time data to clients without waiting for workflow completion.
+- [cacheHandlers](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandlers?from=related) — Configure custom cache handlers for use cache directives in Next.js.
+- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components?from=related) — Learn how to migrate from route segment configs to Cache Components in Next.js.
+- [Data Cache](https://vercel.com/docs/caching/runtime-cache/data-cache?from=related) — Vercel Data Cache is a specialized cache that stores responses from data fetches in Next.js App Router
+- [CDN Cache](https://vercel.com/docs/caching/cdn-cache?from=related) — Learn how Vercel's CDN cache stores your content across a global network to reduce latency and origin load.
+- [Cache-Control Headers](https://vercel.com/docs/caching/cache-control-headers?from=related) — Learn about the cache-control headers sent to each Vercel deployment and how to use them to control the caching behavior
+
+Full cross-link map for this page: [/docs/functions/functions-api-reference/vercel-functions-package.graph.md](/docs/functions/functions-api-reference/vercel-functions-package.graph.md)
+<!-- /docsgraph:related -->
+
+1. Install the `@vercel/functions` package:
+
+<CodeBlock>
+  <Code tab="pnpm">
+    ```bash
+    pnpm i @vercel/functions
+    ```
+  </Code>
+  <Code tab="yarn">
+    ```bash
+    yarn i @vercel/functions
+    ```
+  </Code>
+  <Code tab="npm">
+    ```bash
+    npm i @vercel/functions
+    ```
+  </Code>
+  <Code tab="bun">
+    ```bash
+    bun i @vercel/functions
+    ```
+  </Code>
+</CodeBlock>
+
+2. Import the `@vercel/functions` package (non-Next.js frameworks or Next.js versions below 15.1):
+
+```ts {1} filename="api/hello.ts" framework=other
+import { waitUntil, attachDatabasePool } from '@vercel/functions';
+
+export default {
+  fetch(request: Request) {
+    // ...
+  },
+};
+```
+
+```js {1} filename="api/hello.js" framework=other
+import { waitUntil, attachDatabasePool } from '@vercel/functions';
+
+export default {
+  fetch(request) {
+    // ...
+  },
+};
+```
+
+For [OIDC](/docs/functions/functions-api-reference/vercel-functions-package#oidc-methods) methods, import `@vercel/oidc`
+
+## Usage with Next.js
+
+If you’re using **Next.js 15.1 or above**, we recommend using the built-in [`after()`](https://nextjs.org/docs/app/api-reference/functions/after) function from `next/server` **instead** of `waitUntil()`.
+
+`after()` allows you to schedule work that runs **after** the response has been sent or the prerender has completed. This is especially useful to avoid blocking rendering for side effects such as logging, analytics, or other background tasks.
+
+```ts v0="build" filename="app/api/hello/route.ts"
+import { after } from 'next/server';
+
+export async function GET(request: Request) {
+  const country = request.headers.get('x-vercel-ip-country') || 'unknown';
+
+  // Returns a response immediately
+  const response = new Response(`You're visiting from ${country}`);
+
+  // Schedule a side-effect after the response is sent
+  after(async () => {
+    // For example, log or increment analytics in the background
+    await fetch(
+      `https://my-analytics-service.example.com/log?country=${country}`,
+    );
+  });
+
+  return response;
+}
+```
+
+- `after()` does **not** block the response. The callback runs once rendering or the response is finished.
+- `after()` is not a [Dynamic API](https://nextjs.org/docs/app/getting-started/server-and-client-components#dynamic-apis); calling it does not cause a route to become dynamic.
+- If you need to configure or extend the timeout for tasks, you can use [`maxDuration`](https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config#maxduration) in Next.js.
+- For more usage examples (including in **Server Components**, **Server Actions**, or **Middleware**), see [after() in the Next.js docs](https://nextjs.org/docs/app/api-reference/functions/after).
+
+## Helper methods (non-Next.js usage or older Next.js versions)
+
+If you're **not** using Next.js 15.1 or above (or you are using other frameworks), you can use the methods from `@vercel/functions` below.
+
+### `waitUntil`
+
+**Description**: Extends the lifetime of the request handler for the lifetime of the given Promise. The `waitUntil()` method enqueues an asynchronous task to be performed during the lifecycle of the request. You can use it for anything that can be done after the response is sent, such as logging, sending analytics, or updating a cache, without blocking the response. `waitUntil()` is available in Node.js and in the [Edge Runtime](/docs/functions/runtimes/edge).
+
+Promises passed to `waitUntil()` will have the same timeout as the function itself. If the function times out, the promises will be cancelled.
+
+| Name      | Type                                                                                                  | Description              |
+| :-------- | :---------------------------------------------------------------------------------------------------- | :----------------------- |
+| `promise` | [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | The promise to wait for. |
+
+> **💡 Note:** If you're using Next.js 15.1 or above, use [`after()`](#using-after-in-nextjs)
+> from `next/server` instead. Otherwise, see below.
+
+```ts v0="build" {1,9} filename="api/hello.ts"
+import { waitUntil } from '@vercel/functions';
+
+async function getBlog() {
+  const res = await fetch('https://my-analytics-service.example.com/blog/1');
+  return res.json();
+}
+
+export default {
+  fetch(request: Request) {
+    waitUntil(getBlog().then((json) => console.log({ json })));
+    return new Response(`Hello from ${request.url}, I'm a Vercel Function!`);
+  },
+};
+```
+
+### `getEnv`
+
+**Description**: Gets the [System Environment Variables](/docs/environment-variables/system-environment-variables#system-environment-variables) exposed by Vercel.
+
+```ts filename="api/example.ts"
+import { getEnv } from '@vercel/functions';
+
+export default {
+  fetch(request) {
+    const { VERCEL_REGION } = getEnv();
+    return new Response(`Hello from ${VERCEL_REGION}`);
+  },
+};
+```
+
+### `getDeadline`
+
+**Description**: Returns the shared invocation deadline for the current function invocation as a [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object. The deadline is the time when Vercel will terminate the invocation if it has not completed, based on the function's configured [`maxDuration`](/docs/functions/configuring-functions/duration). This includes request processing and asynchronous `waitUntil` tasks.
+
+Returns `undefined` when the deadline is not available, for example when running outside of the Vercel Functions runtime.
+
+| Returns   | Type                                                                                                  | Description                                                                 |
+| :-------- | :---------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
+| `deadline` | [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | `undefined` | The invocation deadline, or `undefined` if it is unavailable or invalid. |
+
+```ts {1,9} filename="api/example.ts"
+import { getDeadline } from '@vercel/functions';
+
+async function getRecords(page: number) {
+  const res = await fetch(`https://api.example.com/records?page=${page}`);
+  return await res.json();
+}
+
+function hasEnoughTimeLeft() {
+  const deadline = getDeadline();
+  if (!deadline) return true;
+  return deadline.getTime() - Date.now() > 2_000;
+}
+
+export default {
+  async fetch(request) {
+    let page = Number(new URL(request.url).searchParams.get('page') ?? '1');
+    const synced = [];
+
+    while (hasEnoughTimeLeft()) {
+      const { records, hasMore } = await getRecords(page);
+
+      synced.push(...records);
+      if (!hasMore) return Response.json({ synced });
+      page += 1;
+    }
+
+    return Response.json({ synced, resumePage: page });
+  },
+};
+```
+
+### `metric`
+
+**Description**: Records a numeric [custom metric](/docs/observability/custom-metrics) data point from a Vercel Function. You can add string attributes to filter and group the metric in Observability.
+
+| Name         | Type                     | Description                                                        |
+| :----------- | :----------------------- | :----------------------------------------------------------------- |
+| `name`       | `string`                 | The custom metric name, such as `query.duration_ms`.                |
+| `value`      | `number`                 | The numeric value to record.                                       |
+| `attributes` | `Record<string, string>` | Optional attributes for filtering and grouping the custom metric.  |
+
+```ts filename="api/query.ts"
+import { metric } from '@vercel/functions';
+
+metric('query.duration_ms', 100, { plan: 'pro' });
+```
+
+#### Name and attribute requirements
+
+Metric names, attribute names, and attribute values must be non-empty and shorter than 64 bytes. They can contain ASCII letters (`A-Z`, `a-z`), digits (`0-9`), hyphens (`-`), underscores (`_`), periods (`.`), and slashes (`/`). Unsupported characters are automatically replaced with an underscore (`_`). For example, `data+summary` is stored as `data_summary`.
+
+#### Emission limits
+
+- Each call to `metric()` can include up to 50 user-supplied attributes.
+- You can call `metric()` up to 100 times per Vercel Function invocation.
+
+Each call to `metric()` records one data point and counts as one Observability event. Vercel also adds [deployment, request, execution path, and region metadata](/docs/observability/custom-metrics#automatically-collected-metadata) to every data point. See [custom metric pricing](/docs/observability/custom-metrics#pricing) for details.
+
+### `geolocation`
+
+**Description**: Returns the location information for the incoming request, in the following way:
+
+```json
+{
+  "city": "New York",
+  "country": "US",
+  "flag": "🇺🇸",
+  "countryRegion": "NY",
+  "region": "iad1",
+  "latitude": "40.7128",
+  "longitude": "-74.0060",
+  "postalCode": "10001"
+}
+```
+
+| Name      | Type                                                                  | Description                                       |
+| :-------- | :-------------------------------------------------------------------- | :------------------------------------------------ |
+| `request` | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | The incoming request object which provides the IP |
+
+```ts filename="api/example.ts"
+import { geolocation } from '@vercel/functions';
+
+export default {
+  fetch(request) {
+    const details = geolocation(request);
+    return Response.json(details);
+  },
+};
+```
+
+### `ipAddress`
+
+**Description**: Returns the IP address of the request from the headers.
+
+| Name      | Type                                                                  | Description                                       |
+| :-------- | :-------------------------------------------------------------------- | :------------------------------------------------ |
+| `request` | [`Request`](https://developer.mozilla.org/en-US/docs/Web/API/Request) | The incoming request object which provides the IP |
+
+```ts filename="api/example.ts"
+import { ipAddress } from '@vercel/functions';
+
+export default {
+  fetch(request) {
+    const ip = ipAddress(request);
+    return new Response(`Your ip is ${ip}`);
+  },
+};
+```
+
+### `invalidateByTag`
+
+**Description**: Marks a cache tag as stale, causing cache entries associated with that tag to be revalidated in the background on the next request.
+
+| Name  | Type                   | Description                                     |
+| :---- | :--------------------- | :---------------------------------------------- |
+| `tag` | `string` or `string[]` | The cache tag (or multiple tags) to invalidate. |
+
+```ts filename="api/example.ts"
+import { invalidateByTag } from '@vercel/functions';
+
+export default {
+  async fetch(request) {
+    await invalidateByTag('my-tag-name');
+    return new Response('Success');
+  },
+};
+```
+
+### `dangerouslyDeleteByTag`
+
+**Description**: Marks a cache tag as deleted, causing cache entries associated with that tag to be revalidated in the foreground on the next request. Use this method with caution because one tag can be associated with many paths and deleting the cache can cause many concurrent requests to the origin leading to [cache stampede problem](https://en.wikipedia.org/wiki/Cache_stampede). This method is for advanced use cases and is not recommended; prefer using `invalidateByTag` instead.
+
+| Name      | Type                                      | Description                                                                                                                                                                                                |
+| :-------- | :---------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tag`     | `string` or `string[]`                    | The cache tag (or multiple tags) to dangerously delete.                                                                                                                                                    |
+| `options` | `{ revalidationDeadlineSeconds: number }` | The time in seconds before the delete deadline. If a request is made before the deadline, it will revalidate in the background. Otherwise it will be dangerously deleted and revalidate in the foreground. |
+
+```ts filename="api/example.ts"
+import { dangerouslyDeleteByTag } from '@vercel/functions';
+
+export default {
+  async fetch(request) {
+    await dangerouslyDeleteByTag('my-tag-name', {
+      revalidationDeadlineSeconds: 10,
+    });
+    return new Response('Success');
+  },
+};
+```
+
+### `invalidateBySrcImage`
+
+**Description**: Marks all cached content associated with a source image as stale, causing those cache entries to be revalidated in the background on the next request. This invalidates all cached transformations of the source image.
+
+Learn more about [purging Vercel CDN cache](/docs/caching/cdn-cache/purge).
+
+| Name       | Type     | Description                     |
+| :--------- | :------- | :------------------------------ |
+| `srcImage` | `string` | The source image to invalidate. |
+
+```ts filename="api/example.ts"
+import { invalidateBySrcImage } from '@vercel/functions';
+
+export default {
+  async fetch(request) {
+    await invalidateBySrcImage('/api/avatar/1');
+    return new Response('Success');
+  },
+};
+```
+
+### `dangerouslyDeleteBySrcImage`
+
+**Description**: Marks all cached content associated with a source image as deleted, causing those cache entries to be revalidated in the foreground on the next request. Use this method with caution because deleting the cache can cause many concurrent requests to the origin leading to [cache stampede problem](https://en.wikipedia.org/wiki/Cache_stampede). This method is for advanced use cases and is not recommended; prefer using `invalidateBySrcImage` instead.
+
+Learn more about [purging Vercel CDN cache](/docs/caching/cdn-cache/purge).
+
+| Name       | Type                                      | Description                                                                                                                                                                                                |
+| :--------- | :---------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `srcImage` | `string`                                  | The source image to dangerously delete.                                                                                                                                                                    |
+| `options`  | `{ revalidationDeadlineSeconds: number }` | The time in seconds before the delete deadline. If a request is made before the deadline, it will revalidate in the background. Otherwise it will be dangerously deleted and revalidate in the foreground. |
+
+```ts filename="api/example.ts"
+import { dangerouslyDeleteBySrcImage } from '@vercel/functions';
+
+export default {
+  async fetch(request) {
+    await dangerouslyDeleteBySrcImage('/api/avatar/1', {
+      revalidationDeadlineSeconds: 10,
+    });
+    return new Response('Success');
+  },
+};
+```
+
+### `addCacheTag`
+
+**Description**: Adds one or more tags to a cached response, so that you can later invalidate the cache associated with these tag(s) using `invalidateByTag()`.
+
+| Name  | Type                   | Description                                     |
+| :---- | :--------------------- | :---------------------------------------------- |
+| `tag` | `string` or `string[]` | One or more tags to add to the cached response. |
+
+```ts filename="api/example.ts"
+import { addCacheTag } from '@vercel/functions';
+
+export default {
+  async fetch(request) {
+    const id = new URL(request.url).searchParams.get('id');
+    const res = await fetch(`https://api.example.com/${id}`);
+    const product = await res.json();
+    await addCacheTag(`product-${id},products`);
+    return Response.json(product, {
+      headers: {
+        'Vercel-CDN-Cache-Control': 'public, max-age=86400',
+      },
+    });
+  },
+};
+```
+
+> **💡 Note:** Alternatively, you can set the `Vercel-Cache-Tag` response header with a
+> comma-separated list of tags instead of using `addCacheTag()`. See [cache
+> tags](/docs/caching/cdn-cache/purge#cache-tags) for more details.
+
+#### Limits
+
+- A cached response can have a maximum of 128 tags.
+- The maximum tag length is 256 bytes (UTF-8 encoded).
+- Tag names cannot contain commas.
+
+### `getCache`
+
+**Description**: Returns a `RuntimeCache` object that allows you to interact with the Vercel Runtime Cache in any Vercel region. Use this for storing and retrieving data across function, routing middleware, and build execution within a Vercel region.
+
+| Name                 | Type                      | Description                                        |
+| -------------------- | ------------------------- | -------------------------------------------------- |
+| `keyHashFunction`    | `(key: string) => string` | Optional custom hash function for generating keys. |
+| `namespace`          | `String`                  | Optional namespace to prefix cache keys.           |
+| `namespaceSeparator` | `String`                  | Optional separator string for the namespace.       |
+
+#### Specification
+
+`RuntimeCache` provides the following methods:
+
+| Method      | Description                                                                                                                                                                                     | Parameters                                                                                                                                                                                                |
+| :---------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `get`       | Retrieves a value from the Vercel Runtime Cache.                                                                                                                                                | `key: string`: The cache key                                                                                                                                                                              |
+| `set`       | Stores a value in the Vercel Runtime Cache with optional `ttl` and/or `tags`. The `name` option allows a human-readable label to be associated with the cache entry for observability purposes. |  |
+| `delete`    | Removes a value from the Vercel Runtime Cache by key                                                                                                                                            | `key: string`: The cache key to delete                                                                                                                                                                    |
+| `expireTag` | Expires all cache entries associated with one or more tags                                                                                                                                      | `tag: string \| string[]`: Tag or array of tags to expire                                                                                                                                                 |
+
+```ts filename="api/example.ts"
+import { getCache } from '@vercel/functions';
+
+export default {
+  async fetch(request) {
+    const cache = getCache();
+
+    // Get a value from cache
+    const value = await cache.get('somekey');
+
+    if (value) {
+      return new Response(JSON.stringify(value));
+    }
+
+    const res = await fetch('https://api.vercel.app/blog');
+    const originValue = await res.json();
+
+    // Set a value in cache with TTL and tags
+    await cache.set('somekey', originValue, {
+      ttl: 3600, // 1 hour in seconds
+      tags: ['example-tag'],
+    });
+
+    return new Response(JSON.stringify(originValue));
+  },
+};
+```
+
+After assigning tags to your cached data, use the `expireTag` method to invalidate all cache entries associated with that tag. This operation is propagated globally across all Vercel regions within 300ms.
+
+```ts filename="app/actions.ts"
+'use server';
+
+import { getCache } from '@vercel/functions';
+
+export default async function action() {
+  await getCache().expireTag('blog');
+}
+```
+
+#### Limits and usage
+
+The Runtime Cache is isolated per deployment environment (`preview` and `production`). On Pro and Enterprise, each project uses its own cache. On Hobby, all projects in your team share a single cache. See [storage scope by plan](/docs/caching/runtime-cache#storage-scope-by-plan). Cached data is persisted across deployments and can be invalidated either through time-based expiration or by calling `expireTag`. However, TTL (time-to-live) and tag updates aren't reconciled between deployments. In those cases, we recommend either purging the runtime cache or modifying the cache key.
+
+The Runtime Cache API does not have first class integration with [Incremental Static Regeneration](/docs/incremental-static-regeneration). This means that:
+
+- Runtime Cache entry tags will not apply to ISR pages, so you cannot use expireTag to invalidate both caches.
+- Runtime Cache entry TTLs will have no effect on the ISR revalidation time and
+- Next.js's `revalidatePath` and `revalidateTag`API does not invalidate the Runtime Cache.
+
+The following Runtime Cache limits apply:
+
+- The maximum size of an item in the cache is 2 MB. Items larger than this will not be cached.
+- A cached item can have a maximum of 128 tags.
+- The maximum tag length is 256 bytes.
+
+Usage of the Vercel Runtime Cache is charged, learn more about pricing in the [regional pricing docs](/docs/pricing/regional-pricing).
+
+### `experimental_upgradeWebSocket`
+
+**Description**: Upgrades an incoming HTTP GET request to a WebSocket connection.
+
+`experimental_upgradeWebSocket()` requires the `ws` package in your project. Install `ws` and import the API from `@vercel/functions`.
+
+<CodeBlock>
+  <Code tab="pnpm">
+    ```bash
+    pnpm i ws
+    ```
+  </Code>
+  <Code tab="yarn">
+    ```bash
+    yarn i ws
+    ```
+  </Code>
+  <Code tab="npm">
+    ```bash
+    npm i ws
+    ```
+  </Code>
+  <Code tab="bun">
+    ```bash
+    bun i ws
+    ```
+  </Code>
+</CodeBlock>
+
+| Name      | Type                                                            | Description                                      |
+| :-------- | :-------------------------------------------------------------- | :----------------------------------------------- |
+| `handler` | `(ws: WebSocket) => void \| Promise<void>`                      | Function called after the WebSocket is upgraded. |
+| `options` | `UpgradeWebSocketOptions`                                       | Optional configuration for the WebSocket upgrade. |
+
+The `UpgradeWebSocketOptions` object accepts the following properties:
+
+| Name         | Type     | Default   | Description                              |
+| :----------- | :------- | :-------- | :--------------------------------------- |
+| `maxPayload` | `number` | 262144 (256 KiB) | Maximum allowed message size in bytes. |
+
+```ts filename="app/api/ws/route.ts"
+import {
+  experimental_upgradeWebSocket,
+  type WebSocketData,
+} from '@vercel/functions';
+
+export async function GET() {
+  return experimental_upgradeWebSocket((ws) => {
+    ws.on('message', (data: WebSocketData) => {
+      ws.send(data);
+    });
+  }, {
+    maxPayload: 256 * 1024
+  });
+}
+```
+
+When using `experimental_upgradeWebSocket()` in a Next.js app with Cache
+Components enabled, call [`connection()`](https://nextjs.org/docs/app/api-reference/functions/connection)
+before `experimental_upgradeWebSocket()`. This opts the route handler out of
+static prerendering, so the WebSocket upgrade runs only at request time.
+
+```ts {1,8} filename="app/api/ws/route.ts"
+import { connection } from 'next/server';
+import {
+  experimental_upgradeWebSocket,
+  type WebSocketData,
+} from '@vercel/functions';
+
+export async function GET() {
+  await connection();
+
+  return experimental_upgradeWebSocket((ws) => {
+    ws.on('message', (data: WebSocketData) => {
+      ws.send(data);
+    });
+  });
+}
+```
+
+Learn more about [using WebSockets on Vercel Functions](/docs/functions/websockets).
+
+#### Limits and usage
+
+You can use `experimental_upgradeWebSocket()` to handle incoming WebSocket connections in any Vercel Function, including Next.js Route Handlers and other frameworks’ equivalents. However, this API only works on the Vercel platform and gives you less control over the request lifecycle; when possible, you should handle WebSocket connections using native Node.js APIs instead.
+
+#### Local development
+
+When developing a Next.js app that uses `experimental_upgradeWebSocket()` locally, you must run the development server using `vc dev` with [Vercel CLI 54.14.2 or above](/docs/cli#updating-vercel-cli) instead of `next dev`.
+
+Next.js is the only framework that supports local development with `experimental_upgradeWebSocket()`. No other instances of this API run in a local development environment.
+
+### Database Connection Pool Management
+
+#### `attachDatabasePool`
+
+Call this function right after creating a database pool to ensure proper connection
+management in [Fluid Compute](/docs/fluid-compute). This function ensures that idle pool clients are
+properly released before functions suspend.
+
+Supports PostgreSQL (pg), MySQL2, MariaDB, MongoDB, Redis (ioredis), Cassandra (cassandra-driver), and other compatible pool types.
+
+| Name     | Type     | Description               |
+| :------- | :------- | :------------------------ |
+| `dbPool` | `DbPool` | The database pool object. |
+
+```ts {8} filename="api/database.ts" framework=all
+import { Pool } from 'pg';
+import { attachDatabasePool } from '@vercel/functions';
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+attachDatabasePool(pool);
+
+export default {
+  async fetch() {
+    const client = await pool.connect();
+    try {
+      const result = await client.query('SELECT NOW()');
+      return Response.json(result.rows[0]);
+    } finally {
+      client.release();
+    }
+  },
+};
+```
+
+### OIDC methods
+
+#### `awsCredentialsProvider`
+
+> **💡 Note:** This function has moved from `@vercel/functions/oidc` to
+> `@vercel/oidc-aws-credentials-provider`.
+
+**Description**: Obtains the Vercel OIDC token and creates an AWS credential provider function that gets AWS credentials by calling the STS `AssumeRoleWithWebIdentity` API.
+
+| Name                         | Type       | Description                                                                                                             |
+| ---------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `roleArn`                    | `string`   | ARN of the role that the caller is assuming.                                                                            |
+| `clientConfig`               | `Object`   | Custom STS client configurations overriding the default ones.                                                           |
+| `clientPlugins`              | `Array`    | Custom STS client middleware plugin to modify the client default behavior.                                              |
+| `roleAssumerWithWebIdentity` | `Function` | A function that assumes a role with web identity and returns a promise fulfilled with credentials for the assumed role. |
+| `roleSessionName`            | `string`   | An identifier for the assumed role session.                                                                             |
+| `providerId`                 | `string`   | The fully qualified host component of the domain name of the identity provider.                                         |
+| `policyArns`                 | `Array`    | ARNs of the IAM managed policies that you want to use as managed session policies.                                      |
+| `policy`                     | `string`   | An IAM policy in JSON format that you want to use as an inline session policy.                                          |
+| `durationSeconds`            | `number`   | The duration, in seconds, of the role session. Defaults to 3600 seconds.                                                |
+
+```ts filename="api/example.ts"
+import * as s3 from '@aws-sdk/client-s3';
+import { awsCredentialsProvider } from '@vercel/oidc-aws-credentials-provider';
+
+const s3Client = new s3.S3Client({
+  credentials: awsCredentialsProvider({
+    roleArn: process.env.AWS_ROLE_ARN,
+  }),
+});
+```
+
+#### `getVercelOidcToken`
+
+> **💡 Note:** This function has moved from `@vercel/functions/oidc` to `@vercel/oidc`.
+
+**Description**: Returns the OIDC token from the request context or the environment variable. This function first checks if the OIDC token is available in the environment variable
+`VERCEL_OIDC_TOKEN`. If it is not found there, it retrieves the token from the request context headers.
+
+```ts filename="api/example.ts"
+import { ClientAssertionCredential } from '@azure/identity';
+import { CosmosClient } from '@azure/cosmos';
+import { getVercelOidcToken } from '@vercel/oidc';
+
+const credentialsProvider = new ClientAssertionCredential(
+  process.env.AZURE_TENANT_ID,
+  process.env.AZURE_CLIENT_ID,
+  getVercelOidcToken,
+);
+
+const cosmosClient = new CosmosClient({
+  endpoint: process.env.COSMOS_DB_ENDPOINT,
+  aadCredentials: credentialsProvider,
+});
+
+export const GET = () => {
+  const container = cosmosClient
+    .database(process.env.COSMOS_DB_NAME)
+    .container(process.env.COSMOS_DB_CONTAINER);
+  const items = await container.items.query('SELECT * FROM f').fetchAll();
+  return Response.json({ items: items.resources });
+};
+```
+
+
+---
+
+[View full sitemap](/docs/sitemap)

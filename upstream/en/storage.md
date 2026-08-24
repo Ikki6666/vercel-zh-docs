@@ -1,0 +1,175 @@
+---
+title: Vercel Storage overview
+product: vercel
+url: /docs/storage
+canonical_url: "https://vercel.com/docs/storage"
+last_updated: 2026-07-29
+type: conceptual
+prerequisites:
+  []
+related:
+  - /docs/vercel-blob
+  - /docs/global-config
+  - /docs/marketplace-storage
+  - /docs/vercel-blob/usage-and-pricing
+  - /docs/global-config/global-config-limits
+summary: "Store large files and global configuration with Vercel's storage products."
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+---
+
+# Vercel Storage overview
+
+Vercel offers a suite of managed, serverless storage products that integrate with your frontend framework.
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
+- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob?from=related) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
+- [Build with Vercel Blob on Nuxt](https://vercel.com/kb/guide/vercel-blob-nuxt?from=related) — Set up Vercel Blob in a Nuxt application with NuxtHub, upload and serve files, and deliver optimized images with Nuxt Im
+- [Build with Vercel Blob on Next.js](https://vercel.com/kb/guide/vercel-blob-nextjs?from=related) — Deploy the Vercel Blob Next.js Starter and learn how client uploads store images securely in a private Blob store.
+- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
+- [Manage Vercel Blob Storage](https://vercel.com/docs/vercel-blob/manage-blob-storage?from=related) — Create blob stores, upload files, list contents, and manage storage using the CLI.
+- [Public Storage](https://vercel.com/docs/vercel-blob/public-storage?from=related) — Learn how to use public Vercel Blob storage to serve files accessible to anyone with the URL
+- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
+- [Create a Blob store](https://vercel.com/docs/rest-api/storage/create-a-blob-store?from=related)
+- [Overview](https://vercel.com/docs/cdn?from=related) — Vercel's CDN is a globally distributed platform that handles routing, caching, security, and compression for every deplo
+
+Full cross-link map for this page: [/docs/storage.graph.md](/docs/storage.graph.md)
+<!-- /docsgraph:related -->
+
+- [**Vercel Blob**](/docs/vercel-blob): Large file storage
+- [**Vercel Global Config**](/docs/global-config): Global, low-latency data store
+- [**Vercel Marketplace**](/docs/marketplace-storage): Find Postgres, KV, NoSQL, and other databases from providers like Neon, Upstash, and AWS
+
+## Choosing a storage product
+
+The right storage solution depends on your needs for latency, durability, and consistency. This table summarizes the key differences:
+
+| Product                           | Reads      | Writes       | Use Case                                    | Limits                                                    | Plans                  |
+| --------------------------------- | ---------- | ------------ | ------------------------------------------- | --------------------------------------------------------- | ---------------------- |
+| [Blob](/docs/vercel-blob) | Fast       | Milliseconds | Large, content-addressable files ("blobs")  | [Learn more](/docs/vercel-blob/usage-and-pricing) | Hobby, Pro             |
+| [Global Config](/docs/global-config)  | Ultra-fast | Seconds      | Runtime configuration (e.g., feature flags) | [Learn more](/docs/global-config/global-config-limits)        | Hobby, Pro, Enterprise |
+
+See [best practices](#best-practices) for optimizing your storage usage.
+
+## Vercel Blob
+
+> **🔒 Permissions Required**: Vercel Blob
+
+Vercel Blob offers optimized storage for images, videos, and other files.
+
+You should use Vercel Blob if you need to:
+
+- **Store images**: For example, storing user avatars or product images
+- **Store videos**: For example, storing user-generated video content
+
+### Explore Vercel Blob
+
+- [Overview](/docs/vercel-blob)
+- [Quickstart](/docs/vercel-blob/server-upload)
+
+## Global Config
+
+> **🔒 Permissions Required**: Global Config
+
+A Global Config is a global data store that enables you to read data in the region closest to the user without querying an external database or hitting upstream servers. Most lookups return in less than 1ms, and 99% of reads will return under 10ms.
+
+You should use Global Config if you need to:
+
+- **Fetch data at ultra-low latency**: For example, you should store feature flags in a Global Config store.
+- **Store data that is read often but changes rarely**: For example, you should store critical redirect URLs in a Global Config store.
+- **Read data in every region**: Global Config data is actively replicated to all regions in the Vercel CDN.
+
+### Explore Global Config
+
+- [Overview](/docs/global-config)
+- [Quickstart](/docs/global-config/get-started)
+- [Limits & Pricing](/docs/global-config/global-config-limits)
+
+## Marketplace Storage
+
+> **🔒 Permissions Required**: Marketplace Storage
+
+The [Vercel Marketplace](https://vercel.com/marketplace?category=storage) connects you with storage providers like Neon, Upstash, and Supabase. You can provision databases directly from your Vercel dashboard, and Vercel automatically injects credentials as environment variables.
+
+You should use Marketplace storage if you need to:
+
+- **Relational databases (Postgres)**: For structured data with ACID transactions, complex queries, and foreign keys
+- **Key-value stores (Redis)**: For caching, session storage, real-time leaderboards, and rate limiting
+- **NoSQL databases**: For flexible schemas with MongoDB or DynamoDB
+- **Vector databases**: For AI embeddings, semantic search, and recommendation systems
+
+You can provision a Marketplace storage resource in one command with the CLI. This installs the integration, connects it to the linked project, and pulls credentials into `.env.local`:
+
+```bash filename="terminal"
+vercel install neon
+vercel install upstash
+vercel install supabase
+```
+
+See [`vercel install`](/docs/cli/install) for the full reference.
+
+### Explore Marketplace Storage
+
+- [Overview](/docs/marketplace-storage)
+- [Add a Native Integration](/docs/integrations/install-an-integration/product-integration)
+- [Provision from the CLI with `vercel install`](/docs/cli/install)
+- [Browse Storage Integrations](https://vercel.com/marketplace?category=storage)
+
+## Best practices
+
+Follow these best practices to get the most from your storage:
+
+### Locate your data close to your functions
+
+Deploy your databases in [regions](/docs/regions) closest to your Functions. This minimizes network roundtrips and keeps response times low.
+
+### Optimize for high cache hit rates
+
+Vercel's CDN caches content in every region globally. Cache data fetched from your data store on the CDN using [cache headers](/docs/caching/cdn-cache) to get the fastest response times.
+
+[Incremental Static Regeneration](/docs/incremental-static-regeneration) sets up caching headers automatically and stores generated assets globally. This gives you high availability and prevents cache-control misconfiguration.
+
+You can also configure cache-control headers manually with [Vercel Functions](/docs/caching/cdn-cache#using-vercel-functions) to cache responses in every CDN region. Note that Middleware runs before the CDN cache layer and cannot use cache-control headers.
+
+## Transferring your store
+
+You can bring your Blob or Global Config stores along with your account as you upgrade from Hobby to Pro, or downgrade from Pro to Hobby. To do so:
+
+1. Navigate to the [dashboard](/dashboard) and open [**Storage**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fstores\&title=Go+to+Storage) in the sidebar
+2. Select the store that you would like to transfer
+3. Select **Settings**, then select **Transfer Store**
+4. Select a destination account or team. If you're upgrading to Pro, select your new Pro team. If downgrading, select your Hobby team
+
+When successful, you'll be taken to the **Storage** section in the sidebar of the account or team you transferred the store to.
+
+### Transfer Marketplace resources
+
+You can transfer [Marketplace](/docs/marketplace-storage) resources between teams from the resource's **Settings** page. See [Transfer a resource to another team](/docs/integrations/install-an-integration/product-integration#transfer-a-resource-to-another-team) for steps.
+
+## Explore storage products
+
+**Vercel Blob**: Store images, videos, and other large files. [Learn more →](/docs/vercel-blob)
+
+**Global Config**: Global, low-latency data store for runtime configuration. [Learn more →](/docs/global-config)
+
+**Marketplace Storage**: Postgres, KV, NoSQL, and other databases from Neon, Upstash, and more. [Learn more →](/docs/marketplace-storage)
+
+**Blob quickstart**: Upload your first file to Vercel Blob from a server. [Learn more →](/docs/vercel-blob/server-upload)
+
+**Global Config quickstart**: Read your first value from Global Config. [Learn more →](/docs/global-config/get-started)
+
+**Provision from the CLI**: Use \`vercel install\` to provision Marketplace resources. [Learn more →](/docs/cli/install)
+
+**Browse Storage Integrations**: See every storage provider in the Vercel Marketplace. [Learn more →](https://vercel.com/marketplace?category=storage)
+
+**Native Integrations**: Add a Marketplace integration to your project. [Learn more →](/docs/integrations/install-an-integration/product-integration)
+
+
+---
+
+[View full sitemap](/docs/sitemap)

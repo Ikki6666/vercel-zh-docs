@@ -1,0 +1,36 @@
+{
+  "keep": [
+    "Vercel",
+    "Next.js",
+    "Turborepo",
+    "v0",
+    "Fluid Compute",
+    "AI Gateway",
+    "AI SDK",
+    "Vercel CLI",
+    "Deployment Protection",
+    "Vercel Delivery Network",
+    "Web Analytics",
+    "Rolling Releases",
+    "Observability"
+  ],
+  "translate": {
+    "deployment": "部署",
+    "project": "项目",
+    "environment": "环境",
+    "environment variable": "环境变量",
+    "build": "构建",
+    "domain": "域名",
+    "function": "函数",
+    "middleware": "中间件",
+    "cache": "缓存",
+    "routing": "路由",
+    "rollback": "回滚",
+    "framework": "框架",
+    "repository": "仓库",
+    "team": "团队",
+    "webhook": "Webhook",
+    "preview deployment": "预览部署",
+    "production deployment": "生产部署"
+  }
+}

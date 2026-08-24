@@ -1,0 +1,32 @@
+name: weekly-sync
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # every Monday 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Sync upstream docs
+        run: python3 scripts/sync.py
+      - name: Translation status
+        run: python3 scripts/status.py
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          title: 'chore(upstream): weekly docs sync'
+          body: |
+            Automated upstream sync. Review the diff, then merge.
+            After merging, run the translate workflow for `needs_update` pages.
+          branch: chore/upstream-sync
+          commit-message: 'chore(upstream): sync from vercel.com/docs'

@@ -1,0 +1,6 @@
+/* vercel-zh-docs site customizations */
+
+/* Slightly tighten sidebar labels for the large nav tree */
+.sidebar-title {
+  font-size: 0.95rem;
+}

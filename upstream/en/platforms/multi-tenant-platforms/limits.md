@@ -1,0 +1,102 @@
+---
+title: Multi-tenant Limits
+product: vercel
+url: /docs/platforms/multi-tenant-platforms/limits
+canonical_url: "https://vercel.com/docs/platforms/multi-tenant-platforms/limits"
+last_updated: 2026-06-26
+type: reference
+prerequisites:
+  - /docs/platforms/multi-tenant-platforms
+  - /docs/platforms
+related:
+  - /docs/domains/working-with-nameservers
+  - /docs/domains/custom-ssl-certificate
+  - /docs/rest-api
+summary: Understand the limits and features available for Vercel for Platforms.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+---
+
+# Multi-tenant Limits
+
+This page provides an overview of the limits and feature availability for Vercel for Platforms across different plan types.
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
+- [Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
+- [Configuring Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
+- [Quickstart](https://vercel.com/docs/platforms/multi-tenant-platforms/quickstart?from=related) — Set up wildcard domains, custom domains, domain verification, and redirects for a multi-tenant application on Vercel.
+- [Reference](https://vercel.com/docs/platforms/multi-project-platforms/reference?from=related) — API reference, error codes, troubleshooting, and FAQ for multi-project platforms on Vercel.
+- [Concepts](https://vercel.com/docs/platforms/multi-tenant-platforms/concepts?from=related) — Understand tenants, domains, routing, and architecture for building multi-tenant applications on Vercel for Platforms.
+
+Full cross-link map for this page: [/docs/platforms/multi-tenant-platforms/limits.graph.md](/docs/platforms/multi-tenant-platforms/limits.graph.md)
+<!-- /docsgraph:related -->
+
+## Feature availability
+
+| Feature                                                                 | Hobby                                                                                    | Pro                                                                                      | Enterprise                                                                                   |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Compute                        |  Included    |  Included    |  Included        |
+| Firewall                       |  Included    |  Included    |  Included        |
+| WAF (Web Application Firewall) |  Included    |  Included    |  Included        |
+| Custom Domains                 |  50          |  Unlimited\* |  Unlimited\*     |
+| Multi-tenant preview URLs      |  Enterprise only |  Enterprise only |  Enterprise only |
+| Custom SSL certificates        |  Enterprise only |  Enterprise only |  Enterprise only |
+
+- To prevent abuse, Vercel implements soft limits of 100,000 domains per project for the Pro plan and 1,000,000 domains for the Enterprise plan. These limits are flexible and can be increased upon request. If you need more domains, please [contact our support team](/help) for assistance.
+
+### Wildcard domains
+
+- **All plans**: Support for wildcard domains (e.g., `*.acme.com`)
+- **Requirement**: Must use [Vercel's nameservers](/docs/domains/working-with-nameservers) for wildcard SSL certificate generation
+
+### Custom domains
+
+- **All plans**: Unlimited custom domains per project
+- **SSL certificates**: Automatically issued for all verified domains
+- **Verification**: Required for domains already in use on Vercel
+
+## Multi-tenant preview URLs
+
+Multi-tenant preview URLs are available exclusively for **Enterprise** customers. This feature allows you to:
+
+- Generate unique preview URLs for each tenant during development
+- Test changes for specific tenants before deploying to production
+- Use dynamic subdomains like `tenant1---project-name-git-branch.yourdomain.dev`
+
+To enable this feature, Enterprise customers should contact their Vercel account representative.
+
+## Custom SSL certificates
+
+Custom SSL certificates are available exclusively for **Enterprise** customers. This feature allows you to:
+
+- Upload your own SSL certificates for tenant domains
+- Maintain complete control over certificate management
+- Meet specific compliance or security requirements
+
+Learn more about [custom SSL certificates](/docs/domains/custom-ssl-certificate).
+
+## Rate limits
+
+Domain management operations through the Vercel API are subject to standard [API rate limits](/docs/rest-api#rate-limits):
+
+- **Domain addition**: 100 requests per hour per team
+- **Domain verification**: 50 requests per hour per team
+- **Domain removal**: 100 requests per hour per team
+
+## DNS propagation
+
+After configuring domains or nameservers, DNS typically takes 24-48 hours to propagate globally. Use tools like [WhatsMyDNS](https://www.whatsmydns.net/) to check propagation status.
+
+## Subdomain length limits
+
+Each DNS label has a [63-character limit](/kb/guide/why-is-my-vercel-deployment-url-being-shortened#rfc-1035). For preview URLs with long branch names and tenant subdomains, keep branch names concise to avoid resolution issues.
+
+
+---
+
+[View full sitemap](/docs/sitemap)

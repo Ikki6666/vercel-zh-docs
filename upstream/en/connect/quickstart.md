@@ -1,0 +1,198 @@
+---
+title: Quickstart
+product: vercel
+url: /docs/connect/quickstart
+canonical_url: "https://vercel.com/docs/connect/quickstart"
+last_updated: 2026-07-28
+type: tutorial
+prerequisites:
+  - /docs/connect
+related:
+  - /docs/cli
+  - /docs/connect/concepts/authentication
+  - /docs/deployments/environments
+  - /docs/cli/connect
+  - /docs/connect/concepts/tokens
+summary: Create your first connector in Vercel Connect, install the SDK, and request a runtime provider token from your code.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+---
+
+# Quickstart
+
+> **🔒 Permissions Required**: Vercel Connect
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Build your own Slackbot with Vercel Connect](https://vercel.com/kb/guide/build-a-slack-bot-with-vercel-connect?from=related) — Learn how to build your very own Slackbot with Chat SDK and AI SDK. Vercel Connect supplies runtime Slack tokens and for
+- [Build a GitHub agent with Vercel Connect](https://vercel.com/kb/guide/github-agent-vercel-connect?from=related) — Build a GitHub agent that helps your team work through issues and PRs. Chat SDK handles the interactivity and AI SDK run
+- [Build a Linear agent with Vercel Connect](https://vercel.com/kb/guide/linear-agent-vercel-connect?from=related) — Build a native Linear Agent that helps your team manage issues. Mention it on any issue and it responds in real time, po
+- [Build an integrations hub with Nuxt and Vercel Connect](https://vercel.com/kb/guide/nuxt-and-vercel-connect?from=related) — Build an Integrations Hub with Nuxt and Vercel Connect. Connect GitHub and Linear over OAuth and mint short-lived tokens
+- [How to build a Slack bot that manages files in Vercel Blob](https://vercel.com/kb/guide/slack-bot-vercel-blob?from=related) — Build a Slack bot using Chat SDK, AI SDK, and Files SDK that can list, read, upload, and delete files in Vercel Blob thr
+- [Vercel Connect](https://chat-sdk.dev/docs/vercel-connect?from=related) — Authenticate Slack, Discord, GitHub, Linear, Notion, and Telegram adapters with Vercel Connect — short-lived runtime tok
+- [Connectors](https://vercel.com/docs/connect/concepts/connectors?from=related) — A connector is the team-owned record that represents one third-party service. Its type determines which capabilities are
+- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
+- [Installations](https://vercel.com/docs/connect/concepts/installations?from=related) — Installations let one connector serve many tenants. One Slack connector, for example, can serve many Slack workspaces, e
+- [Project links](https://vercel.com/docs/connect/concepts/project-links?from=related) — A project link binds a connector to a Vercel project, scoped to one or more environments. The link is what authorizes a
+- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+
+Full cross-link map for this page: [/docs/connect/quickstart.graph.md](/docs/connect/quickstart.graph.md)
+<!-- /docsgraph:related -->
+
+This guide shows you how to create your first connector in Vercel Connect and request a runtime provider token from your code.
+
+## Prerequisites
+
+- A [Vercel account](https://vercel.com/signup)
+- [Vercel CLI](/docs/cli) installed (`npm i -g vercel`)
+- Node.js 18 or later
+- A [Linear](https://linear.app) workspace you can authorize
+
+- ### Set up your environment
+  Create a new directory and connect it to a Vercel project. Linking the directory to a project is the recommended way to authenticate, because the project handles secure [OIDC token authentication](/docs/connect/concepts/authentication) for you.
+  ```bash filename="Terminal"
+  mkdir my-connect-app && cd my-connect-app
+  pnpm init
+  vercel link
+  ```
+  When prompted, select an existing project or **Create a new project**. The project doesn't need any code deployed; it just needs to exist so Vercel can issue OIDC tokens to it.
+
+  Once linked, pull your environment variables to get a development OIDC token:
+  ```bash filename="Terminal"
+  vercel env pull
+  ```
+  This creates a `.env.local` file containing `VERCEL_OIDC_TOKEN`, which the SDK uses to authenticate calls to Vercel Connect. The token is short-lived; re-run `vercel env pull` if you see authentication errors. When you deploy to Vercel, token management happens automatically.
+
+- ### Create a Linear connector
+  Create a connector for Linear so your code can mint Linear API tokens on behalf of a user. You can do this from the dashboard or the CLI.
+  #### Dashboard
+  Open [**Connect**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fconnect\&title=Open+Vercel+Connect+Project) in the Vercel dashboard. You'll be prompted to pick a team and project; any connector you create from this page is automatically linked to that project, so you can skip a separate attach step.
+
+  Select **Create Connector**, choose **OAuth**, and keep **Managed** selected. Under **Server URL**, enter `mcp.linear.app`, select **Continue**, and set **Connector Name** to `linear`.
+
+  Creating the connector from this project page automatically links Production, Preview, and Development. To enable a [Custom Environment](/docs/deployments/environments#custom-environments), create the connector first, then open its **Projects** section, edit the project link, and select the Custom Environment.
+  #### CLI
+  Create the connector. Vercel opens your browser to complete the Linear OAuth flow:
+  ```bash filename="Terminal"
+  vercel connect create mcp.linear.app --name linear
+  ```
+  For a known service such as `notion` or `okta`, the CLI prompts you for the connection method and any credentials it needs, so you can finish setup without leaving the terminal. Run `vercel connect create <service> --help` to see what a service supports.
+
+  Attach the connector to the currently linked project so it can request tokens:
+  ```bash filename="Terminal"
+  vercel connect attach oauth/linear
+  ```
+  By default, `attach` links Production, Preview, and Development. It does not automatically include Custom Environments. Use `-e production -e preview` to restrict the link, or pass a Custom Environment slug such as `-e qa`. See the [`vercel connect`](/docs/cli/connect) reference for the full surface.
+
+  For provider-level isolation, create a separate connector for each environment, install each connector separately, and request only the provider scopes that environment needs. Environment selection on a project link controls which deployments can request tokens; it does not create separate provider grants.
+
+- ### Install the SDK
+  Install `@vercel/connect` along with the dev dependencies you need to run a TypeScript script locally.
+  #### npm
+  ```bash filename="Terminal"
+  npm install @vercel/connect dotenv @types/node tsx typescript
+  ```
+  #### yarn
+  ```bash filename="Terminal"
+  yarn add @vercel/connect dotenv @types/node tsx typescript
+  ```
+  #### pnpm
+  ```bash filename="Terminal"
+  pnpm add @vercel/connect dotenv @types/node tsx typescript
+  ```
+  #### bun
+  ```bash filename="Terminal"
+  bun add @vercel/connect dotenv @types/node tsx typescript
+  ```
+  `dotenv` loads `.env.local` so the SDK can read `VERCEL_OIDC_TOKEN`. The `tsx` package is a TypeScript runner, and `typescript` and `@types/node` provide the compiler and Node.js type definitions.
+
+- ### Write your code
+  Create a file that requests a Linear token on behalf of a specific user and inspects the response:
+  ```ts filename="index.ts"
+  import { config } from 'dotenv';
+  config({ path: '.env.local' });
+
+  import {
+    getTokenResponse,
+    UserAuthorizationRequiredError,
+  } from '@vercel/connect';
+
+  const userId = 'user_demo_123';
+
+  async function main() {
+    try {
+      const response = await getTokenResponse('oauth/linear', {
+        subject: { type: 'user', id: userId },
+        scopes: ['read'],
+      });
+
+      console.log(`Got token for ${userId} on ${response.connector.uid}`);
+      console.log(`Expires at: ${new Date(response.expiresAt).toISOString()}`);
+    } catch (error) {
+      if (error instanceof UserAuthorizationRequiredError) {
+        console.log(`User ${userId} has not authorized Linear yet.`);
+        console.log('In a real app, surface the consent URL to the user here.');
+        return;
+      }
+      throw error;
+    }
+  }
+
+  main().catch(console.error);
+  ```
+  This requests a user-subject token: Vercel Connect will mint a Linear token that acts as `user_demo_123`, scoped to `read`. In a real app, replace `user_demo_123` with the id you use to identify the signed-in user in your own database.
+
+  For service-level operations (a bot account or a tenant-wide admin API), use `subject: { type: 'app' }` instead. App-subject tokens skip the user-consent flow entirely, though some providers still require a one-time installation or an administrator grant. For multi-tenant connector types like Slack or GitHub, pass `installationId` to address a specific workspace or organization; otherwise the connector's default installation is used. See [Tokens](/docs/connect/concepts/tokens) for the full set of scoping options.
+
+  **Completing the consent flow**
+
+  When you catch `UserAuthorizationRequiredError`, call `startAuthorization` to get a consent URL to redirect the user to. After they authorize, Vercel completes the OAuth handshake server-side, and your next `getToken` call for that user succeeds.
+  ```ts filename="consent.ts"
+  import { startAuthorization } from '@vercel/connect';
+
+  const { url } = await startAuthorization('oauth/linear', {
+    subject: { type: 'user', id: userId },
+    scopes: ['read'],
+  });
+
+  // In a web app, redirect the user to `url`.
+  console.log(`Send the user to: ${url}`);
+  ```
+  > **💡 Note:** Do not persist runtime tokens in long-lived environment variables. Call `getToken` (or `getTokenResponse`) at request time; the SDK keeps an in-process cache and refreshes the token automatically as it approaches expiry.
+
+- ### Run it
+  ```bash filename="Terminal"
+  pnpm tsx index.ts
+  ```
+  The first time you run this with a new `userId`, you'll see:
+  ```text filename="Terminal"
+  User user_demo_123 has not authorized Linear yet.
+  In a real app, surface the consent URL to the user here.
+  ```
+  That's because no Linear OAuth grant exists yet for `user_demo_123`. In a real app you'd catch [`UserAuthorizationRequiredError`](/docs/connect/concepts/tokens#errors), redirect the user to the connector's consent URL, and retry the request once they authorize. Once the user has consented (try it from the connector's page in the dashboard for this demo), re-run the script and you'll see:
+  ```text filename="Terminal"
+  Got token for user_demo_123 on oauth/linear
+  Expires at: 2026-06-03T22:42:00.000Z
+  ```
+  If you need the token as a string for use in an `Authorization` header, use `getToken` instead of `getTokenResponse`.
+
+## What you just did
+
+1. **Set up authentication**: Linked a directory to a Vercel project and pulled an OIDC token so the SDK can authenticate with Vercel Connect.
+2. **Created a connector**: Registered Linear as a Custom OAuth connector under your team and attached it to the project.
+3. **Requested a user-scoped token**: Called `getTokenResponse` with a `user` subject to mint a short-lived Linear token that acts as a specific user, and handled the first-run consent case with `UserAuthorizationRequiredError`.
+
+## Next steps
+
+- [Concepts](/docs/connect/concepts): Understand connectors, installations, tokens, project links, triggers, and authentication.
+- [SDK Reference](/docs/connect/ts-sdk-reference): Full `getToken` and `getTokenResponse` parameter reference.
+- [CLI Reference](/docs/cli/connect): The full `vercel connect` command surface.
+- [Pricing and Limits](/docs/connect/pricing): Token-request pricing and beta limits.
+
+
+---
+
+[View full sitemap](/docs/sitemap)

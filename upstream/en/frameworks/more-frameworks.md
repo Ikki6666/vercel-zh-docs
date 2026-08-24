@@ -1,0 +1,211 @@
+---
+title: Supported Frameworks on Vercel
+product: vercel
+url: /docs/frameworks/more-frameworks
+canonical_url: "https://vercel.com/docs/frameworks/more-frameworks"
+last_updated: 2025-07-31
+type: reference
+prerequisites:
+  - /docs/frameworks
+related:
+  - /docs/cdn
+  - /docs/routing-middleware
+  - /docs/functions
+  - /docs/functions/streaming-functions
+  - /docs/incremental-static-regeneration
+summary: Learn about the frameworks that can be deployed to Vercel.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+---
+
+# Supported Frameworks on Vercel
+
+## Frameworks infrastructure support matrix
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [How to migrate from Google Cloud Run to Vercel](https://vercel.com/kb/guide/migrate-cloud-run-to-vercel?from=related) — Migrate from Cloud Run to Vercel by copying your Dockerfile to Dockerfile.vercel, aligning the PORT contract, moving sec
+- [How to migrate from Render to Vercel](https://vercel.com/kb/guide/migrate-render-to-vercel?from=related) — Migrate from Render to Vercel: map web services, cron jobs, and containers to their equivalents, and handle what doesn't
+- [Frontends](https://vercel.com/docs/frameworks/frontend?from=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
+- [Full-stack](https://vercel.com/docs/frameworks/full-stack?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [Deploy a TanStack Start app to Vercel](https://vercel.com/kb/guide/deploy-a-tanstack-start-app-to-vercel?from=related) — Learn how to deploy a TanStack Start app to Vercel using the Nitro Vite plugin. Covers framework setup, Git and CLI depl
+- [How to ship a NestJS app on Vercel](https://vercel.com/kb/guide/ship-a-nestjs-app-on-vercel?from=related) — Deploy a NestJS app to Vercel with zero configuration. Learn how to ship from a template, the Nest CLI, or Git, and conf
+- [Vite](https://vercel.com/docs/frameworks/frontend/vite?from=related) — Learn how to use Vercel's features with Vite.
+- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
+
+Full cross-link map for this page: [/docs/frameworks/more-frameworks.graph.md](/docs/frameworks/more-frameworks.graph.md)
+<!-- /docsgraph:related -->
+
+The following table shows which features are supported by each framework on Vercel. The framework list is not exhaustive, but a representation of the most popular frameworks deployed on Vercel.
+
+We're committed to having support for all Vercel features across frameworks, and continue to work with framework authors on adding support. *This table is continually updated over time*.
+
+**Legend:** ✓ Supported | ✗ Not Supported | N/A Not Applicable
+
+| Feature | Next.js | SvelteKit | Nuxt | TanStack | Astro | Remix | Vite | CRA |
+|---------|---|---|---|---|---|---|---|---|
+| [Static Assets](/docs/cdn) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [Edge Routing Rules](/docs/cdn#features) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [Routing Middleware](/docs/routing-middleware) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| [Server-Side Rendering](/docs/functions) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | N/A | N/A |
+| [Streaming SSR](/docs/functions/streaming-functions) | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | N/A | N/A |
+| [Incremental Static Regeneration](/docs/incremental-static-regeneration) | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | N/A | N/A |
+| [Image Optimization](/docs/image-optimization) | ✓ | ✓ | ✓ | N/A | ✓ | ✗ | N/A | N/A |
+| [Runtime Cache](/docs/caching/runtime-cache) | ✓ | N/A | N/A | N/A | N/A | N/A | N/A | N/A |
+| [Native OG Image Generation](/docs/og-image-generation) | ✓ | N/A | ✓ | N/A | N/A | N/A | N/A | N/A |
+| [Multi-runtime support (different routes)](/docs/functions/runtimes) | ✓ | ✓ | ✓ | N/A | ✗ | ✓ | N/A | N/A |
+| [Multi-runtime support (entire app)](/docs/functions/runtimes) | ✓ | ✓ | ✓ | N/A | ✓ | ✓ | N/A | N/A |
+| [Output File Tracing](/kb/guide/how-can-i-use-files-in-serverless-functions) | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | N/A | N/A |
+| [Skew Protection](/docs/skew-protection) | ✓ | ✓ | ✓ | N/A | ✓ | ✗ | N/A | N/A |
+| [Framework Routing Middleware](/docs/routing-middleware) | ✓ | N/A | ✗ | ✓ | ✓ | ✗ | N/A | N/A |
+
+
+## All frameworks
+
+The frameworks listed below can be deployed to Vercel with minimal configuration. See [our docs on framework presets](/docs/builds/configure-a-build#framework-preset) to learn more about configuration.
+
+- **Angular**: Angular is a TypeScript-based cross-platform framework from Google.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/angular) | [View Demo](https://angular-template.vercel.app)
+- **Astro**: Astro is a new kind of static site builder for the modern web. Powerful developer experience meets lightweight output.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/astro) | [View Demo](https://astro-template.vercel.app)
+- **Brunch**: Brunch is a fast and simple webapp build tool with seamless incremental compilation for rapid development.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/brunch) | [View Demo](https://brunch-template.vercel.app)
+- **Container**: Deploy any project as a container image built from a Dockerfile.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/container)
+- **React**: Create React App allows you to get going with React in no time.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/create-react-app) | [View Demo](https://create-react-template.vercel.app)
+- **Django**: Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. 
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/django)
+- **Docusaurus (v1)**: Docusaurus makes it easy to maintain Open Source documentation websites.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/docusaurus) | [View Demo](https://docusaurus-template.vercel.app)
+- **Docusaurus (v2+)**: Docusaurus makes it easy to maintain Open Source documentation websites.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/docusaurus-2) | [View Demo](https://docusaurus-2-template.vercel.app)
+- **Dojo**: Dojo is a modern progressive, TypeScript first framework.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/dojo) | [View Demo](https://dojo-template.vercel.app)
+- **Eleventy**: 11ty is a simpler static site generator written in JavaScript, created to be an alternative to Jekyll.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/eleventy) | [View Demo](https://eleventy-template.vercel.app)
+- **Elysia**: Ergonomic framework for humans
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/elysia)
+- **Ember.js**: Ember.js helps webapp developers be more productive out of the box.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/ember) | [View Demo](https://ember-template.vercel.app)
+- **eve**: A filesystem-first framework for durable backend agents on Vercel.
+  - [Deploy](https://vercel.com/new/clone?demo-title=eve+Chat+Template&demo-description=A+persisted+Next.js+chat+template+for+eve%2C+built+with+shadcn%2Fui%2C+Tailwind+CSS%2C+Streamdown%2C+Better+Auth%2C+Drizzle%2C+and+Neon.&demo-url=https%3A%2F%2Feve-chat-template.labs.vercel.dev%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2FYXYTquqpBmvVFbASdIvrC%2F04d5a87ebe706ed31adc65193f3b4cdd%2Feve-chat__1_.png&project-name=eve+Chat+Template&repository-name=eve-chat-template&repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Feve-chat-template&from=templates&skippable-integrations=1) | [View Demo](https://eve-chat-template.labs.vercel.dev/)
+- **Express**: Fast, unopinionated, minimalist web framework for Node.js
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/express) | [View Demo](https://express-vercel-example-demo.vercel.app/)
+- **FastAPI**: FastAPI framework, high performance, easy to learn, fast to code, ready for production
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/fastapi) | [View Demo](https://vercel-fastapi-gamma-smoky.vercel.app/)
+- **FastHTML**: The fastest way to create an HTML app
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/fasthtml) | [View Demo](https://fasthtml-template.vercel.app)
+- **Fastify**: Fast and low overhead web framework, for Node.js
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/fastify)
+- **Flask**: The Python micro web framework
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/flask)
+- **Gatsby.js**: Gatsby helps developers build blazing fast websites and apps with React.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/gatsby) | [View Demo](https://gatsby.vercel.app)
+- **Go**: An open-source programming language supported by Google.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/go)
+- **Gridsome**: Gridsome is a Vue.js-powered framework for building websites & apps that are fast by default.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/gridsome) | [View Demo](https://gridsome-template.vercel.app)
+- **H3**: Universal, Tiny, and Fast Servers
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/h3)
+- **Hexo**: Hexo is a fast, simple & powerful blog framework powered by Node.js.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/hexo) | [View Demo](https://hexo-template.vercel.app)
+- **Hono**: Web framework built on Web Standards
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/hono) | [View Demo](https://hono.vercel.dev)
+- **Hugo**: Hugo is the world’s fastest framework for building websites, written in Go.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/hugo) | [View Demo](https://hugo-template.vercel.app)
+- **Hydrogen (v1)**: React framework for headless commerce
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/hydrogen) | [View Demo](https://hydrogen-template.vercel.app)
+- **Ionic Angular**: Ionic Angular allows you to build mobile PWAs with Angular and the Ionic Framework.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/ionic-angular) | [View Demo](https://ionic-angular-template.vercel.app)
+- **Ionic React**: Ionic React allows you to build mobile PWAs with React and the Ionic Framework.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/ionic-react) | [View Demo](https://ionic-react-template.vercel.app)
+- **Jekyll**: Jekyll makes it super easy to transform your plain text into static websites and blogs.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/jekyll) | [View Demo](https://jekyll-template.vercel.app)
+- **Koa**: Expressive middleware for Node.js using ES2017 async functions
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/koa)
+- **Mastra**: Build AI agents with a modern TypeScript stack
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/mastra)
+- **Middleman**: Middleman is a static site generator that uses all the shortcuts and tools in modern web development.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/middleman) | [View Demo](https://middleman-template.vercel.app)
+- **NestJS**: Framework for building efficient, scalable Node.js server-side applications
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/nestjs)
+- **Next.js**: Next.js makes you productive with React instantly — whether you want to build static or dynamic sites.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/nextjs) | [View Demo](https://nextjs-template.vercel.app)
+- **Nitro**: Nitro is a next generation server toolkit.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/nitro) | [View Demo](https://nitro-template.vercel.app)
+- **Node**: Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/node)
+- **Nuxt**: Nuxt is the open source framework that makes full-stack development with Vue.js intuitive.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/nuxtjs) | [View Demo](https://nuxtjs-template.vercel.app)
+- **Parcel**: Parcel is a zero configuration build tool for the web that scales to projects of any size and complexity.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/parcel) | [View Demo](https://parcel-template.vercel.app)
+- **Polymer**: Polymer is an open-source webapps library from Google, for building using Web Components.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/polymer) | [View Demo](https://polymer-template.vercel.app)
+- **Preact**: Preact is a fast 3kB alternative to React with the same modern API.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/preact) | [View Demo](https://preact-template.vercel.app)
+- **Python**: Python is a programming language that lets you work quickly and integrate systems more effectively.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/python)
+- **React Router**: Declarative routing for React
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/react-router) | [View Demo](https://react-router-v7-template.vercel.app)
+- **RedwoodJS**: RedwoodJS is a full-stack framework for the Jamstack.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/redwoodjs) | [View Demo](https://redwood-template.vercel.app)
+- **Remix**: Build Better Websites
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/remix) | [View Demo](https://remix-run-template.vercel.app)
+- **Saber**: Saber is a framework for building static sites in Vue.js that supports data from any source.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/saber)
+- **Sanity**: The back-end built for AI content operations. Power web, mobile, and agentic applications at scale.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/sanity) | [View Demo](https://template-studio-clean.sanity.dev)
+- **Sanity (v2 - legacy)**: The structured content platform.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/sanity-v2) | [View Demo](https://sanity-studio-template.vercel.app)
+- **Scully**: Scully is a static site generator for Angular.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/scully) | [View Demo](https://scully-template.vercel.app)
+- **Services**: Multiple services deployed as serverless functions within your project.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/services)
+- **SolidStart (v0)**: Simple and performant reactivity for building user interfaces.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/solidstart) | [View Demo](https://solid-start-template.vercel.app)
+- **SolidStart (v1)**: Simple and performant reactivity for building user interfaces.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/solidstart-1) | [View Demo](https://solid-start-template.vercel.app)
+- **Stencil**: Stencil is a powerful toolchain for building Progressive Web Apps and Design Systems.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/stencil) | [View Demo](https://stencil.vercel.app)
+- **Storybook**: Frontend workshop for UI development
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/storybook)
+- **SvelteKit**: SvelteKit is a framework for building web applications of all sizes.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/sveltekit-1) | [View Demo](https://sveltekit-1-template.vercel.app)
+- **TanStack Start**: Full-stack Framework powered by TanStack Router for React and Solid.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start)
+- **TanStack Start**: Full-stack Framework powered by TanStack Router imported from Lovable
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start-lovable)
+- **UmiJS**: UmiJS is an extensible enterprise-level React application framework.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/umijs) | [View Demo](https://umijs-template.vercel.app)
+- **Vite**: Vite is a new breed of frontend build tool that significantly improves the frontend development experience.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/vite) | [View Demo](https://vite-vue-template.vercel.app)
+- **VitePress**: VitePress is VuePress' little brother, built on top of Vite.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/vitepress) | [View Demo](https://vitepress-starter-template.vercel.app)
+- **Vue.js**: Vue.js is a versatile JavaScript framework that is as approachable as it is performant.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/vue) | [View Demo](https://vue-template.vercel.app)
+- **VuePress**: Vue-powered Static Site Generator
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/vuepress) | [View Demo](https://vuepress-starter-template.vercel.app)
+- **xmcp**: The MCP framework for building AI-powered tools
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/xmcp) | [View Demo](https://xmcp-template.vercel.app/)
+- **Zola**: Everything you need to make a static site engine in one binary.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/zola) | [View Demo](https://zola-template.vercel.app)
+
+
+## More resources
+
+Learn more about deploying your preferred framework on Vercel with the following resources:
+
+- [Next.js on Vercel](/docs/frameworks/full-stack/nextjs)
+- [SvelteKit on Vercel](/docs/frameworks/full-stack/sveltekit)
+- [Astro on Vercel](/docs/frameworks/frontend/astro)
+- [Nuxt on Vercel](/docs/frameworks/full-stack/nuxt)
+
+
+---
+
+[View full sitemap](/docs/sitemap)
