@@ -3,7 +3,7 @@ title: Vercel Global Config
 product: vercel
 url: /docs/global-config
 canonical_url: "https://vercel.com/docs/global-config"
-last_updated: 2026-07-29
+last_updated: 2026-08-17
 type: conceptual
 prerequisites:
   []
@@ -21,28 +21,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Global Config
 
+A [Global Config](/docs/global-config) is a global data store that [enables experimentation with feature flags, A/B testing, critical redirects, and IP blocking](#use-cases). It enables you to read data in the region closest to the user without querying an external database or hitting upstream servers.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Hypertune](https://flags-sdk.dev/docs/providers/hypertune?from=related)
-- [Implementing Blue-Green Deployments on Vercel](https://vercel.com/kb/guide/blue_green_deployments_on_vercel?from=related) — This guide outlines how to implement blue-green deployments on Vercel, leveraging GitHub Actions for seamless and contro
-- [Deploy a Node.js Fastify app on Vercel with Docker](https://vercel.com/kb/guide/deploy-nodejs-on-vercel-with-docker?from=related) — Build a Node.js application with Fastify and Docker, then deploy it to Vercel Functions. Learn how to configure environm
-- [Deploy PHP on Vercel with Docker](https://vercel.com/kb/guide/deploy-php-on-vercel-with-docker?from=related) — Build a PHP application with FrankenPHP and Docker, then deploy it to Vercel Functions with managed configuration, stora
-- [Deploy Rust on Vercel with Docker](https://vercel.com/kb/guide/deploy-rust-on-vercel-with-docker?from=related) — Build a Rust application with Axum and Docker, then deploy it to Vercel Functions. Learn how to configure environment va
-- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
-- [Create a Global Config](https://vercel.com/docs/rest-api/global-config/create-a-global-config?from=related)
-- [vercel global-config](https://vercel.com/docs/cli/global-config?from=related) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, remove, and manage items, read tokens, a
-- [Audit Logs](https://vercel.com/docs/audit-log?from=related) — Learn how to track and analyze your team members' activities.
-- [Marketplace](https://vercel.com/docs/flags/marketplace?from=related) — Connect your preferred feature flag provider through the Vercel Marketplace for a unified flags experience.
-- [Incremental Migration](https://vercel.com/docs/incremental-migration?from=related) — Learn how to migrate your app or website to Vercel with minimal risk and high impact.
+- [Global Config](https://flags-sdk.dev/docs/providers/global-config?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related)
+- [GrowthBook](https://flags-sdk.dev/docs/providers/growthbook?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related)
+- [Hypertune](https://flags-sdk.dev/docs/providers/hypertune?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related)
+- [Statsig](https://flags-sdk.dev/docs/providers/statsig?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related)
+- [Edge Config is now Global Config](https://vercel.com/changelog/edge-config-is-now-global-config?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related)
+- [LaunchDarkly is now available on the Vercel Marketplace](https://vercel.com/changelog/launchdarkly-is-now-available-on-the-vercel-marketplace?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related)
+- [Implementing Blue-Green Deployments on Vercel](https://vercel.com/kb/guide/blue_green_deployments_on_vercel?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related) — This guide outlines how to implement blue-green deployments on Vercel, leveraging GitHub Actions for seamless and contro
+- [Deploy PHP on Vercel with Docker](https://vercel.com/kb/guide/deploy-php-on-vercel-with-docker?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related) — Build a PHP application with FrankenPHP and Docker, then deploy it to Vercel Functions with managed configuration, stora
+- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
+- [Dynamic redirects with Global Config and Next.js proxy](https://vercel.com/kb/guide/dynamic-redirects-with-global-config-and-next-js-proxy?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to create redirects that update instantly without redeploying by storing rules in Global Config and reading th
+- [How to build and maintain HIPAA-compliant applications on Vercel](https://vercel.com/kb/guide/hipaa-compliance-guide-vercel?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related) — Deploy HIPAA-compliant healthcare apps on Vercel with built-in security, BAAs, and scalable serverless infrastructure.
+- [Audit Logs](https://vercel.com/docs/audit-log?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to track and analyze your team members' activities.
 
-Full cross-link map for this page: [/docs/global-config.graph.md](/docs/global-config.graph.md)
+Full cross-link map for this page: [/docs/global-config.graph.md](/docs/global-config.graph.md?from=related&source_path=%2Fdocs%2Fglobal-config&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-A [Global Config](/docs/global-config) is a global data store that [enables experimentation with feature flags, A/B testing, critical redirects, and IP blocking](#use-cases). It enables you to read data in the region closest to the user without querying an external database or hitting upstream servers.
 
 > **💡 Note:** Global Config was previously called **Edge Config**. The store itself is
 > unchanged, and existing projects require no action. See [Migrating from Edge
@@ -61,13 +62,13 @@ You can use a Global Config in [Middleware](/docs/routing-middleware) and [Verce
 
 Global Configs are great for data that is accessed frequently and updated infrequently. Here are some examples of storage data suitable for Global Config:
 
-- : When you need to redirect a URL urgently,
+- **Critical redirects**: When you need to redirect a URL urgently,
   Global Configs offer a fast solution that doesn't require you to redeploy your
   website. With Middleware, you can read from your Global Config to redirect users
   visiting incorrect URLs. For an example, see the [Maintenance Page
   template](https://vercel.com/templates/next.js/maintenance-page).
 
-* : Store a set of
+* **Malicious IP and User Agent blocking**: Store a set of
   malicious IPs in your Global Config, then block them upon detection without
   invoking upstream servers
 
@@ -95,10 +96,10 @@ There are alternative solutions to Global Config for handling A/B testing, featu
 
 | **Global Config vs alternatives** | **Read latency**                                                                                                           | **Write latency**                                                                                                           | **Redeployment required**                                                                                                       | **Added risk of downtime**                                                                                                                    |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Global Config**                 | **Ultra-low**  | **Varies**  | **No**                             | **No**             |
-| Remote JSON files               | Varies                                | Varies                                                                                                                      | No       | Yes  |
-| Embedded JSON files             | Lowest                                                                                                                     | Highest               | Yes         | No                                                                                                                                            |
-| Environment Variables           | Lowest                                                                                                                     | Highest                           | Yes  | No                                                                                                                                            |
+| **Global Config**                 | **Ultra-low** (Reads from your Global Configs will complete within 15ms at P99, or often less than 1ms) | **Varies** (Global Config is optimized for frequent, high-speed reads and infrequent, variable writes.) | **No** (Global Config updates propagate globally with no redeployment required.)                            | **No** (Global Config is hosted by Vercel, and has nearly identical uptime characteristics to your deployment)            |
+| Remote JSON files               | Varies (Potentially hundreds of milliseconds slower tha Global Config.)                               | Varies                                                                                                                      | No (Latency for propagation of changes varies based on host, but no redeployment would be required.)      | Yes (Relying on an external provider means your data has different uptime characteristics from your Vercel deployment.) |
+| Embedded JSON files             | Lowest                                                                                                                     | Highest (Changes to this data can't propagate globally without merging and redeploying.)              | Yes (Embedded files are part of your build, so redeployments are required to incorporate changes.)        | No                                                                                                                                            |
+| Environment Variables           | Lowest                                                                                                                     | Highest (Changes to this data can't propagate globally without redeploying.)                          | Yes (Environment Variables are part of your build, so redeployments are required to incorporate changes.) | No                                                                                                                                            |
 
 ## Limits
 

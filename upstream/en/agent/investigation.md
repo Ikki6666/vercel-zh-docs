@@ -3,7 +3,7 @@ title: Investigation
 product: vercel
 url: /docs/agent/investigation
 canonical_url: "https://vercel.com/docs/agent/investigation"
-last_updated: 2026-06-30
+last_updated: 2026-08-19
 type: how-to
 prerequisites:
   - /docs/agent
@@ -18,29 +18,32 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Vercel Agent Investigation
 
+When you get an anomaly alert, Vercel Agent can investigate your logs and metrics to help you find the root cause. Vercel Agent displays anomaly highlights in the Vercel dashboard.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Monitor uptime for AI-native apps with Vercel Alerts](https://vercel.com/kb/guide/monitor-uptime-for-ai-native-apps-with-vercel-alerts?from=related) — Learn how to use Vercel Anomaly Alerts as an early-warning system for AI-powered apps, helping you catch 5xx spikes and
-- [The Complete Guide to Vercel Agent](https://vercel.com/kb/guide/vercel-agent?from=related) — Learn what Vercel Agent does, how to set up Code Review, Investigation, Chat, and Installation, and what each feature co
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
-- [Installation](https://vercel.com/docs/agent/installation?from=related) — Let AI automatically install Web Analytics and Speed Insights in your app
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Configure Alerts](https://vercel.com/docs/alerts/configure-alerts?from=related) — Configure alert rules and notification destinations for Vercel Observability alerts.
-- [Managing Reviews](https://vercel.com/docs/agent/pr-review/usage?from=related) — Customize which repositories get reviewed and track your review metrics and spending.
-- [Code Review](https://vercel.com/docs/agent/pr-review?from=related) — Get automatic AI-powered code reviews on your pull requests
+- [Anomaly alerts are now generally available](https://vercel.com/changelog/anomaly-alerts-ga?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related)
+- [Vercel Agent investigations now available in Slack](https://vercel.com/changelog/vercel-agent-investigations-now-available-in-slack?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related)
+- [Vercel Agent Investigations now in Public Beta](https://vercel.com/changelog/vercel-agent-investigations-now-in-public-beta?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related)
+- [Vercel Agent investigations now included in Observability Plus](https://vercel.com/changelog/vercel-agent-investigations-now-included-in-observability-plus?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related)
+- [Monitor uptime for AI-native apps with Vercel Alerts](https://vercel.com/kb/guide/monitor-uptime-for-ai-native-apps-with-vercel-alerts?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related) — Learn how to use Vercel Anomaly Alerts as an early-warning system for AI-powered apps, helping you catch 5xx spikes and
+- [The Complete Guide to Vercel Agent](https://vercel.com/kb/guide/vercel-agent?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related) — Learn what Vercel Agent does, how to set up Code Review, Investigation, Chat, and Installation, and what each feature co
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
+- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
+- [Observability](https://vercel.com/docs/observability?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
+- [Installation](https://vercel.com/docs/agent/installation?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=related) — Let AI automatically install Web Analytics and Speed Insights in your app
 
-Full cross-link map for this page: [/docs/agent/investigation.graph.md](/docs/agent/investigation.graph.md)
+Full cross-link map for this page: [/docs/agent/investigation.graph.md](/docs/agent/investigation.graph.md?from=related&source_path=%2Fdocs%2Fagent%2Finvestigation&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-When you get an anomaly alert, Vercel Agent can investigate your logs and metrics to help you find the root cause. Vercel Agent displays anomaly highlights in the Vercel dashboard.
+## Eligible alerts for automatic investigation
 
-Vercel Agent starts investigations automatically when an alert fires. It checks patterns in your data, identifies what changed, and shows what might be causing the issue.
+Vercel Agent automatically investigates Medium and High anomaly alerts. Low-severity alerts do not start automatic investigations. Alert rule severity settings control notifications and do not affect investigation eligibility.
 
 ## Getting started with Vercel Agent Investigation
 
@@ -49,7 +52,7 @@ Before you use Vercel Agent Investigation, make sure your team has:
 1. An [Observability Plus](/docs/observability/observability-plus) subscription. It includes 10 alert investigations per billing cycle by default
 2. Vercel Agent billing enabled for investigations beyond the included usage
 
-To run investigations **automatically for every alert**, [enable Vercel Agent Investigations](#enable-vercel-agent-investigations) for your team.
+To run investigations automatically for [eligible](#eligible-alerts-for-automatic-investigation) alerts, [enable Vercel Agent Investigations](#enable-vercel-agent-investigations) for your team.
 
 You can [run an investigation manually](#run-an-investigation-manually) if you want to investigate an alert that has already fired.
 
@@ -57,17 +60,18 @@ You can [run an investigation manually](#run-an-investigation-manually) if you w
 
 ### Enable Vercel Agent Investigations
 
-To run investigations automatically for every alert, enable Vercel Agent Investigations in your team's settings:
+To run investigations automatically for [eligible](#eligible-alerts-for-automatic-investigation) alerts, enable Vercel Agent Investigations in your team's settings:
 
 1. Go to your team's [Settings](https://vercel.com/d?to=%2Fteams%2F%5Bteam%5D%2Fsettings\&title=Go+to+Settings\&personalTo=%2Faccount) page.
 2. In the **General** section, find **Vercel Agent** and under **Investigations**, switch the toggle to **Enabled**.
-3. Select **Save** to confirm your changes.
+3. Under **Projects to Investigate**, choose **All projects** or **Specific projects**. If you choose **Specific projects**, select the projects that Vercel Agent should investigate.
+4. Select **Save** to confirm your changes.
 
-After you enable Vercel Agent Investigations, Vercel Agent runs an investigation automatically when an alert fires. Make sure your team has Vercel Agent billing enabled for investigations beyond the included usage.
+After you enable Vercel Agent Investigations, Vercel Agent runs an investigation automatically for [eligible](#eligible-alerts-for-automatic-investigation) alerts. Make sure your team has Vercel Agent billing enabled for investigations beyond the included usage.
 
 ## How to use Vercel Agent Investigation
 
-When you [enable Vercel Agent Investigations](#enable-vercel-agent-investigations), Vercel Agent runs an investigation automatically when an alert fires. It queries your logs and metrics around the time of the alert, looks for patterns that might explain the issue, checks for related errors or anomalies, and summarizes what it found.
+When you [enable Vercel Agent Investigations](#enable-vercel-agent-investigations), Vercel Agent runs an investigation automatically for [eligible](#eligible-alerts-for-automatic-investigation) alerts. It queries your logs and metrics around the time of the alert, looks for patterns that might explain the issue, checks for related errors or anomalies, and summarizes what it found.
 
 To view an investigation:
 

@@ -3,17 +3,17 @@ title: Next.js on Vercel
 product: vercel
 url: /docs/frameworks/full-stack/nextjs
 canonical_url: "https://vercel.com/docs/frameworks/full-stack/nextjs"
-last_updated: 2026-06-26
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/frameworks/full-stack
   - /docs/frameworks
 related:
+  - /docs/cli
   - /docs/incremental-static-regeneration
   - /docs/cdn
   - /docs/functions
   - /docs/caching/cdn-cache
-  - /docs/functions/streaming-functions
 summary: Vercel is the native Next.js platform, designed to enhance the Next.js experience.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -28,25 +28,34 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Deploying](https://nextjs.org/docs/app/getting-started/deploying?from=related) — Learn how to deploy your Next.js application.
-- [Deploying](https://nextjs.org/docs/pages/getting-started/deploying?from=related) — Learn how to deploy your Next.js application.
-- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Next.js on Vercel vs Cloudflare](https://vercel.com/kb/guide/next-js-on-vercel-vs-cloudflare?from=related) — Compare running Next.js on Vercel Functions with Fluid compute against Cloudflare Workers with the OpenNext Cloudflare a
-- [Next.js on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/next-js-on-vercel-vs-webflow-cloud?from=related) — Compare running Next.js on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Ne
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Glossary](https://nextjs.org/docs/app/glossary?from=related) — A glossary of common terms used in Next.js.
-- [Metadata and OG images](https://nextjs.org/docs/app/getting-started/metadata-and-og-images?from=related) — Learn how to add metadata to your pages and create dynamic OG images.
-- [Nuxt](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related) — Learn how to use Vercel's features with Nuxt.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
-- [Astro](https://vercel.com/docs/frameworks/frontend/astro?from=related) — Learn how to use Vercel's features with Astro
+- [Deploying](https://nextjs.org/docs/app/getting-started/deploying?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Learn how to deploy your Next.js application.
+- [How to deploy your Next.js application](https://nextjs.org/docs/pages/getting-started/deploying?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Learn how to deploy your Next.js application.
+- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
+- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
+- [Next.js on Vercel vs Cloudflare](https://vercel.com/kb/guide/next-js-on-vercel-vs-cloudflare?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Compare running Next.js on Vercel Functions with Fluid compute against Cloudflare Workers with the OpenNext Cloudflare a
+- [Next.js on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/next-js-on-vercel-vs-webflow-cloud?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Compare running Next.js on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Ne
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Learn how to fetch data and stream content that depends on data.
+- [opengraph-image and twitter-image](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — API Reference for the Open Graph Image and Twitter Image file conventions.
+- [OG Image Generation Examples](https://vercel.com/docs/og-image-generation/examples?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Learn how to use the @vercel/og library with examples.
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
+- [Astro on Vercel](https://vercel.com/docs/frameworks/frontend/astro?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=related) — Deploy Astro sites to Vercel and configure server-side rendering, ISR, Web Analytics, Image Optimization, and Routing Mi
 
-Full cross-link map for this page: [/docs/frameworks/full-stack/nextjs.graph.md](/docs/frameworks/full-stack/nextjs.graph.md)
+Full cross-link map for this page: [/docs/frameworks/full-stack/nextjs.graph.md](/docs/frameworks/full-stack/nextjs.graph.md?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnextjs&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 While Next.js works when self-hosting, deploying to Vercel is zero-configuration and provides additional enhancements for **scalability, availability, and performance globally**.
 
 ## Getting started
+
+To get started with Next.js on Vercel:
+
+- If you already have a project with Next.js, install [Vercel CLI](/docs/cli) and run the vercel command from your project's root directory
+- Clone one of our Next.js example repos to your favorite git provider and deploy it on Vercel with the button below:
+
+\- Or, choose a template from Vercel's marketplace:
+
+Vercel deployments can \[integrate with your git provider]\(/docs/git) to \[generate preview URLs]\(/docs/deployments/environments#preview-environment-pre-production) for each pull request you make to your Next.js project.
 
 ## Incremental Static Regeneration
 
@@ -248,6 +257,8 @@ When a user visits a route:
 
 This approach is useful for pages like dashboards, where unique, per-request data coexists with static elements such as sidebars or layouts. For example, this page caches its product list into the static shell with `use cache`, and streams the personalized greeting in at request time:
 
+**app/page.tsx**
+
 ```tsx filename="app/page.tsx" framework=nextjs
 import { Suspense } from 'react';
 import { cacheTag } from 'next/cache';
@@ -292,6 +303,8 @@ export default function Page() {
   );
 }
 ```
+
+**app/page.js**
 
 ```jsx filename="app/page.js" framework=nextjs
 import { Suspense } from 'react';
@@ -1004,8 +1017,7 @@ Learn more about deploying Next.js projects on Vercel with the following resourc
 - [Next.js with Stripe Checkout and Typescript](/kb/guide/getting-started-with-nextjs-typescript-stripe)
 - [Next.js with Magic.link](/kb/guide/add-auth-to-nextjs-with-magic)
 - [Generate a sitemap with Next.js](/kb/guide/how-do-i-generate-a-sitemap-for-my-nextjs-app-on-vercel)
-- [Next.js ecommerce with Shopify](/kb/guide/deploying-locally-built-nextjs)
-- [Deploy a locally built Next.js app](/kb/guide/deploying-locally-built-nextjs)
+- [Deploy a locally built Next.js app](/docs/cli/deploying-from-cli#deploying-from-local-build-prebuilt)
 - [Deploying Next.js to Vercel](https://www.youtube.com/watch?v=AiiGjB2AxqA)
 - [Learn about combining static and dynamic rendering on the same page in Next.js 14](https://www.youtube.com/watch?v=wv7w_Zx-FMU)
 - [Learn about suspense boundaries and streaming when loading your UI](https://nextjs.org/docs/app/api-reference/file-conventions/loading)

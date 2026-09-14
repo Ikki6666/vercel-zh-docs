@@ -3,7 +3,7 @@ title: Billing FAQ for Enterprise Plan
 product: vercel
 url: /docs/plans/enterprise/billing
 canonical_url: "https://vercel.com/docs/plans/enterprise/billing"
-last_updated: 2026-07-15
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/plans/enterprise
@@ -28,15 +28,16 @@ The Vercel Enterprise plan is perfect for [teams](/docs/accounts#creating-a-team
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Account](https://v0.app/docs/account?from=related) — Manage your account and billing information.
-- [Pricing](https://v0.app/docs/pricing?from=related) — Understand the v0 plans, pricing, and usage limits.
-- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice?from=related) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
-- [Billing and Refunds](https://vercel.com/docs/integrations/create-integration/billing?from=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Billing FAQ for Pro Plan](https://vercel.com/docs/plans/pro-plan/billing?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related)
+- [Advanced Invoice Settings](https://vercel.com/blog/advanced-invoice-settings?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related)
+- [Account](https://v0.app/docs/account?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related) — Manage your account and billing information.
+- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
+- [Pricing on Vercel](https://vercel.com/docs/pricing?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Manage Billing and Refunds for Integrations](https://vercel.com/docs/integrations/create-integration/billing?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
 
-Full cross-link map for this page: [/docs/plans/enterprise/billing.graph.md](/docs/plans/enterprise/billing.graph.md)
+Full cross-link map for this page: [/docs/plans/enterprise/billing.graph.md](/docs/plans/enterprise/billing.graph.md?from=related&source_path=%2Fdocs%2Fplans%2Fenterprise%2Fbilling&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Payments
@@ -104,7 +105,7 @@ Yes. Learn more about [Roles and Permissions](/docs/rbac).
 
 ### How do I update my billing information?
 
-- ### Go to the  page
+- ### Go to the **Settings** page
   - Navigate to the [Dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard)
   - Select your team from the team switcher on the top left as explained [here](/docs/accounts#creating-a-team)
   - Open **Settings** in the sidebar

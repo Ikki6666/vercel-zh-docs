@@ -1,20 +1,21 @@
 ---
-title: Fast Mode
+title: AI Gateway Fast Mode
 product: vercel
 url: /docs/ai-gateway/models-and-providers/fast-mode
 canonical_url: "https://vercel.com/docs/ai-gateway/models-and-providers/fast-mode"
-last_updated: 2026-07-28
+last_updated: 2026-09-08
 type: reference
 prerequisites:
   - /docs/ai-gateway/models-and-providers
   - /docs/ai-gateway
 related:
+  - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway/coding-agents/claude-code
 summary: Request the faster serving path for supported models through AI Gateway using the `speed` option or the fast model slug, with automatic fallback to...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Fast Mode
+# AI Gateway Fast Mode
 
 Some models expose a faster serving path that trades a higher per-token cost for lower latency. You can request this fast tier through AI Gateway with the unified `gateway.speed` option or by using a fast slug.
 
@@ -24,18 +25,17 @@ Some models expose a faster serving path that trades a higher per-token cost for
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Cost-aware model routing through AI Gateway](https://vercel.com/kb/guide/cost-aware-model-routing-with-ai-gateway?from=related) — Route easy requests to a cheap model and escalate only hard ones to a frontier model through one AI Gateway endpoint, wi
-- [AI Gateway](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway?from=related)
-- [Service Tiers](https://vercel.com/docs/ai-gateway/models-and-providers/service-tiers?from=related) — Control processing priority and cost for OpenAI, Google AI Studio, and Google Vertex AI models using service tiers throu
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [Filtering, Ordering & Sorting](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering?from=related) — Control which providers handle your requests, in what order, and how they are ranked using order, only, and sort options
-- [REST API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/rest-api?from=related) — Use the AI Gateway API directly without client libraries using curl and fetch.
-- [Model Fallbacks](https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks?from=related) — Configure model-level failover to try backup models when the primary model is unavailable
+- [AI Gateway adds unified fast mode support](https://vercel.com/changelog/ai-gateway-adds-unified-fast-mode-support?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Ffast-mode&source_site=vercel-docs&relationship=related)
+- [Opus 4.6 Fast Mode available on AI Gateway](https://vercel.com/changelog/opus-4-6-fast-mode-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Ffast-mode&source_site=vercel-docs&relationship=related)
+- [Fast mode for Opus 4.7 available on AI Gateway](https://vercel.com/changelog/fast-mode-for-opus-4-7-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Ffast-mode&source_site=vercel-docs&relationship=related)
+- [Cost-aware model routing through AI Gateway](https://vercel.com/kb/guide/cost-aware-model-routing-with-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Ffast-mode&source_site=vercel-docs&relationship=related) — Route easy requests to a cheap model and escalate only hard ones to a frontier model through one AI Gateway endpoint, wi
+- [Service tiers now available on AI Gateway](https://vercel.com/changelog/service-tiers-now-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Ffast-mode&source_site=vercel-docs&relationship=related)
+- [AI Gateway FAQ](https://vercel.com/docs/ai-gateway/faq?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Ffast-mode&source_site=vercel-docs&relationship=related) — Answers to common questions about AI Gateway, including request errors, pricing and markup, SDK and API compatibility, m
 
-Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/fast-mode.graph.md](/docs/ai-gateway/models-and-providers/fast-mode.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/fast-mode.graph.md](/docs/ai-gateway/models-and-providers/fast-mode.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Ffast-mode&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-> **💡 Note:** Requesting `speed: 'fast'` on a model that has no fast tier has no effect — the request runs at standard speed. See the supported models below for the current list.
+> **💡 Note:** Requesting `speed: 'fast'` on a model that has no fast tier has no effect. The request runs at standard speed. See the supported models below for the current list.
 
 ## Supported models
 
@@ -45,19 +45,23 @@ Fast mode is available for a growing set of models. Find the supported fast mode
 
 There are two ways to request fast mode, and they produce the same result:
 
-- `gateway.speed: 'fast'` — a unified option that upgrades the primary model to its fast serving path when one is routable. For example, `anthropic/claude-opus-5` with `speed: 'fast'` behaves like calling `anthropic/claude-opus-5-fast`, and `moonshotai/kimi-k2.7-code` with `speed: 'fast'` routes to that model's fast slug.
-- An explicit fast slug — address the fast variant directly using its fast slug. This is the same as setting `speed: 'fast'` on the base model.
+- `gateway.speed: 'fast'`: A unified option that upgrades the primary model to its fast serving path when one is routable. For example, `anthropic/claude-opus-5` with `speed: 'fast'` behaves like calling `anthropic/claude-opus-5-fast`, and `moonshotai/kimi-k2.7-code` with `speed: 'fast'` routes to that model's fast slug.
+- An explicit fast slug: Address the fast variant directly using its fast slug. This is the same as setting `speed: 'fast'` on the base model.
 
 Use the `speed` option when you want one configuration that stays on the base model ID and falls back to standard speed if fast mode is not available. Use an explicit fast slug when you want to name the fast variant directly, such as in a `gateway.models` fallback list.
 
 ### Using the `speed` option
 
+These examples use AI SDK 7 and the AI SDK for Python beta. Set `AI_GATEWAY_API_KEY` before running them. See [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for setup, request fields, and response handling.
+
 #### AI SDK
 
-```typescript filename="app/api/chat/route.ts"
+#### TypeScript
+
+```typescript filename="fast-mode.ts"
 import { generateText } from 'ai';
 
-const { text, providerMetadata } = await generateText({
+const { text } = await generateText({
   model: 'anthropic/claude-opus-5',
   prompt: 'Explain quantum computing in two sentences.',
   providerOptions: {
@@ -68,14 +72,34 @@ const { text, providerMetadata } = await generateText({
 });
 
 console.log(text);
-console.log('Served speed:', providerMetadata?.gateway?.routing?.speed);
+```
+
+#### Python (beta)
+
+```python filename="fast-mode_ai.py"
+import asyncio
+import ai
+
+async def main():
+    model = ai.get_model("anthropic/claude-opus-5")
+    messages = [ai.user_message("Explain quantum computing in two sentences.")]
+    params = ai.InferenceRequestParams(
+        extra_body={"providerOptions": {"gateway": {"speed": "fast"}}}
+    )
+    async with ai.stream(model, messages, params=params) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
+
+asyncio.run(main())
 ```
 
 #### Chat Completions
 
 #### TypeScript
 
-```typescript filename="fast-mode.ts"
+```typescript filename="fast-mode-chat.ts"
 import OpenAI from 'openai';
 
 const client = new OpenAI({
@@ -83,7 +107,6 @@ const client = new OpenAI({
   baseURL: 'https://ai-gateway.vercel.sh/v1',
 });
 
-// @ts-expect-error - providerOptions is a gateway extension
 const response = await client.chat.completions.create({
   model: 'anthropic/claude-opus-5',
   messages: [
@@ -92,89 +115,66 @@ const response = await client.chat.completions.create({
       content: 'Explain quantum computing in two sentences.',
     },
   ],
-  providerOptions: {
-    gateway: {
-      speed: 'fast',
+  // AI Gateway extension fields are not included in the upstream SDK types.
+  ...{
+    providerOptions: {
+      gateway: {
+        speed: 'fast',
+      },
     },
   },
 });
 
-const gatewayMetadata = (response.choices[0].message as any).provider_metadata
-  ?.gateway;
-
-console.log(response.choices[0].message.content);
-console.log('Served speed:', gatewayMetadata?.routing?.speed);
-console.log('Usage:', response.usage);
+console.log(response.choices[0]?.message.content);
 ```
 
 #### Python
 
-```python filename="fast-mode.py"
+```python filename="fast-mode_chat.py"
 import os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key=os.getenv("AI_GATEWAY_API_KEY"),
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
     base_url="https://ai-gateway.vercel.sh/v1",
 )
 
 response = client.chat.completions.create(
     model="anthropic/claude-opus-5",
-    messages=[
-        {
-            "role": "user",
-            "content": "Explain quantum computing in two sentences.",
-        }
-    ],
-    extra_body={
-        "providerOptions": {
-            "gateway": {"speed": "fast"}
-        }
-    },
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    extra_body={"providerOptions": {"gateway": {"speed": "fast"}}},
 )
 
-gateway_metadata = getattr(
-    response.choices[0].message, "provider_metadata", {}
-).get("gateway", {})
-
 print(response.choices[0].message.content)
-print("Served speed:", gateway_metadata.get("routing", {}).get("speed"))
-print("Usage:", response.usage)
 ```
 
-#### OpenAI Responses
+#### cURL
 
-```typescript filename="fast-mode.ts"
-import OpenAI from 'openai';
-
-const client = new OpenAI({
-  apiKey: process.env.AI_GATEWAY_API_KEY,
-  baseURL: 'https://ai-gateway.vercel.sh/v1',
-});
-
-// @ts-expect-error - providerOptions is a gateway extension
-const response = await client.responses.create({
-  model: 'anthropic/claude-opus-5',
-  input: 'Explain quantum computing in two sentences.',
-  providerOptions: {
-    gateway: {
-      speed: 'fast',
-    },
-  },
-});
-
-const gatewayMetadata = (response as any).provider_metadata?.gateway;
-
-console.log(response.output_text);
-console.log('Served speed:', gatewayMetadata?.routing?.speed);
-console.log('Usage:', response.usage);
+```bash filename="fast-mode-chat.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-opus-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "providerOptions": {
+    "gateway": {
+      "speed": "fast"
+    }
+  }
+}'
 ```
 
-#### Anthropic Messages
+#### Messages API
 
 #### TypeScript
 
-```typescript filename="fast-mode.ts"
+```typescript filename="fast-mode-messages.ts"
 import Anthropic from '@anthropic-ai/sdk';
 
 const client = new Anthropic({
@@ -182,62 +182,138 @@ const client = new Anthropic({
   baseURL: 'https://ai-gateway.vercel.sh',
 });
 
-const message = await client.messages.create({
+const response = await client.messages.create({
   model: 'anthropic/claude-opus-5',
-  max_tokens: 1024,
   messages: [
     {
       role: 'user',
       content: 'Explain quantum computing in two sentences.',
     },
   ],
-  // @ts-expect-error - providerOptions is a gateway extension
-  providerOptions: {
-    gateway: {
-      speed: 'fast',
+  max_tokens: 1024,
+  ...{
+    providerOptions: {
+      gateway: {
+        speed: 'fast',
+      },
     },
   },
 });
 
-const gatewayMetadata = (message as any).provider_metadata?.gateway;
-
-console.log(message.content[0].text);
-console.log('Served speed:', gatewayMetadata?.routing?.speed);
-console.log('Usage:', message.usage);
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
+}
 ```
 
 #### Python
 
-```python filename="fast-mode.py"
+```python filename="fast-mode_messages.py"
 import os
-import anthropic
+from anthropic import Anthropic
 
-client = anthropic.Anthropic(
-    api_key=os.getenv("AI_GATEWAY_API_KEY"),
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
     base_url="https://ai-gateway.vercel.sh",
 )
 
-message = client.messages.create(
+response = client.messages.create(
     model="anthropic/claude-opus-5",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
     max_tokens=1024,
-    messages=[
-        {
-            "role": "user",
-            "content": "Explain quantum computing in two sentences.",
-        }
-    ],
-    extra_body={
-        "providerOptions": {
-            "gateway": {"speed": "fast"}
-        }
-    },
+    extra_body={"providerOptions": {"gateway": {"speed": "fast"}}},
 )
 
-gateway_metadata = getattr(message, "provider_metadata", {}).get("gateway", {})
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
 
-print(message.content[0].text)
-print("Served speed:", gateway_metadata.get("routing", {}).get("speed"))
-print("Usage:", message.usage)
+#### cURL
+
+```bash filename="fast-mode-messages.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+  "model": "anthropic/claude-opus-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "max_tokens": 1024,
+  "providerOptions": {
+    "gateway": {
+      "speed": "fast"
+    }
+  }
+}'
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="fast-mode-responses.ts"
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.responses.create({
+  model: 'anthropic/claude-opus-5',
+  input: 'Explain quantum computing in two sentences.',
+  ...{
+    providerOptions: {
+      gateway: {
+        speed: 'fast',
+      },
+    },
+  },
+});
+
+console.log(response.output_text);
+```
+
+#### Python
+
+```python filename="fast-mode_responses.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.responses.create(
+    model="anthropic/claude-opus-5",
+    input="Explain quantum computing in two sentences.",
+    extra_body={"providerOptions": {"gateway": {"speed": "fast"}}},
+)
+
+print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="fast-mode-responses.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-opus-5",
+  "input": "Explain quantum computing in two sentences.",
+  "providerOptions": {
+    "gateway": {
+      "speed": "fast"
+    }
+  }
+}'
 ```
 
 ### Using an explicit fast slug
@@ -246,24 +322,42 @@ Use any fast slug from the [supported models list](/ai-gateway/models?features=f
 
 #### AI SDK
 
-```typescript filename="app/api/chat/route.ts"
+#### TypeScript
+
+```typescript filename="fast-slug.ts"
 import { generateText } from 'ai';
 
-// Equivalent to setting `speed: 'fast'` on `anthropic/claude-opus-5`.
-const { text, providerMetadata } = await generateText({
-  model: 'anthropic/claude-opus-5-fast',
-  prompt: 'Explain quantum computing in two sentences.',
+const { text } = await generateText({
+  model: "anthropic/claude-opus-5-fast",
+  prompt: "Explain quantum computing in two sentences.",
 });
 
 console.log(text);
-console.log('Served speed:', providerMetadata?.gateway?.routing?.speed);
+```
+
+#### Python (beta)
+
+```python filename="fast-slug_ai.py"
+import asyncio
+import ai
+
+async def main():
+    model = ai.get_model("anthropic/claude-opus-5-fast")
+    messages = [ai.user_message("Explain quantum computing in two sentences.")]
+    async with ai.stream(model, messages) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
+
+asyncio.run(main())
 ```
 
 #### Chat Completions
 
 #### TypeScript
 
-```typescript filename="fast-mode.ts"
+```typescript filename="fast-slug-chat.ts"
 import OpenAI from 'openai';
 
 const client = new OpenAI({
@@ -281,47 +375,119 @@ const response = await client.chat.completions.create({
   ],
 });
 
-const gatewayMetadata = (response.choices[0].message as any).provider_metadata
-  ?.gateway;
-
-console.log(response.choices[0].message.content);
-console.log('Served speed:', gatewayMetadata?.routing?.speed);
-console.log('Usage:', response.usage);
+console.log(response.choices[0]?.message.content);
 ```
 
 #### Python
 
-```python filename="fast-mode.py"
+```python filename="fast-slug_chat.py"
 import os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key=os.getenv("AI_GATEWAY_API_KEY"),
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
     base_url="https://ai-gateway.vercel.sh/v1",
 )
 
 response = client.chat.completions.create(
     model="anthropic/claude-opus-5-fast",
-    messages=[
-        {
-            "role": "user",
-            "content": "Explain quantum computing in two sentences.",
-        }
-    ],
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
 )
 
-gateway_metadata = getattr(
-    response.choices[0].message, "provider_metadata", {}
-).get("gateway", {})
-
 print(response.choices[0].message.content)
-print("Served speed:", gateway_metadata.get("routing", {}).get("speed"))
-print("Usage:", response.usage)
 ```
 
-#### OpenAI Responses
+#### cURL
 
-```typescript filename="fast-mode.ts"
+```bash filename="fast-slug-chat.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-opus-5-fast",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ]
+}'
+```
+
+#### Messages API
+
+#### TypeScript
+
+```typescript filename="fast-slug-messages.ts"
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh',
+});
+
+const response = await client.messages.create({
+  model: 'anthropic/claude-opus-5-fast',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  max_tokens: 1024,
+});
+
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
+}
+```
+
+#### Python
+
+```python filename="fast-slug_messages.py"
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh",
+)
+
+response = client.messages.create(
+    model="anthropic/claude-opus-5-fast",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    max_tokens=1024,
+)
+
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="fast-slug-messages.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+  "model": "anthropic/claude-opus-5-fast",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "max_tokens": 1024
+}'
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="fast-slug-responses.ts"
 import OpenAI from 'openai';
 
 const client = new OpenAI({
@@ -330,74 +496,42 @@ const client = new OpenAI({
 });
 
 const response = await client.responses.create({
-  model: 'anthropic/claude-opus-5-fast',
-  input: 'Explain quantum computing in two sentences.',
+  model: "anthropic/claude-opus-5-fast",
+  input: "Explain quantum computing in two sentences.",
 });
-
-const gatewayMetadata = (response as any).provider_metadata?.gateway;
 
 console.log(response.output_text);
-console.log('Served speed:', gatewayMetadata?.routing?.speed);
-console.log('Usage:', response.usage);
-```
-
-#### Anthropic Messages
-
-#### TypeScript
-
-```typescript filename="fast-mode.ts"
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic({
-  apiKey: process.env.AI_GATEWAY_API_KEY,
-  baseURL: 'https://ai-gateway.vercel.sh',
-});
-
-const message = await client.messages.create({
-  model: 'anthropic/claude-opus-5-fast',
-  max_tokens: 1024,
-  messages: [
-    {
-      role: 'user',
-      content: 'Explain quantum computing in two sentences.',
-    },
-  ],
-});
-
-const gatewayMetadata = (message as any).provider_metadata?.gateway;
-
-console.log(message.content[0].text);
-console.log('Served speed:', gatewayMetadata?.routing?.speed);
-console.log('Usage:', message.usage);
 ```
 
 #### Python
 
-```python filename="fast-mode.py"
+```python filename="fast-slug_responses.py"
 import os
-import anthropic
+from openai import OpenAI
 
-client = anthropic.Anthropic(
-    api_key=os.getenv("AI_GATEWAY_API_KEY"),
-    base_url="https://ai-gateway.vercel.sh",
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
 )
 
-message = client.messages.create(
+response = client.responses.create(
     model="anthropic/claude-opus-5-fast",
-    max_tokens=1024,
-    messages=[
-        {
-            "role": "user",
-            "content": "Explain quantum computing in two sentences.",
-        }
-    ],
+    input="Explain quantum computing in two sentences.",
 )
 
-gateway_metadata = getattr(message, "provider_metadata", {}).get("gateway", {})
+print(response.output_text)
+```
 
-print(message.content[0].text)
-print("Served speed:", gateway_metadata.get("routing", {}).get("speed"))
-print("Usage:", message.usage)
+#### cURL
+
+```bash filename="fast-slug-responses.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-opus-5-fast",
+  "input": "Explain quantum computing in two sentences."
+}'
 ```
 
 ## Falling back to the base model
@@ -422,7 +556,12 @@ const { text, providerMetadata } = await generateText({
 });
 
 console.log(text);
-console.log('Served speed:', providerMetadata?.gateway?.routing?.speed);
+const routing = providerMetadata?.gateway?.routing;
+console.log('Served speed:',
+  typeof routing === 'object' && routing !== null && !Array.isArray(routing)
+    ? routing.speed
+    : undefined,
+);
 ```
 
 ## Reading the served speed
@@ -465,8 +604,13 @@ for await (const textPart of result.textStream) {
   process.stdout.write(textPart);
 }
 
-const { usage, providerMetadata } = await result;
-console.log('Served speed:', providerMetadata?.gateway?.routing?.speed);
+const [usage, providerMetadata] = await Promise.all([result.usage, result.providerMetadata]);
+const routing = providerMetadata?.gateway?.routing;
+console.log('Served speed:',
+  typeof routing === 'object' && routing !== null && !Array.isArray(routing)
+    ? routing.speed
+    : undefined,
+);
 console.log('Usage:', usage);
 ```
 

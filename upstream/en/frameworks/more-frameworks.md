@@ -3,7 +3,7 @@ title: Supported Frameworks on Vercel
 product: vercel
 url: /docs/frameworks/more-frameworks
 canonical_url: "https://vercel.com/docs/frameworks/more-frameworks"
-last_updated: 2025-07-31
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/frameworks
@@ -21,26 +21,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Frameworks infrastructure support matrix
 
+The following table shows which features are supported by each framework on Vercel. The framework list is not exhaustive, but a representation of the most popular frameworks deployed on Vercel.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to migrate from Google Cloud Run to Vercel](https://vercel.com/kb/guide/migrate-cloud-run-to-vercel?from=related) — Migrate from Cloud Run to Vercel by copying your Dockerfile to Dockerfile.vercel, aligning the PORT contract, moving sec
-- [How to migrate from Render to Vercel](https://vercel.com/kb/guide/migrate-render-to-vercel?from=related) — Migrate from Render to Vercel: map web services, cron jobs, and containers to their equivalents, and handle what doesn't
-- [Frontends](https://vercel.com/docs/frameworks/frontend?from=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
-- [Full-stack](https://vercel.com/docs/frameworks/full-stack?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
-- [Deploy a TanStack Start app to Vercel](https://vercel.com/kb/guide/deploy-a-tanstack-start-app-to-vercel?from=related) — Learn how to deploy a TanStack Start app to Vercel using the Nitro Vite plugin. Covers framework setup, Git and CLI depl
-- [How to ship a NestJS app on Vercel](https://vercel.com/kb/guide/ship-a-nestjs-app-on-vercel?from=related) — Deploy a NestJS app to Vercel with zero configuration. Learn how to ship from a template, the Nest CLI, or Git, and conf
-- [Vite](https://vercel.com/docs/frameworks/frontend/vite?from=related) — Learn how to use Vercel's features with Vite.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
+- [How to migrate from Google Cloud Run to Vercel](https://vercel.com/kb/guide/migrate-cloud-run-to-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related) — Migrate from Cloud Run to Vercel by copying your Dockerfile to Dockerfile.vercel, aligning the PORT contract, moving sec
+- [How to migrate from Render to Vercel](https://vercel.com/kb/guide/migrate-render-to-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related) — Migrate from Render to Vercel: map web services, cron jobs, and containers to their equivalents, and handle what doesn't
+- [Accelerating developer velocity and creating high-impact web teams](https://vercel.com/blog/accelerating-developer-velocity-and-creating-high-impact-web-teams?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related)
+- [How to build scalable AI applications](https://vercel.com/blog/how-to-build-scalable-ai-applications?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related)
+- [ISR on Vercel is now faster and more cost-efficient](https://vercel.com/blog/isr-on-vercel-is-now-faster-and-more-cost-efficient?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related)
+- [Announcing the Build Output API](https://vercel.com/blog/build-output-api?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related)
+- [Frontends on Vercel](https://vercel.com/docs/frameworks/frontend?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
+- [New features for SvelteKit: Optimize your application with ease](https://vercel.com/blog/feature-complete-sveltekit?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related)
+- [Run multiple frameworks in one project with Vercel Services](https://vercel.com/changelog/run-multiple-frameworks-in-one-project-with-vercel-services?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related)
+- [Full-stack frameworks on Vercel](https://vercel.com/docs/frameworks/full-stack?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related) — Deploy Vite projects to Vercel and configure environment variables, Vercel Functions, server-side rendering, and SPA rew
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=related) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
 
-Full cross-link map for this page: [/docs/frameworks/more-frameworks.graph.md](/docs/frameworks/more-frameworks.graph.md)
+Full cross-link map for this page: [/docs/frameworks/more-frameworks.graph.md](/docs/frameworks/more-frameworks.graph.md?from=related&source_path=%2Fdocs%2Fframeworks%2Fmore-frameworks&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-The following table shows which features are supported by each framework on Vercel. The framework list is not exhaustive, but a representation of the most popular frameworks deployed on Vercel.
 
 We're committed to having support for all Vercel features across frameworks, and continue to work with framework authors on adding support. *This table is continually updated over time*.
 
@@ -96,6 +99,8 @@ The frameworks listed below can be deployed to Vercel with minimal configuration
   - [Deploy](https://vercel.com/new/clone?demo-title=eve+Chat+Template&demo-description=A+persisted+Next.js+chat+template+for+eve%2C+built+with+shadcn%2Fui%2C+Tailwind+CSS%2C+Streamdown%2C+Better+Auth%2C+Drizzle%2C+and+Neon.&demo-url=https%3A%2F%2Feve-chat-template.labs.vercel.dev%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2FYXYTquqpBmvVFbASdIvrC%2F04d5a87ebe706ed31adc65193f3b4cdd%2Feve-chat__1_.png&project-name=eve+Chat+Template&repository-name=eve-chat-template&repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Feve-chat-template&from=templates&skippable-integrations=1) | [View Demo](https://eve-chat-template.labs.vercel.dev/)
 - **Express**: Fast, unopinionated, minimalist web framework for Node.js
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/express) | [View Demo](https://express-vercel-example-demo.vercel.app/)
+- **Factory (Eve)**: A software factory built with Eve.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/factory-eve)
 - **FastAPI**: FastAPI framework, high performance, easy to learn, fast to code, ready for production
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/fastapi) | [View Demo](https://vercel-fastapi-gamma-smoky.vercel.app/)
 - **FastHTML**: The fastest way to create an HTML app

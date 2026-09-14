@@ -3,7 +3,7 @@ title: Calculating usage of resources
 product: vercel
 url: /docs/pricing/how-does-vercel-calculate-usage-of-resources
 canonical_url: "https://vercel.com/docs/pricing/how-does-vercel-calculate-usage-of-resources"
-last_updated: 2026-06-16
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/pricing
@@ -27,15 +27,17 @@ It's important to understand how usage and accrual happen on Vercel, in order to
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to reduce ISR revalidation costs](https://vercel.com/kb/guide/how-to-reduce-isr-revalidation-costs?from=related) — Reduce ISR costs by analyzing Incremental Static Regeneration \\(ISR\\) behavior to find pages and tags that revalidate to
-- [How to Effectively Load Test Your Vercel Application](https://vercel.com/kb/guide/how-to-effectively-load-test-your-vercel-application?from=related) — Learn how to safely load test your Next.js app on Vercel. This guide covers realistic, policy-compliant testing of route
-- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
-- [Managing Usage & Costs](https://vercel.com/docs/image-optimization/managing-image-optimization-costs?from=related) — Learn how to measure and manage Image Optimization usage with this guide to avoid any unexpected costs.
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Legacy Usage & Pricing](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related) — Learn about legacy usage and pricing for Vercel Functions.
-- [Plans](https://vercel.com/docs/plans?from=related) — Learn about the different plans available on Vercel.
+- [Life of a Vercel request: Navigating the Edge Network](https://vercel.com/blog/life-of-a-vercel-request-navigating-the-edge-network?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related)
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related)
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related)
+- [How to reduce ISR revalidation costs](https://vercel.com/kb/guide/how-to-reduce-isr-revalidation-costs?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related) — Reduce ISR costs by analyzing Incremental Static Regeneration \\(ISR\\) behavior to find pages and tags that revalidate to
+- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
+- [Managing Usage & Costs](https://vercel.com/docs/image-optimization/managing-image-optimization-costs?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related) — Learn how to measure and manage Image Optimization usage with this guide to avoid any unexpected costs.
+- [How requests flow through Vercel](https://vercel.com/docs/fundamentals/infrastructure?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
+- [Legacy Usage & Pricing for Functions](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related) — Learn about legacy usage and pricing for Vercel Functions.
+- [Account Plans on Vercel](https://vercel.com/docs/plans?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=related) — Learn about the different plans available on Vercel.
 
-Full cross-link map for this page: [/docs/pricing/how-does-vercel-calculate-usage-of-resources.graph.md](/docs/pricing/how-does-vercel-calculate-usage-of-resources.graph.md)
+Full cross-link map for this page: [/docs/pricing/how-does-vercel-calculate-usage-of-resources.graph.md](/docs/pricing/how-does-vercel-calculate-usage-of-resources.graph.md?from=related&source_path=%2Fdocs%2Fpricing%2Fhow-does-vercel-calculate-usage-of-resources&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 You'll learn how resources are used at each stage of the journey, from entering the site, to browsing products, interacting with dynamic content, and engaging with A/B testing for personalized content.
@@ -67,9 +69,9 @@ The browser requests the page from Vercel. Since it's static and cached on our g
 
 **Priced resources**
 
-- :
+- \*\*Price:\*\*:
   Charged per network request to the CDN
-- :
+- \*\*Price:\*\*:
   Charged based on data moved to the user from the CDN
 
 ### 2. Product browsing
@@ -80,9 +82,9 @@ During the user's visit to the site, they browse the **All Products** page, whic
 
 **Priced resources**
 
-- :
+- \*\*Price:\*\*:
   Charged for network requests to fetch product images/details
-- :
+- \*\*Price:\*\*:
   Data movement charges from CDN to the user
 
 ### 3. Viewing updated product details
@@ -99,11 +101,11 @@ Upon viewing a product, if the discount data is already in the Data Cache and st
 
 **Priced resources**
 
-- :
+- \*\*Price:\*\*:
   Network request charges for fetching updated product information
-- :
+- \*\*Price:\*\*:
   Charges for activating a function to update content
-- :
+- \*\*Price:\*\*:
   CPU time charges for the function processing the update
 
 ### 4. Dynamic interactions (Cart)
@@ -114,13 +116,13 @@ The user decides to add a product to their cart. The cart is a dynamic feature t
 
 **Priced resources**
 
-- :
+- \*\*Price:\*\*:
   Network request charges for cart updates
-- :
+- \*\*Price:\*\*:
   Function activation charges for managing cart logic
-- :
+- \*\*Price:\*\*:
   CPU time charges for the function processing the cart logic
-- :
+- \*\*Price:\*\*:
   Data movement charges for fetching cart state from the cache
 - Redis Requests: Charges for reading and writing cart state to the Redis store
 - Redis Storage: Charges for storing cart state in the Redis store
@@ -134,7 +136,7 @@ Having added an item to the cart, the user decides to continue browsing the site
 
 **Priced resources**
 
-- :
+- \*\*Price:\*\*:
   Network request charges for delivering test variants
 
 ## Summary and next steps

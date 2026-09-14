@@ -3,7 +3,7 @@ title: Vercel CDN Cache
 product: vercel
 url: /docs/caching/cdn-cache
 canonical_url: "https://vercel.com/docs/caching/cdn-cache"
-last_updated: 2026-04-07
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/caching
@@ -27,20 +27,20 @@ Vercel's CDN caches your content (including pages, API responses, and static ass
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Manage cache tags for external origins](https://vercel.com/kb/guide/how-to-manage-cache-tags-for-external-origins?from=related) — Learn how to use cache tags to optimally serve fresh content on Vercel when content from your external origin changes
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [Set cache control headers for functions](https://vercel.com/kb/guide/set-cache-control-headers?from=related) — Learn how to set headers to cache your function's responses.
-- [How to Configure the Cache-Control Response Header in Vercel Projects](https://vercel.com/kb/guide/how-to-configure-the-cache-control-response-header-in-vercel-projects?from=related) — After reviewing this guide, you will be able to set a cache-control header of any value to be returned when a specific p
-- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components?from=related) — Learn how to migrate from route segment configs to Cache Components in Next.js.
-- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify?from=related) — Migrate your website's configuration from Netlify to Vercel
-- [use cache](https://nextjs.org/docs/app/api-reference/directives/use-cache?from=related) — Learn how to use the "use cache" directive to cache data in your Next.js application.
-- [Data Cache](https://vercel.com/docs/caching/runtime-cache/data-cache?from=related) — Vercel Data Cache is a specialized cache that stores responses from data fetches in Next.js App Router
-- [Node.js](https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package?from=related) — Learn about available APIs when working with Vercel Functions.
-- [vercel.ts](https://vercel.com/docs/project-configuration/vercel-ts?from=related) — Define your Vercel configuration in vercel.ts with @vercel/config for type-safe routing and build settings.
-- [API](https://vercel.com/docs/routing-middleware/api?from=related) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
+- [Vercel WAF for Blob is now in beta](https://vercel.com/changelog/vercel-waf-for-blob-is-now-in-beta?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related)
+- [How to add per-request CSP nonces to CDN-cached HTML on Vercel](https://vercel.com/kb/guide/csp-nonces-with-cdn-cache?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Use Routing Middleware and a self-fetch to add a fresh CSP nonce to cached HTML without rendering the page again on ever
+- [Manage cache tags for external origins](https://vercel.com/kb/guide/how-to-manage-cache-tags-for-external-origins?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Learn how to use cache tags to optimally serve fresh content on Vercel when content from your external origin changes
+- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
+- [Set cache control headers for functions](https://vercel.com/kb/guide/set-cache-control-headers?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Learn how to set headers to cache your function's responses.
+- [How to Configure the Cache-Control Response Header in Vercel Projects](https://vercel.com/kb/guide/how-to-configure-the-cache-control-response-header-in-vercel-projects?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — After reviewing this guide, you will be able to set a cache-control header of any value to be returned when a specific p
+- [use cache](https://nextjs.org/docs/app/api-reference/directives/use-cache?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Learn how to use the "use cache" directive to cache data in your Next.js application.
+- [Vercel Data Cache: A progressive cache, integrated with Next.js](https://vercel.com/blog/vercel-cache-api-nextjs-cache?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related)
+- [@vercel/functions API Reference \\(Node.js\\)](https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Learn about available APIs when working with Vercel Functions.
+- [Private Storage](https://vercel.com/docs/vercel-blob/private-storage?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Learn how to use private Vercel Blob storage to serve files with authentication
+- [Cache Status and Reasons](https://vercel.com/docs/caching/cache-status?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Understand the cache status and reason shown for each request in Vercel logs, and what causes a response to miss, bypass
+- [Programmatic Configuration with vercel.ts](https://vercel.com/docs/project-configuration/vercel-ts?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=related) — Define your Vercel configuration in vercel.ts with @vercel/config for type-safe routing and build settings.
 
-Full cross-link map for this page: [/docs/caching/cdn-cache.graph.md](/docs/caching/cdn-cache.graph.md)
+Full cross-link map for this page: [/docs/caching/cdn-cache.graph.md](/docs/caching/cdn-cache.graph.md?from=related&source_path=%2Fdocs%2Fcaching%2Fcdn-cache&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 CDN caching is available for all deployments and domains on your account, regardless of the [pricing plan](https://vercel.com/pricing).
@@ -92,6 +92,8 @@ To cache the response of Functions on Vercel's CDN, you must include [`Cache-Con
 
 The following example demonstrates a [function](/docs/functions) that caches its response and revalidates it every 1 second:
 
+**app/api/cache-control-example/route.ts**
+
 ```ts filename="app/api/cache-control-example/route.ts" framework=nextjs-app
 export async function GET() {
   return new Response('Cache Control example', {
@@ -104,6 +106,8 @@ export async function GET() {
   });
 }
 ```
+
+**app/api/cache-control-example/route.js**
 
 ```js filename="app/api/cache-control-example/route.js" framework=nextjs-app
 export async function GET() {
@@ -118,6 +122,8 @@ export async function GET() {
 }
 ```
 
+**pages/api/cache-control-example.ts**
+
 ```ts filename="pages/api/cache-control-example.ts" framework=nextjs
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -131,6 +137,8 @@ export default function handler(
 }
 ```
 
+**pages/api/cache-control-example.js**
+
 ```js filename="pages/api/cache-control-example.js" framework=nextjs
 export default function handler(request, response) {
   response.setHeader('Cache-Control', 'public, s-maxage=1');
@@ -138,6 +146,8 @@ export default function handler(request, response) {
   return response.status(200).json({ name: 'Timmy Triangle' });
 }
 ```
+
+**api/cache-control-example.ts**
 
 ```ts filename="api/cache-control-example.ts" framework=other
 import type { VercelResponse } from '@vercel/node';
@@ -148,6 +158,8 @@ export default function handler(response: VercelResponse) {
   return response.status(200).json({ name: 'Timmy Triangle' });
 }
 ```
+
+**api/cache-control-example.js**
 
 ```js filename="api/cache-control-example.js" framework=other
 export default function handler(response) {
@@ -250,6 +262,8 @@ The following example demonstrates `Cache-Control` headers that instruct:
 - Downstream CDNs to have a TTL of `60` seconds
 - Clients to have a TTL of `10` seconds
 
+**app/api/cache-control-headers/route.js**
+
 ```js filename="app/api/cache-control-headers/route.js" framework=nextjs
 export async function GET() {
   return new Response('Cache Control example', {
@@ -262,6 +276,8 @@ export async function GET() {
   });
 }
 ```
+
+**app/api/cache-control-headers/route.ts**
 
 ```ts filename="app/api/cache-control-headers/route.ts" framework=nextjs
 export async function GET() {
@@ -276,6 +292,8 @@ export async function GET() {
 }
 ```
 
+**app/api/cache-control-headers/route.js**
+
 ```js filename="app/api/cache-control-headers/route.js" framework=nextjs-app
 export async function GET() {
   return new Response('Cache Control example', {
@@ -288,6 +306,8 @@ export async function GET() {
   });
 }
 ```
+
+**app/api/cache-control-headers/route.ts**
 
 ```ts filename="app/api/cache-control-headers/route.ts" framework=nextjs-app
 export async function GET() {
@@ -302,6 +322,8 @@ export async function GET() {
 }
 ```
 
+**api/cache-control-headers.js**
+
 ```js filename="api/cache-control-headers.js" framework=other
 export default function handler(request, response) {
   response.setHeader('Vercel-CDN-Cache-Control', 'max-age=3600');
@@ -311,6 +333,8 @@ export default function handler(request, response) {
   return response.status(200).json({ name: 'Timmy Triangle' });
 }
 ```
+
+**api/cache-control-headers.ts**
 
 ```ts filename="api/cache-control-headers.ts" framework=other
 import type { VercelResponse } from '@vercel/node';
@@ -352,6 +376,8 @@ The most common use case for the `Vary` header is content negotiation, serving d
 
 You can use the `Vary` header with Vercel's `X-Vercel-IP-Country` request header to cache different responses for users from different countries:
 
+**app/api/country-specific/route.ts**
+
 ```tsx filename="app/api/country-specific/route.ts" framework=nextjs-app
 import { type NextRequest } from 'next/server';
 
@@ -378,6 +404,8 @@ export async function GET(request: NextRequest) {
 }
 ```
 
+**app/api/country-specific/route.js**
+
 ```jsx filename="app/api/country-specific/route.js" framework=nextjs-app
 export async function GET(request) {
   const country = request.headers.get('x-vercel-ip-country') || 'unknown';
@@ -401,6 +429,8 @@ export async function GET(request) {
   });
 }
 ```
+
+**pages/api/country-specific.ts**
 
 ```tsx filename="pages/api/country-specific.ts" framework=nextjs
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -426,6 +456,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 ```
 
+**pages/api/country-specific.js**
+
 ```jsx filename="pages/api/country-specific.js" framework=nextjs
 export default function handler(req, res) {
   const country = req.headers['x-vercel-ip-country'] || 'unknown';
@@ -447,6 +479,8 @@ export default function handler(req, res) {
   res.status(200).json(content);
 }
 ```
+
+**api/country-specific.ts**
 
 ```tsx filename="api/country-specific.ts" framework=other
 export default {
@@ -473,6 +507,8 @@ export default {
   },
 };
 ```
+
+**api/country-specific.js**
 
 ```jsx filename="api/country-specific.js" framework=other
 export default {
@@ -506,6 +542,8 @@ You can set the `Vary` header in the same ways you set other response headers:
 
 **In Vercel Functions**
 
+**app/api/data/route.ts**
+
 ```tsx filename="app/api/data/route.ts" framework=nextjs-app
 import { type NextRequest } from 'next/server';
 
@@ -523,6 +561,8 @@ export async function GET(request: NextRequest) {
 }
 ```
 
+**app/api/data/route.js**
+
 ```jsx filename="app/api/data/route.js" framework=nextjs-app
 export async function GET(request) {
   return Response.json(
@@ -538,6 +578,8 @@ export async function GET(request) {
 }
 ```
 
+**pages/api/data.ts**
+
 ```tsx filename="pages/api/data.ts" framework=nextjs
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -548,6 +590,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 ```
 
+**pages/api/data.js**
+
 ```jsx filename="pages/api/data.js" framework=nextjs
 export default function handler(req, res) {
   res.setHeader('Vary', 'X-Vercel-IP-Country');
@@ -555,6 +599,8 @@ export default function handler(req, res) {
   res.status(200).json({ data: 'This response varies by country' });
 }
 ```
+
+**api/data.ts**
 
 ```tsx filename="api/data.ts" framework=other
 export default {
@@ -572,6 +618,8 @@ export default {
   },
 };
 ```
+
+**api/data.js**
 
 ```jsx filename="api/data.js" framework=other
 export default {

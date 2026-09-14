@@ -3,7 +3,7 @@ title: Anatomy of the Checks API
 product: vercel
 url: /docs/checks/creating-checks
 canonical_url: "https://vercel.com/docs/checks/creating-checks"
-last_updated: 2026-03-17
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/checks
@@ -27,13 +27,14 @@ Checks API extends the build and deploy process once your deployment is ready. E
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
-- [Get a check run](https://vercel.com/docs/rest-api/checks-v2/get-a-check-run?from=related)
-- [Create a check](https://vercel.com/docs/rest-api/checks-v2/create-a-check?from=related)
-- [Create a check run](https://vercel.com/docs/rest-api/checks-v2/create-a-check-run?from=related)
-- [Get a check](https://vercel.com/docs/rest-api/checks-v2/get-a-check?from=related)
+- [Checkly Integration and Checks API now generally available](https://vercel.com/changelog/checkly-integration-and-checks-api-now-generally-available?from=related&source_path=%2Fdocs%2Fchecks%2Fcreating-checks&source_site=vercel-docs&relationship=related)
+- [Checks API Reference](https://vercel.com/docs/checks/checks-api?from=related&source_path=%2Fdocs%2Fchecks%2Fcreating-checks&source_site=vercel-docs&relationship=related) — The Vercel Checks API let you create tests and assertions that run after each deployment has been built, and are powered
+- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related&source_path=%2Fdocs%2Fchecks%2Fcreating-checks&source_site=vercel-docs&relationship=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
+- [Get a check run](https://vercel.com/docs/rest-api/checks-v2/get-a-check-run?from=related&source_path=%2Fdocs%2Fchecks%2Fcreating-checks&source_site=vercel-docs&relationship=related) — GET /v2/deployments/{deploymentId}/check-runs/{checkRunId} — Return a detailed response for a single check run.
+- [Create a check](https://vercel.com/docs/rest-api/checks-v2/create-a-check?from=related&source_path=%2Fdocs%2Fchecks%2Fcreating-checks&source_site=vercel-docs&relationship=related) — POST /v2/projects/{projectIdOrName}/checks — Creates a new check for a project.
+- [Create a check run](https://vercel.com/docs/rest-api/checks-v2/create-a-check-run?from=related&source_path=%2Fdocs%2Fchecks%2Fcreating-checks&source_site=vercel-docs&relationship=related) — POST /v2/deployments/{deploymentId}/check-runs — Creates a new check run for a deployment.
 
-Full cross-link map for this page: [/docs/checks/creating-checks.graph.md](/docs/checks/creating-checks.graph.md)
+Full cross-link map for this page: [/docs/checks/creating-checks.graph.md](/docs/checks/creating-checks.graph.md?from=related&source_path=%2Fdocs%2Fchecks%2Fcreating-checks&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 To learn more, see the [Supported Webhooks Events docs](/docs/webhooks/webhooks-api#supported-event-types).

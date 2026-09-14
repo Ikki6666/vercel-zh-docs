@@ -3,7 +3,7 @@ title: Managing Builds
 product: vercel
 url: /docs/builds/managing-builds
 canonical_url: "https://vercel.com/docs/builds/managing-builds"
-last_updated: 2026-07-31
+last_updated: 2026-09-03
 type: how-to
 prerequisites:
   - /docs/builds
@@ -27,17 +27,20 @@ When you build your application code, Vercel runs compute to install dependencie
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
-- [Troubleshooting Build Error: "Build step did not complete within the maximum of 45 minutes"](https://vercel.com/kb/guide/troubleshooting-build-error-build-step-did-not-complete-within-45-minutes?from=related) — Learn common reasons Vercel builds hit the 45-minute limit and how to reduce build times so your deployments stay fast a
-- [Why are my Vercel builds queued?](https://vercel.com/kb/guide/why-are-my-vercel-builds-queued?from=related) — Learn about why your Vercel builds may be getting queued and how to resolve this.
-- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
-- [Build System](https://vercel.com/docs/fundamentals/builds?from=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
-- [Limits](https://vercel.com/docs/limits?from=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Git Integrations](https://vercel.com/docs/git?from=related) — Vercel allows for automatic deployments on every branch push and merges onto the production branch of your GitHub, GitLa
-- [Configuring a Build](https://vercel.com/docs/builds/configure-a-build?from=related) — Vercel automatically configures the build settings for many front-end frameworks, but you can also customize the build a
+- [Build cache storage increased for larger build machines](https://vercel.com/changelog/build-cache-storage-increased-for-larger-build-machines?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related)
+- [Commits to the same branch now build with no queues](https://vercel.com/changelog/build-commits-to-the-same-branch-without-waiting?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related)
+- [Bulk enable on-demand concurrent builds across projects ](https://vercel.com/changelog/bulk-enable-on-demand-concurrent-builds-across-projects?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related)
+- [Configure build machine settings across all projects](https://vercel.com/changelog/configure-build-machine-settings-across-all-projects?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related)
+- [Elastic build machines now available in beta](https://vercel.com/changelog/elastic-build-machines-are-available-in-beta?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related)
+- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
+- [Troubleshooting Build Error: "Build step did not complete within the maximum of 45 minutes"](https://vercel.com/kb/guide/troubleshooting-build-error-build-step-did-not-complete-within-45-minutes?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related) — Learn common reasons Vercel builds hit the 45-minute limit and how to reduce build times so your deployments stay fast a
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
+- [Deploying to Vercel](https://vercel.com/docs/deployments?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Limits](https://vercel.com/docs/limits?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
+- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
 
-Full cross-link map for this page: [/docs/builds/managing-builds.graph.md](/docs/builds/managing-builds.graph.md)
+Full cross-link map for this page: [/docs/builds/managing-builds.graph.md](/docs/builds/managing-builds.graph.md?from=related&source_path=%2Fdocs%2Fbuilds%2Fmanaging-builds&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 By default, we enable [elastic builds](/docs/builds/managing-builds#elastic-build-machines) for paid teams. If you're on a Hobby plan and looking for faster builds, we recommend [upgrading to Pro](/docs/plans/hobby#upgrading-to-pro).
@@ -46,20 +49,23 @@ By default, we enable [elastic builds](/docs/builds/managing-builds#elastic-buil
 
 | Your situation                                | Solution                                                              | Best for                         |
 | --------------------------------------------- | --------------------------------------------------------------------- | -------------------------------- |
-| Builds are slow or running out of resources   | [Elastic/Enhanced/Turbo build machines](#larger-build-machines)       | Large apps, complex dependencies |
+| Builds are slow or running out of resources   | [Elastic, Enhanced, and Turbo build machines](#build-machine-types) | Large apps, complex dependencies |
 | Builds are frequently queued                  | [On-demand Concurrent Builds](#on-demand-concurrent-builds)           | Teams with frequent deployments  |
 | Specific projects are frequently queued       | [Project-level on-demand](#project-level-on-demand-concurrent-builds) | Fast-moving projects             |
 | Occasional urgent deploy stuck in queue       | [Force an on-demand build](#force-an-on-demand-build)                 | Ad-hoc critical fixes            |
 | Production builds stuck behind preview builds | [Prioritize production builds](#prioritize-production-builds)         | All production-heavy workflows   |
 
-## Larger build machines
+## Build machines
 
 > **🔒 Permissions Required**: Elastic, Enhanced, and Turbo build machines
 
-For Pro and Enterprise customers, we offer three higher-tier build machines with more compute resources than Standard. Elastic build machines auto-scale based on your recent build durations. New Pro and Enterprise accounts use Elastic machines by default.
+Hobby teams always use the Basic build machine. Basic has 2 vCPUs and 8 GB of memory.
+
+For Pro and Enterprise customers, Elastic build machines auto-scale based on your recent build durations. New Pro and Enterprise accounts use Elastic machines by default.
 
 | Build machine type | Number of vCPUs | Memory (GB) | Disk size (GB) |
 | ------------------ | --------------- | ----------- | -------------- |
+| Basic              | 2               | 8           | 32             |
 | Standard           | 4               | 8           | 32             |
 | Enhanced           | 8               | 16          | 64             |
 | Turbo              | 30              | 60          | 64             |
@@ -67,7 +73,7 @@ For Pro and Enterprise customers, we offer three higher-tier build machines with
 
 You can set the build machine type in the **Build and Deployment** section of your settings [for your team](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fbuild-and-deployment%23build-machines\&title=Set+team+level+build+machines) or [for individual projects](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fbuild-and-deployment%23build-machine\&title=Configure+your+build+machine).
 
-When your team uses Elastic, Enhanced, or Turbo machines, usage contributes to your build usage charges. Elastic build machines are billed by CPU minute, starting at $0.0035 per CPU minute. A CPU minute is one minute of build time multiplied by the number of vCPU cores used. For example, if a build takes 3 minutes and Elastic assigns the Standard machine (4 vCPUs), you're billed for 3 minutes × 4 cores = 12 CPU minutes.
+Basic is included with Hobby. For paid teams, Basic usage is billed at $0.0035 per CPU minute, or $0.007 per build minute. Elastic build machines are also billed by CPU minute, starting at $0.0035 per CPU minute. A CPU minute is one minute of build time multiplied by the number of vCPU cores used. For example, if a build takes 3 minutes and Elastic assigns the Standard machine (4 vCPUs), you're billed for 3 minutes × 4 cores = 12 CPU minutes.
 
 Enterprise customers who have Enhanced build machines enabled via contract will always use them by default. You can view if you have this enabled in [the Build Machines section of the Build and Deployment tab in your Team Settings](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fbuild-and-deployment%23build-machines\&title=Configure+your+build+machines). To update your build machine preferences, you need to contact your account manager.
 
@@ -91,7 +97,7 @@ When you enable on-demand build concurrency at the level of a project, any queue
 
 You can configure this on the project's [**Build and Deployment Settings**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fbuild-and-deployment\&title=Go+to+Build+and+Deployment+Settings) page:
 
-#### \['Dashboard'
+#### Dashboard
 
 1. From your Vercel dashboard, select the project you wish to enable it for.
 2. Open **Settings** in the sidebar, and go to the **Build and Deployment** section of your [Project Settings](/docs/projects#project-settings).
@@ -100,7 +106,7 @@ You can configure this on the project's [**Build and Deployment Settings**](http
    - **Run up to one build per branch**: Limit to one active build per branch
 4. Click **Save**.
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -124,7 +130,7 @@ Set `configuration` to one of:
 - `SKIP_NAMESPACE_QUEUE`: Run all builds immediately
 - `WAIT_FOR_NAMESPACE_QUEUE`: Limit to one active build per branch
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 

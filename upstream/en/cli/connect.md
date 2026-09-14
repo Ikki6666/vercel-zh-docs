@@ -3,13 +3,14 @@ title: vercel connect
 product: vercel
 url: /docs/cli/connect
 canonical_url: "https://vercel.com/docs/cli/connect"
-last_updated: 2026-07-28
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/cli
 related:
   - /docs/connect
   - /docs/connect/concepts/connectors
+  - /docs/cli/global-options
   - /docs/connect/quickstart
 summary: Learn how to manage Vercel Connect connectors using the vercel connect CLI command.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
@@ -20,28 +21,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 > **💡 Note:** The `vercel connect` command is currently in beta. Features and behavior may
 > change.
 
+The `vercel connect` command manages [Vercel Connect](/docs/connect) connectors. Use it to create connectors, attach them to projects, request runtime tokens, and remove them.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Build a daily digest bot with Chat SDK and Workflow SDK](https://vercel.com/kb/guide/daily-digest-bot-with-chat-sdk-and-workflow-sdk?from=related) — Build a daily digest bot that posts a daily digest of GitHub stats to Slack. Learn how to use Vercel Connect to set up S
-- [Draft content in your voice from Slack with eve](https://vercel.com/kb/guide/eve-content-agent?from=related) — Deploy the eve content agent template, a Slack bot that drafts blog posts, LinkedIn posts, release notes, and newsletter
-- [Manage your Sanity project from Slack with eve](https://vercel.com/kb/guide/eve-sanity-copilot?from=related) — A Slack-based Sanity copilot built on eve. It queries and edits content with GROQ, shapes schemas, manages releases, and
-- [Ship social posts from Slack with eve and Typefully](https://vercel.com/kb/guide/eve-typefully-social-media-agent?from=related) — A Slack-based social media agent built on eve. It drafts posts and threads for X, LinkedIn, Threads, Bluesky, and Mastod
-- [Run a marketing team from Slack with eve](https://vercel.com/kb/guide/marketing-team-eve?from=related) — Team of five marketing agents built on eve. The lead routes work to specialists that write long-form into Notion, queue
-- [Vercel Connect](https://chat-sdk.dev/docs/vercel-connect?from=related) — Authenticate Slack, Discord, GitHub, Linear, Notion, and Telegram adapters with Vercel Connect — short-lived runtime tok
-- [vercel project](https://vercel.com/docs/cli/project?from=related) — Perform the following commands from the terminal for your Vercel Projects: list, add, inspect, update settings, rename,
-- [SDK Reference](https://vercel.com/docs/connect/ts-sdk-reference?from=related) — API reference for @vercel/connect, the TypeScript SDK for requesting runtime tokens from Vercel Connect.
-- [vercel api](https://vercel.com/docs/cli/api?from=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
-- [Global Options](https://vercel.com/docs/cli/global-options?from=related) — Global options are commonly available to use with multiple Vercel CLI commands. Learn about Vercel CLI's global options
-- [vercel tokens](https://vercel.com/docs/cli/tokens?from=related) — Manage your personal Vercel authentication tokens from the CLI: list, create, and remove access tokens for use with the
+- [Vercel Connect now supports CLI setup for 100+ connectors](https://vercel.com/changelog/vercel-cli-100-services?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related)
+- [Vercel Connect now supports Linq](https://vercel.com/changelog/vercel-connect-now-supports-linq?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related)
+- [Vercel Connect now supports Microsoft](https://vercel.com/changelog/vercel-connect-supports-microsoft?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related)
+- [Build Claude Managed Agents with Chat SDK](https://vercel.com/kb/guide/claude-managed-agents-chat-sdk?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — Ship a Slack research bot built on Claude Managed Agents and Chat SDK. One persistent session per thread, streamed brief
+- [Build a daily digest bot with Chat SDK and Workflow SDK](https://vercel.com/kb/guide/daily-digest-bot-with-chat-sdk-and-workflow-sdk?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — Build a daily digest bot that posts a daily digest of GitHub stats to Slack. Learn how to use Vercel Connect to set up S
+- [Draft content in your voice from Slack with eve](https://vercel.com/kb/guide/eve-content-agent?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — Deploy the eve content agent template, a Slack bot that drafts blog posts, LinkedIn posts, release notes, and newsletter
+- [Build an incident response sre agent with eve](https://vercel.com/kb/guide/eve-incident-sre-agent?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — sre is an incident response agent for Slack. It investigates production issues using a hypothesis-driven approach and re
+- [Manage your Sanity project from Slack with eve](https://vercel.com/kb/guide/eve-sanity-copilot?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — A Slack-based Sanity copilot built on eve. It queries and edits content with GROQ, shapes schemas, manages releases, and
+- [vercel api](https://vercel.com/docs/cli/api?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
+- [vercel alerts](https://vercel.com/docs/cli/alerts?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — List and inspect alerts, and manage alert rules for projects and teams with the Vercel CLI.
+- [List connectors for a project](https://vercel.com/docs/rest-api/connect/list-connectors-for-a-project?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — GET /v2/connect/projects/{projectId}/connectors — List the connectors connected to a project and the environments where
+- [vercel global-config](https://vercel.com/docs/cli/global-config?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=related) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, remove, and manage items, read tokens, a
 
-Full cross-link map for this page: [/docs/cli/connect.graph.md](/docs/cli/connect.graph.md)
+Full cross-link map for this page: [/docs/cli/connect.graph.md](/docs/cli/connect.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fconnect&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-The `vercel connect` command manages [Vercel Connect](/docs/connect) connectors. Use it to create connectors, attach them to projects, request runtime tokens, and remove them.
 
 It supports the following subcommands:
 
@@ -425,6 +427,24 @@ vercel connect open scl_abc123
 vercel connect open slack/my-bot
 vercel connect open scl_abc123 --format=json
 ```
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel connect` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 ## Related
 

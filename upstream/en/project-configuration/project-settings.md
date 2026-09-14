@@ -3,7 +3,7 @@ title: Project settings
 product: vercel
 url: /docs/project-configuration/project-settings
 canonical_url: "https://vercel.com/docs/project-configuration/project-settings"
-last_updated: 2026-07-15
+last_updated: 2026-09-01
 type: reference
 prerequisites:
   - /docs/project-configuration
@@ -27,14 +27,14 @@ From the Vercel [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Das
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
-- [Bitbucket](https://vercel.com/docs/git/vercel-for-bitbucket?from=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [Managing projects](https://vercel.com/docs/projects/managing-projects?from=related) — Learn how to manage your projects through the Vercel Dashboard.
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
-- [Build Features](https://vercel.com/docs/builds/build-features?from=related) — Learn how to customize your deployments using Vercel's build features.
+- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fproject-settings&source_site=vercel-docs&relationship=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
+- [Deploying Bitbucket Projects with Vercel](https://vercel.com/docs/git/vercel-for-bitbucket?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fproject-settings&source_site=vercel-docs&relationship=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
+- [Deploying GitLab Projects with Vercel](https://vercel.com/docs/git/vercel-for-gitlab?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fproject-settings&source_site=vercel-docs&relationship=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
+- [Managing projects](https://vercel.com/docs/projects/managing-projects?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fproject-settings&source_site=vercel-docs&relationship=related) — Learn how to manage your projects through the Vercel Dashboard.
+- [Build Features for Customizing Deployments](https://vercel.com/docs/builds/build-features?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fproject-settings&source_site=vercel-docs&relationship=related) — Learn how to customize your deployments using Vercel's build features.
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fproject-settings&source_site=vercel-docs&relationship=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
 
-Full cross-link map for this page: [/docs/project-configuration/project-settings.graph.md](/docs/project-configuration/project-settings.graph.md)
+Full cross-link map for this page: [/docs/project-configuration/project-settings.graph.md](/docs/project-configuration/project-settings.graph.md?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fproject-settings&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - **Team Settings**: Any settings configured here, are applied at the team-level, although you can select which projects the settings should be set for.
@@ -166,7 +166,7 @@ To learn more, see the [Webhooks documentation](/docs/webhooks).
 
 ## Drains
 
-Drains are a Pro and Enterprise feature that allow you to send observability data (logs, traces, speed insights, and analytics) to external services. Drains are created at the team-level, but you can manage them on a per-project level from the project settings.
+Drains are a Pro and Enterprise feature that allow you to send observability data (logs, traces, speed insights, and analytics) to external services. Drains are created at the team-level, but you can manage them on a per-project level from the project settings. Speed Insights drains only forward data from projects that use [Speed Insights Plus](/docs/speed-insights/limits-and-pricing).
 
 To learn more, see the [Drains documentation](/docs/drains/using-drains).
 

@@ -1,9 +1,9 @@
 ---
-title: "Understanding Vercel's Pro Plan Trial"
+title: Understanding Vercel
 product: vercel
 url: /docs/plans/pro-plan/trials
 canonical_url: "https://vercel.com/docs/plans/pro-plan/trials"
-last_updated: 2026-06-16
+last_updated: 2026-08-21
 type: reference
 prerequisites:
   - /docs/plans/pro-plan
@@ -28,14 +28,16 @@ Vercel offers three plan tiers: **Hobby**, **Pro**, and **Enterprise**.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
-- [Hobby Plan](https://vercel.com/docs/plans/hobby?from=related) — Learn about the Hobby plan and how it compares to the Pro plan.
-- [Free Domain with Pro](https://vercel.com/docs/domains/free-domain-with-pro?from=related) — Learn about free domain with pro on Vercel.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Pricing](https://vercel.com/docs/analytics/limits-and-pricing?from=related) — Learn about pricing for Vercel Web Analytics.
-- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
+- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
+- [Vercel Hobby Plan](https://vercel.com/docs/plans/hobby?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related) — Learn about the Hobby plan and how it compares to the Pro plan.
+- [A more flexible Pro plan for modern teams](https://vercel.com/blog/new-pro-pricing-plan?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related)
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related)
+- [Pricing on Vercel](https://vercel.com/docs/pricing?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Pricing for Web Analytics](https://vercel.com/docs/analytics/limits-and-pricing?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related) — Learn about pricing for Vercel Web Analytics.
+- [Free Domain with Pro](https://vercel.com/docs/domains/free-domain-with-pro?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related) — Every paid Pro team gets one free first-year custom domain on an eligible TLD. Claim yours at checkout or from domain se
+- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
 
-Full cross-link map for this page: [/docs/plans/pro-plan/trials.graph.md](/docs/plans/pro-plan/trials.graph.md)
+Full cross-link map for this page: [/docs/plans/pro-plan/trials.graph.md](/docs/plans/pro-plan/trials.graph.md?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Ftrials&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 The Pro trial offers an opportunity to explore [Pro features](/docs/plans/pro-plan) for free during the trial period. There are some [limitations](/docs/plans/pro-plan/trials#trial-limitations).
@@ -73,10 +75,10 @@ The following Pro features are **not available** on the trial:
 
 - [Observability Plus](/docs/observability/observability-plus) (available on Paid Pro only)
 
-- [Log drains](/docs/drains)
-- [Account webhooks](/docs/webhooks#account-webhooks)
-- [Free first-year domain with Pro](/docs/plans/pro-plan#free-first-year-domain-with-pro)
-- [Sandbox failover regions](/docs/sandbox/concepts/regions#failover-regions)
+* [Log drains](/docs/drains)
+* [Account webhooks](/docs/webhooks#account-webhooks)
+* [Free first-year domain with Pro](/docs/plans/pro-plan#free-first-year-domain-with-pro)
+* [Sandbox failover regions](/docs/sandbox/concepts/regions#failover-regions)
 
 The free first-year domain offer is excluded from the Pro trial and becomes available once your team is on a paid Pro plan.
 
@@ -106,7 +108,7 @@ Billing begins immediately after your trial ends if you have added a payment met
 Without a payment method, your account reverts to a Hobby plan when the trial ends. Alternatively, you can use the **Downgrade** button located in the **Pro Plan** section of your [team's Billing page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fbilling\&title=Go+to+Billing) to immediately end your trial and return to a Hobby plan. All team members will be removed from your team, and all Hobby limits will apply to your team.
 
 > **💡 Note:** Charges apply only if you have a payment method. If a trial finishes and you
-> haven't set payment method, you will  get charged.
+> haven't set payment method, you will **not** get charged.
 
 You can upgrade to a Pro plan anytime later by visiting **Settings > Billing** and adding a payment method.
 

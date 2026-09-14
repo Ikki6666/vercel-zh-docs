@@ -1,10 +1,10 @@
 ---
-title: Anthropic Messages API
+title: Anthropic Messages API with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/anthropic-messages-api
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway
@@ -14,11 +14,11 @@ related:
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/tool-calling
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/reasoning
-summary: Use the Anthropic Messages API with AI Gateway for seamless integration with Anthropic SDK tools.
+summary: Use the Anthropic Messages API with AI Gateway. Configure authentication and send requests with streaming, tools, images, and extended thinking.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Anthropic Messages API
+# Anthropic Messages API with AI Gateway
 
 AI Gateway provides Anthropic Messages API endpoints, so you can use the Anthropic SDK and tools like [Claude Code](https://www.claude.com/product/claude-code) through a unified gateway with only a URL change.
 
@@ -28,15 +28,15 @@ AI Gateway provides Anthropic Messages API endpoints, so you can use the Anthrop
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to Run Claude Managed Agents with Chat SDK](https://vercel.com/kb/guide/claude-managed-agents-chat-sdk?from=related) — Pair the Chat SDK with Claude Managed Agents to run a streaming research analyst in a browser chat, using Anthropic's Ch
-- [Claude Platform on AWS](https://ai-sdk.dev/providers/ai-sdk-providers/anthropic-aws?from=related)
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [AI SDK](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
-- [Coding Agents](https://vercel.com/docs/ai-gateway/coding-agents?from=related) — Configure popular AI coding agents to use the AI Gateway for unified model access and spend monitoring.
-- [OpenAI Responses API](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses?from=related) — Use the OpenAI Responses API with AI Gateway to generate text, call tools, stream tokens, and more across any supported
-- [vercel ai-gateway](https://vercel.com/docs/cli/ai-gateway?from=related) — Manage AI Gateway resources from the Vercel CLI: API keys, routing rules, models, and coding agent setup.
+- [Fast mode for Opus 4.7 available on AI Gateway](https://vercel.com/changelog/fast-mode-for-opus-4-7-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=related)
+- [Opus 4.6 Fast Mode available on AI Gateway](https://vercel.com/changelog/opus-4-6-fast-mode-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=related)
+- [Service tiers now available on AI Gateway](https://vercel.com/changelog/service-tiers-now-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=related)
+- [Build Claude Managed Agents with Chat SDK](https://vercel.com/kb/guide/claude-managed-agents-chat-sdk?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=related) — Ship a Slack research bot built on Claude Managed Agents and Chat SDK. One persistent session per thread, streamed brief
+- [Python with AI Gateway: OpenAI and Anthropic SDKs](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=related) — Use AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
+- [AI SDK with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
+- [Coding Agents and Chat Platforms with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=related) — Connect coding agents and chat platforms to AI Gateway. Configure Claude Code, Codex, Chatbox, Open WebUI, and more.
 
-Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/anthropic-messages-api.graph.md](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/anthropic-messages-api.graph.md](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 The Anthropic Messages API implements the same specification as the [Anthropic Messages API](https://docs.anthropic.com/en/api/messages).
@@ -137,24 +137,6 @@ You can use the AI Gateway's Anthropic Messages API with the official [Anthropic
 > features, refer to the [Anthropic Messages
 > API](https://docs.anthropic.com/en/api/messages) documentation.
 
-#### cURL
-
-```bash filename="client.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "max_tokens": 1024,
-    "messages": [
-      {
-        "role": "user",
-        "content": "Hello, world!"
-      }
-    ]
-  }'
-```
-
 #### TypeScript
 
 ```typescript filename="client.ts"
@@ -192,6 +174,24 @@ message = client.messages.create(
 )
 ```
 
+#### cURL
+
+```bash filename="client.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Hello, world!"
+      }
+    ]
+  }'
+```
+
 ## Parameters
 
 The messages endpoint supports the following parameters:
@@ -221,31 +221,6 @@ The gateway passes through the `cache_control` parameter to Anthropic's [prompt 
 > **💡 Note:** The `cache_control` parameter is passed through to **Anthropic**, **Vertex AI Anthropic**, and **Amazon Bedrock Anthropic** models for explicit caching. Other providers or models with implicit caching work automatically without any configuration.
 
 Example request
-
-#### cURL
-
-```bash filename="prompt-caching.sh"
-CONTRACT=$(sed 's/"/\\"/g' contract.txt | tr '\n' ' ')
-
-curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "max_tokens": 1024,
-    "system": [
-      { "type": "text", "text": "You are a helpful assistant that analyzes documents." },
-      {
-        "type": "text",
-        "text": "'"$CONTRACT"'",
-        "cache_control": { "type": "ephemeral" }
-      }
-    ],
-    "messages": [
-      { "role": "user", "content": "Summarize the key points from this document." }
-    ]
-  }'
-```
 
 #### TypeScript
 
@@ -342,6 +317,31 @@ print(message.usage)
 #   'cache_creation_input_tokens': 10000,  # Tokens written to cache
 #   'cache_read_input_tokens': 0           # Tokens read from cache
 # }
+```
+
+#### cURL
+
+```bash filename="prompt-caching.sh"
+CONTRACT=$(sed 's/"/\\"/g' contract.txt | tr '\n' ' ')
+
+curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "max_tokens": 1024,
+    "system": [
+      { "type": "text", "text": "You are a helpful assistant that analyzes documents." },
+      {
+        "type": "text",
+        "text": "'"$CONTRACT"'",
+        "cache_control": { "type": "ephemeral" }
+      }
+    ],
+    "messages": [
+      { "role": "user", "content": "Summarize the key points from this document." }
+    ]
+  }'
 ```
 
 ### Where to place cache breakpoints

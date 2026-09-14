@@ -3,7 +3,7 @@ title: Shared Responsibility Model
 product: vercel
 url: /docs/security/shared-responsibility
 canonical_url: "https://vercel.com/docs/security/shared-responsibility"
-last_updated: 2026-03-19
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/security
@@ -27,19 +27,20 @@ A shared responsibility model is a framework designed to split tasks and obligat
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Ensuring safe and effective infrastructure testing](https://vercel.com/kb/guide/ensuring-safe-and-effective-infrastructure-testing?from=related) — We conduct regular penetration testing through certified third-party assessors to secure the Vercel platform. This guide
-- [How to build and maintain HIPAA-compliant applications on Vercel](https://vercel.com/kb/guide/hipaa-compliance-guide-vercel?from=related) — Deploy HIPAA-compliant healthcare apps on Vercel with built-in security, BAAs, and scalable serverless infrastructure.
-- [How to conduct PCI scans on Vercel: A complete guide to IP safelisting](https://vercel.com/kb/guide/how-to-conduct-pci-scans-on-vercel-guide?from=related) — Scan and verify your Vercel deployments for secure, PCI-compliant payment processing.
-- [Does Vercel support HIPAA compliance?](https://vercel.com/kb/guide/is-vercel-hipaa-compliant?from=related) — Learn about Vercel and HIPAA compliance.
-- [Does Vercel support PCI compliance?](https://vercel.com/kb/guide/is-vercel-pci-compliant?from=related) — Learn about Vercel and PCI compliance.
-- [Security](https://v0.app/docs/security?from=related) — Learn about v0's security practices, threat modeling, and enterprise security features.
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Security](https://vercel.com/docs/cdn-security?from=related) — Learn how Vercel's CDN secures every request with HTTPS, TLS, DDoS mitigation, firewall protection, and security headers
-- [Firewall](https://vercel.com/docs/vercel-firewall?from=related) — Learn how Vercel Firewall helps protect your applications and websites from malicious attacks and unauthorized access.
-- [Security](https://vercel.com/docs/vercel-blob/security?from=related) — Learn how your Vercel Blob store is secured
+- [How to build and maintain HIPAA-compliant applications on Vercel](https://vercel.com/kb/guide/hipaa-compliance-guide-vercel?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related) — Deploy HIPAA-compliant healthcare apps on Vercel with built-in security, BAAs, and scalable serverless infrastructure.
+- [How to conduct PCI scans on Vercel: A complete guide to IP safelisting](https://vercel.com/kb/guide/how-to-conduct-pci-scans-on-vercel-guide?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related) — Scan and verify your Vercel deployments for secure, PCI-compliant payment processing.
+- [Does Vercel have a SOC 2 Type 2 attestation?](https://vercel.com/kb/guide/is-vercel-soc-2-compliant?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related) — Vercel holds a SOC 2 Type 2 attestation for Security, Confidentiality, and Availability. See what the report covers, how
+- [Supporting Compliance with Vercel WAF](https://vercel.com/kb/guide/supporting-compliance-with-vercel-waf?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related) — Vercel Firewall provides edge-based traffic filtering and monitoring to help teams meet compliance requirements in secur
+- [PCI compliance for ecommerce](https://vercel.com/blog/pci-compliance-for-ecommerce-teams?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related)
+- [The Frontend Cloud: Powering resiliency for global web applications](https://vercel.com/blog/the-resiliency-of-the-frontend-cloud?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related)
+- [Understanding Vercel Functions](https://vercel.com/blog/understanding-vercel-functions?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related)
+- [Vercel supports HIPAA compliance](https://vercel.com/blog/vercel-supports-hipaa-compliance?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related)
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related)
+- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
+- [How requests flow through Vercel](https://vercel.com/docs/fundamentals/infrastructure?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
+- [CDN security](https://vercel.com/docs/cdn-security?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=related) — Learn how Vercel's CDN secures every request with HTTPS, TLS, DDoS mitigation, firewall protection, and security headers
 
-Full cross-link map for this page: [/docs/security/shared-responsibility.graph.md](/docs/security/shared-responsibility.graph.md)
+Full cross-link map for this page: [/docs/security/shared-responsibility.graph.md](/docs/security/shared-responsibility.graph.md?from=related&source_path=%2Fdocs%2Fsecurity%2Fshared-responsibility&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 When using a cloud platform such as Vercel, it is important to understand where your security responsibilities lie, and where Vercel takes responsibility. This is especially important when it comes to handling data, such as user account information, payment details, source code and other sensitive information.

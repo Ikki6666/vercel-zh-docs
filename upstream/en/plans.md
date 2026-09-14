@@ -3,7 +3,7 @@ title: Account Plans on Vercel
 product: vercel
 url: /docs/plans
 canonical_url: "https://vercel.com/docs/plans"
-last_updated: 2026-06-16
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   []
@@ -27,14 +27,19 @@ Vercel offers multiple account plans: Hobby, Pro, and Enterprise.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The Complete Guide to Vercel Services](https://vercel.com/kb/guide/vercel-services?from=related) — Vercel Services let you deploy multiple frontends and backends in one project on a shared domain. Learn how to define se
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
-- [Account Management](https://vercel.com/docs/accounts?from=related) — Learn how to manage your Vercel account and team members.
-- [Pricing](https://vercel.com/docs/analytics/limits-and-pricing?from=related) — Learn about pricing for Vercel Web Analytics.
-- [Usage & Pricing](https://vercel.com/docs/cron-jobs/usage-and-pricing?from=related) — Learn about cron jobs usage and pricing details.
+- [Vercel Passport is now generally available](https://vercel.com/changelog/vercel-passport-generally-available?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related)
+- [Vercel Sandbox maximum duration extended to 5 hours](https://vercel.com/changelog/vercel-sandbox-maximum-duration-extended-to-5-hours?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related)
+- [Run Cursor Cloud Agents on Vercel Sandbox](https://vercel.com/kb/guide/cursor-vercel-sandbox?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related) — Learn how to run Cursor Cloud Agents on Vercel Sandbox with BYOM worker pools, durable workflows, isolated microVMs, and
+- [The Complete Guide to Vercel Services](https://vercel.com/kb/guide/vercel-services?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related) — Vercel Services let you deploy multiple frontends and backends in one project on a shared domain. Learn how to define se
+- [A more flexible Pro plan for modern teams](https://vercel.com/blog/new-pro-pricing-plan?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related)
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related)
+- [Pricing on Vercel](https://vercel.com/docs/pricing?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
+- [Pricing for Web Analytics](https://vercel.com/docs/analytics/limits-and-pricing?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related) — Learn about pricing for Vercel Web Analytics.
+- [Account Management](https://vercel.com/docs/accounts?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related) — Learn how to manage your Vercel account and team members.
+- [Usage & Pricing for Cron Jobs](https://vercel.com/docs/cron-jobs/usage-and-pricing?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=related) — Learn about cron jobs usage and pricing details.
 
-Full cross-link map for this page: [/docs/plans.graph.md](/docs/plans.graph.md)
+Full cross-link map for this page: [/docs/plans.graph.md](/docs/plans.graph.md?from=related&source_path=%2Fdocs%2Fplans&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Each plan is designed to meet the needs of different types of users, from personal projects to large enterprises. The Hobby plan is free and includes base features, while Pro and Enterprise plans offer enhanced features, team collaboration, and flexible resource management.

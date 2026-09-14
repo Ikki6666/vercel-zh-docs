@@ -1,9 +1,9 @@
 ---
-title: Trace Drains
+title: AI Gateway Trace Drains
 product: vercel
 url: /docs/ai-gateway/observability-and-spend/trace-drains
 canonical_url: "https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains"
-last_updated: 2026-07-30
+last_updated: 2026-09-08
 type: reference
 prerequisites:
   - /docs/ai-gateway/observability-and-spend
@@ -18,7 +18,7 @@ summary: Forward an OpenTelemetry trace of every AI Gateway request to your own 
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Trace Drains
+# AI Gateway Trace Drains
 
 AI Gateway produces an [OpenTelemetry](https://opentelemetry.io/docs/concepts/signals/traces/) trace for every request it handles. A trace drain forwards those traces to any OTLP/HTTP-compatible endpoint, such as your own collector or a native integration from the Marketplace, so you can inspect latency, token usage, and provider failover in the observability tool you already use.
 
@@ -28,13 +28,16 @@ AI Gateway produces an [OpenTelemetry](https://opentelemetry.io/docs/concepts/si
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Tracing](https://vercel.com/docs/tracing?from=related) — Learn how to trace your application to understand performance and infrastructure details.
-- [Web Analytics](https://vercel.com/docs/drains/reference/analytics?from=related) — Learn about Web Analytics Drains - data formats and custom events configuration.
-- [Audit Logs](https://vercel.com/docs/drains/reference/audit-logs?from=related) — Learn about Audit Log Drains - data formats, fields, and team activity events.
-- [Migrating from SIEM](https://vercel.com/docs/audit-log/migrating-to-drains?from=related) — Move your SIEM integration from Custom SIEM Log Streaming to Audit Log Drains, with wider event coverage and a new event
-- [Drain Audit Logs to S3](https://vercel.com/docs/drains/audit-logs-to-s3?from=related) — Learn how to configure AWS IAM and Amazon S3 so Vercel can write Audit Log Drain events to your S3 bucket.
+- [Export AI Gateway traces with Vercel Drains](https://vercel.com/changelog/export-ai-gateway-traces-with-vercel-drains?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related)
+- [Introducing Vercel Drains: Complete observability data, anywhere](https://vercel.com/blog/introducing-vercel-drains?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related)
+- [Introducing Trace Drains on the Vercel Marketplace](https://vercel.com/changelog/introducing-trace-drains-on-the-vercel-marketplace?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related)
+- [Tracing](https://vercel.com/docs/tracing?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related) — Learn how to trace your application to understand performance and infrastructure details.
+- [Web Analytics Drains Reference](https://vercel.com/docs/drains/reference/analytics?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related) — Learn about Web Analytics Drains - data formats and custom events configuration.
+- [Audit Log Drains Reference](https://vercel.com/docs/drains/reference/audit-logs?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related) — Learn about Audit Log Drains - data formats, fields, and team activity events.
+- [Drain Audit Logs to S3](https://vercel.com/docs/drains/audit-logs-to-s3?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related) — Learn how to configure AWS IAM and Amazon S3 so Vercel can write Audit Log Drain events to your S3 bucket.
+- [Speed Insights Drains Reference](https://vercel.com/docs/drains/reference/speed-insights?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=related) — Learn about Speed Insights Drains - data formats and performance metrics configuration.
 
-Full cross-link map for this page: [/docs/ai-gateway/observability-and-spend/trace-drains.graph.md](/docs/ai-gateway/observability-and-spend/trace-drains.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/observability-and-spend/trace-drains.graph.md](/docs/ai-gateway/observability-and-spend/trace-drains.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fobservability-and-spend%2Ftrace-drains&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 > **🔒 Permissions Required**: Trace Drains
@@ -56,7 +59,7 @@ For the underlying drain configuration and OTLP formats, see the [Drains documen
     -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
-      "model": "openai/gpt-5.5",
+      "model": "openai/gpt-6-astra",
       "input": "Write a one-sentence bedtime story."
     }'
   ```
@@ -77,6 +80,18 @@ The **Native Integrations** section of the drain creation flow always shows the 
 ## Usage and pricing
 
 AI Gateway Traces bills on two meters: the number of trace events delivered to your drains, and the volume of trace data transferred (egress). Vercel bills the two meters separately.
+
+Resource
+
+Price
+
+AI Gateway Traces
+
+$0.05 per 1,000 traces
+
+Trace egress
+
+$0.50 per 1 GB
 
 Pro plans don't include an allowance for either meter. Charges begin with the first delivered trace and first byte of trace egress.
 

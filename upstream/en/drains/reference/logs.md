@@ -3,7 +3,7 @@ title: Log Drains Reference
 product: vercel
 url: /docs/drains/reference/logs
 canonical_url: "https://vercel.com/docs/drains/reference/logs"
-last_updated: 2026-07-01
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/drains
@@ -27,16 +27,17 @@ Log Drains forward logs from your deployments to external endpoints for storage 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
-- [How do I store logs on Vercel?](https://vercel.com/kb/guide/how-do-i-store-logs-on-vercel?from=related) — Learn how to store logs on Vercel.
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Audit Logs](https://vercel.com/docs/drains/reference/audit-logs?from=related) — Learn about Audit Log Drains - data formats, fields, and team activity events.
-- [Web Analytics](https://vercel.com/docs/drains/reference/analytics?from=related) — Learn about Web Analytics Drains - data formats and custom events configuration.
-- [Traces](https://vercel.com/docs/drains/reference/traces?from=related) — Learn about Trace Drains - OpenTelemetry-compliant distributed tracing data formats and configuration.
-- [Speed Insights](https://vercel.com/docs/drains/reference/speed-insights?from=related) — Learn about Speed Insights Drains - data formats and performance metrics configuration.
-- [Creates a new Integration Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-new-integration-log-drain-deprecated?from=related)
+- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
+- [Log drains now support log source selection](https://vercel.com/changelog/log-drains-now-support-log-source-selection?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related)
+- [Log Drains](https://vercel.com/blog/log-drains?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related)
+- [How do I store logs on Vercel?](https://vercel.com/kb/guide/how-do-i-store-logs-on-vercel?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related) — Learn how to store logs on Vercel.
+- [Audit Log Drains Reference](https://vercel.com/docs/drains/reference/audit-logs?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related) — Learn about Audit Log Drains - data formats, fields, and team activity events.
+- [Web Analytics Drains Reference](https://vercel.com/docs/drains/reference/analytics?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related) — Learn about Web Analytics Drains - data formats and custom events configuration.
+- [Trace Drains Reference](https://vercel.com/docs/drains/reference/traces?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related) — Learn about Trace Drains - OpenTelemetry-compliant distributed tracing data formats and configuration.
+- [Drain Audit Logs to Datadog](https://vercel.com/docs/drains/audit-logs-to-datadog?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related) — Learn how to forward Vercel Audit Log Drain events to Datadog using the Datadog Logs API.
+- [Speed Insights Drains Reference](https://vercel.com/docs/drains/reference/speed-insights?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=related) — Learn about Speed Insights Drains - data formats and performance metrics configuration.
 
-Full cross-link map for this page: [/docs/drains/reference/logs.graph.md](/docs/drains/reference/logs.graph.md)
+Full cross-link map for this page: [/docs/drains/reference/logs.graph.md](/docs/drains/reference/logs.graph.md?from=related&source_path=%2Fdocs%2Fdrains%2Freference%2Flogs&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - **[Custom endpoint](/docs/drains/using-drains#custom-endpoint)**: Send logs to any HTTP endpoint you configure
@@ -66,6 +67,7 @@ The following table describes the possible fields that are sent via Log Drains:
 | `statusCode`             | number | No       | HTTP status code of the request                                        | 200 (`-1` means no response returned and the lambda crashed)                                                                                                           |
 | `requestId`              | string | No       | Identifier of the request                                              | `643af4e3-975a-4cc7-9e7a-1eda11539d90`                                                                                                                                 |
 | `environment`            | enum   | No       | Deployment environment                                                 | `production` or `preview`                                                                                                                                              |
+| `customEnvironment`      | string | No       | Slug of the Custom Environment associated with the deployment         | `staging`                                                                                                                                                              |
 | `branch`                 | string | No       | Git branch name                                                        | `main`                                                                                                                                                                 |
 | `ja3Digest`              | string | No       | JA3 fingerprint digest                                                 | `769c83e5b...`                                                                                                                                                         |
 | `ja4Digest`              | string | No       | JA4 fingerprint digest                                                 | `t13d1516h2...`                                                                                                                                                        |

@@ -3,7 +3,7 @@ title: Requirements for listing an Integration
 product: vercel
 url: /docs/integrations/create-integration/submit-integration
 canonical_url: "https://vercel.com/docs/integrations/create-integration/submit-integration"
-last_updated: 2026-07-29
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/integrations/create-integration
@@ -28,14 +28,14 @@ Defining the content specs helps you create the main cover page of your integrat
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
-- [Integration Approval Checklist](https://vercel.com/docs/integrations/create-integration/approval-checklist?from=related) — Review this checklist before submitting your native or connectable account integration for approval on the Vercel Market
-- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
-- [Marketplace Partner API](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/partner?from=related) — Learn about marketplace partner api on Vercel.
-- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related) — Learn how you can add a product to your Vercel project through a native integration.
-- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
+- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsubmit-integration&source_site=vercel-docs&relationship=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
+- [Integration Approval Checklist](https://vercel.com/docs/integrations/create-integration/approval-checklist?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsubmit-integration&source_site=vercel-docs&relationship=related) — Review this checklist before submitting your native or connectable account integration for approval on the Vercel Market
+- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsubmit-integration&source_site=vercel-docs&relationship=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
+- [Upgrade an Integration](https://vercel.com/docs/integrations/create-integration/upgrade-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsubmit-integration&source_site=vercel-docs&relationship=related) — Lean more about when you may need to upgrade your Integration.
+- [Marketplace Partner API Reference](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/partner?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsubmit-integration&source_site=vercel-docs&relationship=related) — Learn how to implement Partner API endpoints for your Vercel integration
+- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsubmit-integration&source_site=vercel-docs&relationship=related) — Learn how you can add a product to your Vercel project through a native integration.
 
-Full cross-link map for this page: [/docs/integrations/create-integration/submit-integration.graph.md](/docs/integrations/create-integration/submit-integration.graph.md)
+Full cross-link map for this page: [/docs/integrations/create-integration/submit-integration.graph.md](/docs/integrations/create-integration/submit-integration.graph.md?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsubmit-integration&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ![Image](https://vercel.com/docs-assets/static/docs/integrations/creating/int-overview-new-light.png)
@@ -171,7 +171,7 @@ Additional steps to install or configure your integrations. Include environment 
 
 - **Required**: Yes
 
-These are a collection of images displayed on the carousel at the top of your marketplace listing. We require at least 1 image, but you can add up to 5. The images and text must be of high quality. Follow the [integration image guidelines](/docs/integrations/create-integration/integration-image-guidelines) for layout, content, and design standards.
+These are a collection of images displayed on the carousel at the top of your marketplace listing. You must upload at least 1 image and can upload up to 8. The images and text must be of high quality. Follow the [integration image guidelines](/docs/integrations/create-integration/integration-image-guidelines) for layout, content, and design standards.
 
 These gallery images will appear in both light and dark mode. Avoid long text, as it may not be legible on smaller screens.
 
@@ -183,7 +183,7 @@ Your media should adhere to the following dimensions and aspect ratios:
 
 | Spec Name      | Ratio | Size        | Notes                                                                                                                         |
 | -------------- | ----- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Gallery Images | 16:9  | 1920x1080px | High resolution bitmap image, non-transparent PNG. Minimum 3 images, up to 5 can be uploaded. You can upload 1 video link too |
+| Gallery Images | 16:9  | 1920x1080px | High resolution bitmap image, non-transparent PNG. Upload 1 to 8 images. |
 
 ## External Integration Settings
 
@@ -280,7 +280,7 @@ If you leave the **Configuration URL** field empty, the **Configure** button wil
 
 ## Base URL
 
-- **Required: If it's a&#x20;**
+- **Required: If it's a product**
 
 The URL that points to the provider's integration server that implements the [Marketplace Provider API](/docs/integrations/create-integration/marketplace-api). To interact with the provider's application, Vercel makes a request to the base URL appended with the path for the specific endpoint.
 
@@ -288,7 +288,7 @@ For example, if the base url is `https://foo.bar.com/vercel-integration-server`,
 
 ## Redirect Login URL
 
-- **Required: If it's a&#x20;**
+- **Required: If it's a product**
 
 The URL where Vercel redirect users of the integration in the following situations:
 
@@ -310,7 +310,7 @@ Setting this field enables the **Import Existing** option for connected installa
 ## Installation-level Billing Plans
 
 - **Required**: No (It's a toggle which is disabled by default)
-- Applies to a&#x20;
+- Applies to a installation
 
 When enabled, it allows the integration user to select a billing plan for their installation. The default installation-level billing plan is chosen by the partner. When disabled, the installation does not have a configurable billing plan.
 

@@ -3,7 +3,7 @@ title: vercel env
 product: vercel
 url: /docs/cli/env
 canonical_url: "https://vercel.com/docs/cli/env"
-last_updated: 2026-07-15
+last_updated: 2026-08-20
 type: reference
 prerequisites:
   - /docs/cli
@@ -27,16 +27,16 @@ The `vercel env` command is used to manage [Environment Variables](/docs/environ
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
-- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare?from=related) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
-- [How do I use private dependencies with Vercel?](https://vercel.com/kb/guide/using-private-dependencies-with-vercel?from=related) — Information on how to use private dependencies with a Vercel deployment.
-- [Manage Across Environments](https://vercel.com/docs/environment-variables/manage-across-environments?from=related) — Add, sync, and verify environment variables across development, preview, production, and custom environments using the C
-- [vercel pull](https://vercel.com/docs/cli/pull?from=related) — Learn how to update your local project with remote environment variables using the vercel pull CLI command.
-- [Global Options](https://vercel.com/docs/cli/global-options?from=related) — Global options are commonly available to use with multiple Vercel CLI commands. Learn about Vercel CLI's global options
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [Environments](https://vercel.com/docs/deployments/environments?from=related) — Environments are for developing locally, testing changes in a pre-production environment, and serving end-users in produ
+- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
+- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
+- [How do I use private dependencies with Vercel?](https://vercel.com/kb/guide/using-private-dependencies-with-vercel?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Information on how to use private dependencies with a Vercel deployment.
+- [vercel pull](https://vercel.com/docs/cli/pull?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Learn how to update your local project with remote environment variables using the vercel pull CLI command.
+- [Managing environment variables across environments](https://vercel.com/docs/environment-variables/manage-across-environments?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Add, sync, and verify environment variables across development, preview, production, and custom environments using the C
+- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [vercel list](https://vercel.com/docs/cli/list?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
+- [vercel dev](https://vercel.com/docs/cli/dev?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=related) — Learn how to replicate the Vercel deployment environment locally and test your Vercel Project before deploying using the
 
-Full cross-link map for this page: [/docs/cli/env.graph.md](/docs/cli/env.graph.md)
+Full cross-link map for this page: [/docs/cli/env.graph.md](/docs/cli/env.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fenv&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 To leverage environment variables in local tools (like `next dev` or `gatsby dev`) that want them in a file (like `.env`), run `vercel env pull <file>`. This will export your Project's environment variables to that file. After updating environment variables on Vercel (through the dashboard, `vercel env add`, or `vercel env rm`), you will have to run `vercel env pull <file>` again to get the updated values.
@@ -56,6 +56,8 @@ To override environment variable values temporarily, use:
 ```bash filename="terminal"
 MY_ENV_VAR="temporary value" next dev
 ```
+
+<br />
 
 > **💡 Note:** If you are using [`vercel build`](/docs/cli/build) or [
 > `vercel dev`](/docs/cli/dev), you should use [
@@ -367,6 +369,24 @@ vercel env update API_TOKEN production --yes
 
 *Using the \`vercel env update\` command with the
 \`--yes\` option to skip the update confirmation.*
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel env` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

@@ -3,7 +3,7 @@ title: Multi-Project Platforms Reference
 product: vercel
 url: /docs/platforms/multi-project-platforms/reference
 canonical_url: "https://vercel.com/docs/platforms/multi-project-platforms/reference"
-last_updated: 2026-06-26
+last_updated: 2026-09-03
 type: reference
 prerequisites:
   - /docs/platforms/multi-project-platforms
@@ -22,23 +22,24 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Custom blocks
 
+Start with our Custom [Blocks](/docs/platforms/platform-elements/blocks/deploy-popover) and [Actions](/docs/platforms/platform-elements/actions/deploy-files) that speed up your usage of the Vercel API.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
-- [Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
-- [Multi-Tenant Platforms](https://vercel.com/docs/platforms/multi-tenant-platforms?from=related) — Serve multiple customers from a single codebase and deployment, routing each tenant by subdomain or custom domain.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
-- [Concepts](https://vercel.com/docs/platforms/multi-tenant-platforms/concepts?from=related) — Understand tenants, domains, routing, and architecture for building multi-tenant applications on Vercel for Platforms.
-- [Quickstart](https://vercel.com/docs/platforms/multi-tenant-platforms/quickstart?from=related) — Set up wildcard domains, custom domains, domain verification, and redirects for a multi-tenant application on Vercel.
+- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
+- [Introducing Vercel for Platforms](https://vercel.com/changelog/introducing-vercel-for-platforms?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=related)
+- [Multi-tenant Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
+- [Multi-Tenant Platforms](https://vercel.com/docs/platforms/multi-tenant-platforms?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=related) — Serve multiple customers from a single codebase and deployment, routing each tenant by subdomain or custom domain.
+- [Multi-Tenant Platform Concepts](https://vercel.com/docs/platforms/multi-tenant-platforms/concepts?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=related) — Understand tenants, domains, routing, and architecture for building multi-tenant applications on Vercel for Platforms.
+- [Multi-Tenant Platform Quickstart](https://vercel.com/docs/platforms/multi-tenant-platforms/quickstart?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=related) — Set up wildcard domains, custom domains, domain verification, and redirects for a multi-tenant application on Vercel.
+- [Managing projects](https://vercel.com/docs/projects/managing-projects?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=related) — Learn how to manage your projects through the Vercel Dashboard.
 
-Full cross-link map for this page: [/docs/platforms/multi-project-platforms/reference.graph.md](/docs/platforms/multi-project-platforms/reference.graph.md)
+Full cross-link map for this page: [/docs/platforms/multi-project-platforms/reference.graph.md](/docs/platforms/multi-project-platforms/reference.graph.md?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-project-platforms%2Freference&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Start with our Custom [Blocks](/docs/platforms/platform-elements/blocks/deploy-popover) and [Actions](/docs/platforms/platform-elements/actions/deploy-files) that speed up your usage of the Vercel API.
 
 ## Projects & Deployments API reference
 
@@ -57,10 +58,10 @@ const vercel = new Vercel({
 
 async function run() {
   const result = await vercel.projects.createProject({
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
+    teamId: 'your_team_id_here',
+    slug: 'your_team_slug_here',
     requestBody: {
-      name: 'a-project-name',
+      name: 'your_project_name_here',
     },
   });
 
@@ -85,44 +86,19 @@ const vercel = new Vercel({
 
 async function run() {
   const result = await vercel.deployments.createDeployment({
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
+    teamId: 'your_team_id_here',
+    slug: 'your_team_slug_here',
     requestBody: {
-      deploymentId: 'dpl_2qn7PZrx89yxY34vEZPD31Y9XVj6',
       files: [
         {
-          data: '<value>',
-          file: 'folder/file.js',
+          data: '<h1>Hello from Vercel</h1>',
+          file: 'index.html',
         },
       ],
-      gitMetadata: {
-        remoteUrl: 'https://github.com/vercel/next.js',
-        commitAuthorName: 'kyliau',
-        commitAuthorEmail: 'kyliau@example.com',
-        commitMessage:
-          'add method to measure Interaction to Next Paint (INP) (#36490)',
-        commitRef: 'main',
-        commitSha: 'dc36199b2234c6586ebe05ec94078a895c707e29',
-        dirty: true,
-        ci: true,
-        ciType: 'github-actions',
-        ciGitProviderUsername: 'rauchg',
-        ciGitRepoVisibility: 'private',
-      },
-      gitSource: {
-        projectId: 987654321,
-        ref: 'main',
-        sha: 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0',
-        type: 'gitlab',
-      },
-      meta: {
-        foo: 'bar',
-      },
-      name: 'my-instant-deployment',
-      project: 'my-deployment-project',
+      name: 'your_project_name_here',
+      project: 'your_project_name_here',
       projectSettings: {
-        buildCommand: 'next build',
-        installCommand: 'pnpm install',
+        framework: null,
       },
       target: 'production',
     },
@@ -149,19 +125,11 @@ const vercel = new Vercel({
 
 async function run() {
   const result = await vercel.deployments.getDeployments({
-    app: 'docs',
-    from: 1612948664566,
     limit: 10,
-    projectId: 'QmXGTs7mvAMMC7WW5ebrM33qKG32QK3h4vmQMjmY',
-    projectIds: ['prj_123', 'prj_456'],
-    target: 'production',
-    to: 1612948664566,
-    users: 'kr1PsOIzqEL5Xg6M4VZcZosf,K4amb7K9dAt5R2vBJWF32bmY',
-    since: 1540095775941,
-    until: 1540095775951,
+    projectId: 'your_project_id_here',
     state: 'BUILDING,READY',
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
+    teamId: 'your_team_id_here',
+    slug: 'your_team_slug_here',
   });
 
   console.log(result);
@@ -172,7 +140,9 @@ run();
 
 ### Delete project
 
-Remove a project and all its deployments using the delete project API.
+Remove a project using the [delete project API](/docs/rest-api/projects/delete-a-project).
+
+> **⚠️ Warning:** Deleting a project also deletes its deployments and cannot be undone.
 
 **SDK**:
 
@@ -184,14 +154,11 @@ const vercel = new Vercel({
 });
 
 async function run() {
-  const result = await vercel.deployments.deleteDeployment({
-    id: 'dpl_5WJWYSyB7BpgTj3EuwF37WMRBXBtPQ2iTMJHJBJyRfd',
-    url: 'https://files-orcin-xi.vercel.app/',
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
+  await vercel.projects.deleteProject({
+    idOrName: 'your_project_id_or_name_here',
+    teamId: 'your_team_id_here',
+    slug: 'your_team_slug_here',
   });
-
-  console.log(result);
 }
 
 run();

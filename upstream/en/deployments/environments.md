@@ -3,7 +3,7 @@ title: Environments
 product: vercel
 url: /docs/deployments/environments
 canonical_url: "https://vercel.com/docs/deployments/environments"
-last_updated: 2026-07-28
+last_updated: 2026-08-14
 type: conceptual
 prerequisites:
   - /docs/deployments
@@ -12,7 +12,7 @@ related:
   - /docs/cli
   - /docs/git
   - /docs/deployments/generated-urls
-  - /docs/deployments/promoting-a-deployment
+  - /docs/domains/working-with-domains/add-a-domain-to-environment
 summary: Environments are for developing locally, testing changes in a pre-production environment, and serving end-users in production.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,18 +27,20 @@ Vercel provides three default environments—**Local**, **Preview**, and **Produ
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
-- [How to prepare your storefront for Black Friday traffic](https://vercel.com/kb/guide/black-friday-preparation?from=related) — A practical checklist for keeping your storefront fast and your checkout path healthy through Black Friday and Cyber Mon
-- [Can I get a fixed IP address for my Vercel deployments?](https://vercel.com/kb/guide/can-i-get-a-fixed-ip-address?from=related) — Vercel deployments use dynamic IPs by default. Learn how Static IPs, Secure Compute, and AWS PrivateLink give you a fixe
-- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
-- [Deploy a TanStack Start app to Vercel](https://vercel.com/kb/guide/deploy-a-tanstack-start-app-to-vercel?from=related) — Learn how to deploy a TanStack Start app to Vercel using the Nitro Vite plugin. Covers framework setup, Git and CLI depl
-- [Environment Variables](https://vercel.com/docs/environment-variables?from=related) — Learn more about environment variables on Vercel.
-- [Manage Across Environments](https://vercel.com/docs/environment-variables/manage-across-environments?from=related) — Add, sync, and verify environment variables across development, preview, production, and custom environments using the C
-- [Create a custom environment for the current project.](https://vercel.com/docs/rest-api/environment/create-a-custom-environment-for-the-current-project?from=related)
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [Retrieve a custom environment](https://vercel.com/docs/rest-api/environment/retrieve-a-custom-environment?from=related)
+- [How to set up a staging environment on Vercel](https://vercel.com/kb/guide/set-up-a-staging-environment-on-vercel?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related) — Set up a staging environment on Vercel with custom environments, staged production deployments, or a branch-based previe
+- [Additional custom environments can now be purchased](https://vercel.com/changelog/additional-custom-environments-can-now-be-purchased?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related)
+- [Prioritize production builds available on all plans](https://vercel.com/changelog/prioritize-production-deployments-to-build-before-queued-preview?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related)
+- [Set team-wide defaults for Deployment Protection](https://vercel.com/changelog/set-team-wide-defaults-for-deployment-protection?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related)
+- [Vercel Connect now supports Custom Environments](https://vercel.com/changelog/vercel-connect-now-supports-custom-environments?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related)
+- [Vercel Secure Compute now supports multiple environments](https://vercel.com/changelog/vercel-secure-compute-now-supports-multiple-environments?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related)
+- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
+- [How to prepare your storefront for Black Friday traffic](https://vercel.com/kb/guide/black-friday-preparation?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related) — A practical checklist for keeping your storefront fast and your checkout path healthy through Black Friday and Cyber Mon
+- [Can I get a fixed IP address for my Vercel deployments?](https://vercel.com/kb/guide/can-i-get-a-fixed-ip-address?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related) — Vercel deployments use dynamic IPs by default. Learn how Static IPs, Secure Compute, and AWS PrivateLink give you a fixe
+- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
+- [Life of a Vercel request: Application-aware routing](https://vercel.com/blog/life-of-a-request-application-aware-routing?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related)
+- [The developer experience of the Frontend Cloud](https://vercel.com/blog/the-developer-experience-of-the-frontend-cloud?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=related)
 
-Full cross-link map for this page: [/docs/deployments/environments.graph.md](/docs/deployments/environments.graph.md)
+Full cross-link map for this page: [/docs/deployments/environments.graph.md](/docs/deployments/environments.graph.md?from=related&source_path=%2Fdocs%2Fdeployments%2Fenvironments&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 1. **Local Development**: developing and testing code changes on your local machine
@@ -53,17 +55,25 @@ This environment is where you develop new features and fix bugs on your local ma
 
 1. **Install the Vercel CLI**:
 
+**Terminal**
+
 ```bash filename="Terminal" package-manager="npm"
 npm i -g vercel
 ```
+
+**Terminal**
 
 ```bash filename="Terminal" package-manager="bun"
 bun i -g vercel
 ```
 
+**Terminal**
+
 ```bash filename="Terminal" package-manager="yarn"
 yarn global add vercel
 ```
+
+**Terminal**
 
 ```bash filename="Terminal" package-manager="pnpm"
 pnpm i -g vercel
@@ -104,6 +114,44 @@ There are two types of preview URLs:
 
 Learn more about [generated URLs](/docs/deployments/generated-urls).
 
+## Setting up a staging environment
+
+Use a staging workflow to test changes before serving them on your production domains. Choose a workflow based on what you need to verify:
+
+| Workflow | Use it when | Availability |
+| --- | --- | --- |
+| [Custom staging environment](#using-a-custom-environment-for-staging) | You need a named environment with its own branch tracking, domain, and variables. | Pro and Enterprise |
+| [Preview branch for staging](#using-a-preview-branch-for-staging) | You want a persistent staging branch with a domain and branch-specific variables. | All plans, including Hobby |
+| [Staged production deployment](#verifying-a-production-build-before-promotion) | You want to verify a build with production configuration before assigning production domains. | All plans |
+
+### Using a custom environment for staging
+
+1. [Create a custom environment](#creating-a-custom-environment) named `staging` in your project's **Environments** settings.
+2. Configure **Branch Tracking** to match your staging branch.
+3. Add the environment variables your staging deployment needs. If you import variables from another environment, review the values for your staging services.
+4. [Assign a domain to the environment](/docs/domains/working-with-domains/add-a-domain-to-environment), such as `staging.example.com`.
+5. Push to the matching branch to deploy your changes to staging.
+
+The environment's domain points to its latest deployment. You can also deploy from the CLI with `vercel deploy --target=staging`.
+
+### Using a preview branch for staging
+
+1. Create a Git branch named `staging`, separate from your [production branch](/docs/git#production-branch).
+2. Add a domain such as `staging.example.com` to your project and [assign it to the Git branch](/docs/domains/working-with-domains/assign-domain-to-a-git-branch). In the domain settings, select **Preview** and set **Git Branch** to `staging`.
+3. Add [Preview environment variables for that branch](/docs/environment-variables#preview-environment-variables). Branch-specific values override Preview variables with the same name, so you only need to add the values that differ.
+4. Push to `staging` to create a preview deployment. After changing environment variables, create a new deployment to apply them.
+5. When testing is complete, merge your changes into the production branch. Keep the staging branch for future testing.
+
+Confirm that the staging domain is assigned to **Preview** and the intended branch. New projects create a [production deployment first](#first-deployment), even when deployed from another branch.
+
+### Verifying a production build before promotion
+
+For a final check with production environment variables, [stage a production deployment](/docs/deployments/promoting-a-deployment#staging-and-promoting-a-production-deployment). In your project's **Environments** settings, select **Production**, open **Branch Tracking**, and disable **Auto-assign Custom Production Domains**.
+
+Deployments from your production branch then wait for manual promotion before serving traffic on your production domains. Verify the deployment through its generated URL, then [promote it to production](/docs/deployments/promoting-a-deployment#staging-and-promoting-a-production-deployment). Promotion assigns the production domains without rebuilding.
+
+Staged production deployments use production environment variables, so testing can access production services and data. Use a custom environment or preview branch with staging credentials when you need separate resources.
+
 ## Production Environment
 
 The **Production** environment is the live, user-facing version of your site or application.
@@ -141,7 +189,7 @@ Team owners and project admins can create, update, or remove custom environments
 
 ### Creating a custom environment
 
-#### \['Dashboard'
+#### Dashboard
 
 1. Go to your project's [**Environments**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fenvironments\&title=Go+to+Environments+settings) settings in the Vercel Dashboard
 2. Click **Create Environment**
@@ -150,7 +198,7 @@ Team owners and project admins can create, update, or remove custom environments
    - **Attach a Domain** to give a persistent URL to your environment
    - **Import variables** from another environment to seed this environment with existing environment variables
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -165,7 +213,7 @@ curl --request POST \
   }'
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 

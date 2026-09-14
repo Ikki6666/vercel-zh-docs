@@ -3,7 +3,7 @@ title: Account Management
 product: vercel
 url: /docs/accounts
 canonical_url: "https://vercel.com/docs/accounts"
-last_updated: 2026-06-16
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   []
@@ -27,18 +27,20 @@ When you first sign up for Vercel, you'll create an account. This account is use
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Constructing CI](https://turborepo.dev/docs/crafting-your-repository/constructing-ci?from=related) — Set up CI pipelines with Remote Caching, task filtering, Docker support, and affected package detection for maximum spee
-- [Firewall Terraform Configuration](https://vercel.com/kb/guide/firewall-terraform-configuration?from=related) — Learn how to create scalable firewall configurations with Terraform
-- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
-- [Teams](https://v0.app/docs/teams?from=related) — Collaborate with your team on projects with shared resources.
-- [Account](https://v0.app/docs/account?from=related) — Manage your account and billing information.
-- [Troubleshoot project collaboration](https://vercel.com/docs/deployments/troubleshoot-project-collaboration?from=related) — Learn about common reasons for deployment issues related to team member requirements and how to resolve them.
-- [Hobby team transition](https://vercel.com/docs/security/enterprise-managed-users-account-update?from=related) — Explains the account update screen EMU members see at SSO sign-in and how to complete it.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Manage from Dashboard](https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard?from=related) — Learn how to manage Sign in with Vercel from the Dashboard
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
+- [Constructing CI](https://turborepo.dev/docs/crafting-your-repository/constructing-ci?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Set up CI pipelines with Remote Caching, task filtering, Docker support, and affected package detection for maximum spee
+- [Auto-add Git committers to your team](https://vercel.com/changelog/auto-add-git-committers-to-your-team?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related)
+- [Introducing new token formats and secret scanning](https://vercel.com/changelog/new-token-formats-and-secret-scanning?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related)
+- [Tag-based cache invalidation now available for all responses](https://vercel.com/changelog/tag-based-cache-invalidation-now-available-for-all-responses?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related)
+- [Firewall Terraform Configuration](https://vercel.com/kb/guide/firewall-terraform-configuration?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Learn how to create scalable firewall configurations with Terraform
+- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
+- [Using TanStack AI with Vercel Sandbox](https://vercel.com/kb/guide/tanstack-ai-vercel-sandbox?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Run coding agents in isolated Vercel Sandbox microVMs with the @tanstack/ai-sandbox-vercel provider, with durable resume
+- [Teams](https://v0.app/docs/teams?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Collaborate with your team on projects with shared resources.
+- [September 2020](https://vercel.com/blog/changelog-september-2020?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related)
+- [Account](https://v0.app/docs/account?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Manage your account and billing information.
+- [Transition your Hobby team after EMU enrollment](https://vercel.com/docs/security/enterprise-managed-users-account-update?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Explains the account update screen EMU members see at SSO sign-in and how to complete it.
+- [Troubleshoot project collaboration](https://vercel.com/docs/deployments/troubleshoot-project-collaboration?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=related) — Learn about common reasons for deployment issues related to team member requirements and how to resolve them.
 
-Full cross-link map for this page: [/docs/accounts.graph.md](/docs/accounts.graph.md)
+Full cross-link map for this page: [/docs/accounts.graph.md](/docs/accounts.graph.md?from=related&source_path=%2Fdocs%2Faccounts&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - [Hobby](/docs/plans/hobby)
@@ -111,13 +113,50 @@ Your Hobby team on Vercel can have only one login connection per third-party ser
 
 For multiple logins from the same service, create a new Vercel Hobby team.
 
+## Managing your profile
+
+You can change your personal avatar and username in [your account settings](/account/settings).
+
+If you're an [Enterprise Managed User](/docs/security/enterprise-managed-users), your organization manages your profile, and you can't change your avatar or username yourself.
+
+### Changing your avatar
+
+To update your personal avatar:
+
+1. Open [your account settings](/account/settings).
+2. In the **Avatar** section, select your current avatar.
+3. Choose a PNG, JPEG, or WebP image from your files.
+4. Adjust the crop and click **Set Avatar**.
+
+Your new avatar appears when the upload completes.
+
+### Changing your username
+
+Your username identifies your personal account and its URL namespace, `vercel.com/<username>`. To change it:
+
+1. Open [your account settings](/account/settings).
+2. In the **Username** section, enter your new username using up to 48 characters.
+3. Click **Save**.
+
+Vercel displays a confirmation when your username updates.
+
 ## Teams
 
 Teams on Vercel let you collaborate with other members on projects and access additional resources.
 
+### Switching teams
+
+To view another team's projects and resources:
+
+1. Open the [Vercel dashboard](/dashboard).
+2. Select the team switcher at the top left of the navigation bar.
+3. Select the team you want to view from the list of teams you belong to.
+
+To choose which team appears when you first log in or open the dashboard, [change your default team](#how-to-change-your-default-team).
+
 ### Creating a team
 
-#### \['Dashboard'
+#### Dashboard
 
 1. Click on the team switcher at the top left of the nav bar
 2. Choose to create a new team
@@ -126,7 +165,7 @@ Teams on Vercel let you collaborate with other members on projects and access ad
 
 ![Image](https://vercel.com/docs-assets/static/docs/concepts/teams/new-team-light.png)
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -141,7 +180,7 @@ curl --request POST \
 }'
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 

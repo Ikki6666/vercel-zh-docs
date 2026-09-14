@@ -3,7 +3,7 @@ title: Webhooks API Reference
 product: vercel
 url: /docs/webhooks/webhooks-api
 canonical_url: "https://vercel.com/docs/webhooks/webhooks-api"
-last_updated: 2026-07-15
+last_updated: 2026-09-03
 type: reference
 prerequisites:
   - /docs/webhooks
@@ -27,14 +27,15 @@ Vercel Integrations allow you to subscribe to certain trigger-based events throu
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
-- [List deployments](https://vercel.com/docs/rest-api/deployments/list-deployments?from=related)
-- [Deployment integration actions](https://vercel.com/docs/integrations/create-integration/deployment-integration-action?from=related) — These actions allow integration providers to set up automated tasks with Vercel deployments.
-- [Instant Rollback](https://vercel.com/docs/instant-rollback?from=related) — Learn how to perform an Instant Rollback on your production deployments and quickly roll back to a previously deployed p
-- [Get deployment events](https://vercel.com/docs/rest-api/deployments/get-deployment-events?from=related)
-- [Audit Logs](https://vercel.com/docs/audit-log?from=related) — Learn how to track and analyze your team members' activities.
+- [New webhook events for domain management](https://vercel.com/changelog/new-webhook-events-for-domain-management?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=related)
+- [Subscribe to webhook events for Vercel Flags](https://vercel.com/changelog/subscribe-to-webhook-events-for-vercel-flags?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=related)
+- [Audit Logs](https://vercel.com/docs/audit-log?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=related) — Learn how to track and analyze your team members' activities.
+- [Deployment integration actions](https://vercel.com/docs/integrations/create-integration/deployment-integration-action?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=related) — These actions allow integration providers to set up automated tasks with Vercel deployments.
+- [Performing an Instant Rollback on a Deployment](https://vercel.com/docs/instant-rollback?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=related) — Learn how to perform an Instant Rollback on your production deployments and quickly roll back to a previously deployed p
+- [Get deployment events](https://vercel.com/docs/rest-api/deployments/get-deployment-events?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=related) — GET /v3/deployments/{idOrUrl}/events — Get the build logs of a deployment by deployment ID and build ID. It can work as
+- [List deployments](https://vercel.com/docs/rest-api/deployments/list-deployments?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=related) — GET /v7/deployments — List deployments under the authenticated user or team. If a deployment hasn't finished uploading \\
 
-Full cross-link map for this page: [/docs/webhooks/webhooks-api.graph.md](/docs/webhooks/webhooks-api.graph.md)
+Full cross-link map for this page: [/docs/webhooks/webhooks-api.graph.md](/docs/webhooks/webhooks-api.graph.md?from=related&source_path=%2Fdocs%2Fwebhooks%2Fwebhooks-api&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Payload
@@ -665,6 +666,9 @@ Occurs whenever an alert is triggered.
 | **payload.projectSlug**              | [String](/docs/rest-api#types) | The project slug.                                              |
 | **payload.teamSlug**                 | [String](/docs/rest-api#types) | The team slug.                                                 |
 | **payload.groupId**                  | [String](/docs/rest-api#types) | Optional group identifier for related alerts.                  |
+| **payload.severity**                 | [String](/docs/rest-api#types) | The alert severity. Possible values are `low`, `medium`, `high`, and `critical`. Vercel calculates severity automatically, and only a completed Vercel Agent investigation sets `critical`. |
+| **payload.level**                    | [String](/docs/rest-api#types) | The legacy alert level derived from `severity`. Possible values are `warning`, `error`, and `critical`. Both `high` and `critical` severities map to `critical`, so use `severity` to distinguish them. |
+| **payload.initialSeverity**          | [String](/docs/rest-api#types) | The severity calculated when the alert first triggered, before any Vercel Agent investigation. Possible values are `low`, `medium`, and `high`. Optional.                                   |
 | **payload.alerts\[].startedAt**       | [String](/docs/rest-api#types) | ISO 8601 timestamp when this specific alert started.           |
 | **payload.alerts\[].title**           | [String](/docs/rest-api#types) | Human-readable title for the alert.                            |
 | **payload.alerts\[].unit**            | [String](/docs/rest-api#types) | Unit of measurement (e.g., `requests`).                        |
@@ -1137,6 +1141,8 @@ Occurs whenever a project has been created.
 > **💡 Note:** This event is sent only when the Integration has access to all projects in a
 > Vercel scope.
 
+<br />
+
 | Key                      | [Type](/docs/rest-api#types) | Description            |
 | ------------------------ | ------------------------------------------------------------------------------- | ---------------------- |
 | **payload.project.id**   | [ID](/docs/rest-api#types)           | The ID of the project. |
@@ -1150,6 +1156,8 @@ Occurs whenever a Project has been removed.
 
 > **💡 Note:** This event is sent only when the Integration has access to all Projects in a
 > Vercel scope.
+
+<br />
 
 | Key                      | [Type](/docs/rest-api#types) | Description            |
 | ------------------------ | ------------------------------------------------------------------------------- | ---------------------- |
@@ -1219,6 +1227,8 @@ The recommended method to check is to use the [`x-vercel-signature`](/docs/heade
 
 For example, you can validate a webhook request as follows:
 
+**pages/api/webhook-validator-example.ts**
+
 ```ts filename="pages/api/webhook-validator-example.ts" framework="nextjs"
 import type { NextApiRequest, NextApiResponse } from 'next';
 import crypto from 'crypto';
@@ -1264,6 +1274,8 @@ export const config = {
   },
 };
 ```
+
+**pages/api/webhook-validator-example.js**
 
 ```js filename="pages/api/webhook-validator-example.js" framework="nextjs"
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -1311,6 +1323,8 @@ export const config = {
 };
 ```
 
+**api/webhook-validator-example.ts**
+
 ```ts filename="api/webhook-validator-example.ts" framework="other"
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import crypto from 'crypto';
@@ -1356,6 +1370,8 @@ export const config = {
   },
 };
 ```
+
+**api/webhook-validator-example.js**
 
 ```js filename="api/webhook-validator-example.js" framework="other"
 import type { VercelRequest, VercelResponse } from '@vercel/node';
@@ -1403,6 +1419,8 @@ export const config = {
 };
 ```
 
+**app/api/webhook-validator-example/route.ts**
+
 ```ts filename="app/api/webhook-validator-example/route.ts" framework="nextjs-app"
 import crypto from 'crypto';
 
@@ -1440,6 +1458,8 @@ function sha1(data: Buffer, secret: string): string {
   return crypto.createHmac('sha1', secret).update(data).digest('hex');
 }
 ```
+
+**app/api/webhook-validator-example/route.js**
 
 ```js filename="app/api/webhook-validator-example/route.js" framework="nextjs-app"
 import crypto from 'crypto';

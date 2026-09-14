@@ -3,7 +3,7 @@ title: Frontends on Vercel
 product: vercel
 url: /docs/frameworks/frontend
 canonical_url: "https://vercel.com/docs/frameworks/frontend"
-last_updated: 2025-09-24
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/frameworks
@@ -27,14 +27,17 @@ The following frontend frameworks are supported with zero-configuration.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Full-stack](https://vercel.com/docs/frameworks/full-stack?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
-- [All Frameworks](https://vercel.com/docs/frameworks/more-frameworks?from=related) — Learn about the frameworks that can be deployed to Vercel.
-- [Vercel vs Northflank](https://vercel.com/kb/guide/vercel-vs-northflank?from=related) — A detailed guide to Vercel vs Northflank: Fluid compute, CDN and caching, security defaults, AI infrastructure, GPU comp
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
-- [Remix](https://vercel.com/docs/frameworks/full-stack/remix?from=related) — Learn how to use Vercel's features with Remix.
-- [Features](https://vercel.com/docs/build-output-api/features?from=related) — Learn how to implement common Vercel platform features through the Build Output API.
+- [Full-stack frameworks on Vercel](https://vercel.com/docs/frameworks/full-stack?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [Supported Frameworks on Vercel](https://vercel.com/docs/frameworks/more-frameworks?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related) — Learn about the frameworks that can be deployed to Vercel.
+- [Announcing the Build Output API](https://vercel.com/blog/build-output-api?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related)
+- [New features for SvelteKit: Optimize your application with ease](https://vercel.com/blog/feature-complete-sveltekit?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related)
+- [Run multiple frameworks in one project with Vercel Services](https://vercel.com/changelog/run-multiple-frameworks-in-one-project-with-vercel-services?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related)
+- [Life of a Vercel request: What happens when a user presses enter](https://vercel.com/blog/life-of-a-vercel-request-what-happens-when-a-user-presses-enter?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related)
+- [Remix on Vercel](https://vercel.com/docs/frameworks/full-stack/remix?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related) — Deploy Remix applications to Vercel and configure the Vercel Vite preset, SSR, streaming, caching, and analytics.
+- [Features](https://vercel.com/docs/build-output-api/features?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related) — Learn how to implement common Vercel platform features through the Build Output API.
+- [Nuxt on Vercel](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=related) — Deploy Nuxt applications to Vercel and configure rendering, functions, middleware, routing, image optimization, and cach
 
-Full cross-link map for this page: [/docs/frameworks/frontend.graph.md](/docs/frameworks/frontend.graph.md)
+Full cross-link map for this page: [/docs/frameworks/frontend.graph.md](/docs/frameworks/frontend.graph.md?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - **Angular**: Angular is a TypeScript-based cross-platform framework from Google.
@@ -59,6 +62,8 @@ Full cross-link map for this page: [/docs/frameworks/frontend.graph.md](/docs/fr
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/ember) | [View Demo](https://ember-template.vercel.app)
 - **eve**: A filesystem-first framework for durable backend agents on Vercel.
   - [Deploy](https://vercel.com/new/clone?demo-title=eve+Chat+Template&demo-description=A+persisted+Next.js+chat+template+for+eve%2C+built+with+shadcn%2Fui%2C+Tailwind+CSS%2C+Streamdown%2C+Better+Auth%2C+Drizzle%2C+and+Neon.&demo-url=https%3A%2F%2Feve-chat-template.labs.vercel.dev%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2FYXYTquqpBmvVFbASdIvrC%2F04d5a87ebe706ed31adc65193f3b4cdd%2Feve-chat__1_.png&project-name=eve+Chat+Template&repository-name=eve-chat-template&repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Feve-chat-template&from=templates&skippable-integrations=1) | [View Demo](https://eve-chat-template.labs.vercel.dev/)
+- **Factory (Eve)**: A software factory built with Eve.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/factory-eve)
 - **FastHTML**: The fastest way to create an HTML app
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/fasthtml) | [View Demo](https://fasthtml-template.vercel.app)
 - **Gatsby.js**: Gatsby helps developers build blazing fast websites and apps with React.
@@ -123,6 +128,8 @@ Full cross-link map for this page: [/docs/frameworks/frontend.graph.md](/docs/fr
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/vue) | [View Demo](https://vue-template.vercel.app)
 - **VuePress**: Vue-powered Static Site Generator
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/vuepress) | [View Demo](https://vuepress-starter-template.vercel.app)
+- **xmcp**: The MCP framework for building AI-powered tools
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/xmcp) | [View Demo](https://xmcp-template.vercel.app/)
 - **Zola**: Everything you need to make a static site engine in one binary.
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/zola) | [View Demo](https://zola-template.vercel.app)
 

@@ -3,7 +3,7 @@ title: Vite on Vercel
 product: vercel
 url: /docs/frameworks/frontend/vite
 canonical_url: "https://vercel.com/docs/frameworks/frontend/vite"
-last_updated: 2026-07-01
+last_updated: 2026-08-26
 type: conceptual
 prerequisites:
   - /docs/frameworks/frontend
@@ -13,8 +13,8 @@ related:
   - /docs/frameworks/full-stack/nuxt
   - /docs/frameworks/frontend/create-react-app
   - /docs/frameworks/full-stack/vite-with-nitro
-  - /docs/environment-variables/system-environment-variables
-summary: "Learn how to use Vercel's features with Vite."
+  - /docs/cli
+summary: Deploy Vite projects to Vercel and configure environment variables, Vercel Functions, server-side rendering, and SPA rewrites.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -28,18 +28,18 @@ Vite is an opinionated build tool that aims to provide a faster and leaner devel
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop?from=related) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
-- [What is the Nitro Vite plugin?](https://vercel.com/kb/guide/nitro-vite-plugin?from=related) — The Nitro Vite plugin \\(nitro/vite\\) adds SSR, API routes, and deploy-anywhere server builds to any Vite app. Learn what
-- [Deploy a TanStack Start app to Vercel](https://vercel.com/kb/guide/deploy-a-tanstack-start-app-to-vercel?from=related) — Learn how to deploy a TanStack Start app to Vercel using the Nitro Vite plugin. Covers framework setup, Git and CLI depl
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [How to ship a Nitro app on Vercel](https://vercel.com/kb/guide/ship-a-nitro-app-on-vercel?from=related) — Deploy a Nitro app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
-- [Vite](https://turborepo.dev/docs/guides/frameworks/vite?from=related) — Add and configure Vite applications in your Turborepo monorepo.
-- [All Frameworks](https://vercel.com/docs/frameworks/more-frameworks?from=related) — Learn about the frameworks that can be deployed to Vercel.
-- [Build System](https://vercel.com/docs/fundamentals/builds?from=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
-- [Getting Started](https://vercel.com/docs/microfrontends/quickstart?from=related) — Learn about getting started on Vercel.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
+- [What is the Nitro Vite plugin?](https://vercel.com/kb/guide/nitro-vite-plugin?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — The Nitro Vite plugin \\(nitro/vite\\) adds SSR, API routes, and deploy-anywhere server builds to any Vite app. Learn what
+- [How to Deploy a TanStack Start app to Vercel](https://vercel.com/kb/guide/deploy-a-tanstack-start-app-to-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Deploy a TanStack Start app to Vercel with the Nitro Vite plugin. Covers Git and CLI deployment, Fluid compute defaults,
+- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
+- [How to ship a Nitro app on Vercel](https://vercel.com/kb/guide/ship-a-nitro-app-on-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Deploy a Nitro app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
+- [Nitro on Vercel](https://vercel.com/docs/frameworks/backend/nitro?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Deploy Nitro applications to Vercel with zero configuration. Learn about observability, ISR, and custom build configurat
+- [Supported Frameworks on Vercel](https://vercel.com/docs/frameworks/more-frameworks?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Learn about the frameworks that can be deployed to Vercel.
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
+- [How Vercel builds your application](https://vercel.com/docs/fundamentals/builds?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
+- [Getting started with microfrontends](https://vercel.com/docs/microfrontends/quickstart?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=related) — Learn how to get started with microfrontends on Vercel.
 
-Full cross-link map for this page: [/docs/frameworks/frontend/vite.graph.md](/docs/frameworks/frontend/vite.graph.md)
+Full cross-link map for this page: [/docs/frameworks/frontend/vite.graph.md](/docs/frameworks/frontend/vite.graph.md?from=related&source_path=%2Fdocs%2Fframeworks%2Ffrontend%2Fvite&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 These features make Vite more desirable than out-of-the-box CLIs when building larger projects with frameworks for many developers.
@@ -47,6 +47,15 @@ These features make Vite more desirable than out-of-the-box CLIs when building l
 Vite powers popular frameworks like [SvelteKit](/docs/frameworks/full-stack/sveltekit) and [Nuxt](/docs/frameworks/full-stack/nuxt), and is often used in projects built with [Vue](/kb/guide/deploying-vuejs-to-vercel), [Svelte](/docs/frameworks/full-stack/sveltekit), [React](/docs/frameworks/frontend/create-react-app), [Preact](/kb/guide/deploying-preact-with-vercel), [Nitro](/docs/frameworks/full-stack/vite-with-nitro), [and more](https://github.com/vitejs/vite/tree/main/packages/create-vite).
 
 ## Getting started
+
+To get started with Vite on Vercel:
+
+- If you already have a project with Vite, install [Vercel CLI](/docs/cli) and run the vercel command from your project's root directory
+- Clone one of our Vite example repos to your favorite git provider and deploy it on Vercel with the button below:
+
+\- Or, choose a template from Vercel's marketplace:
+
+Vercel deployments can \[integrate with your git provider]\(/docs/git) to \[generate preview URLs]\(/docs/deployments/environments#preview-environment-pre-production) for each pull request you make to your Vite project.
 
 ## Environment Variables
 

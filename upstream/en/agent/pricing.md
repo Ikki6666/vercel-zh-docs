@@ -3,7 +3,7 @@ title: Vercel Agent Pricing
 product: vercel
 url: /docs/agent/pricing
 canonical_url: "https://vercel.com/docs/agent/pricing"
-last_updated: 2026-06-30
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/agent
@@ -27,16 +27,20 @@ Vercel Agent charges the underlying provider inference rate with no markup, plus
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The Complete Guide to Vercel Agent](https://vercel.com/kb/guide/vercel-agent?from=related) — Learn what Vercel Agent does, how to set up Code Review, Investigation, Chat, and Installation, and what each feature co
-- [Using Vercel Agent to review pull requests](https://vercel.com/kb/guide/vercel-agent-code-review?from=related) — Set up Vercel Agent Code Review to automatically review pull requests, apply validated fixes, request reviews with @verc
-- [Pricing](https://v0.app/docs/pricing?from=related) — Understand the v0 plans, pricing, and usage limits.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Pricing and Limits](https://vercel.com/docs/eve/pricing?from=related) — Understand how eve usage maps to Vercel resources and inherited platform limits.
-- [Pricing](https://vercel.com/docs/ai-gateway/pricing?from=related) — Learn about pricing for AI Gateway.
-- [Pricing and Limits](https://vercel.com/docs/connect/pricing?from=related) — How Vercel Connect is billed across plans, how to stop being billed, and the platform limits that apply during beta.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [The Complete Guide to Vercel Agent](https://vercel.com/kb/guide/vercel-agent?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — Learn what Vercel Agent does, how to set up Code Review, Investigation, Chat, and Installation, and what each feature co
+- [Vercel Agent investigations now included in Observability Plus](https://vercel.com/changelog/vercel-agent-investigations-now-included-in-observability-plus?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related)
+- [Vercel for Slack now in public beta](https://vercel.com/changelog/vercel-for-slack-now-in-public-beta?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related)
+- [Using Vercel Agent to review pull requests](https://vercel.com/kb/guide/vercel-agent-code-review?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — Set up Vercel Agent Code Review to automatically review pull requests, apply validated fixes, request reviews with @verc
+- [Vercel Agent has updated pricing](https://vercel.com/changelog/vercel-agent-has-updated-pricing?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related)
+- [Pricing](https://v0.app/docs/pricing?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — Understand the v0 plans, pricing, and usage limits.
+- [An expanded Vercel Agent: chat, investigations, and approved actions, now in public beta](https://vercel.com/changelog/an-expanded-vercel-agent-chat-investigations-and-approved-actions-now-in-public-beta?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related)
+- [Pricing on Vercel](https://vercel.com/docs/pricing?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Pricing and Limits](https://vercel.com/docs/eve/pricing?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — Understand how eve usage maps to Vercel resources and inherited platform limits.
+- [AI Gateway Pricing](https://vercel.com/docs/ai-gateway/pricing?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — Understand AI Gateway token pricing, free and paid credits, BYOK costs, add-on charges, and payment fees. Manage credit
+- [Vercel Connect Pricing](https://vercel.com/docs/connect/pricing?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — How Vercel Connect is billed for token requests and triggers across plans and how to stop being billed.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
 
-Full cross-link map for this page: [/docs/agent/pricing.graph.md](/docs/agent/pricing.graph.md)
+Full cross-link map for this page: [/docs/agent/pricing.graph.md](/docs/agent/pricing.graph.md?from=related&source_path=%2Fdocs%2Fagent%2Fpricing&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Pricing summary
@@ -98,11 +102,13 @@ If certain repositories, alerts, or Chat tasks consistently cost more, adjust yo
 
 An Owner or Billing member can manage Vercel Agent billing from the team's [Billing settings](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fbilling\&title=Open+Billing+Settings).
 
-To stop new Vercel Agent usage:
+To reduce new Vercel Agent usage, manage each source of automatic usage separately:
 
 - Disable [Dashboard chat](/docs/agent/chat/dashboard#enable-or-disable-dashboard-chat) to prevent new dashboard conversations.
-- Disable [Code Review](/docs/agent/pr-review/usage#disable-vercel-agent) to stop automatic pull request reviews.
+- Turn off [automatic Code Reviews](/docs/agent/pr-review/usage#turn-off-automatic-code-reviews) to stop automatic pull request reviews. Manual reviews and explicit `@vercel` requests remain available and can create paid usage.
 - Disable [Vercel Agent Investigation](/docs/agent/investigation#disable-vercel-agent-investigation) to stop automatic alert investigations.
+
+Manual investigations and investigation reruns remain available and can create paid usage. Review the [Agent Usage page](#track-costs-and-usage) after you change a setting.
 
 
 ---

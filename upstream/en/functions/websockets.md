@@ -3,7 +3,7 @@ title: WebSockets
 product: vercel
 url: /docs/functions/websockets
 canonical_url: "https://vercel.com/docs/functions/websockets"
-last_updated: 2026-07-24
+last_updated: 2026-08-10
 type: how-to
 prerequisites:
   - /docs/functions
@@ -21,25 +21,26 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: WebSockets
 
+Vercel Functions can serve WebSocket connections, keeping a bidirectional connection open between a client and your server-side code. Use WebSockets for realtime features such as interactive AI streaming, chat, and collaborative apps.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Do Vercel Serverless Functions support WebSocket connections?](https://vercel.com/kb/guide/do-vercel-serverless-functions-support-websocket-connections?from=related) — Information on Vercel's support for WebSocket connections with Vercel Functions.
-- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
-- [Build Figma-style multiplayer cursors with WebSockets on Vercel](https://vercel.com/kb/guide/real-time-board-nextjs-fastapi?from=related) — Learn how to build Figma-style multiplayer cursors with Next.js and FastAPI, kept consistent across multiple Vercel Func
-- [Build a real-time chat app with WebSockets on Vercel](https://vercel.com/kb/guide/real-time-chat-websockets?from=related) — Build and deploy a single-room messaging app in Next.js with real-time chat, typing indicators, and live online user cou
-- [Build Notion-style real-time presence with WebSockets on Vercel](https://vercel.com/kb/guide/real-time-presence-hono-react?from=related) — Build the avatar faces that appear when a teammate opens a page and vanish when they leave. Powered by a Hono WebSocket
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
-- [Nitro](https://vercel.com/docs/frameworks/backend/nitro?from=related) — Deploy Nitro applications to Vercel with zero configuration. Learn about observability, ISR, and custom build configurat
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Bun 1.4 is now available in Vercel Functions](https://vercel.com/changelog/bun-1-4-is-now-available-in-vercel-functions?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related)
+- [WebSocket support is now available for Python Functions](https://vercel.com/changelog/websocket-support-is-now-available-for-python-functions?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related)
+- [WebSocket support is now in Public Beta](https://vercel.com/changelog/websocket-support-is-now-in-public-beta?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related)
+- [Do Vercel Serverless Functions support WebSocket connections?](https://vercel.com/kb/guide/do-vercel-serverless-functions-support-websocket-connections?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related) — Information on Vercel's support for WebSocket connections with Vercel Functions.
+- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
+- [Build Figma-style multiplayer cursors with WebSockets on Vercel](https://vercel.com/kb/guide/real-time-board-nextjs-fastapi?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related) — Learn how to build Figma-style multiplayer cursors with Next.js and FastAPI, kept consistent across multiple Vercel Func
+- [Build Notion-style real-time presence with WebSockets on Vercel](https://vercel.com/kb/guide/real-time-presence-hono-react?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related) — Build the avatar faces that appear when a teammate opens a page and vanish when they leave. Powered by a Hono WebSocket
+- [How Vercel Services run on Fluid compute](https://vercel.com/kb/guide/vercel-services-fluid-compute?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related) — The backends in a Vercel Services project run as Vercel Functions on Fluid compute by default. Learn how optimized concu
+- [Backends on Vercel](https://vercel.com/docs/frameworks/backend?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
 
-Full cross-link map for this page: [/docs/functions/websockets.graph.md](/docs/functions/websockets.graph.md)
+Full cross-link map for this page: [/docs/functions/websockets.graph.md](/docs/functions/websockets.graph.md?from=related&source_path=%2Fdocs%2Ffunctions%2Fwebsockets&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Vercel Functions can serve WebSocket connections, keeping a bidirectional connection open between a client and your server-side code. Use WebSockets for realtime features such as interactive AI streaming, chat, and collaborative apps.
 
 A single WebSocket connection is pinned to one Vercel Function instance. Messages sent over that connection reach the same function instance for the lifetime of the connection, and Fluid compute allows a single function instance to handle multiple WebSocket connections.
 
@@ -177,6 +178,8 @@ The Bun WebSocket API on Vercel currently has these differences from a standalon
 
 Node.js server frameworks such as Express, Hono, and h3 can also serve WebSocket connections on Vercel:
 
+**api/server.ts**
+
 ```ts filename="api/server.ts" framework=express
 import { createServer } from 'node:http';
 import express from 'express';
@@ -194,6 +197,8 @@ wss.on('connection', (ws) => {
 
 export default server;
 ```
+
+**api/server.ts**
 
 ```ts filename="api/server.ts" framework=hono
 import { serve, upgradeWebSocket } from '@hono/node-server';
@@ -220,6 +225,8 @@ const server = serve({
 
 export default server;
 ```
+
+**api/server.ts**
 
 ```ts filename="api/server.ts" framework=h3
 import { H3, serve, defineWebSocketHandler } from 'h3';

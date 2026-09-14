@@ -3,7 +3,7 @@ title: Encryption and TLS
 product: vercel
 url: /docs/cdn-security/encryption
 canonical_url: "https://vercel.com/docs/cdn-security/encryption"
-last_updated: 2026-07-02
+last_updated: 2026-08-13
 type: conceptual
 prerequisites:
   - /docs/cdn-security
@@ -23,13 +23,16 @@ Every **deployment** on Vercel is served over an HTTPS connection. Vercel automa
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Working with SSL](https://vercel.com/docs/domains/working-with-ssl?from=related) — Learn how Vercel uses SSL certification to keep your site secure.
-- [Overview](https://vercel.com/docs/security?from=related) — Vercel provides built-in and customizable features to ensure that your site is secure.
-- [How Vercel CDN works](https://vercel.com/docs/how-vercel-cdn-works?from=related) — Learn how Vercel's CDN processes requests through routing, caching, and compute layers to deliver your content with low
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Overview](https://vercel.com/docs/cdn?from=related) — Vercel's CDN is a globally distributed platform that handles routing, caching, security, and compression for every deplo
+- [Deprecating the DHE cipher suite for TLS connections](https://vercel.com/changelog/deprecating-the-dhe-cipher-suite-for-tls-connections?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related)
+- [Encrypted Client Hello (ECH) is now supported on Vercel CDN](https://vercel.com/changelog/encrypted-client-hello-now-supported-on-vercel-cdn?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related)
+- [Automatic SSL with Vercel and Let's Encrypt](https://vercel.com/blog/automatic-ssl-with-vercel-lets-encrypt?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related)
+- [Working with SSL Certificates](https://vercel.com/docs/domains/working-with-ssl?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related) — Learn how Vercel uses SSL certification to keep your site secure.
+- [Security](https://vercel.com/docs/vercel-blob/security?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related) — Learn how your Vercel Blob store is secured
+- [Vercel security overview](https://vercel.com/docs/security?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related) — Vercel provides built-in and customizable features to ensure that your site is secure.
+- [How Vercel CDN works](https://vercel.com/docs/how-vercel-cdn-works?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related) — Learn how Vercel's CDN processes requests through routing, caching, and compute layers to deliver your content with low
+- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
 
-Full cross-link map for this page: [/docs/cdn-security/encryption.graph.md](/docs/cdn-security/encryption.graph.md)
+Full cross-link map for this page: [/docs/cdn-security/encryption.graph.md](/docs/cdn-security/encryption.graph.md?from=related&source_path=%2Fdocs%2Fcdn-security%2Fencryption&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 The CDN automatically forwards any HTTP requests to your **deployment** to HTTPS using the `308` status code:

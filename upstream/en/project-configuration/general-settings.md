@@ -3,7 +3,7 @@ title: General settings
 product: vercel
 url: /docs/project-configuration/general-settings
 canonical_url: "https://vercel.com/docs/project-configuration/general-settings"
-last_updated: 2026-02-26
+last_updated: 2026-08-25
 type: reference
 prerequisites:
   - /docs/project-configuration
@@ -21,24 +21,25 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Project name
 
+Project names can be up to 100 characters long and must be lowercase. They can include letters, digits, and the following characters: `.`, `\_`, `-`. However, they cannot contain the sequence `---`.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Firewall Terraform Configuration](https://vercel.com/kb/guide/firewall-terraform-configuration?from=related) — Learn how to create scalable firewall configurations with Terraform
-- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Security settings](https://vercel.com/docs/project-configuration/security-settings?from=related) — Configure security settings for your Vercel project, including Logs and Source Protection, Vercel Support Code Visibilit
-- [Build Features](https://vercel.com/docs/builds/build-features?from=related) — Learn how to customize your deployments using Vercel's build features.
-- [Project Linking](https://vercel.com/docs/cli/project-linking?from=related) — Learn how to link existing Vercel Projects with Vercel CLI.
-- [Projects](https://vercel.com/docs/projects?from=related) — A project is the application that you have deployed to Vercel.
+- [Firewall Terraform Configuration](https://vercel.com/kb/guide/firewall-terraform-configuration?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — Learn how to create scalable firewall configurations with Terraform
+- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
+- [Using TanStack AI with Vercel Sandbox](https://vercel.com/kb/guide/tanstack-ai-vercel-sandbox?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — Run coding agents in isolated Vercel Sandbox microVMs with the @tanstack/ai-sandbox-vercel provider, with durable resume
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [Security settings](https://vercel.com/docs/project-configuration/security-settings?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — Configure security settings for your Vercel project, including Logs and Source Protection, Vercel Support Code Visibilit
+- [Build Features for Customizing Deployments](https://vercel.com/docs/builds/build-features?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — Learn how to customize your deployments using Vercel's build features.
+- [Linking Projects with Vercel CLI](https://vercel.com/docs/cli/project-linking?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — Learn how to link existing Vercel Projects with Vercel CLI.
+- [Projects overview](https://vercel.com/docs/projects?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=related) — A project is the application that you have deployed to Vercel.
 
-Full cross-link map for this page: [/docs/project-configuration/general-settings.graph.md](/docs/project-configuration/general-settings.graph.md)
+Full cross-link map for this page: [/docs/project-configuration/general-settings.graph.md](/docs/project-configuration/general-settings.graph.md?from=related&source_path=%2Fdocs%2Fproject-configuration%2Fgeneral-settings&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Project names can be up to 100 characters long and must be lowercase. They can include letters, digits, and the following characters: `.`, `\_`, `-`. However, they cannot contain the sequence `---`.
 
 ## Project avatar
 

@@ -3,7 +3,7 @@ title: Authorization Server API
 product: vercel
 url: /docs/sign-in-with-vercel/authorization-server-api
 canonical_url: "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api"
-last_updated: 2026-03-30
+last_updated: 2026-08-21
 type: how-to
 prerequisites:
   - /docs/sign-in-with-vercel
@@ -27,14 +27,15 @@ The Authorization Server API exposes a set of endpoints which are used by your a
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Authentication](https://eve.dev/docs/guides/auth-and-route-protection?from=related) — Secure your agent's HTTP routes with an ordered auth walk, verifier helpers, and connection OAuth via Vercel Connect.
-- [Getting Started](https://vercel.com/docs/sign-in-with-vercel/getting-started?from=related) — Learn how to get started with Sign in with Vercel
-- [Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
-- [Quickstart](https://vercel.com/docs/kms/quickstart?from=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
-- [OIDC Reference](https://vercel.com/docs/oidc/reference?from=related) — Review helper libraries to help you connect with your backend and understand the structure of an OIDC token.
-- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related)
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=related)
+- [The Complete Guide to Vercel Connect](https://vercel.com/kb/guide/vercel-connect?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=related) — Use Vercel Connect to call provider APIs like Slack, GitHub, Linear, Microsoft, Discord, Snowflake, and Salesforce from
+- [Getting started with Sign in with Vercel](https://vercel.com/docs/sign-in-with-vercel/getting-started?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=related) — Learn how to get started with Sign in with Vercel
+- [Vercel KMS Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
+- [Vercel KMS Quickstart](https://vercel.com/docs/kms/quickstart?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
+- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/token — Sign a JWT with a KMS issuer's active signing key. Authenticate the request
+- [OIDC Federation Reference](https://vercel.com/docs/oidc/reference?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=related) — Review helper libraries to help you connect with your backend and understand the structure of an OIDC token.
 
-Full cross-link map for this page: [/docs/sign-in-with-vercel/authorization-server-api.graph.md](/docs/sign-in-with-vercel/authorization-server-api.graph.md)
+Full cross-link map for this page: [/docs/sign-in-with-vercel/authorization-server-api.graph.md](/docs/sign-in-with-vercel/authorization-server-api.graph.md?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fauthorization-server-api&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 | Endpoint                     | URL                                                 |
@@ -140,7 +141,7 @@ The Token Endpoint is used to exchange the `code` returned from the Authorizatio
 
 | Parameter       | Required     | Description                                                                                                                                                                                                                                                                                                      |
 | --------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `grant_type`    | **Yes**      | Either `authorization_code` or `refresh_token`.- If the user signs in from the application then `authorization_code` should be used.- If the user is already signed in but the [Access Token](/docs/sign-in-with-vercel/tokens#access-token) has expired, then `refresh_token` should be used.         |
+| `grant_type`    | **Yes**      | Either `authorization_code` or `refresh_token`.<br />- If the user signs in from the application then `authorization_code` should be used.<br />- If the user is already signed in but the [Access Token](/docs/sign-in-with-vercel/tokens#access-token) has expired, then `refresh_token` should be used.         |
 | `client_id`     | **Yes**      | The ID of the App located in the [**Manage**](/docs/sign-in-with-vercel/manage-from-dashboard) page.                                                                                                                                                                                                             |
 | `client_secret`         | **Optional** | The client secret generated in the [**Manage**](/docs/sign-in-with-vercel/manage-from-dashboard) page. Omit this parameter if client authentication is set to `none`, or if you authenticate with a [JWT assertion](#authenticate-with-a-jwt-assertion) using `client_assertion` and `client_assertion_type`. |
 | `client_assertion`      | No           | Required when authenticating with a JWT assertion instead of `client_secret`. A signed JWT that proves the client's identity.                                                                                                                                                                                    |

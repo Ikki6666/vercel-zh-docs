@@ -3,7 +3,7 @@ title: Integrations for Comments
 product: vercel
 url: /docs/comments/integrations
 canonical_url: "https://vercel.com/docs/comments/integrations"
-last_updated: 2026-05-15
+last_updated: 2026-08-28
 type: how-to
 prerequisites:
   - /docs/comments
@@ -21,25 +21,27 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Git provider integration
 
+Comments are available for projects using **any** Git provider. Github, BitBucket and GitLab [are supported automatically](/docs/git#supported-git-providers) with the same level of integration.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Slack](https://v0.app/docs/slack?from=related) — Add v0 to your Slack workspace so your whole team can contribute to production.
-- [Run and track deploys from Slack](https://vercel.com/kb/guide/run-and-track-deploys-from-slack?from=related) — Build a Slack deploy bot with Chat SDK and Vercel Workflows. Dispatch GitHub Actions from a slash command, gate producti
-- [GitHub](https://v0.app/docs/github?from=related) — Connect your GitHub repositories to v0 to automatically create projects and track changes.
-- [Using Comments](https://vercel.com/docs/comments/using-comments?from=related) — This guide will help you get started with using Comments with your Vercel Preview Deployments.
-- [Managing Comments](https://vercel.com/docs/comments/managing-comments?from=related) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
-- [vercel comments](https://vercel.com/docs/cli/comments?from=related) — Learn about vercel comments on Vercel.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Toolbar](https://vercel.com/docs/vercel-toolbar?from=related) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
+- [Comments now available in Vercel's Slack integration](https://vercel.com/changelog/comments-now-available-in-vercels-slack-integration?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related)
+- [Slack](https://v0.app/docs/slack?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related) — Add v0 to your Slack workspace so your whole team can contribute to production.
+- [Manage Vercel Toolbar comments from the CLI](https://vercel.com/changelog/manage-vercel-toolbar-comments-from-the-cli?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related)
+- [Convert Comments on deployments to Jira issues](https://vercel.com/changelog/convert-comments-on-deployments-to-jira-issues?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related)
+- [Convert comments to GitHub Issues](https://vercel.com/changelog/convert-comments-to-github-issues?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related)
+- [Run and track deploys from Slack](https://vercel.com/kb/guide/run-and-track-deploys-from-slack?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related) — Build a Slack deploy bot with Chat SDK and Vercel Workflows. Dispatch GitHub Actions from a slash command, gate producti
+- [July 2020](https://vercel.com/blog/changelog-july-2020?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related)
+- [Using Comments with Preview Deployments](https://vercel.com/docs/comments/using-comments?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related) — This guide will help you get started with using Comments with your Vercel Preview Deployments.
+- [vercel comments](https://vercel.com/docs/cli/comments?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related) — Review and manage Vercel Toolbar comment threads from the terminal with the vercel comments CLI command.
+- [Firewall Observability](https://vercel.com/docs/vercel-firewall/firewall-observability?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=related) — Learn how firewall traffic monitoring and alerts help you react quickly to potential security threats.
 
-Full cross-link map for this page: [/docs/comments/integrations.graph.md](/docs/comments/integrations.graph.md)
+Full cross-link map for this page: [/docs/comments/integrations.graph.md](/docs/comments/integrations.graph.md?from=related&source_path=%2Fdocs%2Fcomments%2Fintegrations&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Comments are available for projects using **any** Git provider. Github, BitBucket and GitLab [are supported automatically](/docs/git#supported-git-providers) with the same level of integration.
 
 Pull requests (PRs) with deployments enabled receive [generated PR messages from Vercel bot](/docs/git/vercel-for-github). These PR messages contain the deployment URL.
 

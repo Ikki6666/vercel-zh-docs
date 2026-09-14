@@ -3,16 +3,16 @@ title: Using Drains
 product: vercel
 url: /docs/drains/using-drains
 canonical_url: "https://vercel.com/docs/drains/using-drains"
-last_updated: 2026-07-22
+last_updated: 2026-09-01
 type: how-to
 prerequisites:
   - /docs/drains
 related:
   - /docs/plans/pro-plan
   - /docs/plans/enterprise
+  - /docs/speed-insights/limits-and-pricing
   - /docs/integrations
   - /docs/drains/reference/logs
-  - /docs/drains/reference/traces
 summary: Learn how to configure drains to forward observability data to custom HTTP endpoints, dedicated Audit Log destinations, and integrations.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -21,22 +21,24 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Drains
 
+You can add drains to your project by following the configuration steps below. When you configure the destination, choose whether to send data to a [custom HTTP endpoint](#custom-endpoint), write Audit Log data to an [S3 bucket](#s3-bucket), or use a [native integration](#native-integrations) or [external integration](#external-integrations) to send your data to popular services.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Migrating from SIEM](https://vercel.com/docs/audit-log/migrating-to-drains?from=related) — Move your SIEM integration from Custom SIEM Log Streaming to Audit Log Drains, with wider event coverage and a new event
-- [Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains?from=related) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
-- [Creates a new Integration Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-new-integration-log-drain-deprecated?from=related)
-- [Create a new Drain](https://vercel.com/docs/rest-api/drains/create-a-new-drain?from=related)
-- [Creates a Configurable Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-configurable-log-drain-deprecated?from=related)
+- [Introducing Vercel Drains: Complete observability data, anywhere](https://vercel.com/blog/introducing-vercel-drains?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=related)
+- [Correlate logs and traces with OpenTelemetry in Vercel Log Drains](https://vercel.com/changelog/correlate-logs-and-traces-with-opentelemetry-in-vercel-log-drains?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=related)
+- [Migrating from Custom SIEM Log Streaming to Audit Log Drains](https://vercel.com/docs/audit-log/migrating-to-drains?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=related) — Move your SIEM integration from Custom SIEM Log Streaming to Audit Log Drains, with wider event coverage and a new event
+- [AI Gateway Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=related) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
+- [Creates a new Integration Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-new-integration-log-drain-deprecated?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=related) — POST /v2/integrations/log-drains — Creates an Integration log drain. This endpoint must be called with an OAuth2 client
+- [Retrieve a list of all Drains](https://vercel.com/docs/rest-api/drains/retrieve-a-list-of-all-drains?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=related) — GET /v1/drains — Allows to retrieve the list of Drains of the authenticated team.
+- [Creates a Configurable Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-configurable-log-drain-deprecated?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=related) — POST /v1/log-drains — Creates a configurable log drain. This endpoint must be called with a team AccessToken \\(integrati
 
-Full cross-link map for this page: [/docs/drains/using-drains.graph.md](/docs/drains/using-drains.graph.md)
+Full cross-link map for this page: [/docs/drains/using-drains.graph.md](/docs/drains/using-drains.graph.md?from=related&source_path=%2Fdocs%2Fdrains%2Fusing-drains&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-You can add drains to your project by following the configuration steps below. When you configure the destination, choose whether to send data to a [custom HTTP endpoint](#custom-endpoint), write Audit Log data to an [S3 bucket](#s3-bucket), or use a [native integration](#native-integrations) or [external integration](#external-integrations) to send your data to popular services.
 
 ## Configuring Drains
 
@@ -49,7 +51,7 @@ Teams on [Pro](/docs/plans/pro-plan) and [Enterprise](/docs/plans/enterprise) pl
   Select the type of observability data you want to drain:
   - **Logs**: Runtime, build and static logs from your deployments
   - **Traces**: Distributed tracing data using [OTLP/HTTP](https://opentelemetry.io/docs/specs/otlp/#otlphttp) (OTLP/gRPC is not supported)
-  - **Speed Insights**: Performance metrics and web vitals
+  - **Speed Insights**: Performance metrics and web vitals. Requires [Speed Insights Plus](/docs/speed-insights/limits-and-pricing)
   - **Web Analytics**: Page views and custom events
   - **Audit Log**: Team activity events
   At any time, you can also add an [external integration](#external-integrations) to available [connectable account](/docs/integrations#connectable-accounts) log drain integrations by clicking the **External Integrations** link on the top right of the **Add Drain** side bar.

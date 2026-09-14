@@ -3,7 +3,7 @@ title: Key Management Service (KMS)
 product: vercel
 url: /docs/kms
 canonical_url: "https://vercel.com/docs/kms"
-last_updated: 2026-07-21
+last_updated: 2026-08-18
 type: conceptual
 prerequisites:
   []
@@ -21,22 +21,23 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Key Management Service
 
+Vercel Key Management Service (KMS) gives you managed signing keys that live on Vercel. You sign JWTs and messages by calling the KMS signing API from your Vercel Functions, and Vercel publishes the matching public keys so any relying party can verify the result. Your private keys never leave Vercel, so you avoid storing signing material in environment variables.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related)
-- [Activate a signing key](https://vercel.com/docs/rest-api/kms/activate-a-signing-key?from=related)
-- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related)
-- [Revoke a signing key](https://vercel.com/docs/rest-api/kms/revoke-a-signing-key?from=related)
-- [Create an issuer](https://vercel.com/docs/rest-api/kms/create-an-issuer?from=related)
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys?from=related&source_path=%2Fdocs%2Fkms&source_site=vercel-docs&relationship=related)
+- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related&source_path=%2Fdocs%2Fkms&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/keys — Create a new signing key for a KMS issuer. Depending on the activation mode, the
+- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related&source_path=%2Fdocs%2Fkms&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/token — Sign a JWT with a KMS issuer's active signing key. Authenticate the request
+- [Activate a signing key](https://vercel.com/docs/rest-api/kms/activate-a-signing-key?from=related&source_path=%2Fdocs%2Fkms&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/keys/{keyId}/activate — Activate a pending signing key so the issuer starts signing with
+- [Revoke a signing key](https://vercel.com/docs/rest-api/kms/revoke-a-signing-key?from=related&source_path=%2Fdocs%2Fkms&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/keys/{keyId}/revoke — Immediately revoke a signing key that is already scheduled for rev
+- [Sign a message](https://vercel.com/docs/rest-api/kms/sign-a-message?from=related&source_path=%2Fdocs%2Fkms&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/message — Sign a raw message with a KMS issuer's active signing key. Authenticate t
 
-Full cross-link map for this page: [/docs/kms.graph.md](/docs/kms.graph.md)
+Full cross-link map for this page: [/docs/kms.graph.md](/docs/kms.graph.md?from=related&source_path=%2Fdocs%2Fkms&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Vercel Key Management Service (KMS) gives you managed signing keys that live on Vercel. You sign JWTs and messages by calling the KMS signing API from your Vercel Functions, and Vercel publishes the matching public keys so any relying party can verify the result. Your private keys never leave Vercel, so you avoid storing signing material in environment variables.
 
 To sign your first token, follow the [Quickstart](/docs/kms/quickstart). For the conceptual model, see [Key rotation](/docs/kms/concepts/key-rotation) and [Authentication](/docs/kms/concepts/authentication).
 
@@ -50,7 +51,7 @@ Every signing request runs through two managed pieces:
 ## KMS primitives
 
 - **Issuer**: A team-owned signing identity with a stable ID, a public issuer URL, and one or more signing keys. You reference an issuer by its ID when you sign.
-- **Signing keys**: The key material an issuer signs with. KMS supports `RS256`, `RS384`, `RS512`, the `PS*` and `ES*` families, and `EdDSA`, and defaults to `RS512`. KMS does not support symmetric (`HS*`) keys.
+- **Signing keys**: The key material an issuer signs with. KMS supports `RS256`, `RS384`, `RS512`, the `PS*` and `ES*` families, and defaults to `RS512`. KMS does not support symmetric (`HS*`) keys.
 - **Key origin**: KMS can generate the key for you (a `vercel`-origin issuer), or you can import an existing PEM private key (an `external`-origin issuer). Import a key when the other side generates the key pair and keeps your public key, such as a GitHub App.
 - **Policies**: Rules that authorize signing. The deployment-OIDC policy (`project-grant`) lets a deployment sign when its OIDC token matches the granted project and environments. See [Authentication](/docs/kms/concepts/authentication).
 - **Certificates**: An issuer can expose a self-signed X.509 certificate for its active signing key, for workloads that require a PEM certificate rather than a JWKS lookup.

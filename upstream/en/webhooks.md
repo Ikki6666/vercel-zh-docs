@@ -3,7 +3,7 @@ title: Setting Up Webhooks
 product: vercel
 url: /docs/webhooks
 canonical_url: "https://vercel.com/docs/webhooks"
-last_updated: 2026-06-16
+last_updated: 2026-08-28
 type: conceptual
 prerequisites:
   []
@@ -27,15 +27,18 @@ A webhook is a trigger-based HTTP endpoint configured to receive HTTP POST reque
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How can I run end-to-end tests after my Vercel Preview Deployment?](https://vercel.com/kb/guide/how-can-i-run-end-to-end-tests-after-my-vercel-preview-deployment?from=related) — Learn how to use the Vercel CLI in combination with your CI/CD provider to run end-to-end tests for every code change.
-- [Create Webhook](https://v0.app/docs/api/v2/reference/webhooks/create-webhook?from=related) — Creates a new webhook that listens for specific events. Supports optional association with a chat.
-- [Creates a webhook](https://vercel.com/docs/rest-api/webhooks/creates-a-webhook?from=related)
-- [vercel webhooks](https://vercel.com/docs/cli/webhooks?from=related) — Learn how to manage webhooks for your Vercel account using the vercel webhooks CLI command.
-- [Get a webhook](https://vercel.com/docs/rest-api/webhooks/get-a-webhook?from=related)
-- [Get a list of webhooks](https://vercel.com/docs/rest-api/webhooks/get-a-list-of-webhooks?from=related)
-- [Deploy Hooks](https://vercel.com/docs/deploy-hooks?from=related) — Learn how to create and trigger deploy hooks to integrate Vercel deployments with other systems.
+- [How can I run end-to-end tests after my Vercel Preview Deployment?](https://vercel.com/kb/guide/how-can-i-run-end-to-end-tests-after-my-vercel-preview-deployment?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — Learn how to use the Vercel CLI in combination with your CI/CD provider to run end-to-end tests for every code change.
+- [Webhooks are now generally available](https://vercel.com/changelog/webhooks-are-now-generally-available?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related)
+- [Integration Webhooks are now easier to configure](https://vercel.com/changelog/integration-webhooks-are-now-easier-to-configure?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related)
+- [Configurable webhooks ](https://vercel.com/changelog/configurable-webhooks?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related)
+- [Create Webhook](https://v0.app/docs/api/v2/reference/webhooks/create-webhook?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — Creates a new webhook that listens for specific events. Supports optional association with a chat.
+- [Creates a webhook](https://vercel.com/docs/rest-api/webhooks/creates-a-webhook?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — POST /v1/webhooks — Creates a webhook
+- [Get a webhook](https://vercel.com/docs/rest-api/webhooks/get-a-webhook?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — GET /v1/webhooks/{id} — Get a webhook
+- [vercel webhooks](https://vercel.com/docs/cli/webhooks?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — Learn how to manage webhooks for your Vercel account using the vercel webhooks CLI command.
+- [Get a list of webhooks](https://vercel.com/docs/rest-api/webhooks/get-a-list-of-webhooks?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — GET /v1/webhooks — Get a list of webhooks
+- [Creating & Triggering Deploy Hooks](https://vercel.com/docs/deploy-hooks?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — Learn how to create and trigger deploy hooks to integrate Vercel deployments with other systems.
 
-Full cross-link map for this page: [/docs/webhooks.graph.md](/docs/webhooks.graph.md)
+Full cross-link map for this page: [/docs/webhooks.graph.md](/docs/webhooks.graph.md?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Webhooks configured with Vercel can trigger a deployment when a specific event occurs. Vercel integrations receive platform events through webhooks.

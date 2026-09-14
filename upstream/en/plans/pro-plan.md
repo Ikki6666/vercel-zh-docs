@@ -3,16 +3,16 @@ title: Vercel Pro Plan
 product: vercel
 url: /docs/plans/pro-plan
 canonical_url: "https://vercel.com/docs/plans/pro-plan"
-last_updated: 2026-07-15
+last_updated: 2026-09-02
 type: reference
 prerequisites:
   - /docs/plans
 related:
+  - /docs/pricing/taxes
   - /docs/pricing
   - /docs/builds/managing-builds
   - /docs/plans/pro-plan/trials
   - /docs/domains/free-domain-with-pro
-  - /docs/manage-cdn-usage
 summary: Learn about the Vercel Pro plan with credit-based billing, free viewer seats, and self-serve enterprise features for professional teams.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,17 +27,23 @@ The Vercel Pro plan is designed for professional developers, freelancers, and bu
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
-- [Why has my account or deployment been paused?](https://vercel.com/kb/guide/why-is-my-account-deployment-blocked?from=related) — Learn why a Vercel account or deployment gets paused, from budget and usage limits to policy violations, and how to resu
-- [Hobby Plan](https://vercel.com/docs/plans/hobby?from=related) — Learn about the Hobby plan and how it compares to the Pro plan.
-- [Teams](https://v0.app/docs/teams?from=related) — Collaborate with your team on projects with shared resources.
-- [Account Management](https://vercel.com/docs/accounts?from=related) — Learn how to manage your Vercel account and team members.
-- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
-- [Enterprise Plan](https://vercel.com/docs/plans/enterprise?from=related) — Learn about the Enterprise plan for Vercel, including features, pricing, and more.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Free domain with Pro offer now includes .app and .dev](https://vercel.com/changelog/app-and-dev-domains-included-with-free-domain-for-pro?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related)
+- [Free domain for one year, now for all Pro teams](https://vercel.com/changelog/free-domain-for-one-year-now-for-all-pro-teams?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related)
+- [Free domain now included with new Pro subscriptions](https://vercel.com/changelog/free-domain-now-included-with-new-pro-subscriptions?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related)
+- [Vercel MCP now supports purchases](https://vercel.com/changelog/vercel-mcp-now-supports-purchases?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related)
+- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
+- [Why has my account or deployment been paused?](https://vercel.com/kb/guide/why-is-my-account-deployment-blocked?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related) — Learn why a Vercel account or deployment gets paused, from budget and usage limits to policy violations, and how to resu
+- [A more flexible Pro plan for modern teams](https://vercel.com/blog/new-pro-pricing-plan?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related)
+- [Included Pro usage is now credit-based](https://vercel.com/changelog/included-pro-usage-is-now-credit-based?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related)
+- [Vercel Hobby Plan](https://vercel.com/docs/plans/hobby?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related) — Learn about the Hobby plan and how it compares to the Pro plan.
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related)
+- [Account Management](https://vercel.com/docs/accounts?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related) — Learn how to manage your Vercel account and team members.
+- [Vercel Enterprise Plan](https://vercel.com/docs/plans/enterprise?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=related) — Learn about the Enterprise plan for Vercel, including features, pricing, and more.
 
-Full cross-link map for this page: [/docs/plans/pro-plan.graph.md](/docs/plans/pro-plan.graph.md)
+Full cross-link map for this page: [/docs/plans/pro-plan.graph.md](/docs/plans/pro-plan.graph.md?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
+
+> **💡 Note:** All prices shown are in USD and exclude value-added tax (VAT), goods and services tax (GST), and other applicable taxes. Taxes are calculated based on your billing address and added to your invoice where required by law. [Learn more about taxes](/docs/pricing/taxes).
 
 ## Pro plan features
 
@@ -45,13 +51,13 @@ Full cross-link map for this page: [/docs/plans/pro-plan.graph.md](/docs/plans/p
 - **[Free viewer seats](#viewer-team-seat)**: Unlimited read-only access to the Vercel dashboard so that project collaborators can view deployments, check analytics, and comment on previews
 - **[Elastic build machines](/docs/builds/managing-builds#elastic-build-machines)**: New teams use Elastic build machines by default. Elastic automatically selects a machine for each project based on its build workload
 - **[Paid add-ons](#paid-add-ons)**: Additional enterprise-grade features are available as add-ons
-- **[Free first-year domain with Pro](#free-first-year-domain-with-pro)**: One eligible TLD domain (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`) per paid Pro team. Renews at the standard rate after year one
+- **[Free first-year domain with Pro](#free-first-year-domain-with-pro)**: One eligible TLD domain (`.app`, `.dev`, `.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`) per paid Pro team. Renews at the standard rate after year one
 
 For a full breakdown of the features included in the Pro plan, see the [pricing page](https://vercel.com/pricing).
 
 ## Free first-year domain with Pro
 
-All paid Pro teams include one free first-year domain on an eligible TLD (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`). New Pro subscriptions can claim the domain at checkout during the upgrade. Existing Pro teams claim from domain search in the dashboard at [vercel.com/domains](https://vercel.com/domains). After the first year, the domain renews at the standard rate.
+All paid Pro teams include one free first-year domain on an eligible TLD (`.app`, `.dev`, `.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`). New Pro subscriptions can claim the domain at checkout during the upgrade. Existing Pro teams claim from domain search in the dashboard at [vercel.com/domains](https://vercel.com/domains). After the first year, the domain renews at the standard rate.
 
 The offer is limited to one domain per team and excludes:
 
@@ -65,7 +71,7 @@ See the [docs page](/docs/domains/free-domain-with-pro#how-do-i-claim-my-free-do
 
 You can use your monthly credit across all infrastructure resources. Once you have used your monthly credit, Vercel bills additional usage on-demand.
 
-The monthly credit applies to all [managed infrastructure billable resources](/docs/pricing#managed-infrastructure-billable-resources) after their respective included allocations are exceeded.
+The monthly credit applies to all [managed infrastructure billable resources](/docs/pricing#managed-infrastructure-billable-resources) from the first unit you use.
 
 ### Credit and usage allocation
 
@@ -74,7 +80,7 @@ The monthly credit applies to all [managed infrastructure billable resources](/d
 
 ### Credit expiration
 
-The credit and allocations expire at the end of the month if they are not used, and are reset at the beginning of the following month.
+Your credit expires at the end of the month if you don't use it, and resets at the beginning of the following month.
 
 ### Managing your spend amount
 
@@ -137,7 +143,7 @@ The following features are available as add-ons:
 - **[Preview Deployment Suffix](/docs/deployments/preview-deployment-suffix)**: $100/month
 - **[Static IPs](/docs/networking/static-ips)**: $100/month per project, plus Private Data Transfer
 - **[Web Analytics Plus](/docs/analytics/limits-and-pricing#pro-with-web-analytics-plus)**: $10/month
-- **[Speed Insights](/docs/speed-insights)**: $10/month per project
+- **[Speed Insights Plus](/docs/speed-insights/limits-and-pricing)**: $10/month per project, plus $0.65 per 10,000 events
 
 ## Downgrading to Hobby
 
@@ -153,6 +159,8 @@ To downgrade from a Pro to Hobby plan without losing access to the team's projec
 When you downgrade a Pro team, all active members except for the original owner are removed.
 
 Due to restrictions in the downgrade flow, Pro teams will need to [manually transfer any connected Stores](/docs/storage#transferring-your-store) and/or [Domains](/docs/domains/working-with-domains/transfer-your-domain#transferring-domains-between-projects) to a new destination before proceeding with downgrade.
+
+**Interested in the Enterprise plan?**
 
 
 ---

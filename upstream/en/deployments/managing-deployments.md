@@ -3,7 +3,7 @@ title: Managing Deployments
 product: vercel
 url: /docs/deployments/managing-deployments
 canonical_url: "https://vercel.com/docs/deployments/managing-deployments"
-last_updated: 2026-07-01
+last_updated: 2026-08-21
 type: how-to
 prerequisites:
   - /docs/deployments
@@ -27,19 +27,20 @@ You can manage all current and previous deployments regardless of environment, s
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Memory Usage](https://nextjs.org/docs/app/guides/memory-usage?from=related) — Optimize memory used by your application in development and production.
-- [Implementing Blue-Green Deployments on Vercel](https://vercel.com/kb/guide/blue_green_deployments_on_vercel?from=related) — This guide outlines how to implement blue-green deployments on Vercel, leveraging GitHub Actions for seamless and contro
-- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop?from=related) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
-- [Deploy a Claude Design project to Vercel](https://vercel.com/kb/guide/claude-design?from=related) — Publish a Claude Design project to Vercel for a live production URL with the Vercel connector, or by exporting a .zip to
-- [Deploy a Google Stitch design with Vercel Drop](https://vercel.com/kb/guide/google-stitch-vercel-drop?from=related) — Download the HTML from your Google Stitch screens and deploy them to production with Vercel Drop, with no Git or CLI req
-- [How do I delete an individual deployment?](https://vercel.com/kb/guide/how-do-i-delete-an-individual-deployment?from=related) — Information on deleting an individual deployment.
-- [vercel redeploy](https://vercel.com/docs/cli/redeploy?from=related) — Learn how to redeploy your project using the vercel redeploy CLI command.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [Managing projects](https://vercel.com/docs/projects/managing-projects?from=related) — Learn how to manage your projects through the Vercel Dashboard.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [How to optimize memory usage](https://nextjs.org/docs/app/guides/memory-usage?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related) — Optimize memory used by your application in development and production.
+- [New deployment promotion event](https://vercel.com/changelog/new-webhook-for-promotion-events?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related)
+- [Revert and pin deployments with Instant Rollback](https://vercel.com/changelog/revert-and-pin-deployments-with-instant-rollback?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related)
+- [Stage and manually promote deployments to production](https://vercel.com/changelog/stage-and-manually-promote-deployments-to-production?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related)
+- [Implementing Blue-Green Deployments on Vercel](https://vercel.com/kb/guide/blue_green_deployments_on_vercel?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related) — This guide outlines how to implement blue-green deployments on Vercel, leveraging GitHub Actions for seamless and contro
+- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
+- [Deploy a Claude Design project to Vercel](https://vercel.com/kb/guide/claude-design?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related) — Publish a Claude Design project to Vercel for a live production URL with the Vercel connector, or by exporting a .zip to
+- [How do I delete an individual deployment?](https://vercel.com/kb/guide/how-do-i-delete-an-individual-deployment?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related) — Information on deleting an individual deployment.
+- [Implementing Canary Deployments on Vercel](https://vercel.com/kb/guide/implementing_canary_deployments_on_vercel?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related) — This guide explains how to set up canary deployments on Vercel, enabling developers to gradually roll out new versions t
+- [Deploying safely on Vercel without merge queues](https://vercel.com/blog/deploy-safely-on-vercel-without-merge-queues?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related)
+- [How we cut CDN metadata lookup latency by 91%](https://vercel.com/blog/how-we-cut-cdn-metadata-lookup-latency-by-91-percent?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related)
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
 
-Full cross-link map for this page: [/docs/deployments/managing-deployments.graph.md](/docs/deployments/managing-deployments.graph.md)
+Full cross-link map for this page: [/docs/deployments/managing-deployments.graph.md](/docs/deployments/managing-deployments.graph.md?from=related&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 1. Ensure your team is selected from the team switcher
@@ -48,6 +49,12 @@ Full cross-link map for this page: [/docs/deployments/managing-deployments.graph
 4. You can then filter, redeploy, or manually promote your deployment to production
 
 [Vercel CLI](https://vercel.com/cli) and [Vercel REST API](/docs/rest-api) also provide alternative ways to manage your deployments. You can find a full list of the commands available in the [Vercel CLI Reference](/docs/cli/deploying-from-cli), along with the deployments section of the [Vercel REST API Reference](/docs/rest-api/deployments/get-deployment-events).
+
+> Install the [Vercel plugin](/docs/agent-resources/vercel-plugin?from=docs-callout\&source_path=%2Fdocs%2Fdeployments%2Fmanaging-deployments) to manage deployments with your coding agent.
+>
+> ```bash
+> npx plugins add vercel/vercel-plugin
+> ```
 
 ## Filter deployment
 
@@ -61,7 +68,7 @@ You can filter your deployments based on branch, status, and deployment environm
 
 ## Delete a deployment
 
-#### \['Dashboard'
+#### Dashboard
 
 If you no longer need a specific deployment of your app, you can delete it from your project with the following steps:
 
@@ -71,7 +78,7 @@ If you no longer need a specific deployment of your app, you can delete it from 
 4. Click the ... button.
 5. From the context menu, select **Delete**.
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -81,7 +88,7 @@ curl --request DELETE \
   --header "Authorization: Bearer $VERCEL_TOKEN"
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 

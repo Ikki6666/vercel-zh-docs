@@ -3,7 +3,7 @@ title: Manage Sign in with Vercel from the Dashboard
 product: vercel
 url: /docs/sign-in-with-vercel/manage-from-dashboard
 canonical_url: "https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard"
-last_updated: 2026-02-26
+last_updated: 2026-08-21
 type: how-to
 prerequisites:
   - /docs/sign-in-with-vercel
@@ -21,23 +21,24 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Create an App
 
+To manage any third-party apps, or create a new one yourself, you need to create an App. An App acts as an intermediary that requests and manages access to resources on behalf of the user. It communicates with the [Vercel Authorization Server](/docs/sign-in-with-vercel/authorization-server-api) to get tokens which act as credentials for accessing protected resources through the [Vercel REST API](/docs/rest-api).
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The complete guide to authentication on Vercel](https://vercel.com/kb/guide/complete-guide-authentication-vercel?from=related) — Learn how to implement authentication in your Vercel applications. Covers NextAuth/Auth.js setup, environment variable c
-- [Troubleshooting](https://vercel.com/docs/sign-in-with-vercel/troubleshooting?from=related) — Learn how to troubleshoot common errors with Sign in with Vercel
-- [Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
-- [Account Management](https://vercel.com/docs/accounts?from=related) — Learn how to manage your Vercel account and team members.
-- [SAML SSO](https://vercel.com/docs/saml?from=related) — Learn how to configure SAML SSO for your organization on Vercel.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [The complete guide to authentication on Vercel](https://vercel.com/kb/guide/complete-guide-authentication-vercel?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=related) — Learn how to implement authentication in your Vercel applications. Covers NextAuth/Auth.js setup, environment variable c
+- [Sign in with Vercel now generally available](https://vercel.com/changelog/sign-in-with-vercel?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=related)
+- [Troubleshooting Sign in with Vercel](https://vercel.com/docs/sign-in-with-vercel/troubleshooting?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=related) — Learn how to troubleshoot common errors with Sign in with Vercel
+- [Vercel KMS Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
+- [Account Management](https://vercel.com/docs/accounts?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=related) — Learn how to manage your Vercel account and team members.
+- [Access tokens](https://vercel.com/docs/accounts/access-tokens?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=related) — Create and scope Vercel access tokens to your full account, a team, or a single project, then use them to authenticate A
+- [SAML Single Sign-On](https://vercel.com/docs/saml?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=related) — Learn how to configure SAML SSO for your organization on Vercel.
 
-Full cross-link map for this page: [/docs/sign-in-with-vercel/manage-from-dashboard.graph.md](/docs/sign-in-with-vercel/manage-from-dashboard.graph.md)
+Full cross-link map for this page: [/docs/sign-in-with-vercel/manage-from-dashboard.graph.md](/docs/sign-in-with-vercel/manage-from-dashboard.graph.md?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Fmanage-from-dashboard&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-To manage any third-party apps, or create a new one yourself, you need to create an App. An App acts as an intermediary that requests and manages access to resources on behalf of the user. It communicates with the [Vercel Authorization Server](/docs/sign-in-with-vercel/authorization-server-api) to get tokens which act as credentials for accessing protected resources through the [Vercel REST API](/docs/rest-api).
 
 To create an App, follow these steps:
 

@@ -3,7 +3,7 @@ title: Concepts
 product: vercel
 url: /docs/eve/concepts
 canonical_url: "https://vercel.com/docs/eve/concepts"
-last_updated: 2026-06-19
+last_updated: 2026-08-28
 type: conceptual
 prerequisites:
   - /docs/eve
@@ -29,16 +29,16 @@ the runtime as a deployable app.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Get started with eve: durable AI agents in TypeScript](https://eve.dev/docs/getting-started?from=related) — Create an eve project, configure a model, understand its filesystem layout, and run your first agent.
-- [Draft content in your voice from Slack with eve](https://vercel.com/kb/guide/eve-content-agent?from=related) — Deploy the eve content agent template, a Slack bot that drafts blog posts, LinkedIn posts, release notes, and newsletter
-- [Security Model](https://eve.dev/docs/concepts/security-model?from=related) — eve's trust boundaries, where secrets live, how credentials reach hosts, and what fails closed by default.
-- [Deploy to Vercel](https://eve.dev/docs/guides/deployment/vercel?from=related) — Deploy an eve agent with Vercel Workflow, Sandbox, Cron, and project credentials.
-- [Deployment](https://eve.dev/docs/guides/deployment/overview?from=related) — Choose a deployment strategy and prepare an eve agent for production.
-- [eve](https://eve.dev/docs/channels/eve?from=related) — The default HTTP API for an agent, covering session routes, auth, and customization.
-- [Give your eve agent secure access to your private AWS RDS database](https://vercel.com/kb/guide/give-eve-agent-secure-access-to-aws-rds-database?from=related) — Connect an eve agent to a private AWS RDS database using Vercel Secure Compute and VPC peering, with a read-only query t
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Get started with eve: durable AI agents in TypeScript](https://eve.dev/docs/getting-started?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related) — Create an eve project, configure a model, understand its filesystem layout, and run your first agent.
+- [Deploy to Vercel](https://eve.dev/docs/guides/deployment/vercel?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related) — Deploy an eve agent with Vercel Workflow, Sandbox, Cron, and project credentials.
+- [Draft content in your voice from Slack with eve](https://vercel.com/kb/guide/eve-content-agent?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related) — Deploy the eve content agent template, a Slack bot that drafts blog posts, LinkedIn posts, release notes, and newsletter
+- [Security Model](https://eve.dev/docs/concepts/security-model?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related) — eve's trust boundaries, where secrets live, how credentials reach hosts, and what fails closed by default.
+- [Introducing eve, an open-source agent framework](https://vercel.com/changelog/introducing-eve-an-open-source-agent-framework?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related)
+- [Deployment](https://eve.dev/docs/guides/deployment/overview?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related) — Choose a deployment strategy and prepare an eve agent for production.
+- [The Agent Stack](https://vercel.com/blog/agent-stack?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related)
+- [Terminal UI](https://eve.dev/docs/guides/dev-tui?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=related) — Use eve locally or connect to a deployed agent from an interactive terminal UI.
 
-Full cross-link map for this page: [/docs/eve/concepts.graph.md](/docs/eve/concepts.graph.md)
+Full cross-link map for this page: [/docs/eve/concepts.graph.md](/docs/eve/concepts.graph.md?from=related&source_path=%2Fdocs%2Feve%2Fconcepts&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Agent project
@@ -139,8 +139,9 @@ Learn more about [using subagents with eve](/kb/guide/how-to-use-eve-subagents).
 Connections describe typed integrations with external services. Use them to keep provider-specific
 configuration and credential access outside the model prompt and tool implementation details.
 
-For delegated user or team credentials, pair eve tools with [Vercel Connect](/docs/connect). For
-model access, use [AI Gateway](/docs/ai-gateway) model strings in the agent config.
+For delegated user or team credentials, [authorize eve connections with Vercel
+Connect](/docs/connect/frameworks/eve). For model access, use [AI
+Gateway](/docs/ai-gateway) model strings in the agent config.
 
 ## Sandbox
 

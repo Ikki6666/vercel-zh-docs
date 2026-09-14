@@ -3,7 +3,7 @@ title: Alerts
 product: vercel
 url: /docs/alerts
 canonical_url: "https://vercel.com/docs/alerts"
-last_updated: 2026-07-01
+last_updated: 2026-08-14
 type: how-to
 prerequisites:
   []
@@ -21,24 +21,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Alerts
 
+Alerts let you know when something's wrong with your Vercel projects, like a spike in failed function invocations or unusual usage patterns. You can get these alerts by email, through Slack, or set up a webhook so you can respond to issues.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Detect memory and OOM failures in Vercel Functions](https://vercel.com/kb/guide/detect-memory-and-oom-failures-in-serverless-functions?from=related) — Fix out-of-memory \\(OOM\\) errors and memory limit exceeded crashes in Vercel serverless functions. Debug 5xx errors, mon
-- [Monitor uptime for AI-native apps with Vercel Alerts](https://vercel.com/kb/guide/monitor-uptime-for-ai-native-apps-with-vercel-alerts?from=related) — Learn how to use Vercel Anomaly Alerts as an early-warning system for AI-powered apps, helping you catch 5xx spikes and
-- [vercel alerts](https://vercel.com/docs/cli/alerts?from=related) — List recent alerts for a linked project, a specific project, or an entire team with the Vercel CLI.
-- [Notifications](https://vercel.com/docs/notifications?from=related) — Learn how to use Notifications to view and manage important alerts about your deployments, domains, integrations, accoun
-- [Firewall Observability](https://vercel.com/docs/vercel-firewall/firewall-observability?from=related) — Learn how firewall traffic monitoring and alerts help you react quickly to potential security threats.
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Anomaly alert configuration now available](https://vercel.com/changelog/anomaly-alert-configuration-now-available?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related)
+- [Anomaly alerts are now generally available](https://vercel.com/changelog/anomaly-alerts-ga?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related)
+- [Anomaly alerts now available via email](https://vercel.com/changelog/anomaly-alerts-now-available-via-email?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related)
+- [Anomaly alerts now in limited beta for Enterprise customers](https://vercel.com/changelog/anomaly-alerts-now-in-limited-beta-for-enterprise-customers?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related)
+- [Anomaly alerts now in public beta](https://vercel.com/changelog/anomaly-alerts-now-in-public-beta?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related)
+- [Detect memory and OOM failures in Vercel Functions](https://vercel.com/kb/guide/detect-memory-and-oom-failures-in-serverless-functions?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related) — Fix out-of-memory \\(OOM\\) errors and memory limit exceeded crashes in Vercel serverless functions. Debug 5xx errors, mon
+- [Vercel Agent can now run AI investigations](https://vercel.com/blog/vercel-agent-can-now-run-ai-investigations?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related)
+- [Monitor uptime for AI-native apps with Vercel Alerts](https://vercel.com/kb/guide/monitor-uptime-for-ai-native-apps-with-vercel-alerts?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related) — Learn how to use Vercel Anomaly Alerts as an early-warning system for AI-powered apps, helping you catch 5xx spikes and
+- [Notifications](https://vercel.com/docs/notifications?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related) — Learn how to use Notifications to view and manage important alerts about your deployments, domains, integrations, accoun
+- [Firewall Observability](https://vercel.com/docs/vercel-firewall/firewall-observability?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related) — Learn how firewall traffic monitoring and alerts help you react quickly to potential security threats.
+- [Glossary](https://vercel.com/docs/glossary?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related) — Learn about the terms and concepts used in Vercel's products and documentation.
+- [Webhooks API Reference](https://vercel.com/docs/webhooks/webhooks-api?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=related) — Vercel Integrations allow you to subscribe to certain trigger-based events through webhooks. Learn about the supported w
 
-Full cross-link map for this page: [/docs/alerts.graph.md](/docs/alerts.graph.md)
+Full cross-link map for this page: [/docs/alerts.graph.md](/docs/alerts.graph.md?from=related&source_path=%2Fdocs%2Falerts&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Alerts let you know when something's wrong with your Vercel projects, like a spike in failed function invocations or unusual usage patterns. You can get these alerts by email, through Slack, or set up a webhook so you can respond to issues.
 
 By default, you'll be notified about:
 
@@ -76,9 +81,9 @@ Use [Configure alerts](/docs/alerts/configure-alerts) to create built-in alert r
 
 ## Investigate alerts with AI
 
-When you get an alert, [Agent Investigation](/docs/agent/investigation) can run on its own to help you debug. Instead of digging through logs and metrics yourself, AI analyzes what's happening and displays highlights of the anomaly in your dashboard.
+When you get an [eligible](/docs/agent/investigation#eligible-alerts-for-automatic-investigation) Medium or High anomaly alert, [Vercel Agent Investigation](/docs/agent/investigation) can run automatically. Low-severity alerts do not start automatic investigations.
 
-When you view an alert in the dashboard, you can click **Enable Auto Run** to trigger an investigation. This takes you to the **Agents** section in the sidebar, where you can set up investigations to run on new alerts. You can also click **Rerun** to start a new investigation.
+In the investigation panel, click **Configure Vercel Agent** to manage automatic investigations. You can also run an investigation manually.
 
 Learn more in the [Agent Investigation docs](/docs/agent/investigation).
 

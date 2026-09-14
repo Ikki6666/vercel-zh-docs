@@ -3,7 +3,7 @@ title: Incremental Migration to Vercel
 product: vercel
 url: /docs/incremental-migration
 canonical_url: "https://vercel.com/docs/incremental-migration"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   []
@@ -27,16 +27,19 @@ When migrating to Vercel you should use an incremental migration strategy. This 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
-- [Incremental Migrations with Microfrontends](https://vercel.com/kb/guide/incremental-migrations-with-microfrontends?from=related) — Learn how to migrate legacy applications using microfrontends
-- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime?from=related) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify?from=related) — Migrate your website's configuration from Netlify to Vercel
-- [Redirects](https://vercel.com/docs/routing/redirects?from=related) — Learn how to use redirects on Vercel to instruct Vercel's platform to redirect incoming requests to a new URL.
-- [Kubernetes](https://vercel.com/docs/integrations/external-platforms/kubernetes?from=related) — Deploy your frontend on Vercel alongside your existing Kubernetes infrastructure.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
+- [Incremental Migrations with Microfrontends](https://vercel.com/kb/guide/incremental-migrations-with-microfrontends?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related) — Learn how to migrate legacy applications using microfrontends
+- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
+- [Why all application migrations should be incremental ](https://vercel.com/blog/incremental-migrations?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related)
+- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
+- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related) — Migrate your website's configuration from Netlify to Vercel
+- [Life of a Vercel request: Application-aware routing](https://vercel.com/blog/life-of-a-request-application-aware-routing?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related)
+- [How Vercel adopted microfrontends](https://vercel.com/blog/how-vercel-adopted-microfrontends?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related)
+- [Headless Salesforce: An incremental migration from monolith to composable](https://vercel.com/blog/salesforce-incremental-migration?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related)
+- [Redirects](https://vercel.com/docs/routing/redirects?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related) — Learn how to use redirects on Vercel to instruct Vercel's platform to redirect incoming requests to a new URL.
+- [Integrating Vercel and Kubernetes](https://vercel.com/docs/integrations/external-platforms/kubernetes?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=related) — Deploy your frontend on Vercel alongside your existing Kubernetes infrastructure.
 
-Full cross-link map for this page: [/docs/incremental-migration.graph.md](/docs/incremental-migration.graph.md)
+Full cross-link map for this page: [/docs/incremental-migration.graph.md](/docs/incremental-migration.graph.md?from=related&source_path=%2Fdocs%2Fincremental-migration&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 In this guide, we'll explore incremental migration benefits, strategies, and implementation approaches for a zero-downtime migration to Vercel.

@@ -3,7 +3,7 @@ title: Instrumentation
 product: vercel
 url: /docs/tracing/instrumentation
 canonical_url: "https://vercel.com/docs/tracing/instrumentation"
-last_updated: 2026-02-17
+last_updated: 2026-08-21
 type: how-to
 prerequisites:
   - /docs/tracing
@@ -25,20 +25,20 @@ Observability is crucial for understanding and optimizing the behavior and perfo
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [MLflow](https://ai-sdk.dev/providers/observability/mlflow?from=related)
-- [Instrumentation](https://nextjs.org/docs/app/guides/instrumentation?from=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
-- [Instrumentation](https://nextjs.org/docs/pages/guides/instrumentation?from=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
-- [OpenTelemetry](https://nextjs.org/docs/pages/guides/open-telemetry?from=related) — Learn how to instrument your Next.js app with OpenTelemetry.
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [SigNoz](https://ai-sdk.dev/providers/observability/signoz?from=related)
-- [Observability](https://eve.dev/docs/guides/instrumentation?from=related) — Trace an agent with OpenTelemetry in instrumentation.ts, read the workflow run tags eve emits, and debug discovery with
-- [instrumentation.js](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation?from=related) — API reference for the instrumentation.js file.
-- [Langfuse](https://ai-sdk.dev/providers/observability/langfuse?from=related)
-- [Laminar](https://ai-sdk.dev/providers/observability/laminar?from=related)
-- [Always-on Tracing](https://vercel.com/docs/tracing/always-on-tracing?from=related) — Learn about always-on tracing on Vercel.
+- [MLflow](https://ai-sdk.dev/providers/observability/mlflow?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
+- [How to set up instrumentation](https://nextjs.org/docs/app/guides/instrumentation?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
+- [How to set up instrumentation](https://nextjs.org/docs/pages/guides/instrumentation?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
+- [How to instrument your Next.js app with OpenTelemetry](https://nextjs.org/docs/pages/guides/open-telemetry?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to instrument your Next.js app with OpenTelemetry.
+- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
+- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
+- [Instrument and trace applications with the OpenTelemetry collector](https://vercel.com/changelog/instrument-and-trace-applications-with-the-opentelemetry-collector?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
+- [SigNoz](https://ai-sdk.dev/providers/observability/signoz?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
+- [Instrumentation Providers](https://eve.dev/docs/guides/instrumentation-providers?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Configure the experimental instrumentation provider layout, control captured inputs and outputs, and redact OpenTelemetr
+- [Native support for SvelteKit's new OpenTelemetry spans](https://vercel.com/changelog/native-support-for-sveltekits-new-opentelemetry-spans?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
+- [@vercel/otel 1.3.0](https://vercel.com/changelog/vercel-otel-1-3-0?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
+- [instrumentation.js](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — API reference for the instrumentation.js file.
 
-Full cross-link map for this page: [/docs/tracing/instrumentation.graph.md](/docs/tracing/instrumentation.graph.md)
+Full cross-link map for this page: [/docs/tracing/instrumentation.graph.md](/docs/tracing/instrumentation.graph.md?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Getting started

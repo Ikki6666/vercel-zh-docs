@@ -1,16 +1,16 @@
 ---
-title: Custom Metrics
+title: Emit Custom Metrics from Vercel Functions
 product: vercel
 url: /docs/observability/custom-metrics
 canonical_url: "https://vercel.com/docs/observability/custom-metrics"
-last_updated: 2018-10-20
-type: conceptual
+last_updated: 2026-08-20
+type: reference
 prerequisites:
   - /docs/observability
 related:
   - /docs/functions/functions-api-reference/vercel-functions-package
   - /docs/cli/metrics
-summary: Learn about custom metrics on Vercel.
+summary: Learn how to emit application-specific metrics from Vercel Functions and analyze them in Observability.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -24,13 +24,17 @@ Custom metrics let you record application-specific numeric values from your Verc
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Legacy Metrics](https://vercel.com/docs/pricing/legacy?from=related) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
-- [Using with CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Query](https://vercel.com/docs/query?from=related) — Query and visualize your Vercel usage, traffic, and more in observability.
+- [Custom metrics are now supported in Vercel Observability](https://vercel.com/changelog/custom-metrics-are-now-supported-in-vercel-observability?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related)
+- [Query observability metrics using the Vercel CLI](https://vercel.com/changelog/vercel-metrics-in-cli?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related)
+- [Metrics for outgoing requests](https://vercel.com/changelog/metrics-for-outgoing-requests?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related)
+- [Query Web Analytics from the Vercel CLI](https://vercel.com/changelog/query-web-analytics-from-the-vercel-cli?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related)
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
+- [Legacy Metrics](https://vercel.com/docs/pricing/legacy?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Vercel Functions](https://vercel.com/docs/functions?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=related) — Build API routes, webhooks, and agent request handlers with Vercel Functions, then test and debug them with Vercel CLI.
 
-Full cross-link map for this page: [/docs/observability/custom-metrics.graph.md](/docs/observability/custom-metrics.graph.md)
+Full cross-link map for this page: [/docs/observability/custom-metrics.graph.md](/docs/observability/custom-metrics.graph.md?from=related&source_path=%2Fdocs%2Fobservability%2Fcustom-metrics&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 For example, you could emit metrics to measure database queries latency, record the number of signups, or count the requests per second of a specific endpoint.
@@ -120,7 +124,7 @@ After you deploy and invoke the Vercel Function, you can access custom metrics d
 List all available metrics:
 
 ```bash filename="terminal"
-vercel metrics list
+vercel metrics schema
 ```
 
 Query a custom metric and filter it by an attribute:

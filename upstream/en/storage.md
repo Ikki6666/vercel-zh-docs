@@ -3,23 +3,25 @@ title: Vercel Storage overview
 product: vercel
 url: /docs/storage
 canonical_url: "https://vercel.com/docs/storage"
-last_updated: 2026-07-29
+last_updated: 2026-09-03
 type: conceptual
 prerequisites:
   []
 related:
   - /docs/vercel-blob
-  - /docs/global-config
-  - /docs/marketplace-storage
   - /docs/vercel-blob/usage-and-pricing
+  - /docs/global-config
   - /docs/global-config/global-config-limits
-summary: "Store large files and global configuration with Vercel's storage products."
+  - /docs/marketplace-storage
+summary: Store files with Vercel Blob, runtime configuration with Global Config, and application data with Marketplace databases.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Vercel Storage overview
 
-Vercel offers a suite of managed, serverless storage products that integrate with your frontend framework.
+## Store application and agent data on Vercel
+
+Upload generated files with Vercel Blob, read low-latency configuration with Global Config, or provision a database through Vercel Marketplace.
 
 
 <!-- docsgraph:related -->
@@ -27,23 +29,41 @@ Vercel offers a suite of managed, serverless storage products that integrate wit
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
-- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob?from=related) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
-- [Build with Vercel Blob on Nuxt](https://vercel.com/kb/guide/vercel-blob-nuxt?from=related) — Set up Vercel Blob in a Nuxt application with NuxtHub, upload and serve files, and deliver optimized images with Nuxt Im
-- [Build with Vercel Blob on Next.js](https://vercel.com/kb/guide/vercel-blob-nextjs?from=related) — Deploy the Vercel Blob Next.js Starter and learn how client uploads store images securely in a private Blob store.
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Manage Vercel Blob Storage](https://vercel.com/docs/vercel-blob/manage-blob-storage?from=related) — Create blob stores, upload files, list contents, and manage storage using the CLI.
-- [Public Storage](https://vercel.com/docs/vercel-blob/public-storage?from=related) — Learn how to use public Vercel Blob storage to serve files accessible to anyone with the URL
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Create a Blob store](https://vercel.com/docs/rest-api/storage/create-a-blob-store?from=related)
-- [Overview](https://vercel.com/docs/cdn?from=related) — Vercel's CDN is a globally distributed platform that handles routing, caching, security, and compression for every deplo
+- [Improved performance for Vercel Postgres from Edge Functions](https://vercel.com/changelog/improved-performance-for-vercel-postgres-from-edge-functions?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related)
+- [Improvements and fixes](https://vercel.com/changelog/improvements-and-fixes?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related)
+- [Metrics for outgoing requests](https://vercel.com/changelog/metrics-for-outgoing-requests?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related)
+- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
+- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
+- [How to build scalable AI applications](https://vercel.com/blog/how-to-build-scalable-ai-applications?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related)
+- [Introducing storage on Vercel](https://vercel.com/blog/vercel-storage?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related)
+- [How to upload and store files with Vercel](https://vercel.com/kb/guide/how-to-upload-and-store-files-with-vercel?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related) — Vercel file uploads done right cover Server Actions, client-direct upload, and multipart for 5 TB files, with auth and c
+- [Introducing the Vercel Marketplace](https://vercel.com/blog/introducing-the-vercel-marketplace?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related)
+- [Build with Vercel Blob on Next.js](https://vercel.com/kb/guide/vercel-blob-nextjs?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related) — Deploy the Vercel Blob Next.js Starter and learn how client uploads store images securely in a private Blob store.
+- [Public Storage](https://vercel.com/docs/vercel-blob/public-storage?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related) — Learn how to use public Vercel Blob storage to serve files accessible to anyone with the URL
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
 
-Full cross-link map for this page: [/docs/storage.graph.md](/docs/storage.graph.md)
+Full cross-link map for this page: [/docs/storage.graph.md](/docs/storage.graph.md?from=related&source_path=%2Fdocs%2Fstorage&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-- [**Vercel Blob**](/docs/vercel-blob): Large file storage
-- [**Vercel Global Config**](/docs/global-config): Global, low-latency data store
-- [**Vercel Marketplace**](/docs/marketplace-storage): Find Postgres, KV, NoSQL, and other databases from providers like Neon, Upstash, and AWS
+#### Upload files
+
+```bash filename="terminal"
+vercel blob create-store my-blob-store --access public
+vercel blob put ./assets/logo.png --pathname images/logo.png --access public
+vercel blob list --prefix images/ --limit 20
+```
+
+#### Create global config
+
+```bash filename="terminal"
+vercel global-config add flags --items '{"betaUiEnabled":true,"region":"sfo1"}'
+```
+
+#### Provision a database
+
+```bash filename="terminal"
+vercel install neon
+```
 
 ## Choosing a storage product
 
@@ -53,14 +73,15 @@ The right storage solution depends on your needs for latency, durability, and co
 | --------------------------------- | ---------- | ------------ | ------------------------------------------- | --------------------------------------------------------- | ---------------------- |
 | [Blob](/docs/vercel-blob) | Fast       | Milliseconds | Large, content-addressable files ("blobs")  | [Learn more](/docs/vercel-blob/usage-and-pricing) | Hobby, Pro             |
 | [Global Config](/docs/global-config)  | Ultra-fast | Seconds      | Runtime configuration (e.g., feature flags) | [Learn more](/docs/global-config/global-config-limits)        | Hobby, Pro, Enterprise |
+| [Marketplace storage](/docs/marketplace-storage) | Provider-dependent | Provider-dependent | Relational, key-value, NoSQL, and vector data | Provider-specific | Provider-specific |
 
 See [best practices](#best-practices) for optimizing your storage usage.
 
-## Vercel Blob
+## Store generated files with Vercel Blob
 
 > **🔒 Permissions Required**: Vercel Blob
 
-Vercel Blob offers optimized storage for images, videos, and other files.
+Vercel Blob stores generated files, user uploads, images, videos, and other large objects in public or private stores.
 
 You should use Vercel Blob if you need to:
 
@@ -72,7 +93,7 @@ You should use Vercel Blob if you need to:
 - [Overview](/docs/vercel-blob)
 - [Quickstart](/docs/vercel-blob/server-upload)
 
-## Global Config
+## Read runtime configuration with Global Config
 
 > **🔒 Permissions Required**: Global Config
 
@@ -90,11 +111,11 @@ You should use Global Config if you need to:
 - [Quickstart](/docs/global-config/get-started)
 - [Limits & Pricing](/docs/global-config/global-config-limits)
 
-## Marketplace Storage
+## Provision databases through Vercel Marketplace
 
 > **🔒 Permissions Required**: Marketplace Storage
 
-The [Vercel Marketplace](https://vercel.com/marketplace?category=storage) connects you with storage providers like Neon, Upstash, and Supabase. You can provision databases directly from your Vercel dashboard, and Vercel automatically injects credentials as environment variables.
+The [Vercel Marketplace](https://vercel.com/marketplace?category=storage) connects agents and applications to relational data, sessions, rate limits, embeddings, and semantic search through providers like Neon, Upstash, and Supabase. Vercel injects provisioned resource credentials as environment variables.
 
 You should use Marketplace storage if you need to:
 

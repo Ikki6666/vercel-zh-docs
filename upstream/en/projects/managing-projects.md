@@ -3,7 +3,7 @@ title: Managing projects
 product: vercel
 url: /docs/projects/managing-projects
 canonical_url: "https://vercel.com/docs/projects/managing-projects"
-last_updated: 2026-02-26
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/projects
@@ -27,22 +27,22 @@ You can manage your project on Vercel in your project's dashboard. To learn more
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
-- [How to protect your AI endpoints with Vercel BotID](https://vercel.com/kb/guide/protect-ai-endpoints-with-vercel-botid?from=related) — Gate every request to your AI endpoints with Vercel BotID and checkBotId\\(\\) so inference runs only for verified callers
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Reference](https://vercel.com/docs/platforms/multi-project-platforms/reference?from=related) — API reference, error codes, troubleshooting, and FAQ for multi-project platforms on Vercel.
-- [Global Configs & Dashboard](https://vercel.com/docs/global-config/global-config-dashboard?from=related) — Learn how to create, view and update your Global Configs and the data inside them in your Vercel Dashboard at the Hobby
-- [Delete a Project](https://vercel.com/docs/rest-api/projects/delete-a-project?from=related)
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
+- [How to protect your AI endpoints with Vercel BotID](https://vercel.com/kb/guide/protect-ai-endpoints-with-vercel-botid?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=related) — Gate every request to your AI endpoints with Vercel BotID and checkBotId\\(\\) so inference runs only for verified callers
+- [Deploying to Vercel](https://vercel.com/docs/deployments?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=related) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Delete a Project](https://vercel.com/docs/rest-api/projects/delete-a-project?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=related) — DELETE /v9/projects/{idOrName} — Delete a specific project by passing either the project \\`id\\` or \\`name\\` in the URL.
+- [Multi-Project Platforms Reference](https://vercel.com/docs/platforms/multi-project-platforms/reference?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=related) — API reference, error codes, troubleshooting, and FAQ for multi-project platforms on Vercel.
+- [Managing Global Configs with the Dashboard](https://vercel.com/docs/global-config/global-config-dashboard?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=related) — Learn how to create, view and update your Global Configs and the data inside them in your Vercel Dashboard at the Hobby
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
 
-Full cross-link map for this page: [/docs/projects/managing-projects.graph.md](/docs/projects/managing-projects.graph.md)
+Full cross-link map for this page: [/docs/projects/managing-projects.graph.md](/docs/projects/managing-projects.graph.md?from=related&source_path=%2Fdocs%2Fprojects%2Fmanaging-projects&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Creating a project
 
 > **💡 Note:** To create a project, you need an [Owner](/docs/rbac/access-roles#owner-role) or [Member](/docs/rbac/access-roles#member-role) role. If you have a [Developer](/docs/rbac/access-roles#developer-role) role, you'll need the [Create Project](/docs/rbac/access-roles/extended-permissions#create-project) extended permission. For more information, see [Access Roles](/docs/rbac/access-roles).
 
-#### \['Dashboard'
+#### Dashboard
 
 To create a [new](/new) project:
 
@@ -56,7 +56,7 @@ To create a [new](/new) project:
 5. Configure your project settings, such as the name, [framework](/docs/frameworks), [environment variables](/docs/environment-variables), and [build and output settings](/docs/builds/configure-a-build#configuring-a-build).
 6. If you're importing from a monorepo, select the **Edit** button to select the project from the repository you want to deploy. For more information, see [Monorepos](/docs/monorepos#add-a-monorepo-through-the-vercel-dashboard).
 
-#### 'cURL'
+#### cURL
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 
@@ -86,7 +86,7 @@ curl --request POST \
   }'
 ```
 
-#### 'SDK']
+#### SDK
 
 To create an Authorization Bearer token, see the [access token](/docs/rest-api#creating-an-access-token) section of the API documentation.
 

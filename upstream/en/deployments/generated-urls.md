@@ -3,7 +3,7 @@ title: Accessing Deployments through Generated URLs
 product: vercel
 url: /docs/deployments/generated-urls
 canonical_url: "https://vercel.com/docs/deployments/generated-urls"
-last_updated: 2025-09-24
+last_updated: 2026-08-28
 type: conceptual
 prerequisites:
   - /docs/deployments
@@ -12,7 +12,7 @@ related:
   - /docs/deployments/environments
   - /docs/deployment-retention
   - /docs/deployment-protection
-  - /docs/projects
+  - /docs/domains/working-with-domains/add-a-domain
 summary: When you create a new deployment, Vercel will automatically generate a unique URL which you can use to access that particular deployment.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,23 +27,38 @@ When you create a new [deployment](/docs/deployments) in either a preview or pro
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
-- [How to debug 404 errors](https://vercel.com/kb/guide/how-to-debug-404-errors?from=related) — Learn the systematic steps to identify and resolve 404 issues.
-- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
-- [Troubleshooting Cross-Origin Errors \\(net::ERR_BLOCKED_BY_ORB\\) with Deployment Protection](https://vercel.com/kb/guide/troubleshooting-cross-origin-errors-neterr-blocked-by-orb-with-deployment-protection?from=related) — Learn to resolve \\`net::ERR_BLOCKED_BY_ORB\\` errors on protected Vercel deployments. This guide explains how cross-origi
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [Deploying from CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
-- [Build Features](https://vercel.com/docs/builds/build-features?from=related) — Learn how to customize your deployments using Vercel's build features.
-- [Git Integrations](https://vercel.com/docs/git?from=related) — Vercel allows for automatic deployments on every branch push and merges onto the production branch of your GitHub, GitLa
-- [Audit Logs](https://vercel.com/docs/audit-log?from=related) — Learn how to track and analyze your team members' activities.
+- [Protect past Production Deployments with Deployment Protection](https://vercel.com/changelog/protect-past-production-deployments-with-deployment-protection?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related)
+- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
+- [How to debug 404 errors](https://vercel.com/kb/guide/how-to-debug-404-errors?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Learn the systematic steps to identify and resolve 404 issues.
+- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
+- [Troubleshooting Cross-Origin Errors \\(net::ERR_BLOCKED_BY_ORB\\) with Deployment Protection](https://vercel.com/kb/guide/troubleshooting-cross-origin-errors-neterr-blocked-by-orb-with-deployment-protection?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Learn to resolve \\`net::ERR_BLOCKED_BY_ORB\\` errors on protected Vercel deployments. This guide explains how cross-origi
+- [Agentic Infrastructure](https://vercel.com/blog/agentic-infrastructure?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related)
+- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Deploying Projects from Vercel CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
+- [Deploying Git Repositories with Vercel](https://vercel.com/docs/git?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Vercel automatically deploys supported Git repositories on every branch push and when changes merge into the production
+- [Deploying & Redirecting Domains](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — Learn how to deploy your domains and set up domain redirects with this guide.
+- [System environment variables](https://vercel.com/docs/environment-variables/system-environment-variables?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=related) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
 
-Full cross-link map for this page: [/docs/deployments/generated-urls.graph.md](/docs/deployments/generated-urls.graph.md)
+Full cross-link map for this page: [/docs/deployments/generated-urls.graph.md](/docs/deployments/generated-urls.graph.md?from=related&source_path=%2Fdocs%2Fdeployments%2Fgenerated-urls&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 This URL is **publicly accessible by default**, but you can configure it to be private using [deployment protection](/docs/deployment-protection).
 
 The make up of the URL depends on how it was created and if it relates to a branch of a specific commit. To learn more, see [URL Components](/docs/deployments/generated-urls#url-components).
+
+## Why deployments have multiple URLs
+
+A Vercel deployment can have several URLs because each URL serves a different purpose. The deployment overview and Git integration comments can list generated URLs alongside your custom domains.
+
+| URL | Purpose |
+| --- | --- |
+| Unique deployment URL | Points to a specific deployment so you can share that version of your project. |
+| Git branch URL | Points to the latest deployment from that branch and stays the same when you push new commits. |
+| Production URL | Points to the project's production deployment. |
+| Custom domain | A domain you assign to a production or preview environment. |
+
+Adding a [custom domain](/docs/domains/working-with-domains/add-a-domain) gives the deployment another address alongside its generated URLs.
 
 ## Viewing generated URLs
 
@@ -104,7 +119,9 @@ This allows you to stay on top of the latest change deployed by a particular [me
 
 ### Truncation
 
-If more than 63 characters are present before the `.vercel.app` suffix (or the respective [Preview Deployment Suffix](#preview-deployment-suffix)) for a generated URL, they will be truncated.
+Vercel shortens generated deployment URLs to keep each DNS label within the 63-character limit defined by [RFC 1035](https://www.rfc-editor.org/rfc/rfc1035#section-2.3.4). A DNS label is the part of a domain between dots. If the label before `.vercel.app` (or your [Preview Deployment Suffix](#preview-deployment-suffix)) exceeds this limit, Vercel truncates it.
+
+A deployment URL can also be shortened by [anti-phishing protection](#anti-phishing-protection), even when it is within the length limit.
 
 ### Anti-phishing protection
 

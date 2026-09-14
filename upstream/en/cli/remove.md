@@ -3,12 +3,13 @@ title: vercel remove
 product: vercel
 url: /docs/cli/remove
 canonical_url: "https://vercel.com/docs/cli/remove"
-last_updated: 2026-07-15
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/cli
 related:
   - /docs/projects
+  - /docs/cli/global-options
 summary: Learn how to remove a deployment using the vercel remove CLI command.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -23,15 +24,13 @@ The `vercel remove` command, which can be shortened to `vercel rm`, is used to r
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I delete an individual deployment?](https://vercel.com/kb/guide/how-do-i-delete-an-individual-deployment?from=related) — Information on deleting an individual deployment.
-- [Delete Deployment](https://v0.app/docs/api/v1/reference/deployments/delete?from=related) — Delete a deployment by ID. This will delete the deployment from Vercel.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [vercel list](https://vercel.com/docs/cli/list?from=related) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
-- [vercel redeploy](https://vercel.com/docs/cli/redeploy?from=related) — Learn how to redeploy your project using the vercel redeploy CLI command.
-- [Deploying from CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
-- [Delete a Deployment](https://vercel.com/docs/rest-api/deployments/delete-a-deployment?from=related)
+- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related&source_path=%2Fdocs%2Fcli%2Fremove&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [vercel list](https://vercel.com/docs/cli/list?from=related&source_path=%2Fdocs%2Fcli%2Fremove&source_site=vercel-docs&relationship=related) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
+- [vercel redeploy](https://vercel.com/docs/cli/redeploy?from=related&source_path=%2Fdocs%2Fcli%2Fremove&source_site=vercel-docs&relationship=related) — Learn how to redeploy your project using the vercel redeploy CLI command.
+- [vercel redirects](https://vercel.com/docs/cli/redirects?from=related&source_path=%2Fdocs%2Fcli%2Fremove&source_site=vercel-docs&relationship=related) — Learn how to manage project-level redirects using the vercel redirects CLI command.
+- [vercel rollback](https://vercel.com/docs/cli/rollback?from=related&source_path=%2Fdocs%2Fcli%2Fremove&source_site=vercel-docs&relationship=related) — Learn how to roll back your production deployments to previous deployments using the vercel rollback CLI command.
 
-Full cross-link map for this page: [/docs/cli/remove.graph.md](/docs/cli/remove.graph.md)
+Full cross-link map for this page: [/docs/cli/remove.graph.md](/docs/cli/remove.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fremove&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 > **💡 Note:** You can also remove deployments from the Project Overview page on the Vercel
@@ -91,6 +90,24 @@ vercel remove my-deployment.com --yes
 
 *Using the \`vercel remove\` command with the
 \`--yes\` option.*
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel remove` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

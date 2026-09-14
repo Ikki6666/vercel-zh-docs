@@ -3,7 +3,7 @@ title: Builds
 product: vercel
 url: /docs/builds
 canonical_url: "https://vercel.com/docs/builds"
-last_updated: 2026-06-16
+last_updated: 2026-09-03
 type: conceptual
 prerequisites:
   []
@@ -27,16 +27,20 @@ Vercel automatically performs a **build** every time you deploy your code, wheth
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
-- [How can I allowlist IP addresses for a deployment?](https://vercel.com/kb/guide/how-to-allowlist-deployment-ip-address?from=related) — Vercel deployments use dynamic outbound IPs by default. Learn how to allowlist IP addresses for a deployment with Static
-- [Why are my Vercel builds queued?](https://vercel.com/kb/guide/why-are-my-vercel-builds-queued?from=related) — Learn about why your Vercel builds may be getting queued and how to resolve this.
-- [Build System](https://vercel.com/docs/fundamentals/builds?from=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [vercel build](https://vercel.com/docs/cli/build?from=related) — Learn how to build a Vercel Project locally or in your own CI environment using the vercel build CLI command.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Basic build machines are now available on Pro and Enterprise](https://vercel.com/changelog/basic-build-machines?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related)
+- [Deploy steps are now up to 21% faster](https://vercel.com/changelog/deploy-steps-are-now-up-to-21-faster?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related)
+- [Deployment step now 10% faster](https://vercel.com/changelog/deployment-step-now-10-faster?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related)
+- [Deployment step now 15% faster](https://vercel.com/changelog/deployment-step-now-15-percent-faster?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related)
+- [Deployments are now up to 7 seconds faster](https://vercel.com/changelog/deployments-are-now-up-to-7-seconds-faster?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related)
+- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
+- [How can I allowlist IP addresses for a deployment?](https://vercel.com/kb/guide/how-to-allowlist-deployment-ip-address?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related) — Vercel deployments use dynamic outbound IPs by default. Learn how to allowlist IP addresses for a deployment with Static
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related)
+- [How Vercel builds your application](https://vercel.com/docs/fundamentals/builds?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
+- [Deploying to Vercel](https://vercel.com/docs/deployments?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [vercel build](https://vercel.com/docs/cli/build?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=related) — Learn how to build a Vercel Project locally or in your own CI environment using the vercel build CLI command.
 
-Full cross-link map for this page: [/docs/builds.graph.md](/docs/builds.graph.md)
+Full cross-link map for this page: [/docs/builds.graph.md](/docs/builds.graph.md?from=related&source_path=%2Fdocs%2Fbuilds&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Build infrastructure
@@ -156,6 +160,8 @@ Vercel enforces certain limits to ensure reliable builds for all users:
   | Disk Space | 32 GB   | 32 GB   | Custom     |
   | CPUs       | 2       | 4       | Custom     |
 
+Hobby teams always use the Basic build machine with 2 vCPUs and 8 GB of memory. See [Managing Builds](/docs/builds/managing-builds#build-machine-types) for all build machine types.
+
 For more information, visit [Build Container Resources](/docs/deployments/troubleshoot-a-build#build-container-resources) and [Cancelled Builds](/docs/deployments/troubleshoot-a-build#cancelled-builds-due-to-limits).
 
 ## Learn more about builds
@@ -169,9 +175,9 @@ To explore more features and best practices for building and deploying with Verc
 
 ## Pricing
 
-Vercel bills build usage as Build Minutes based on the build machine type used for each build. Vercel bills Standard, Enhanced, and Turbo build machines per build minute, and Elastic build machines per CPU minute.
+Vercel bills build usage as Build Minutes based on the build machine type used for each build. Basic is included with Hobby. For paid teams, Basic is billed at $0.0035 per CPU minute, or $0.007 per build minute. Standard, Enhanced, and Turbo build machines are billed per build minute, and Elastic build machines per CPU minute.
 
-For current rates and build machine details, see [Managing Builds](/docs/builds/managing-builds#larger-build-machines).
+For current rates and build machine details, see [Managing Builds](/docs/builds/managing-builds#build-machine-types).
 
 
 ---

@@ -3,7 +3,7 @@ title: Vercel KMS Pricing and Limits
 product: vercel
 url: /docs/kms/pricing
 canonical_url: "https://vercel.com/docs/kms/pricing"
-last_updated: 2018-10-20
+last_updated: 2026-08-18
 type: reference
 prerequisites:
   - /docs/kms
@@ -24,13 +24,14 @@ KMS is billed per signing operation. A signing operation is a single `signToken`
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
-- [Concepts](https://vercel.com/docs/kms/concepts?from=related) — Understand how Vercel KMS rotates signing keys and how it authorizes signing, management, and verification.
-- [Pricing and Limits](https://vercel.com/docs/connect/pricing?from=related) — How Vercel Connect is billed across plans, how to stop being billed, and the platform limits that apply during beta.
-- [Quickstart](https://vercel.com/docs/kms/quickstart?from=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
-- [Pricing and Limits](https://vercel.com/docs/queues/pricing?from=related) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys?from=related&source_path=%2Fdocs%2Fkms%2Fpricing&source_site=vercel-docs&relationship=related)
+- [Vercel KMS Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related&source_path=%2Fdocs%2Fkms%2Fpricing&source_site=vercel-docs&relationship=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
+- [Vercel KMS Concepts](https://vercel.com/docs/kms/concepts?from=related&source_path=%2Fdocs%2Fkms%2Fpricing&source_site=vercel-docs&relationship=related) — Understand how Vercel KMS rotates signing keys and how it authorizes signing, management, and verification.
+- [Vercel KMS Quickstart](https://vercel.com/docs/kms/quickstart?from=related&source_path=%2Fdocs%2Fkms%2Fpricing&source_site=vercel-docs&relationship=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
+- [Pricing and Limits](https://vercel.com/docs/queues/pricing?from=related&source_path=%2Fdocs%2Fkms%2Fpricing&source_site=vercel-docs&relationship=related) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
+- [Vercel Connect Pricing](https://vercel.com/docs/connect/pricing?from=related&source_path=%2Fdocs%2Fkms%2Fpricing&source_site=vercel-docs&relationship=related) — How Vercel Connect is billed for token requests and triggers across plans and how to stop being billed.
 
-Full cross-link map for this page: [/docs/kms/pricing.graph.md](/docs/kms/pricing.graph.md)
+Full cross-link map for this page: [/docs/kms/pricing.graph.md](/docs/kms/pricing.graph.md?from=related&source_path=%2Fdocs%2Fkms%2Fpricing&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Pricing
@@ -38,7 +39,7 @@ Full cross-link map for this page: [/docs/kms/pricing.graph.md](/docs/kms/pricin
 Signing operations are grouped into two algorithm tiers:
 
 - **Standard** algorithms: `RS256` and `PS256`.
-- **Advanced** algorithms: every other supported algorithm, including `RS384`, `RS512`, `PS384`, `PS512`, the `ES*` family, and `EdDSA`.
+- **Advanced** algorithms: every other supported algorithm, including `RS384`, `RS512`, `PS384`, `PS512`, and the `ES*` family.
 
 | Operation                                          | Price                       |
 | -------------------------------------------------- | --------------------------- |
@@ -50,7 +51,7 @@ The Hobby plan includes 5,000 signing operations per month at no charge. Pro and
 ## Limits
 
 - An issuer can have at most one pending key at a time during [rotation](/docs/kms/concepts/key-rotation).
-- KMS supports `RS256`, `RS384`, `RS512`, the `PS*` and `ES*` families, and `EdDSA`, and defaults to `RS512`.
+- KMS supports `RS256`, `RS384`, `RS512`, the `PS*` and `ES*` families, and defaults to `RS512`.
 - KMS does not support symmetric (`HS*`) keys.
 
 ## How to stop being billed

@@ -1,21 +1,21 @@
 ---
-title: File Attachments
+title: OpenAI Chat Completions Images and PDFs with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/openai-chat-completions/images
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
   - /docs/ai-gateway/sdks-and-apis
 related:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/image-generation
-summary: Send images and PDF documents to a model using the OpenAI Chat Completions API.
+summary: Send images and PDF documents to a model using the OpenAI Chat Completions API through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# File Attachments
+# OpenAI Chat Completions Images and PDFs with AI Gateway
 
 Send images and PDFs alongside your text prompt by using an array of content parts in place of a plain string. Every part carries its own `type`, so one message can mix text, images, and documents.
 
@@ -25,14 +25,13 @@ Send images and PDFs alongside your text prompt by using an array of content par
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/images?from=related) — Send images and PDF documents for analysis using the OpenResponses API.
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/images?from=related) — Send images and PDF documents for analysis using the OpenAI Responses API through AI Gateway.
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/images?from=related) — Send images and PDF documents as part of your Anthropic API message requests.
-- [Images, videos, and file uploads](https://v0.app/docs/images-and-videos?from=related) — Attach media, documents, code, and other supported assets to give v0 context or add them to your application.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming?from=related) — Stream OpenAI Chat Completions responses token by token as they are generated.
+- [OpenAI Responses Images and PDFs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/images?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fopenai-chat-completions%2Fimages&source_site=vercel-docs&relationship=related) — Send images and PDF documents for analysis using the OpenAI Responses API through AI Gateway.
+- [OpenResponses Images and PDFs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/images?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fopenai-chat-completions%2Fimages&source_site=vercel-docs&relationship=related) — Send images and PDF documents for analysis using the OpenResponses API through AI Gateway.
+- [Python with AI Gateway: OpenAI and Anthropic SDKs](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fopenai-chat-completions%2Fimages&source_site=vercel-docs&relationship=related) — Use AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
+- [OpenAI Chat Completions Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fopenai-chat-completions%2Fimages&source_site=vercel-docs&relationship=related) — Stream OpenAI Chat Completions responses token by token as they are generated through AI Gateway.
+- [AI Gateway File and PDF Input](https://vercel.com/docs/ai-gateway/inputs-and-tools/file-input?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fopenai-chat-completions%2Fimages&source_site=vercel-docs&relationship=related) — Send PDFs and documents to AI Gateway models with examples for each supported SDK and API format.
 
-Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images.graph.md](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images.graph.md](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fopenai-chat-completions%2Fimages&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Model support varies. Check the [models list](/ai-gateway/models) for a model's input modalities before sending an attachment.
@@ -42,31 +41,6 @@ Model support varies. Check the [models list](/ai-gateway/models) for a model's 
 Send images as part of your chat completion request.
 
 Example request
-
-#### cURL
-
-```bash filename="image-analysis.sh"
-IMAGE_B64=$(base64 -i image.png)
-
-curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          { "type": "text", "text": "What is in this image?" },
-          {
-            "type": "image_url",
-            "image_url": { "url": "data:image/png;base64,'"$IMAGE_B64"'" }
-          }
-        ]
-      }
-    ]
-  }'
-```
 
 #### TypeScript
 
@@ -151,16 +125,10 @@ print('Assistant:', completion.choices[0].message.content)
 print('Tokens used:', completion.usage)
 ```
 
-## PDF attachments
-
-Send PDF documents as part of your chat completion request.
-
-Example request
-
 #### cURL
 
-```bash filename="pdf-analysis.sh"
-PDF_B64=$(base64 -i document.pdf)
+```bash filename="image-analysis.sh"
+IMAGE_B64=$(base64 -i image.png)
 
 curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
   -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
@@ -171,19 +139,22 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
       {
         "role": "user",
         "content": [
-          { "type": "text", "text": "Summarize this document." },
+          { "type": "text", "text": "What is in this image?" },
           {
-            "type": "file",
-            "file": {
-              "filename": "document.pdf",
-              "file_data": "data:application/pdf;base64,'"$PDF_B64"'"
-            }
+            "type": "image_url",
+            "image_url": { "url": "data:image/png;base64,'"$IMAGE_B64"'" }
           }
         ]
       }
     ]
   }'
 ```
+
+## PDF attachments
+
+Send PDF documents as part of your chat completion request.
+
+Example request
 
 #### TypeScript
 
@@ -202,29 +173,34 @@ const openai = new OpenAI({
 const pdfBuffer = fs.readFileSync('./document.pdf');
 const pdfBase64 = pdfBuffer.toString('base64');
 
-const completion = await openai.chat.completions.create({
-  model: 'anthropic/claude-opus-5',
-  messages: [
-    {
-      role: 'user',
-      content: [
+const completion = await openai.post<OpenAI.Chat.Completions.ChatCompletion>(
+  '/chat/completions',
+  {
+    body: {
+      model: 'anthropic/claude-opus-5',
+      messages: [
         {
-          type: 'text',
-          text: 'What is the main topic of this document? Please summarize the key points.',
-        },
-        {
-          type: 'file',
-          file: {
-            data: pdfBase64,
-            media_type: 'application/pdf',
-            filename: 'document.pdf',
-          },
+          role: 'user',
+          content: [
+            {
+              type: 'text',
+              text: 'What is the main topic of this document? Please summarize the key points.',
+            },
+            {
+              type: 'file',
+              file: {
+                data: pdfBase64,
+                media_type: 'application/pdf',
+                filename: 'document.pdf',
+              },
+            },
+          ],
         },
       ],
+      stream: false,
     },
-  ],
-  stream: false,
-});
+  },
+);
 
 console.log('Assistant:', completion.choices[0].message.content);
 console.log('Tokens used:', completion.usage);
@@ -274,6 +250,34 @@ completion = client.chat.completions.create(
 
 print('Assistant:', completion.choices[0].message.content)
 print('Tokens used:', completion.usage)
+```
+
+#### cURL
+
+```bash filename="pdf-analysis.sh"
+PDF_B64=$(base64 -i document.pdf)
+
+curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          { "type": "text", "text": "Summarize this document." },
+          {
+            "type": "file",
+            "file": {
+              "filename": "document.pdf",
+              "file_data": "data:application/pdf;base64,'"$PDF_B64"'"
+            }
+          }
+        ]
+      }
+    ]
+  }'
 ```
 
 ## Next steps

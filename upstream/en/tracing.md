@@ -3,7 +3,7 @@ title: Tracing
 product: vercel
 url: /docs/tracing
 canonical_url: "https://vercel.com/docs/tracing"
-last_updated: 2026-07-06
+last_updated: 2026-08-25
 type: how-to
 prerequisites:
   []
@@ -27,20 +27,20 @@ In observability, tracing is the process of collecting and analyzing how a reque
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
-- [Vercel vs Northflank](https://vercel.com/kb/guide/vercel-vs-northflank?from=related) — A detailed guide to Vercel vs Northflank: Fluid compute, CDN and caching, security defaults, AI infrastructure, GPU comp
-- [OpenTelemetry](https://nextjs.org/docs/app/guides/open-telemetry?from=related) — Learn how to instrument your Next.js app with OpenTelemetry.
-- [Observability](https://eve.dev/docs/guides/instrumentation?from=related) — Trace an agent with OpenTelemetry in instrumentation.ts, read the workflow run tags eve emits, and debug discovery with
-- [SigNoz](https://ai-sdk.dev/providers/observability/signoz?from=related)
-- [Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains?from=related) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Observability](https://vercel.com/docs/eve/observability?from=related) — View agent runs in the Vercel dashboard with no setup, and optionally export AI SDK spans through OpenTelemetry.
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Traces now support Tree and Waterfall views](https://vercel.com/changelog/traces-now-support-tree-and-waterfall-views?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related)
+- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
+- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
+- [Vercel vs Northflank](https://vercel.com/kb/guide/vercel-vs-northflank?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Northflank: Fluid compute, CDN and caching, container image functions, security defaults,
+- [Always-on tracing for production and preview traffic](https://vercel.com/changelog/always-on-tracing-for-production-and-preview-traffic?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related)
+- [How to set up instrumentation with OpenTelemetry](https://nextjs.org/docs/app/guides/open-telemetry?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related) — Learn how to instrument your Next.js app with OpenTelemetry.
+- [Track a request's full lifecycle with session tracing](https://vercel.com/changelog/session-tracing-now-available?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related)
+- [Export traces, web analytics events, and speed insights datapoints to any destination](https://vercel.com/changelog/export-more-data-with-vercel-drains?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related)
+- [Trace any Vercel request from the CLI](https://vercel.com/changelog/trace-any-vercel-request-from-the-cli?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related)
+- [AI Gateway Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=related) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
 
-Full cross-link map for this page: [/docs/tracing.graph.md](/docs/tracing.graph.md)
+Full cross-link map for this page: [/docs/tracing.graph.md](/docs/tracing.graph.md?from=related&source_path=%2Fdocs%2Ftracing&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 You can think of a trace as the story of a single request:
@@ -126,6 +126,34 @@ Your traces display the following types of spans:
 To view details of a span, click on the span in the trace. The sidebar will display the span's details. For infrastructure spans, a "what is this?" explanation will be provided.
 
 To view trace spans in more detail, click and drag to zoom in on a specific area of the trace. You can also use the zoom controls in the bottom right corner of the trace.
+
+### Switching between trace views
+
+When you open a trace, you can switch between three visualizations of the same spans using the view menu in the top-right corner of the trace panel. Each view lays out the same data differently, so you can pick the one that fits what you're debugging:
+
+| View         | What it shows                                                                  | Use it to                                                               |
+| ------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| **Timeline** | Spans on a shared horizontal time axis, positioned by start time and duration. | Spot where a request spends its time. For example, find a slow database query that delays the response, or check whether your outbound fetches run in parallel or one after another. |
+| **Tree**     | Spans as an indented hierarchy you can expand and collapse.                    | Follow how one operation triggers another. For example, see which route handler fanned out into a burst of downstream API calls, without exact timing getting in the way.            |
+| **Waterfall** | The span hierarchy alongside duration bars on a time axis.                     | Read structure and timing together. For example, walk a chain of nested calls to find the deepest span that dominates the total request duration.                                   |
+
+#### Timeline view
+
+The timeline is the default view. Spans appear as horizontal bars on a shared time axis, so you can see when each step started, how long it took, and where spans overlap.
+
+![Image](https://vercel.com/front/docs/observability/trace-timeline-view-light.png?lightbox)
+
+#### Tree view
+
+The tree view shows spans as an indented, collapsible hierarchy. Expand a span to reveal its child spans, which helps you follow how one operation leads to another without focusing on exact timing.
+
+![Image](https://vercel.com/front/docs/observability/trace-tree-view-light.png?lightbox)
+
+#### Waterfall view
+
+The waterfall view combines the tree's hierarchy with the timeline's duration bars. Each row shows a span's place in the hierarchy next to a bar sized and positioned by its duration, so you can read both structure and timing at once.
+
+![Image](https://vercel.com/front/docs/observability/trace-waterfall-view-light.png?lightbox)
 
 ## Exporting traces to a third party
 

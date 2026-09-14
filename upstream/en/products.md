@@ -3,7 +3,7 @@ title: Products
 product: vercel
 url: /docs/products
 canonical_url: "https://vercel.com/docs/products"
-last_updated: 2026-07-29
+last_updated: 2026-08-26
 type: conceptual
 prerequisites:
   []
@@ -13,7 +13,7 @@ related:
   - /docs/sandbox
   - /docs/container-registry
   - /docs/workflows
-summary: Explore all Vercel products and capabilities.
+summary: Browse Vercel products for building, deploying, securing, observing, and scaling web applications.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -23,7 +23,7 @@ Browse every Vercel product. Build with AI, deploy and scale your apps, and oper
 
 ## Build with AI
 
-- [AI Gateway](/docs/ai-gateway): One endpoint, all models
+- [AI Gateway](/docs/ai-gateway): Access hundreds of models for text, image, and video generation, realtime voice, speech to text, text to speech, embeddings, and reranking through one API. Use provider routing and automatic fallbacks, built-in observability and cost tracking, spending controls, coding agent support, and no markup on token prices.
 - [AI SDK](/docs/ai-sdk): AI toolkit
 - [Sandbox](/docs/sandbox): Run AI code safely
 - [Container Registry](/docs/container-registry): Store OCI images

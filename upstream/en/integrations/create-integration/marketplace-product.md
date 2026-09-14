@@ -3,7 +3,7 @@ title: Create a Native Integration
 product: vercel
 url: /docs/integrations/create-integration/marketplace-product
 canonical_url: "https://vercel.com/docs/integrations/create-integration/marketplace-product"
-last_updated: 2026-03-09
+last_updated: 2026-08-11
 type: tutorial
 prerequisites:
   - /docs/integrations/create-integration
@@ -20,7 +20,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Create a Native Integration
 
-With a , you allow a Vercel customer who has  your integration to use specific features of your integration **without** having them leave the Vercel dashboard and create a separate account on your platform. You can create multiple products for each integration and each integration connects to Vercel through specific categories.
+With a product, you allow a Vercel customer who has installed your integration to use specific features of your integration **without** having them leave the Vercel dashboard and create a separate account on your platform. You can create multiple products for each integration and each integration connects to Vercel through specific categories.
 
 
 <!-- docsgraph:related -->
@@ -28,14 +28,14 @@ With a , you allow a Vercel customer who has  your integration to use specific f
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related) — Learn how you can add a product to your Vercel project through a native integration.
-- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
-- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
-- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
-- [Marketplace Vercel API](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/vercel?from=related) — Learn about marketplace vercel api on Vercel.
-- [Marketplace](https://vercel.com/docs/marketplace-storage?from=related) — Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data,
+- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fmarketplace-product&source_site=vercel-docs&relationship=related) — Learn how you can add a product to your Vercel project through a native integration.
+- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fmarketplace-product&source_site=vercel-docs&relationship=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
+- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fmarketplace-product&source_site=vercel-docs&relationship=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
+- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fmarketplace-product&source_site=vercel-docs&relationship=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
+- [Storage on Vercel Marketplace](https://vercel.com/docs/marketplace-storage?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fmarketplace-product&source_site=vercel-docs&relationship=related) — Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data,
+- [Marketplace Partner API Reference](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/partner?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fmarketplace-product&source_site=vercel-docs&relationship=related) — Learn how to implement Partner API endpoints for your Vercel integration
 
-Full cross-link map for this page: [/docs/integrations/create-integration/marketplace-product.graph.md](/docs/integrations/create-integration/marketplace-product.graph.md)
+Full cross-link map for this page: [/docs/integrations/create-integration/marketplace-product.graph.md](/docs/integrations/create-integration/marketplace-product.graph.md?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fmarketplace-product&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Requirements
@@ -50,7 +50,7 @@ To create and list your products as a Vercel provider, you need to:
 
 ## Create your product
 
-In this tutorial, you create a storage  for your native integration through the following steps:
+In this tutorial, you create a storage product for your native integration through the following steps:
 
 - ### Set up the integration
   Before you can create a product, you must have an existing integration. [Create a new Native Integration](/docs/integrations/create-integration) or use your existing one.
@@ -62,7 +62,7 @@ In this tutorial, you create a storage  for your native integration through the 
   3. Select the integration you would like to use for the product.
   4. Find the **base URL** field in the **Product** section and set it to the integration server URL.
   5. Select **Update**.
-  You can use this [example Next.js application](https://github.com/vercel/example-marketplace-integration) as a guide to create your&#x20;
+  You can use this [example Next.js application](https://github.com/vercel/example-marketplace-integration) as a guide to create your integration server
 
 - ### Add a new product
   1. Select the integration you would like to use for the product from the Integrations Console
@@ -73,10 +73,10 @@ In this tutorial, you create a storage  for your native integration through the 
   1. Complete the **Name**, **URL Slug**, **Visibility** and **Short Description** fields
   2. Optionally toggle **Disable Resource Renaming** to prevent customers from renaming resources after creation. By default, customers can rename resources. Enable this if your platform requires resource names to remain unchanged after provisioning.
   3. Optionally update the following in the [Metadata Schema](#metadata-schema) field:
-  - Edit the `properties` of the JSON schema to match the options that you are making available through the .
+  - Edit the `properties` of the JSON schema to match the options that you are making available through the integration server.
   - Edit and check that the attributes of each property such as `type` matches your requirements.
   - Include the billing plan options that Vercel will send to your integration server when requesting the list of billing plans.
-  - Use the **** section to check your JSON schema as you update it.
+  - Use the **Preview Form** section to check your JSON schema as you update it.
   Review the data collection process shown in the [submit store creation flow](/docs/integrations/create-integration/marketplace-flows#submit-store-creation) to understand the impact of the metadata schema.
   4. Select **Apply Changes**
 
@@ -95,9 +95,9 @@ In this tutorial, you create a storage  for your native integration through the 
 
 ### Metadata schema
 
-When you first create your , you will see a [JSON schema](https://json-schema.org/) in the **Metadata Schema** field of the product configuration options. You will edit this schema to match the options you want to make available in the Vercel integration dashboard to the customer who installs this product integration.
+When you first create your product, you will see a [JSON schema](https://json-schema.org/) in the **Metadata Schema** field of the product configuration options. You will edit this schema to match the options you want to make available in the Vercel integration dashboard to the customer who installs this product integration.
 
-When the customer installs your product, Vercel collects data from this customer and sends it to your  based on the Metadata schema you provided in the  configuration. The schema includes properties specific to Vercel that allow the Vercel dashboard to understand how to render the user interface to collect this data from the customer.
+When the customer installs your product, Vercel collects data from this customer and sends it to your integration server based on the Metadata schema you provided in the product configuration. The schema includes properties specific to Vercel that allow the Vercel dashboard to understand how to render the user interface to collect this data from the customer.
 
 As an example, use the following configuration to only show the name of the product:
 
@@ -110,7 +110,7 @@ As an example, use the following configuration to only show the name of the prod
 }
 ```
 
-See the endpoints for [Provision](/docs/integrations/create-integration/marketplace-api#provision-resource) or [Update](/docs/integrations/create-integration/marketplace-api#update-resource)  for specific examples.
+See the endpoints for [Provision](/docs/integrations/create-integration/marketplace-api#provision-resource) or [Update](/docs/integrations/create-integration/marketplace-api#update-resource) Resource for specific examples.
 
 | Property `ui:control` | Property `type` | Notes                                                                                                                                                                                                              |
 | --------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

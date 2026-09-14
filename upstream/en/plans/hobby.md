@@ -3,16 +3,16 @@ title: Vercel Hobby Plan
 product: vercel
 url: /docs/plans/hobby
 canonical_url: "https://vercel.com/docs/plans/hobby"
-last_updated: 2026-06-16
+last_updated: 2026-08-31
 type: reference
 prerequisites:
   - /docs/plans
 related:
+  - /docs/pricing/taxes
   - /docs/global-config/using-global-config
   - /docs/functions/usage-and-pricing
   - /docs/image-optimization/limits-and-pricing
   - /docs/speed-insights/limits-and-pricing
-  - /docs/speed-insights
 summary: Learn about the Hobby plan and how it compares to the Pro plan.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,15 +27,21 @@ The Hobby plan is **free** and aimed at developers with personal projects, and s
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Why has my account or deployment been paused?](https://vercel.com/kb/guide/why-is-my-account-deployment-blocked?from=related) — Learn why a Vercel account or deployment gets paused, from budget and usage limits to policy violations, and how to resu
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Observability Plus](https://vercel.com/docs/observability/observability-plus?from=related) — Learn about using Observability Plus and its limits.
-- [Account Management](https://vercel.com/docs/accounts?from=related) — Learn how to manage your Vercel account and team members.
-- [Free Domain with Pro](https://vercel.com/docs/domains/free-domain-with-pro?from=related) — Learn about free domain with pro on Vercel.
+- [Why has my account or deployment been paused?](https://vercel.com/kb/guide/why-is-my-account-deployment-blocked?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related) — Learn why a Vercel account or deployment gets paused, from budget and usage limits to policy violations, and how to resu
+- [A more flexible Pro plan for modern teams](https://vercel.com/blog/new-pro-pricing-plan?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related)
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related)
+- [Vercel Pricing](https://vercel.com/pricing?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related) — Choose a Vercel plan and compare features and usage pricing.
+- [Included Pro usage is now credit-based](https://vercel.com/changelog/included-pro-usage-is-now-credit-based?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related)
+- [Pricing on Vercel](https://vercel.com/docs/pricing?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Billing FAQ for Pro Plan](https://vercel.com/docs/plans/pro-plan/billing?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
+- [Account Management](https://vercel.com/docs/accounts?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related) — Learn how to manage your Vercel account and team members.
+- [Observability Plus](https://vercel.com/docs/observability/observability-plus?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related) — Learn about using Observability Plus and its limits.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
 
-Full cross-link map for this page: [/docs/plans/hobby.graph.md](/docs/plans/hobby.graph.md)
+Full cross-link map for this page: [/docs/plans/hobby.graph.md](/docs/plans/hobby.graph.md?from=related&source_path=%2Fdocs%2Fplans%2Fhobby&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
+
+> **💡 Note:** All prices shown are in USD and exclude value-added tax (VAT), goods and services tax (GST), and other applicable taxes. Taxes are calculated based on your billing address and added to your invoice where required by law. [Learn more about taxes](/docs/pricing/taxes).
 
 | Resource                                                                                            | Hobby Included Usage |
 | --------------------------------------------------------------------------------------------------- | -------------------- |
@@ -47,11 +53,12 @@ Full cross-link map for this page: [/docs/plans/hobby.graph.md](/docs/plans/hobb
 | [Image Transformations](/docs/image-optimization/limits-and-pricing#image-transformations)           | First 5,000          |
 | [Image Cache Reads](/docs/image-optimization/limits-and-pricing#image-cache-reads)                   | First 300,000        |
 | [Image Cache Writes](/docs/image-optimization/limits-and-pricing#image-cache-writes)                 | First 100,000        |
-| [Speed Insights Events](/docs/speed-insights/limits-and-pricing)                                    | First 10,000 events  |
-| [Speed Insights Projects](/docs/speed-insights)                                                     | 1 Project            |
+| [Speed Insights Events](/docs/speed-insights/limits-and-pricing)                                    | 10,000 events over the last 30 days, shared across the team |
 | [Web Analytics Events](/docs/analytics/limits-and-pricing#what-is-an-event-in-vercel-web-analytics) | 50,000 events / month included |
 | [Workflow Events](/docs/workflows/pricing)                                                           | 50,000 events / month included |
 | [Workflow Data Written](/docs/workflows/pricing)                                                     | 1 GB                          |
+| [Connect Token Requests](/docs/connect/pricing#token-requests)                                       | First 500          |
+| [Connect Triggers](/docs/connect/pricing#triggers)                                   | First 1,000          |
 
 ## Hobby billing cycle
 
@@ -81,7 +88,7 @@ The Pro plan offers more resources and advanced features compared to the Hobby p
 | Team collaboration features | - | Yes |
 | Domains per project | 50 | Unlimited |
 | Deployments per day | 100 | 6,000 |
-| Analytics | 50,000 included Events 1 month of data | On-demand events Web Analytics Plus add-on |
+| Analytics | 50,000 included Events <br />1 month of data | On-demand events <br />Web Analytics Plus add-on |
 | Email support | - | Yes |
 | [RBAC](/docs/rbac/access-roles) available | N/A | [Owner](/docs/rbac/access-roles#owner-role), [Member](/docs/rbac/access-roles#member-role), [Billing](/docs/rbac/access-roles#billing-role), [Viewer Pro](/docs/rbac/access-roles#pro-viewer-role) |
 | [Comments](/docs/comments) | Available | Available for team collaboration |
@@ -96,6 +103,9 @@ The Pro plan offers more resources and advanced features compared to the Hobby p
 | [Vercel WAF Custom Rules](/docs/vercel-firewall/vercel-waf/custom-rules) | Up to 3 | Up to 40 |
 
 | Deployment Protection | [Vercel Authentication](/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication) | [Vercel Authentication](/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication), [Password Protection](/docs/deployment-protection/methods-to-protect-deployments/password-protection) (Add-on), [Sharable Links](/docs/deployment-protection/methods-to-bypass-deployment-protection/sharable-links) |
+
+| [Connect Token Requests](/docs/connect/pricing#token-requests) | 500 included | Unlimited (on-demand) |
+| [Connect Triggers](/docs/connect/pricing#triggers) | 1,000 included | Unlimited (on-demand) |
 
 ## Upgrading to Pro
 

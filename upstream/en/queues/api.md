@@ -3,7 +3,7 @@ title: API Reference
 product: vercel
 url: /docs/queues/api
 canonical_url: "https://vercel.com/docs/queues/api"
-last_updated: 2026-04-06
+last_updated: 2026-08-12
 type: reference
 prerequisites:
   - /docs/queues
@@ -24,14 +24,13 @@ The Vercel Queues API is a REST API for publishing, consuming, and managing mess
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Messages](https://eve.dev/docs/guides/client/messages?from=related) — Send text, full turn payloads, client context, attachments, and HITL responses with eve/client.
-- [Pricing and Limits](https://vercel.com/docs/queues/pricing?from=related) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
-- [JS SDK Reference](https://vercel.com/docs/queues/sdk?from=related) — Publish and consume messages with the @vercel/queue SDK.
-- [Python SDK Reference](https://vercel.com/docs/queues/python-sdk?from=related) — Publish and consume messages with the Vercel Queues Python SDK.
-- [Observability](https://vercel.com/docs/queues/observability?from=related) — Monitor queue throughput, message age, and consumer performance to optimize your queue-based workflows.
-- [Poll Mode](https://vercel.com/docs/queues/poll-mode?from=related) — Consume messages from Vercel Queues by polling on your own schedule, from any environment.
+- [Pricing and Limits](https://vercel.com/docs/queues/pricing?from=related&source_path=%2Fdocs%2Fqueues%2Fapi&source_site=vercel-docs&relationship=related) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
+- [Vercel Queues: JS SDK Reference](https://vercel.com/docs/queues/sdk?from=related&source_path=%2Fdocs%2Fqueues%2Fapi&source_site=vercel-docs&relationship=related) — Publish and consume messages with the Vercel Queues SDK for JavaScript and TypeScript.
+- [Vercel Queues: Python SDK Reference](https://vercel.com/docs/queues/python-sdk?from=related&source_path=%2Fdocs%2Fqueues%2Fapi&source_site=vercel-docs&relationship=related) — Publish and consume messages with the Vercel Queues Python SDK.
+- [Sign a message](https://vercel.com/docs/rest-api/kms/sign-a-message?from=related&source_path=%2Fdocs%2Fqueues%2Fapi&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/message — Sign a raw message with a KMS issuer's active signing key. Authenticate t
+- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related&source_path=%2Fdocs%2Fqueues%2Fapi&source_site=vercel-docs&relationship=related) — Set up Vercel Queues with the SDK.
 
-Full cross-link map for this page: [/docs/queues/api.graph.md](/docs/queues/api.graph.md)
+Full cross-link map for this page: [/docs/queues/api.graph.md](/docs/queues/api.graph.md?from=related&source_path=%2Fdocs%2Fqueues%2Fapi&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Authentication

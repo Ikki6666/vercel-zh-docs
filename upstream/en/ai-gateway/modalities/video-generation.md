@@ -1,10 +1,10 @@
 ---
-title: Video Generation
+title: AI Gateway Video Generation
 product: vercel
 url: /docs/ai-gateway/modalities/video-generation
 canonical_url: "https://vercel.com/docs/ai-gateway/modalities/video-generation"
-last_updated: 2026-07-24
-type: conceptual
+last_updated: 2026-09-08
+type: how-to
 prerequisites:
   - /docs/ai-gateway/modalities
   - /docs/ai-gateway
@@ -18,9 +18,13 @@ summary: Generate videos from text prompts, images, or video input using AI mode
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Video Generation
+# AI Gateway Video Generation
 
-> **💡 Note:** Video generation requires **AI SDK 6 or later** and uses the `experimental_generateVideo` function. This API is experimental and subject to change in future releases.
+> **💡 Note:** Video generation requires **AI SDK 6 or later** and uses the
+> `experimental_generateVideo` function. This API is experimental and subject to
+> change in future releases.
+
+AI Gateway supports video generation, letting you create videos from text prompts, images, or video input. You can control resolution, duration, aspect ratio, and audio through a unified API across multiple providers.
 
 
 <!-- docsgraph:related -->
@@ -28,28 +32,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation?from=related) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
-- [Video Generation](https://ai-sdk.dev/docs/ai-sdk-core/video-generation?from=related)
-- [AI Gateway](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway?from=related)
-- [Build a Claude Managed Agent with Vercel Sandbox](https://vercel.com/kb/guide/run-claude-managed-agent-tools-with-vercel-sandbox?from=related) — Build a Claude Managed Agent with Vercel Sandbox: each session runs in a fresh microVM with credential brokering and a w
-- [Build a web research agent with Workflow SDK](https://vercel.com/kb/guide/durable-web-research-agent-with-workflow-sdk?from=related) — Build a web research agent that searches the web and returns a cited report. Powered by AI SDK and Workflow SDK, it jour
-- [ByteDance](https://ai-sdk.dev/providers/ai-sdk-providers/bytedance?from=related)
-- [Kling AI](https://ai-sdk.dev/providers/ai-sdk-providers/klingai?from=related)
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [AI Gateway now supports asynchronous video generation](https://vercel.com/changelog/ai-gateway-now-supports-asynchronous-video-generation?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related)
+- [MiniMax H3 and H3 Max are 50% off on AI Gateway](https://vercel.com/changelog/minimax-h3-and-h3-max-are-50-off-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related)
+- [Wan 3.0 now available on AI Gateway](https://vercel.com/changelog/wan-3-0-now-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related)
+- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
+- [generateVideo](https://ai-sdk.dev/docs/reference/ai-sdk-workflow/generate-video?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related)
+- [Video Generation with AI Gateway](https://vercel.com/blog/video-generation-with-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related)
+- [ByteDance](https://ai-sdk.dev/providers/ai-sdk-providers/bytedance?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related)
+- [Kling AI](https://ai-sdk.dev/providers/ai-sdk-providers/klingai?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related)
+- [Video Generation Quickstart](https://vercel.com/docs/ai-gateway/getting-started/video?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=related) — Generate a video from a text prompt using AI Gateway.
 
-Full cross-link map for this page: [/docs/ai-gateway/modalities/video-generation.graph.md](/docs/ai-gateway/modalities/video-generation.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/modalities/video-generation.graph.md](/docs/ai-gateway/modalities/video-generation.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodalities%2Fvideo-generation&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-AI Gateway supports video generation, letting you create videos from text prompts, images, or video input. You can control resolution, duration, aspect ratio, and audio through a unified API across multiple providers.
 
 To see all supported video models, use the **Video** filter at the [AI Gateway Models page](/ai-gateway/models?capabilities=video-generation).
 
 ## Capabilities
 
+For SDK options and result types, see [AI SDK video generation](https://ai-sdk.dev/docs/ai-sdk-core/video-generation) and [Python video generation](https://ai-python.dev/docs/basics/model-operations#generate-video).
+
 Some video models are tagged by capability in their model name. You can also see capability tags on the [AI Gateway Models page](/ai-gateway/models?capabilities=video-generation) or via the `/v1/models` endpoint, which is useful for models that support multiple capabilities:
 
-| Tag              | Capability                                                                              | Description                                                         |
-| ---------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Tag              | Capability                                                                            | Description                                                         |
+| ---------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | `t2v`            | [Text-to-video](/docs/ai-gateway/modalities/video-generation/text-to-video)           | Generate video from a text prompt                                   |
 | `i2v`            | [Image-to-video](/docs/ai-gateway/modalities/video-generation/image-to-video)         | Animate a static image into a video                                 |
 | `r2v`            | [Reference-to-video](/docs/ai-gateway/modalities/video-generation/reference-to-video) | Generate video featuring characters from reference images or videos |
@@ -57,22 +62,22 @@ Some video models are tagged by capability in their model name. You can also see
 | -                | [Video editing](/docs/ai-gateway/modalities/video-generation/video-editing)           | Edit existing videos using text prompts                             |
 | -                | [Video extension](/docs/ai-gateway/modalities/video-generation/video-extension)       | Continue a video from its last frame                                |
 
-For example, `klingai/kling-v2.6-t2v` is a text-to-video model, `alibaba/wan-v2.6-i2v` is an image-to-video model, and `bytedance/seedance-2.5` covers text-to-video, image-to-video, reference-to-video, editing, and extension.
+For example, `klingai/kling-v3.0-t2v` is a text-to-video model, `alibaba/wan-v2.6-i2v` is an image-to-video model, and `bytedance/seedance-2.5` covers text-to-video, image-to-video, reference-to-video, editing, and extension.
 
 ## Common parameters
 
 These parameters work across all video models, though support varies by provider.
 
-| Parameter         | Type                                     | Description                                                                                                                                        |
-| ----------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `prompt`          | `string` or `{ image, text }`            | Text description of the video. For image-to-video, use object format with `image` and `text`                                                       |
-| `duration`        | `number`                                 | Video length in seconds. Supported range varies by model                                                                                           |
-| `aspectRatio`     | `string`                                 | Aspect ratio as `{width}:{height}` (e.g., `'16:9'`, `'9:16'`)                                                                                      |
-| `resolution`      | `string`                                 | Resolution as `{width}x{height}` (e.g., `'1920x1080'`, `'1280x720'`)                                                                               |
-| `generateAudio`   | `boolean`                                | Whether to generate audio alongside the video. Support varies by model                                                                             |
-| `frameImages`     | `Array<{ image, frameType }>`            | Role-tagged start and end frames for [image-to-video](/docs/ai-gateway/modalities/video-generation/image-to-video). Support varies by provider     |
-| `inputReferences` | `Array<image \| video>`                  | Reference images or videos for [reference-to-video](/docs/ai-gateway/modalities/video-generation/reference-to-video). Support varies by provider   |
-| `poll`            | `{ intervalMs?, timeoutMs? }`            | Run the generation as an [asynchronous job](#asynchronous-generation) instead of one long-lived request                                            |
+| Parameter         | Type                          | Description                                                                                                                                      |
+| ----------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `prompt`          | `string` or `{ image, text }` | Text description of the video. For image-to-video, use object format with `image` and `text`                                                     |
+| `duration`        | `number`                      | Video length in seconds. Supported range varies by model                                                                                         |
+| `aspectRatio`     | `string`                      | Aspect ratio as `{width}:{height}` (e.g., `'16:9'`, `'9:16'`)                                                                                    |
+| `resolution`      | `string`                      | Resolution as `{width}x{height}` (e.g., `'1920x1080'`, `'1280x720'`)                                                                             |
+| `generateAudio`   | `boolean`                     | Whether to generate audio alongside the video. Support varies by model                                                                           |
+| `frameImages`     | `Array<{ image, frameType }>` | Role-tagged start and end frames for [image-to-video](/docs/ai-gateway/modalities/video-generation/image-to-video). Support varies by provider   |
+| `inputReferences` | `Array<image \| video>`       | Reference images or videos for [reference-to-video](/docs/ai-gateway/modalities/video-generation/reference-to-video). Support varies by provider |
+| `poll`            | `{ intervalMs?, timeoutMs? }` | Run the generation as an [asynchronous job](#asynchronous-generation) instead of one long-lived request                                          |
 
 ## Frame and reference images
 
@@ -106,7 +111,7 @@ inputReferences: [
 ];
 ```
 
-Providers route each reference by its media type and treat untyped references as images. Wan and Seedance 2.0 accept video references; Veo, KlingAI, and Grok Imagine Video accept image references only and ignore video references with a warning.
+Providers route each reference by its media type and treat untyped references as images. Wan and Seedance 2.5 accept video references; Veo, KlingAI, and Grok Imagine Video accept image references only and ignore video references with a warning.
 
 The syntax you use in the prompt to refer to each reference stays provider-specific (for example, `character1` for Wan, `<IMAGE_1>` for Grok, or `[Image 1]` and `[Video 1]` for Seedance). KlingAI and Veo have no token syntax. Describe the scene directly. See the [reference-to-video](/docs/ai-gateway/modalities/video-generation/reference-to-video) page for details.
 
@@ -124,6 +129,8 @@ Video models return results in `result.videos`. Each video object contains:
 - `uint8Array`: Raw video data as `Uint8Array`
 - `base64`: Base64-encoded video data
 
+#### TypeScript
+
 ```typescript filename="save-video.ts"
 import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
@@ -137,13 +144,35 @@ const result = await generateVideo({
 fs.writeFileSync('output.mp4', result.videos[0].uint8Array);
 ```
 
+#### Python (beta)
+
+```python filename="generate-video.py"
+import asyncio
+import ai
+import base64
+from pathlib import Path
+
+async def main():
+    result = await ai.ops.generate_video(
+        ai.get_model('google/veo-3.1-fast-generate-001'),
+        'A paper boat drifting across a puddle in the rain.',
+        params=ai.ops.VideoParams(aspect_ratio="16:9", duration=4),
+    )
+    video = result.value[0]
+    data = video.data if isinstance(video.data, bytes) else base64.b64decode(video.data)
+    Path("boat.mp4").write_bytes(data)
+    print("Saved boat.mp4")
+
+asyncio.run(main())
+```
+
 ## Asynchronous generation
 
 By default, `experimental_generateVideo` holds one request to AI Gateway open until the video is ready. AI Gateway handles the provider side of that request, polling the provider's task API when the model is asynchronous. Pass a `poll` option to run the generation as an AI Gateway job instead: the SDK sends a start request, AI Gateway tracks the generation in the background, and the SDK checks its status until it finishes. Each network request stays short, so the flow suits serverless functions and anywhere else with request timeouts.
 
 > **💡 Note:** Asynchronous video generation requires `ai@7.0.50` or later and
-> `@ai-sdk/gateway@4.0.44` or later. Install or upgrade with
-> `pnpm add ai@latest @ai-sdk/gateway@latest`.
+> `@ai-sdk/gateway@4.0.44` or later. Install or upgrade with `pnpm add ai@latest
+>   @ai-sdk/gateway@latest`.
 
 ```typescript filename="async-video.ts"
 const result = await generateVideo({
@@ -157,11 +186,11 @@ const result = await generateVideo({
 });
 ```
 
-| Option | Type | Description |
-| --- | --- | --- |
-| `poll.intervalMs` | `number` | How often the SDK checks job status. Defaults to `5000` |
-| `poll.timeoutMs` | `number` | How long to wait before throwing a timeout error. Defaults to `600000` (10 minutes) |
-| `poll.delay` | `(delayInMs, options?: { abortSignal?: AbortSignal }) => PromiseLike<void>` | Replaces the timer the SDK waits on between status checks. Pass a durable workflow's sleep function so a long run doesn't hold a live timer, and honor the `abortSignal` from the second argument, or the wait won't cancel when `timeoutMs` fires. Defaults to a built-in timer |
+| Option            | Type                                                                        | Description                                                                                                                                                                                                                                                                      |
+| ----------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `poll.intervalMs` | `number`                                                                    | How often the SDK checks job status. Defaults to `5000`                                                                                                                                                                                                                          |
+| `poll.timeoutMs`  | `number`                                                                    | How long to wait before throwing a timeout error. Defaults to `600000` (10 minutes)                                                                                                                                                                                              |
+| `poll.delay`      | `(delayInMs, options?: { abortSignal?: AbortSignal }) => PromiseLike<void>` | Replaces the timer the SDK waits on between status checks. Pass a durable workflow's sleep function so a long run doesn't hold a live timer, and honor the `abortSignal` from the second argument, or the wait won't cancel when `timeoutMs` fires. Defaults to a built-in timer |
 
 Passing `poll` is what opts you in. Without it, gateway models keep using the single-request flow. Everything else works the same, so the parameters and modes documented on these pages apply to both flows. Every input style generates asynchronously: [text-to-video](/docs/ai-gateway/modalities/video-generation/text-to-video), [image-to-video](/docs/ai-gateway/modalities/video-generation/image-to-video), [reference-to-video](/docs/ai-gateway/modalities/video-generation/reference-to-video), [motion control](/docs/ai-gateway/modalities/video-generation/motion-control), [video editing](/docs/ai-gateway/modalities/video-generation/video-editing), and [video extension](/docs/ai-gateway/modalities/video-generation/video-extension).
 
@@ -170,7 +199,7 @@ One detail changes for the styles that take files. Pass images and videos as hos
 ```typescript filename="async-image-to-video.ts"
 // A hosted URL keeps the start request small enough to persist.
 const result = await generateVideo({
-  model: 'klingai/kling-v2.6-i2v',
+  model: 'klingai/kling-v3.0-i2v',
   prompt: {
     image: 'https://example.com/balloon.jpg',
     text: 'The camera pushes in as the balloon drifts upward',
@@ -184,8 +213,8 @@ const result = await generateVideo({
 > and that persisted request is capped at 300 KiB, which includes an 8 KiB
 > allowance for attribution fields. Inline base64 in `prompt.image`,
 > `frameImages`, or `inputReferences` passes that ceiling quickly, and an
-> oversized request fails with a 413 telling you to use hosted URLs. Text-to-video
-> is unaffected.
+> oversized request fails with a 413 telling you to use hosted URLs.
+> Text-to-video is unaffected.
 
 > **💡 Note:** Top-level `poll` is not the same as the `providerOptions.<provider>.pollIntervalMs`
 > and `pollTimeoutMs` options documented on the mode pages. Those control how a
@@ -198,12 +227,12 @@ Starting a generation costs money, so the SDK sends a stable `idempotency-key` h
 
 `poll` still keeps one `experimental_generateVideo` call alive until the job finishes. To separate submitting from waiting, call the two halves yourself:
 
-- `experimental_startVideo` sends the start request and returns as soon as AI Gateway accepts the job. It takes the same options as `experimental_generateVideo` — all optional — plus a `webhookUrl` for [webhook-driven completion](#webhook-driven-completion).
+- `experimental_startVideo` sends the start request and returns as soon as AI Gateway accepts the job. It takes the same options as `experimental_generateVideo` (all optional), plus a `webhookUrl` for [webhook-driven completion](#webhook-driven-completion).
 - `experimental_getVideoStatus` makes one status request and returns the job's current state, discriminated by `status`: `pending`, `completed` (with `videos`), or `error` (with a message).
 
 > **💡 Note:** `experimental_startVideo` and `experimental_getVideoStatus` require
-> `ai@7.0.76` or later and `@ai-sdk/gateway@4.0.61` or later. Install or
-> upgrade with `pnpm add ai@latest @ai-sdk/gateway@latest`.
+> `ai@7.0.76` or later and `@ai-sdk/gateway@4.0.61` or later. Install or upgrade
+> with `pnpm add ai@latest @ai-sdk/gateway@latest`.
 
 ```typescript filename="start-and-status.ts"
 import {
@@ -220,7 +249,14 @@ const { operation, providerMetadata } = await startVideo({
 });
 
 // The gateway job backing the operation:
-console.log(providerMetadata.gateway.asyncJob.jobId); // 'job_ad81…'
+const asyncJob = providerMetadata?.gateway?.asyncJob;
+if (
+  typeof asyncJob === 'object' &&
+  asyncJob !== null &&
+  !Array.isArray(asyncJob)
+) {
+  console.log(asyncJob.jobId);
+}
 
 // Later — from this process or another one:
 const status = await getVideoStatus(model, { operation });
@@ -229,7 +265,7 @@ if (status.status === 'completed') {
 }
 ```
 
-The `operation` reference is a JSON-serializable value: persist it in a queue or database and check the job from any process, on any schedule. To fan out, call `startVideo` once per job and hold onto the operations — no promise stays parked while the generations run.
+The `operation` reference is a JSON-serializable value: persist it in a queue or database and check the job from any process, on any schedule. To fan out, call `startVideo` once per job and store the operations for later status checks.
 
 Two differences from `experimental_generateVideo`:
 
@@ -237,8 +273,6 @@ Two differences from `experimental_generateVideo`:
 - There is no built-in timeout. You decide how long to keep checking.
 
 The start call carries the same automatic `idempotency-key` as `generateVideo`, so its internal retries never bill a second generation; pass your own key through `headers` to deduplicate an outer retry loop.
-
-For a runnable script, see [start now, check later](/docs/ai-gateway/getting-started/video#start-now-check-later) in the quickstart.
 
 ### How results come back
 
@@ -288,7 +322,7 @@ console.log(providerMetadata.gateway.asyncJob);
 
 ### Webhook-driven completion
 
-To be notified when a job finishes instead of checking its status, register a webhook URL with the job. At the terminal state, AI Gateway posts one of three events to it — `video.generation.completed`, `video.generation.failed`, or `video.generation.cancelled`. The payload carries terminal facts only, never video URLs or bytes, which keeps a retried delivery cheap and tells a mis-registered URL only that some job finished:
+To be notified when a job finishes instead of checking its status, register a webhook URL with the job. At the terminal state, AI Gateway posts one of three events to it: `video.generation.completed`, `video.generation.failed`, or `video.generation.cancelled`. The payload carries terminal facts only, never video URLs or bytes, which keeps a retried delivery cheap and tells a mis-registered URL only that some job finished:
 
 ```json filename="delivery payload"
 {
@@ -312,7 +346,7 @@ There are two ways to register a webhook, matching the two asynchronous flows ab
 
 #### Fire-and-forget with startVideo
 
-Pass `webhookUrl` on the start call. The signing secret for the job's deliveries comes back directly on the start response, so store it where your receiver can find it — a token minted before the call and carried in the callback URL lets the receiver look the secret up before trusting anything in the payload:
+Pass `webhookUrl` on the start call. The signing secret for the job's deliveries comes back directly on the start response, so store it where your receiver can find it. Include a token in the callback URL before making the call. Your receiver can use the token to look up the secret and verify the payload:
 
 ```typescript filename="start-with-webhook.ts"
 import { experimental_startVideo as startVideo } from 'ai';
@@ -328,7 +362,18 @@ const { providerMetadata } = await startVideo({
   webhookUrl: `https://example.com/api/video-webhook?token=${token}`,
 });
 
-const { jobId, webhookSigningSecret } = providerMetadata.gateway.asyncJob;
+const asyncJob = providerMetadata?.gateway?.asyncJob;
+if (
+  typeof asyncJob !== 'object' ||
+  asyncJob === null ||
+  Array.isArray(asyncJob)
+) {
+  throw new Error('Missing asynchronous job metadata');
+}
+const { jobId, webhookSigningSecret } = asyncJob;
+if (typeof jobId !== 'string' || typeof webhookSigningSecret !== 'string') {
+  throw new Error('Missing job ID or webhook signing secret');
+}
 await db.saveSecret(token, webhookSigningSecret);
 console.log(`Job ${jobId} accepted. The receiver takes it from here.`);
 ```
@@ -517,14 +562,12 @@ export async function waitForDelivery(token: string) {
 ```
 
 > **💡 Note:** The SDK waits on `received` inside the `experimental_generateVideo` call, so
-> that invocation stays alive until the delivery arrives. Webhooks cut the status
-> requests, not the wait. On a serverless platform, budget the function's maximum
-> duration for the whole generation, and see [extending
+> that invocation stays alive until the delivery arrives. Webhooks cut the
+> status requests, not the wait. On a serverless platform, budget the function's
+> maximum duration for the whole generation, and see [extending
 > timeouts](#extending-timeouts-for-nodejs) below.
 
 Delivery is best-effort with retries. AI Gateway expects a 2xx response within 10 seconds and does not follow redirects. Retries of the same terminal event carry the same `x-ai-gateway-idempotency-key` header (`<jobId>-<status>`), so deduplicate on it if processing twice would cause side effects.
-
-For a walkthrough, see [asynchronous video generation](/docs/ai-gateway/getting-started/video#asynchronous-video-generation) in the quickstart.
 
 ## Extending timeouts for Node.js
 

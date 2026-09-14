@@ -3,7 +3,7 @@ title: vercel alias
 product: vercel
 url: /docs/cli/alias
 canonical_url: "https://vercel.com/docs/cli/alias"
-last_updated: 2026-03-17
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/cli
@@ -27,15 +27,15 @@ The `vercel alias` command allows you to apply [custom domains](/docs/domains/wo
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to alias a preview deployment using the CLI](https://vercel.com/kb/guide/how-to-alias-a-preview-deployment-using-the-cli?from=related) — Learn how to automatically alias a Vercel preview deployment.
-- [Why do my Vercel deployments have multiple domains?](https://vercel.com/kb/guide/why-do-my-vercel-deployments-have-multiple-domains?from=related) — Learn about why Vercel auto generates URLs for your deployments.
-- [Assign an Alias](https://vercel.com/docs/rest-api/aliases/assign-an-alias?from=related)
-- [Deploying & Redirecting Domains](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting?from=related) — Learn how to deploy your domains and set up domain redirects with this guide.
-- [Get an Alias](https://vercel.com/docs/rest-api/aliases/get-an-alias?from=related)
-- [vercel domains](https://vercel.com/docs/cli/domains?from=related) — Learn how to buy, sell, transfer, and manage your domains using the vercel domains CLI command.
-- [List aliases](https://vercel.com/docs/rest-api/aliases/list-aliases?from=related)
+- [Microfrontends routing now applies to vc alias and branch domains](https://vercel.com/changelog/microfrontends-routing-now-applies-to-vc-alias-and-branch-domains?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=related)
+- [How to alias a preview deployment using the CLI](https://vercel.com/kb/guide/how-to-alias-a-preview-deployment-using-the-cli?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=related) — Learn how to automatically alias a Vercel preview deployment.
+- [Assign an Alias](https://vercel.com/docs/rest-api/aliases/assign-an-alias?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=related) — POST /v2/deployments/{id}/aliases — Creates a new alias for the deployment resolved from the given deployment or alias I
+- [vercel domains](https://vercel.com/docs/cli/domains?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=related) — Learn how to buy, sell, transfer, and manage your domains using the vercel domains CLI command.
+- [vercel list](https://vercel.com/docs/cli/list?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=related) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
+- [Deploying & Redirecting Domains](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=related) — Learn how to deploy your domains and set up domain redirects with this guide.
+- [Get an Alias](https://vercel.com/docs/rest-api/aliases/get-an-alias?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=related) — GET /v4/aliases/{idOrAlias} — Retrieves an Alias for the given host name or alias ID.
 
-Full cross-link map for this page: [/docs/cli/alias.graph.md](/docs/cli/alias.graph.md)
+Full cross-link map for this page: [/docs/cli/alias.graph.md](/docs/cli/alias.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Falias&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 When a new deployment is created (with our [Git Integration](/docs/git), Vercel CLI, or the [REST API](/docs/rest-api)), the platform will automatically apply any [custom domains](/docs/domains/working-with-domains/add-a-domain) configured in the project settings.
@@ -106,6 +106,24 @@ vercel alias ls --limit 100
 
 *Using the \`vercel alias ls\` command with the
 \`--limit\` option.*
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel alias` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 ## Related guides
 

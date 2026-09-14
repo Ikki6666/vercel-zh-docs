@@ -3,7 +3,7 @@ title: Container Registry CLI Reference
 product: vercel
 url: /docs/container-registry/cli-reference
 canonical_url: "https://vercel.com/docs/container-registry/cli-reference"
-last_updated: 2026-08-03
+last_updated: 2026-09-04
 type: reference
 prerequisites:
   - /docs/container-registry
@@ -26,15 +26,15 @@ The `vercel vcr` command group lets you manage [Vercel Container Registry](/docs
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to migrate from GHCR to Vercel Container Registry](https://vercel.com/kb/guide/migrate-ghcr-to-vcr?from=related) — Migrate container images from GitHub Container Registry \\(GHCR\\) to Vercel Container Registry \\(VCR\\), including authent
-- [How to use Vercel Container Registry](https://vercel.com/kb/guide/how-to-use-vercel-container-registry?from=related) — Push, store, and pull OCI container images with Vercel Container Registry, then deploy them to Vercel Functions and Verc
-- [vercel vcr](https://vercel.com/docs/cli/vcr?from=related) — Manage Vercel Container Registry from the Vercel CLI: list, inspect, create, and delete repositories, browse tags, and m
-- [vercel project](https://vercel.com/docs/cli/project?from=related) — Perform the following commands from the terminal for your Vercel Projects: list, add, inspect, update settings, rename,
-- [vercel blob](https://vercel.com/docs/cli/blob?from=related) — Learn how to interact with Vercel Blob storage using the vercel blob CLI command.
-- [List repository images](https://vercel.com/docs/rest-api/vcr/list-repository-images?from=related)
-- [Get a repository image](https://vercel.com/docs/rest-api/vcr/get-a-repository-image?from=related)
+- [How to migrate from GHCR to Vercel Container Registry](https://vercel.com/kb/guide/migrate-ghcr-to-vcr?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=related) — Migrate container images from GitHub Container Registry \\(GHCR\\) to Vercel Container Registry \\(VCR\\), including authent
+- [How to use Vercel Container Registry](https://vercel.com/kb/guide/how-to-use-vercel-container-registry?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=related) — Push, store, and pull OCI container images with Vercel Container Registry, then deploy them to Vercel Functions and Verc
+- [vercel vcr](https://vercel.com/docs/cli/vcr?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=related) — Manage Vercel Container Registry from the Vercel CLI: build and push images, manage repositories, tags, and images, and
+- [vercel blob](https://vercel.com/docs/cli/blob?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=related) — Learn how to interact with Vercel Blob storage using the vercel blob CLI command.
+- [vercel project](https://vercel.com/docs/cli/project?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=related) — Perform the following commands from the terminal for your Vercel Projects: list, add, inspect, update settings, rename,
+- [List repository images](https://vercel.com/docs/rest-api/vcr/list-repository-images?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=related) — GET /v1/vcr/repository/{idOrName}/images — List images for a container registry repository, including their tags.
+- [Get a repository image](https://vercel.com/docs/rest-api/vcr/get-a-repository-image?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=related) — GET /v1/vcr/repository/{idOrName}/images/{imageIdOrDigest} — Fetch an individual image from a repository, including its
 
-Full cross-link map for this page: [/docs/container-registry/cli-reference.graph.md](/docs/container-registry/cli-reference.graph.md)
+Full cross-link map for this page: [/docs/container-registry/cli-reference.graph.md](/docs/container-registry/cli-reference.graph.md?from=related&source_path=%2Fdocs%2Fcontainer-registry%2Fcli-reference&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 `vercel vcr` is part of the [Vercel CLI](/docs/cli). Use [`vercel vcr build`](#vercel-vcr-build) and [`vercel vcr push`](#vercel-vcr-push) to build and push images, and see the [Container Registry documentation](/docs/container-registry#push-an-image) for the end-to-end workflow. Both commands run your local container tool rather than replacing it, so the tool you choose must be installed and on your `PATH`.

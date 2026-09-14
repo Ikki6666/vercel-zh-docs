@@ -3,7 +3,7 @@ title: vercel blob
 product: vercel
 url: /docs/cli/blob
 canonical_url: "https://vercel.com/docs/cli/blob"
-last_updated: 2026-07-15
+last_updated: 2026-08-13
 type: reference
 prerequisites:
   - /docs/cli
@@ -27,14 +27,15 @@ The `vercel blob` command is used to interact with [Vercel Blob](/docs/vercel-bl
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob?from=related) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
-- [Manage Vercel Blob Storage](https://vercel.com/docs/vercel-blob/manage-blob-storage?from=related) — Create blob stores, upload files, list contents, and manage storage using the CLI.
-- [Examples](https://vercel.com/docs/vercel-blob/examples?from=related) — Examples on how to use Vercel Blob in your applications
-- [Overview](https://vercel.com/docs/storage?from=related) — Store large files and global configuration with Vercel's storage products.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [Create a Blob store](https://vercel.com/docs/rest-api/storage/create-a-blob-store?from=related)
+- [Vercel Blob CLI is now available](https://vercel.com/changelog/vercel-blob-cli-is-now-available?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=related)
+- [Vercel Blob now available in all Vercel Regions](https://vercel.com/changelog/vercel-blob-now-available-in-all-vercel-regions?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=related)
+- [vercel global-config](https://vercel.com/docs/cli/global-config?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=related) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, remove, and manage items, read tokens, a
+- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [Managing Vercel Blob storage from the CLI](https://vercel.com/docs/vercel-blob/manage-blob-storage?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=related) — Create blob stores, upload files, list contents, and manage storage using the CLI.
+- [vercel cache](https://vercel.com/docs/cli/cache?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=related) — Learn how to manage cache for your project using the vercel cache CLI command.
+- [vercel api](https://vercel.com/docs/cli/api?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
 
-Full cross-link map for this page: [/docs/cli/blob.graph.md](/docs/cli/blob.graph.md)
+Full cross-link map for this page: [/docs/cli/blob.graph.md](/docs/cli/blob.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fblob&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 For more information about Vercel Blob, see the [Vercel Blob documentation](/docs/vercel-blob) and [Vercel Blob SDK reference](/docs/vercel-blob/using-blob-sdk).
@@ -420,6 +421,24 @@ vercel blob get image.jpg --if-none-match "etag-value"
 
 *Using the \`vercel blob get\` command with the
 \`--if-none-match\` option.*
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel blob` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

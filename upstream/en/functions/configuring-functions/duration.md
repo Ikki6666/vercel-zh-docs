@@ -3,7 +3,7 @@ title: Configuring Maximum Duration for Vercel Functions
 product: vercel
 url: /docs/functions/configuring-functions/duration
 canonical_url: "https://vercel.com/docs/functions/configuring-functions/duration"
-last_updated: 2026-07-01
+last_updated: 2026-08-24
 type: how-to
 prerequisites:
   - /docs/functions/configuring-functions
@@ -28,19 +28,20 @@ The maximum duration configuration determines the longest time that a function c
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Getting Timeouts When Deploying on Vercel](https://ai-sdk.dev/docs/troubleshooting/timeout-on-vercel?from=related)
-- [Building an AI chat app with RAG and source citations on Vercel](https://vercel.com/kb/guide/building-ai-chat-app-with-rag-and-citations-on-vercel?from=related) — A production stack for AI chat with retrieval, reranking, source citations, and background ingestion on Vercel using Nex
-- [How can I reduce my Vercel Functions usage on Vercel?](https://vercel.com/kb/guide/how-can-i-reduce-my-serverless-execution-usage-on-vercel?from=related) — Reduce Vercel Functions usage and cost under Fluid compute pricing with caching, rendering strategies, and function conf
-- [How to build AI Agents with Vercel and the AI SDK](https://vercel.com/kb/guide/how-to-build-ai-agents-with-vercel-and-the-ai-sdk?from=related) — Learn how to build, deploy, and scale AI agents on Vercel using the AI SDK. This guide covers calling LLMs, defining too
-- [Build a ChatGPT Connector \\(MCP server\\)](https://vercel.com/kb/guide/mcp-server-chatgpt-connector?from=related) — Build a ChatGPT MCP server with mcp-handler and Fluid compute. Add search, fetch, and OAuth, deploy to Vercel, then vali
-- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
-- [Limits](https://vercel.com/docs/limits?from=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
-- [Advanced Configuration](https://vercel.com/docs/functions/configuring-functions/advanced-configuration?from=related) — Learn how to add utility files to the /api directory, and bundle Vercel Functions.
-- [Node.js](https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package?from=related) — Learn about available APIs when working with Vercel Functions.
-- [Hobby Plan](https://vercel.com/docs/plans/hobby?from=related) — Learn about the Hobby plan and how it compares to the Pro plan.
-- [Production Checklist](https://vercel.com/docs/production-checklist?from=related) — Ensure your application is ready for launch with this comprehensive production checklist by the Vercel engineering team.
+- [Getting Timeouts When Deploying on Vercel](https://ai-sdk.dev/docs/troubleshooting/timeout-on-vercel?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related)
+- [Bun runtime now supports large functions and extended max duration](https://vercel.com/changelog/bun-runtime-now-supports-large-functions-and-extended-max-duration?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related)
+- [No action required: Lowering default function timeout in new Enterprise projects](https://vercel.com/changelog/lowering-default-serverless-function-timeout-in-enterprise-projects?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related)
+- [Vercel Functions can now run up to 30 minutes](https://vercel.com/changelog/vercel-functions-can-now-run-up-to-30-minutes?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related)
+- [Vercel Functions for Hobby can now run up to 60 seconds](https://vercel.com/changelog/vercel-functions-for-hobby-can-now-run-up-to-60-seconds?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related)
+- [Workflow steps now support extended function durations](https://vercel.com/changelog/workflow-steps-now-support-extended-function-durations?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related)
+- [Building an AI chat app with RAG and source citations on Vercel](https://vercel.com/kb/guide/building-ai-chat-app-with-rag-and-citations-on-vercel?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related) — A production stack for AI chat with retrieval, reranking, source citations, and background ingestion on Vercel using Nex
+- [Build a ChatGPT Connector \\(MCP server\\)](https://vercel.com/kb/guide/mcp-server-chatgpt-connector?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related) — Build a ChatGPT MCP server with mcp-handler and Fluid compute. Add search, fetch, and OAuth, deploy to Vercel, then vali
+- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
+- [Production architecture for a RAG chatbot on Vercel](https://vercel.com/kb/guide/rag-chatbot-production-architecture-on-vercel?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related) — Architect a production RAG chatbot on Vercel Functions with Fluid compute, AI Gateway, and a region-pinned vector store.
+- [How Vercel Services run on Fluid compute](https://vercel.com/kb/guide/vercel-services-fluid-compute?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related) — The backends in a Vercel Services project run as Vercel Functions on Fluid compute by default. Learn how optimized concu
+- [Introducing Spend Management](https://vercel.com/blog/introducing-spend-management-realtime-usage-alerts-sms-notifications?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=related)
 
-Full cross-link map for this page: [/docs/functions/configuring-functions/duration.graph.md](/docs/functions/configuring-functions/duration.graph.md)
+Full cross-link map for this page: [/docs/functions/configuring-functions/duration.graph.md](/docs/functions/configuring-functions/duration.graph.md?from=related&source_path=%2Fdocs%2Ffunctions%2Fconfiguring-functions%2Fduration&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Consequences of changing the maximum duration
@@ -63,6 +64,8 @@ The method of configuring the maximum duration depends on your framework and run
 Configure the duration in your function definition.
 For example, Next.js pages router and Node.js /api routes use an exported config object, while the Next.js app router uses a named maxDuration export.
 
+**app/api/my-function/route.ts**
+
 ```ts v0="build" {1} filename="app/api/my-function/route.ts" framework=nextjs-app
 export const maxDuration = 5; // This function can run for a maximum of 5 seconds
 
@@ -73,6 +76,8 @@ export function GET(request: Request) {
 }
 ```
 
+**app/api/my-function/route.js**
+
 ```js v0="build" {1} filename="app/api/my-function/route.js" framework=nextjs-app
 export const maxDuration = 5; // This function can run for a maximum of 5 seconds
 
@@ -82,6 +87,8 @@ export function GET(request) {
   });
 }
 ```
+
+**pages/api/handler.ts**
 
 ```ts v0="build" {4-6} filename="pages/api/handler.ts" framework=nextjs
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -103,6 +110,8 @@ export default function handler(
 }
 ```
 
+**pages/api/handler.js**
+
 ```js v0="build" {2-4} filename="pages/api/handler.js" framework=nextjs
 // This function can run for a maximum of 5 seconds
 export const config = {
@@ -117,6 +126,8 @@ export default function handler(request, response) {
   });
 }
 ```
+
+**app/routes/function/my-function.ts**
 
 ```ts {2-4} filename="app/routes/function/my-function.ts" framework=remix
 // This function can run for a maximum of 5 seconds
@@ -133,6 +144,8 @@ export default function Serverless() {
 }
 ```
 
+**app/routes/function/my-function.js**
+
 ```js {2-4} filename="app/routes/function/my-function.js" framework=remix
 // This function can run for a maximum of 5 seconds
 export const config = {
@@ -148,6 +161,8 @@ export default function Serverless() {
 }
 ```
 
+**svelte.config.js**
+
 ```js {7} filename="svelte.config.js" framework=sveltekit
 import adapter from '@sveltejs/adapter-vercel';
 
@@ -160,6 +175,8 @@ export default {
   },
 };
 ```
+
+**svelte.config.js**
 
 ```ts {7} filename="svelte.config.js" framework=sveltekit
 import adapter from '@sveltejs/adapter-vercel';
@@ -174,6 +191,8 @@ export default {
 };
 ```
 
+**astro.config.mjs**
+
 ```js {8} filename="astro.config.mjs" framework=astro
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel/serverless';
@@ -186,6 +205,8 @@ export default defineConfig({
   }),
 });
 ```
+
+**astro.config.mjs**
 
 ```ts {8} filename="astro.config.mjs" framework=astro
 import { defineConfig } from 'astro/config';
@@ -200,6 +221,8 @@ export default defineConfig({
 });
 ```
 
+**nitro.config.ts**
+
 ```js {7} filename="nitro.config.ts" framework=nuxt
 import { defineNitroConfig } from 'nitropack';
 
@@ -213,6 +236,8 @@ export default defineNitroConfig({
 });
 ```
 
+**nitro.config.ts**
+
 ```ts {7} filename="nitro.config.ts" framework=nuxt
 import { defineNitroConfig } from 'nitropack';
 
@@ -225,6 +250,8 @@ export default defineNitroConfig({
   },
 });
 ```
+
+**api/my-function.ts**
 
 ```ts {3-5} filename="api/my-function.ts" framework=other
 import type { VercelRequest, VercelResponse } from '@vercel/node';
@@ -240,6 +267,8 @@ export default function handler(
   response.status(200).json({ message: 'Hello from Vercel!' });
 }
 ```
+
+**api/my-function.js**
 
 ```js {1-3} filename="api/my-function.js" framework=other
 export const config = {
@@ -291,9 +320,9 @@ For Python framework apps (FastAPI, Flask, or Django), the whole app builds into
 > information, see [Glob
 > pattern](/docs/project-configuration/vercel-json#functions).
 
-## Extended max duration&#x20;
+## Extended max duration Beta
 
-Pro and Enterprise teams can set individual Vercel Functions using supported Node.js and Python runtime versions to run for up to 30 minutes.
+Pro and Enterprise teams can set individual Vercel Functions using supported Node.js, Bun, and Python runtime versions to run for up to 30 minutes.
 
 During the beta, durations above 800 seconds must be configured for each function in code or in `vercel.json`. Project-level defaults above 800 seconds are not supported yet.
 
@@ -302,6 +331,7 @@ Extended max duration is supported for the following runtimes during the beta:
 - `nodejs20.x`
 - `nodejs22.x`
 - `nodejs24.x`
+- Bun `1.x` and `1.4.x`
 - `python3.12`
 - `python3.13`
 - `python3.14`
@@ -314,7 +344,7 @@ Extended max duration is supported for the following runtimes during the beta:
 > clients and intermediate network layers may still close idle connections. For
 > those cases, stream progress or heartbeat data while work is running.
 
-For Next.js App Router functions using a supported Node.js runtime, set `maxDuration` in the route file:
+For Next.js App Router functions using a supported Node.js or Bun runtime, set `maxDuration` in the route file:
 
 ```ts {1} filename="app/api/long-task/route.ts" framework=nextjs-app
 export const maxDuration = 1800; // This function can run for a maximum of 30 minutes
@@ -324,7 +354,7 @@ export async function POST(request: Request) {
 }
 ```
 
-For supported Node.js and Python functions outside Next.js App Router, set `maxDuration` for a specific function path in `vercel.json`:
+For supported Node.js, Bun, and Python functions outside Next.js App Router, set `maxDuration` for a specific function path in `vercel.json`:
 
 ```json {5} filename="vercel.json"
 {
@@ -405,8 +435,8 @@ Vercel Functions have the following defaults and maximum limits for the duration
 |            | Default          | Maximum | Extended maximum |
 | ---------- | ---------------- | ------- | ---------------- |
 | Hobby      | 300s (5 minutes) | 300s (5 minutes) | - |
-| Pro        | 300s (5 minutes) | 800s | 1800s (30 minutes)  |
-| Enterprise | 300s (5 minutes) | 800s | 1800s (30 minutes)  |
+| Pro        | 300s (5 minutes) | 800s | 1800s (30 minutes) Beta |
+| Enterprise | 300s (5 minutes) | 800s | 1800s (30 minutes) Beta |
 
 The 800 second maximum is generally available for Pro and Enterprise teams. For beta requirements and examples, see [extended max duration](#extended-max-duration-beta).
 

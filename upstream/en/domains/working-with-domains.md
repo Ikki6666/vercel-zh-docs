@@ -3,7 +3,7 @@ title: Working with domains
 product: vercel
 url: /docs/domains/working-with-domains
 canonical_url: "https://vercel.com/docs/domains/working-with-domains"
-last_updated: 2026-06-08
+last_updated: 2026-09-02
 type: conceptual
 prerequisites:
   - /docs/domains
@@ -12,7 +12,7 @@ related:
   - /docs/domains/working-with-domains/renew-a-domain
   - /docs/plans/pro-plan/trials
   - /docs/plans/pro-plan
-  - /docs/domains/working-with-domains/add-a-domain
+  - /docs/rbac/access-roles
 summary: Learn how domains work and the options Vercel provides for managing them.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,16 +27,17 @@ You can [buy a domain through Vercel](#buying-a-domain-through-vercel) by going 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How can I manage my Vercel DNS records?](https://vercel.com/kb/guide/how-to-manage-vercel-dns-records?from=related) — Add, edit, and delete Vercel DNS records from the dashboard, CLI, or REST API, and fix the Invalid Configuration error o
-- [Why must we use the Domain Nameservers method for Wildcard Domains on Vercel?](https://vercel.com/kb/guide/why-use-domain-nameservers-method-wildcard-domains?from=related) — Learn why the domain Nameservers method is needed to set up a wildcard domain as custom domain.
-- [How do I add a custom domain to my Vercel project?](https://vercel.com/kb/guide/how-do-i-add-a-custom-domain-to-my-vercel-project?from=related) — Learn how to add a custom domain to your Vercel project.
-- [Configuring Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
-- [Set Up Custom Domain](https://vercel.com/docs/domains/set-up-custom-domain?from=related) — Add and configure a custom domain for your Vercel project using the CLI.
-- [Managing DNS Records](https://vercel.com/docs/domains/managing-dns-records?from=related) — Learn how to add, verify, and remove DNS records for your domains on Vercel with this guide.
-- [Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
-- [Free Domain with Pro](https://vercel.com/docs/domains/free-domain-with-pro?from=related) — Learn about free domain with pro on Vercel.
+- [Search and buy domains in the dashboard](https://vercel.com/changelog/search-and-buy-domains-in-the-dashboard?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related)
+- [Vercel MCP now supports purchases](https://vercel.com/changelog/vercel-mcp-now-supports-purchases?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related)
+- [How can I manage my Vercel DNS records?](https://vercel.com/kb/guide/how-to-manage-vercel-dns-records?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related) — Add, edit, and delete Vercel DNS records from the dashboard, CLI, or REST API, and fix the Invalid Configuration error o
+- [How to set up email with your Vercel domain](https://vercel.com/kb/guide/set-up-email-with-your-vercel-domain?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related) — Set up email on your Vercel domain by adding your provider's MX and TXT records in Vercel DNS, and send transactional em
+- [Configuring Custom Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
+- [Setting up a custom domain](https://vercel.com/docs/domains/set-up-custom-domain?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related) — Add and configure a custom domain for your Vercel project using the CLI.
+- [Multi-tenant Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
+- [Free Domain with Pro](https://vercel.com/docs/domains/free-domain-with-pro?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related) — Every paid Pro team gets one free first-year custom domain on an eligible TLD. Claim yours at checkout or from domain se
+- [Deploying GitHub Projects with Vercel](https://vercel.com/docs/git/vercel-for-github?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=related) — Vercel for GitHub automatically deploys your GitHub projects with Vercel, providing Preview Deployment URLs, and automat
 
-Full cross-link map for this page: [/docs/domains/working-with-domains.graph.md](/docs/domains/working-with-domains.graph.md)
+Full cross-link map for this page: [/docs/domains/working-with-domains.graph.md](/docs/domains/working-with-domains.graph.md?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Buying a domain name
@@ -50,13 +51,17 @@ More often than not, you will want to assign a domain to a project that reflects
 When you buy a domain through Vercel, we configure and set the nameservers, which means you do not need to set any DNS records or make any configurations. It just works. In addition, if you choose to make configurations, such as setting up email, it's all maintained from the [**Domains** section in your team dashboard sidebar](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Go+to+team%27s+domains+page). Finally, all renewals, including domain and SSL certificate renewals are automatically handled by Vercel. To review renewal dates or renew a domain manually, see [Managing domain renewals](/docs/domains/working-with-domains/renew-a-domain).
 
 > **💡 Note:** Paid Pro teams include one free first-year domain on an eligible TLD
-> (`.online`, `.site`, `.space`, `.store`, `.tech`, or `.website`). The offer
-> covers one domain per team and excludes teams on a
+> (`.app`, `.dev`, `.online`, `.site`, `.space`, `.store`, `.tech`, or
+> `.website`). The offer covers one domain per team and excludes teams on a
 > [Pro trial](/docs/plans/pro-plan/trials). After the first year, the domain
 > renews at the standard rate. See
 > [eligibility details](/docs/plans/pro-plan#free-first-year-domain-with-pro).
 
-> **💡 Note:** For the ICANN registrant information:
+> **💡 Note:** For the ICANN registrant information:If you enter the same email address you use for your Vercel user account
+> (or an email your [team owner](/docs/rbac/access-roles#owner-role) uses),
+> the information will be confirmed automatically.If you enter another email address, please follow the instructions you
+> receive in an email to confirm your registrant information.If you don't confirm your registrant information, your domain could be suspended (clientHold).
+> You can resend the verification email or update the registrant address from your [Domains dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+dashboard) if needed.
 
 ### Buying a domain through a third-party
 
@@ -74,7 +79,7 @@ When you are using domains with Vercel, there are two areas of the dashboard tha
 
 - **Project assignment**: This is accessed by selecting the project that you wish to assign the domain to and navigating to **Settings > Domains**. From here you can add an apex domain or subdomain to the Project. When a user visits your domain, they will see the most recent production deployment of your site, unless you [assign the domain to a Git branch](/docs/domains/working-with-domains/assign-domain-to-a-git-branch) or [add redirection](/docs/domains/working-with-domains/deploying-and-redirecting).
 
-> **💡 Note:** When you add a domain to Vercel for the first time, it will appear as an  in your team's  tab. If you add that domain (for example, `yourdomain.com`, or `docs.yourdomain.com`) to a project on a different Vercel team, that domain will require a [TXT verification step](/docs/domains/working-with-domains/claim-domain-ownership) and will only show up at the project level. The  will still appear in the original account's  tab.
+> **💡 Note:** When you add a domain to Vercel for the first time, it will appear as an **apex domain** in your team's **Domains** tab. If you add that domain (for example, `yourdomain.com`, or `docs.yourdomain.com`) to a project on a different Vercel team, that domain will require a [TXT verification step](/docs/domains/working-with-domains/claim-domain-ownership) and will only show up at the project level. The **apex domain** will still appear in the original account's **Domains** tab.
 
 ## Subdomains, wildcard domains, and apex domains
 
@@ -84,7 +89,7 @@ The **apex domain** is the root-level domain, such as `acme.com`. When you add a
 
 ### Subdomain
 
-A **subdomain** is a more specific part of that domain that can be assigned to a particular part of your site, for example, `blog.acme.com`, `help.acme.com`. This helps to blend both your brand, with the specificity of where the user may need to go. To add a subdomain to your Project, follow the instructions in the [Add a custom domain](/docs/domains/working-with-domains/add-a-domain#subdomains) doc. If you have bought the domain through Vercel, you can also [point a subdomain to an external service](/kb/guide/pointing-subdomains-to-external-services) through the Domains section of the dashboard. Subdomains are set through a *CNAME* DNS record.
+A **subdomain** is a more specific part of that domain that can be assigned to a particular part of your site, for example, `blog.acme.com`, `help.acme.com`. This helps to blend both your brand, with the specificity of where the user may need to go. To add a subdomain to your Project, follow the instructions in the [Add a custom domain](/docs/domains/working-with-domains/add-a-domain#subdomains) doc. If you have bought the domain through Vercel, you can also [point a subdomain to an external service](/docs/domains/managing-dns-records#pointing-a-subdomain-to-an-external-service) through the Domains section of the dashboard. Subdomains are set through a *CNAME* DNS record.
 
 *Image showing the fully-qualified domain name (FQDN).*
 
@@ -100,7 +105,7 @@ Wildcard domains **must** be configured with the [nameservers method](/docs/doma
 
 When you create a domain, you may want to also set up a way for users to contact you through an email address that is pointed at that domain. **Vercel does not provide a mail service for domains purchased with or transferred into it**.
 
-Because many domain providers do not offer a mail service, several third-party services specifically offer this type of functionality and are enabled by adding MX records. Examples of this type of service include [ImproxMX](https://improvmx.com/) and [Forward Email](https://forwardemail.net/en), however there are many more options available. For each provider, different DNS records are required to be added. For information on how to set up email, see [How do I send and receive emails with my Vercel purchased domain?](/kb/guide/using-email-with-your-vercel-domain)
+Because many domain providers do not offer a mail service, several third-party services specifically offer this type of functionality and are enabled by adding MX records. Examples of this type of service include [ImproxMX](https://improvmx.com/) and [Forward Email](https://forwardemail.net/en), however there are many more options available. For each provider, different DNS records are required to be added. For information on how to set up email, see [setting up email for your domain](/docs/domains/managing-dns-records#setting-up-email-for-your-domain)
 
 ## Troubleshooting
 

@@ -3,7 +3,7 @@ title: Vercel KMS Authentication
 product: vercel
 url: /docs/kms/concepts/authentication
 canonical_url: "https://vercel.com/docs/kms/concepts/authentication"
-last_updated: 2018-10-20
+last_updated: 2026-08-18
 type: conceptual
 prerequisites:
   - /docs/kms/concepts
@@ -28,13 +28,14 @@ KMS authorizes requests differently depending on what you are doing. Signing is 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Quickstart](https://vercel.com/docs/kms/quickstart?from=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
-- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related)
-- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related)
-- [Create an issuer policy](https://vercel.com/docs/rest-api/kms/create-an-issuer-policy?from=related)
-- [Pricing and Limits](https://vercel.com/docs/kms/pricing?from=related) — How Vercel KMS is billed per signing operation, the platform limits that apply, and how to stop being billed.
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fauthentication&source_site=vercel-docs&relationship=related)
+- [Vercel KMS Quickstart](https://vercel.com/docs/kms/quickstart?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fauthentication&source_site=vercel-docs&relationship=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
+- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fauthentication&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/token — Sign a JWT with a KMS issuer's active signing key. Authenticate the request
+- [Concepts](https://vercel.com/docs/eve/concepts?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fauthentication&source_site=vercel-docs&relationship=related) — Learn how eve agents, sessions, channels, tools, skills, connections, and sandboxes fit together.
+- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fauthentication&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/keys — Create a new signing key for a KMS issuer. Depending on the activation mode, the
+- [Create an issuer policy](https://vercel.com/docs/rest-api/kms/create-an-issuer-policy?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fauthentication&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/policies — Attach a policy to a KMS issuer that grants a project's deployments permissio
 
-Full cross-link map for this page: [/docs/kms/concepts/authentication.graph.md](/docs/kms/concepts/authentication.graph.md)
+Full cross-link map for this page: [/docs/kms/concepts/authentication.graph.md](/docs/kms/concepts/authentication.graph.md?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fauthentication&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Authorize signing with an OIDC token

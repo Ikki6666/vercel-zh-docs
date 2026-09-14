@@ -3,23 +3,23 @@ title: SDK Reference
 product: vercel
 url: /docs/connect/ts-sdk-reference
 canonical_url: "https://vercel.com/docs/connect/ts-sdk-reference"
-last_updated: 2026-06-09
+last_updated: 2026-08-26
 type: reference
 prerequisites:
   - /docs/connect
 related:
+  - /docs/connect/limits
   - /docs/connect/concepts/authentication
   - /docs/connect/concepts/installations
   - /docs/connect/concepts/tokens
   - /docs/connect/concepts/project-links
-  - /docs/cli/connect
 summary: API reference for @vercel/connect, the TypeScript SDK for requesting runtime tokens from Vercel Connect.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # SDK Reference
 
-`@vercel/connect` is the TypeScript SDK for calling Vercel Connect from your app. It authenticates with your Vercel deployment's OIDC token and exchanges it for provider tokens through the Vercel API.
+`@vercel/connect` is the TypeScript SDK for calling Vercel Connect from your app. It authenticates with your Vercel deployment's OIDC token and exchanges it for provider tokens through the Vercel API. SDK methods that make API requests are subject to [rate limits](/docs/connect/limits).
 
 
 <!-- docsgraph:related -->
@@ -27,18 +27,18 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Vercel Connect](https://chat-sdk.dev/docs/vercel-connect?from=related) — Authenticate Slack, Discord, GitHub, Linear, Notion, and Telegram adapters with Vercel Connect — short-lived runtime tok
-- [Build your own Slackbot with Vercel Connect](https://vercel.com/kb/guide/build-a-slack-bot-with-vercel-connect?from=related) — Learn how to build your very own Slackbot with Chat SDK and AI SDK. Vercel Connect supplies runtime Slack tokens and for
-- [Build a GitHub agent with Vercel Connect](https://vercel.com/kb/guide/github-agent-vercel-connect?from=related) — Build a GitHub agent that helps your team work through issues and PRs. Chat SDK handles the interactivity and AI SDK run
-- [Build a Linear agent with Vercel Connect](https://vercel.com/kb/guide/linear-agent-vercel-connect?from=related) — Build a native Linear Agent that helps your team manage issues. Mention it on any issue and it responds in real time, po
-- [Build an integrations hub with Nuxt and Vercel Connect](https://vercel.com/kb/guide/nuxt-and-vercel-connect?from=related) — Build an Integrations Hub with Nuxt and Vercel Connect. Connect GitHub and Linear over OAuth and mint short-lived tokens
-- [How to build a Slack bot that manages files in Vercel Blob](https://vercel.com/kb/guide/slack-bot-vercel-blob?from=related) — Build a Slack bot using Chat SDK, AI SDK, and Files SDK that can list, read, upload, and delete files in Vercel Blob thr
-- [Connectors](https://vercel.com/docs/connect/concepts/connectors?from=related) — A connector is the team-owned record that represents one third-party service. Its type determines which capabilities are
-- [Observability](https://vercel.com/docs/connect/observability?from=related) — Learn about observability on Vercel.
-- [SDK Reference](https://vercel.com/docs/kms/ts-sdk-reference?from=related) — API reference for @vercel/kms, including signToken, signMessage, region resolution, and signing the KMS API directly wit
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Connect](https://chat-sdk.dev/docs/vercel-connect?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related) — Authenticate Slack, Discord, GitHub, Linear, Notion, and Telegram adapters with Vercel Connect — short-lived runtime tok
+- [Vercel Connect now supports Linq](https://vercel.com/changelog/vercel-connect-now-supports-linq?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related)
+- [Vercel Connect now supports Microsoft](https://vercel.com/changelog/vercel-connect-supports-microsoft?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related)
+- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
+- [Build your own Slackbot with Vercel Connect](https://vercel.com/kb/guide/build-a-slack-bot-with-vercel-connect?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related) — Learn how to build your very own Slackbot with Chat SDK and AI SDK. Vercel Connect supplies runtime Slack tokens and for
+- [Build a GitHub agent with Vercel Connect](https://vercel.com/kb/guide/github-agent-vercel-connect?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related) — Build a GitHub agent that helps your team work through issues and PRs. Chat SDK handles the interactivity and AI SDK run
+- [How to build a Slack bot that manages files in Vercel Blob](https://vercel.com/kb/guide/slack-bot-vercel-blob?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related) — Build a Slack bot using Chat SDK, AI SDK, and Files SDK that can list, read, upload, and delete files in Vercel Blob thr
+- [The end of credential sprawl for agents](https://vercel.com/blog/the-end-of-credential-sprawl-for-agents?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related)
+- [Vercel Connect is now generally available](https://vercel.com/changelog/vercel-connect-ga?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related)
+- [Auth.js](https://vercel.com/docs/connect/frameworks/authjs?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=related) — Add a Vercel Connect OAuth provider to Auth.js in a Next.js App Router application.
 
-Full cross-link map for this page: [/docs/connect/ts-sdk-reference.graph.md](/docs/connect/ts-sdk-reference.graph.md)
+Full cross-link map for this page: [/docs/connect/ts-sdk-reference.graph.md](/docs/connect/ts-sdk-reference.graph.md?from=related&source_path=%2Fdocs%2Fconnect%2Fts-sdk-reference&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Install
@@ -70,6 +70,8 @@ See [Authentication](/docs/connect/concepts/authentication) for the full caller-
 ## `getToken`
 
 Returns the access token string. Use when you just need the token to put in an `Authorization` header.
+
+> **💡 Note:** Rate limit: [200 requests per minute per team](/docs/connect/limits#read-operations-200-requests-per-minute-per-team).
 
 ```ts filename="signature"
 function getToken(
@@ -105,6 +107,8 @@ This omits `installationId` and falls back to the connector's default installati
 
 Returns the full response: the token, its expiry, the connector identity, and provider metadata. Use when your app needs more than the raw string, for example to display the connected workspace name or to decide whether to surface a re-authorize button.
 
+> **💡 Note:** Rate limit: [200 requests per minute per team](/docs/connect/limits#read-operations-200-requests-per-minute-per-team).
+
 ```ts filename="signature"
 function getTokenResponse(
   connector: string,
@@ -130,6 +134,8 @@ console.log(new Date(response.expiresAt).toISOString());
 ## `getConnectorMetadata`
 
 Returns the connector's stable public metadata and provider-specific configuration. Use it when your app needs connector setup values in addition to a runtime token, such as a Snowflake account identifier.
+
+> **💡 Note:** Rate limit: [200 requests per minute per team](/docs/connect/limits#read-operations-200-requests-per-minute-per-team).
 
 ```ts filename="signature"
 function getConnectorMetadata(
@@ -228,6 +234,8 @@ type ConnectTokenSubject =
 ## `revokeToken`
 
 Revokes the provider grant for a connector subject and clears the SDK's in-process token cache. Provider support for revocation varies; see [Revocation](/docs/connect/concepts/tokens#revocation).
+
+> **💡 Note:** Rate limit: [50 requests per minute per team](/docs/connect/limits#write-operations-50-requests-per-minute-per-team) (write operation).
 
 ```ts filename="app/lib/disconnect.ts"
 import { revokeToken } from '@vercel/connect';

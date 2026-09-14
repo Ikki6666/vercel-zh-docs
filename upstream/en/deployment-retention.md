@@ -3,7 +3,7 @@ title: Deployment Retention
 product: vercel
 url: /docs/deployment-retention
 canonical_url: "https://vercel.com/docs/deployment-retention"
-last_updated: 2026-06-16
+last_updated: 2026-08-21
 type: conceptual
 prerequisites:
   []
@@ -21,23 +21,28 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Deployment Retention
 
+Deployment retention refers to the configured policies that determine how long different types of deployments are kept before they are automatically deleted.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I delete an individual deployment?](https://vercel.com/kb/guide/how-do-i-delete-an-individual-deployment?from=related) — Information on deleting an individual deployment.
-- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
-- [Optimize Deployment Storage](https://vercel.com/docs/deployment-storage/optimize?from=related) — Learn about optimize deployment storage on Vercel.
-- [Deployment Policies](https://vercel.com/docs/deployments/deployment-policy?from=related) — Use a deployment policy to control which Git sources and deployment mechanisms can deploy to your team and projects, per
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Instant Rollback](https://vercel.com/docs/instant-rollback?from=related) — Learn how to perform an Instant Rollback on your production deployments and quickly roll back to a previously deployed p
+- [How do I delete an individual deployment?](https://vercel.com/kb/guide/how-do-i-delete-an-individual-deployment?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related) — Information on deleting an individual deployment.
+- [Deployment retention policies now preserve active branch deployments](https://vercel.com/changelog/deployment-retention-policies-now-preserve-active-branch-deployments?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related)
+- [Deployment Storage keeps your deployments rollback-ready](https://vercel.com/changelog/deployment-storage-keeps-your-deployments-rollback-ready?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related)
+- [Hobby projects now default to 30-day deployment retention](https://vercel.com/changelog/hobby-projects-now-default-to-30-day-deployment-retention?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related)
+- [Skew Protection max age now supports the full deployment lifetime](https://vercel.com/changelog/skew-protection-max-age-now-supports-the-full-deployment-lifetime?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related)
+- [Updated defaults for deployment retention](https://vercel.com/changelog/updated-defaults-for-deployment-retention?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related)
+- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
+- [Optimize Deployment Storage](https://vercel.com/docs/deployment-storage/optimize?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related) — Set retention periods, review remaining usage, and reduce deployment output size.
+- [Deployment Policies](https://vercel.com/docs/deployments/deployment-policy?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related) — Use a deployment policy to control which Git sources and deployment mechanisms can deploy to your team and projects, per
+- [Deploying to Vercel](https://vercel.com/docs/deployments?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Performing an Instant Rollback on a Deployment](https://vercel.com/docs/instant-rollback?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=related) — Learn how to perform an Instant Rollback on your production deployments and quickly roll back to a previously deployed p
 
-Full cross-link map for this page: [/docs/deployment-retention.graph.md](/docs/deployment-retention.graph.md)
+Full cross-link map for this page: [/docs/deployment-retention.graph.md](/docs/deployment-retention.graph.md?from=related&source_path=%2Fdocs%2Fdeployment-retention&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Deployment retention refers to the configured policies that determine how long different types of deployments are kept before they are automatically deleted.
 
 These configured retention policies allow you to control how long your deployment data is stored, providing:
 

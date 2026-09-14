@@ -3,7 +3,7 @@ title: Vercel KMS Key Rotation
 product: vercel
 url: /docs/kms/concepts/key-rotation
 canonical_url: "https://vercel.com/docs/kms/concepts/key-rotation"
-last_updated: 2018-10-20
+last_updated: 2026-08-18
 type: conceptual
 prerequisites:
   - /docs/kms/concepts
@@ -25,14 +25,16 @@ Rotation replaces an issuer's active signing key without changing the issuer ID 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to rotate the secrets of your Hypertune integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-hypertune-integration?from=related) — Rotate Hypertune API keys with zero-downtime.
-- [Quickstart](https://vercel.com/docs/kms/quickstart?from=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
-- [Pricing and Limits](https://vercel.com/docs/kms/pricing?from=related) — How Vercel KMS is billed per signing operation, the platform limits that apply, and how to stop being billed.
-- [Activate a signing key](https://vercel.com/docs/rest-api/kms/activate-a-signing-key?from=related)
-- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related)
-- [Secrets Rotation](https://vercel.com/docs/integrations/create-integration/secrets-rotation?from=related) — Learn how to implement secrets rotation in your integration to allow users to rotate credentials securely.
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related)
+- [Concepts](https://vercel.com/docs/eve/concepts?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related) — Learn how eve agents, sessions, channels, tools, skills, connections, and sandboxes fit together.
+- [Rotating Secrets for Vercel Marketplace Integrations](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-supabase-integration?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related) — Rotate the Supabase service role key, JWT secret, and database password from your Vercel integration, then apply the new
+- [How to rotate the secrets of your Hypertune integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-hypertune-integration?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related) — Rotate Hypertune API keys with zero-downtime.
+- [Vercel KMS Quickstart](https://vercel.com/docs/kms/quickstart?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
+- [Vercel KMS Pricing and Limits](https://vercel.com/docs/kms/pricing?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related) — How Vercel KMS is billed per signing operation, the platform limits that apply, and how to stop being billed.
+- [Activate a signing key](https://vercel.com/docs/rest-api/kms/activate-a-signing-key?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/keys/{keyId}/activate — Activate a pending signing key so the issuer starts signing with
+- [Implementing secrets rotation](https://vercel.com/docs/integrations/create-integration/secrets-rotation?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=related) — Learn how to implement secrets rotation in your integration to allow users to rotate credentials securely.
 
-Full cross-link map for this page: [/docs/kms/concepts/key-rotation.graph.md](/docs/kms/concepts/key-rotation.graph.md)
+Full cross-link map for this page: [/docs/kms/concepts/key-rotation.graph.md](/docs/kms/concepts/key-rotation.graph.md?from=related&source_path=%2Fdocs%2Fkms%2Fconcepts%2Fkey-rotation&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Rotation stages

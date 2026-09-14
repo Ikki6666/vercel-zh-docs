@@ -3,25 +3,25 @@ title: eve
 product: vercel
 url: /docs/eve
 canonical_url: "https://vercel.com/docs/eve"
-last_updated: 2026-08-03
+last_updated: 2026-09-03
 type: conceptual
 prerequisites:
   []
 related:
+  - /docs/release-phases/public-beta-agreement
   - /docs/functions
   - /docs/workflows
   - /docs/sandbox
   - /docs/ai-gateway
-  - /docs/connect
-summary: Learn how to deploy and run durable backend AI agents built with the open-source eve framework on Vercel.
+summary: Build and deploy durable backend AI agents with eve, an open-source, filesystem-first framework.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # eve
 
-> **💡 Note:** eve is currently in beta and subject to the
-> .
-> The framework, APIs, documentation, and behavior may change before general availability.
+## Build durable backend agents with eve (Beta)
+
+Build durable backend AI agents with eve, an open-source, filesystem-first framework. Agent files compile into an app that runs locally or on Vercel.
 
 
 <!-- docsgraph:related -->
@@ -29,26 +29,62 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Give your eve agent secure access to your private AWS RDS database](https://vercel.com/kb/guide/give-eve-agent-secure-access-to-aws-rds-database?from=related) — Connect an eve agent to a private AWS RDS database using Vercel Secure Compute and VPC peering, with a read-only query t
-- [How to run a multi-step research agent on Vercel](https://vercel.com/kb/guide/how-to-run-a-multi-step-research-agent-on-vercel?from=related) — An end-to-end architecture for production research agents on Vercel using Sandbox, Workflows, and AI Gateway with isolat
-- [Deployment](https://eve.dev/docs/guides/deployment/overview?from=related) — Choose a deployment strategy and prepare an eve agent for production.
-- [Deploy to Vercel](https://eve.dev/docs/guides/deployment/vercel?from=related) — Deploy an eve agent with Vercel Workflow, Sandbox, Cron, and project credentials.
-- [Next.js](https://eve.dev/docs/guides/frontend/nextjs?from=related) — Run an eve agent and a Next.js app as one project with withEve.
-- [eve](https://eve.dev/docs/channels/eve?from=related) — The default HTTP API for an agent, covering session routes, auth, and customization.
-- [Draft content in your voice from Slack with eve](https://vercel.com/kb/guide/eve-content-agent?from=related) — Deploy the eve content agent template, a Slack bot that drafts blog posts, LinkedIn posts, release notes, and newsletter
-- [How to add tools to your eve agent](https://vercel.com/kb/guide/how-to-add-eve-tools?from=related) — Add tools to an eve agent by creating a TypeScript file under agent/tools/ with defineTool, and gate sensitive ones on h
-- [Self-Host eve](https://eve.dev/docs/guides/deployment/self-hosting?from=related) — Run an eve agent as a Node service with your own workflow storage, sandbox backend, and routing.
-- [How to build a GitHub agent with eve and GitHub Tools](https://vercel.com/kb/guide/github-agent-eve?from=related) — Build a GitHub agent with eve, GitHub Tools, and Vercel Connect. Register AI-callable GitHub tools, gate writes behind d
-- [Skills](https://vercel.com/docs/agent-resources/skills?from=related) — Install skills to enhance AI coding agents with specialized capabilities for React, Next.js, deployment, and more.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Introducing eve, an open-source agent framework](https://vercel.com/changelog/introducing-eve-an-open-source-agent-framework?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related)
+- [Deploy to Vercel](https://eve.dev/docs/guides/deployment/vercel?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Deploy an eve agent with Vercel Workflow, Sandbox, Cron, and project credentials.
+- [Give your eve agent secure access to your private AWS RDS database](https://vercel.com/kb/guide/give-eve-agent-secure-access-to-aws-rds-database?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Connect an eve agent to a private AWS RDS database using Vercel Secure Compute and VPC peering, with a read-only query t
+- [How to run a multi-step research agent on Vercel](https://vercel.com/kb/guide/how-to-run-a-multi-step-research-agent-on-vercel?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — An end-to-end architecture for production research agents on Vercel using Sandbox, Workflows, and AI Gateway with isolat
+- [The Agent Stack](https://vercel.com/blog/agent-stack?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related)
+- [Deployment](https://eve.dev/docs/guides/deployment/overview?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Choose a deployment strategy and prepare an eve agent for production.
+- [Next.js](https://eve.dev/docs/guides/frontend/nextjs?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Run an eve agent and a Next.js app as one project with withEve.
+- [Draft content in your voice from Slack with eve](https://vercel.com/kb/guide/eve-content-agent?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Deploy the eve content agent template, a Slack bot that drafts blog posts, LinkedIn posts, release notes, and newsletter
+- [How to add tools to your eve agent](https://vercel.com/kb/guide/how-to-add-eve-tools?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Add tools to an eve agent by creating a TypeScript file under agent/tools/ with defineTool, and gate sensitive ones on h
+- [Build your first Slack agent with eve](https://vercel.com/kb/guide/eve-slack-agent-starter?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Deploy the eve Slack agent template: a starter Slack bot built on the eve framework with an example tool and skill.
+- [Terminal UI](https://eve.dev/docs/guides/dev-tui?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Use eve locally or connect to a deployed agent from an interactive terminal UI.
+- [Ship It](https://eve.dev/docs/tutorial/ship-it?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=related) — Part 8 of the Build an Agent tutorial. Put a web dashboard on the agent with useEveAgent, replace placeholderAuth, and d
 
-Full cross-link map for this page: [/docs/eve.graph.md](/docs/eve.graph.md)
+Full cross-link map for this page: [/docs/eve.graph.md](/docs/eve.graph.md?from=related&source_path=%2Fdocs%2Feve&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-[eve](https://eve.dev/) is an open-source, filesystem-first framework for durable backend AI agents. You define each
-agent with files under an `agent/` directory, and eve discovers those files and compiles them into a
-runnable app. eve runs locally, on Vercel, or on a long-running Node.js host, and can use AI Gateway
-or call AI SDK model providers directly.
+#### Define an agent
+
+```md filename="agent/instructions.md"
+You are a concise assistant. Use tools when they are available.
+```
+
+```typescript filename="agent/agent.ts"
+import { defineAgent } from 'eve';
+
+export default defineAgent({
+  model: 'openai/gpt-5.4-mini',
+});
+```
+
+#### Add a tool
+
+```typescript filename="agent/tools/get_weather.ts"
+import { defineTool } from 'eve/tools';
+import { z } from 'zod';
+
+export default defineTool({
+  description: 'Get the current weather for a city.',
+  inputSchema: z.object({ city: z.string() }),
+  async execute({ city }) {
+    return { city, condition: 'Sunny', temperatureF: 72 };
+  },
+});
+```
+
+#### Start a durable session
+
+```bash filename="terminal"
+# Run against a local eve agent
+curl -X POST http://127.0.0.1:3000/eve/v1/session \
+  -H 'content-type: application/json' \
+  -d '{"message":"What is the weather in Brooklyn?"}'
+```
+
+> **💡 Note:** eve is currently in beta and subject to the [Vercel beta terms](/docs/release-phases/public-beta-agreement).
+> The framework, APIs, documentation, and behavior may change before general availability.
 
 These docs cover deploying and running eve on Vercel. In this environment, the compiled app runs on
 [Vercel Functions](/docs/functions) and integrates with these services:
@@ -56,15 +92,14 @@ These docs cover deploying and running eve on Vercel. In this environment, the c
 - [Vercel Workflows](/docs/workflows) persist session state and resume interrupted work.
 - [Vercel Sandbox](/docs/sandbox) isolates code execution.
 - [AI Gateway](/docs/ai-gateway) routes model requests and handles provider fallbacks.
-- [Vercel Connect](/docs/connect) manages OAuth tokens and API keys for external services.
+- [Vercel Connect](/docs/connect/frameworks/eve) manages OAuth tokens and API keys for eve connections and channels.
 - [Vercel Observability](/docs/observability) shows agent runs, token usage, and performance.
 
 ## Getting started
 
-The fastest path is the eve CLI. Run the published package with `npx` to scaffold a new
-agent project, install dependencies, initialize Git, and start the development server:
+The eve CLI scaffolds a new agent project, installs dependencies, initializes Git, and starts the development server.
 
-```bash
+```bash filename="terminal"
 npx eve@latest init my-agent
 ```
 
@@ -73,7 +108,7 @@ To add eve to an existing app, follow the [quickstart steps](https://eve.dev/doc
 Follow the generated README for the project-specific dev command, or run the agent locally with the
 standard script from the scaffold:
 
-```bash
+```bash filename="terminal"
 pnpm dev
 ```
 
@@ -125,7 +160,7 @@ export default defineTool({
 
 Start a durable session and stream its output:
 
-```bash
+```bash filename="terminal"
 curl -X POST http://127.0.0.1:3000/eve/v1/session \
   -H 'content-type: application/json' \
   -d '{"message":"What is the weather in Brooklyn?"}'
@@ -134,7 +169,7 @@ curl -X POST http://127.0.0.1:3000/eve/v1/session \
 The response returns a `continuationToken` in the body and an `x-eve-session-id` header. Attach to
 the session stream to receive NDJSON lifecycle events:
 
-```bash
+```bash filename="terminal"
 curl http://127.0.0.1:3000/eve/v1/session/<sessionId>/stream
 ```
 
@@ -149,6 +184,11 @@ curl http://127.0.0.1:3000/eve/v1/session/<sessionId>/stream
   load larger procedures only when relevant.
 - [**Agent Runs**](/docs/eve/observability): Inspect sessions, turns, tools, reasoning, timing, and
   token usage in the Vercel dashboard.
+
+## Start with a template
+
+Deploy an eve template to start building AI agents that use Vercel Connect to
+securely access third-party services and APIs:
 
 ## Resources
 

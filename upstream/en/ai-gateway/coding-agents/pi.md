@@ -1,21 +1,21 @@
 ---
-title: Pi
+title: Pi with AI Gateway
 product: vercel
 url: /docs/ai-gateway/coding-agents/pi
 canonical_url: "https://vercel.com/docs/ai-gateway/coding-agents/pi"
-last_updated: 2018-10-20
-type: conceptual
+last_updated: 2026-09-08
+type: how-to
 prerequisites:
   - /docs/ai-gateway/coding-agents
   - /docs/ai-gateway
 related:
   - /docs/cli/ai-gateway
   - /docs/ai-gateway/observability-and-spend/budgets
-summary: Learn about pi on Vercel.
+summary: Connect Pi to AI Gateway with one CLI command, or configure it manually.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Pi
+# Pi with AI Gateway
 
 [Pi](https://github.com/earendil-works/pi) is an open-source terminal coding agent. It ships a first-class `vercel-ai-gateway` provider, so it already knows the gateway's base URL and model catalog and only needs your API key.
 
@@ -25,21 +25,53 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Pydantic AI](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/pydantic-ai?from=related) — Learn how to integrate Vercel AI Gateway with Pydantic AI to access multiple AI models through a unified interface
-- [Kilo Code](https://vercel.com/docs/ai-gateway/coding-agents/kilo-code?from=related) — Learn about kilo code on Vercel.
-- [OpenCode](https://vercel.com/docs/ai-gateway/coding-agents/opencode?from=related) — Use OpenCode with the AI Gateway.
-- [Blackbox AI](https://vercel.com/docs/ai-gateway/coding-agents/blackbox?from=related) — Use the Blackbox AI CLI with the AI Gateway.
-- [OpenClaw](https://vercel.com/docs/ai-gateway/coding-agents/openclaw?from=related) — Learn about openclaw on Vercel.
+- [Set up coding agents in one command with AI Gateway](https://vercel.com/changelog/set-up-coding-agents-in-one-command-with-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fcoding-agents%2Fpi&source_site=vercel-docs&relationship=related)
+- [Getting Started with AI Gateway](https://vercel.com/docs/ai-gateway/getting-started?from=related&source_path=%2Fdocs%2Fai-gateway%2Fcoding-agents%2Fpi&source_site=vercel-docs&relationship=related) — Set up AI Gateway with a coding agent, route the agent through AI Gateway, or make your first request with cURL, TypeScr
+- [Pydantic AI with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/pydantic-ai?from=related&source_path=%2Fdocs%2Fai-gateway%2Fcoding-agents%2Fpi&source_site=vercel-docs&relationship=related) — Learn how to integrate Vercel AI Gateway with Pydantic AI to access multiple AI models through a unified interface.
+- [GitHub Copilot CLI with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/copilot?from=related&source_path=%2Fdocs%2Fai-gateway%2Fcoding-agents%2Fpi&source_site=vercel-docs&relationship=related) — Connect GitHub Copilot CLI to AI Gateway with the Vercel CLI or environment variables for the provider URL, API key, and
+- [ZCode with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/zcode?from=related&source_path=%2Fdocs%2Fai-gateway%2Fcoding-agents%2Fpi&source_site=vercel-docs&relationship=related) — Connect ZCode to AI Gateway with the Vercel CLI or an OpenAI-compatible custom provider.
+- [Kilo Code with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/kilo-code?from=related&source_path=%2Fdocs%2Fai-gateway%2Fcoding-agents%2Fpi&source_site=vercel-docs&relationship=related) — Connect Kilo Code to AI Gateway with the Vercel CLI or an OpenAI-compatible provider configuration. Set your API key and
 
-Full cross-link map for this page: [/docs/ai-gateway/coding-agents/pi.graph.md](/docs/ai-gateway/coding-agents/pi.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/coding-agents/pi.graph.md](/docs/ai-gateway/coding-agents/pi.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fcoding-agents%2Fpi&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-> **💡 Note:** The Vercel CLI is the recommended way to set this up. [`vercel ai-gateway
->   coding-agents setup --agent pi`](/docs/cli/ai-gateway#setup) provisions a key
-> and writes it to Pi's auth file with the right permissions. The steps below
-> do the same thing by hand.
+## Set up with the Vercel CLI
 
-## Configuring Pi
+Run the [Vercel CLI setup command](/docs/cli/ai-gateway#setup) for Pi:
+
+```bash filename="terminal"
+npx vercel ai-gateway setup --agent pi
+```
+
+This command:
+
+- Provisions an AI Gateway API key, or reuses one you pass with `--key`.
+- Writes the key to Pi's auth file (`~/.pi/agent/auth.json`, or `$PI_CODING_AGENT_DIR/auth.json` when that variable is set) under the `vercel-ai-gateway` provider key, with owner-only (`0600`) permissions.
+- Backs up any file it changes alongside the original as `.bak`. Add `--dry-run` to preview changes without writing them.
+
+The Vercel CLI configures Pi but doesn't install it. Install Pi before starting it:
+
+```bash filename="terminal"
+npm install -g @earendil-works/pi-coding-agent
+```
+
+> **💡 Note:** Pi always keeps the key in `auth.json`, so the command writes it there even in
+> macOS Keychain mode. Pi reads its agent directory from `$PI_CODING_AGENT_DIR`
+> when that variable is set, and falls back to `~/.pi/agent` otherwise.
+
+Run the command without `--agent` to detect and configure every installed supported agent at once:
+
+```bash filename="terminal"
+vercel ai-gateway setup
+```
+
+For the full command reference, see [`vercel ai-gateway`](/docs/cli/ai-gateway#setup).
+
+To verify the setup, start Pi and choose a gateway model with `/model` (or `--model`), then confirm your requests appear in the [**AI Gateway**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) Overview in the Vercel dashboard.
+
+## Manual setup
+
+Only needed on machines where you can't use the Vercel CLI.
 
 - ### Install Pi
   Install the Pi coding agent from npm:
@@ -65,9 +97,7 @@ Full cross-link map for this page: [/docs/ai-gateway/coding-agents/pi.graph.md](
   chmod 600 ~/.pi/agent/auth.json
   ```
   > **💡 Note:** Pi reads its agent directory from `$PI_CODING_AGENT_DIR` when that variable
-  > is set, and falls back to `~/.pi/agent` otherwise. Pi always keeps the key in
-  > this file, so `vercel ai-gateway coding-agents setup` writes it here even in
-  > macOS Keychain mode.
+  > is set, and falls back to `~/.pi/agent` otherwise.
 
 - ### Pick a model
   Start Pi and choose a gateway model with `/model`, or name one when you launch:

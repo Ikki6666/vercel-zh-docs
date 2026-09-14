@@ -3,7 +3,7 @@ title: Legacy Usage & Pricing for Functions
 product: vercel
 url: /docs/functions/usage-and-pricing/legacy-pricing
 canonical_url: "https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing"
-last_updated: 2026-07-15
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/functions/usage-and-pricing
@@ -21,10 +21,12 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 # Legacy Usage & Pricing for Functions
 
 > **💡 Note:** **Legacy Billing Model**: This page describes the legacy billing model and
-> relates to functions which  use Fluid Compute. All new projects
+> relates to functions which **do not** use Fluid Compute. All new projects
 > use [Fluid Compute](/docs/fluid-compute) by default, which bills separately
 > for active CPU time and provisioned memory time for more cost-effective and
 > transparent pricing.
+
+Functions using the Node.js runtime are measured in [GB-hours](/docs/pricing/manage-and-optimize-usage#execution), which is the [memory allocated](/docs/functions/configuring-functions/memory) for each Function in GB, multiplied by the time in hours they were running. For example, a function [configured](/docs/functions/configuring-functions/memory) to use 3GB of memory that executes for 1 second, would be billed at 3 GB-s, requiring 1,200 executions to reach a full GB-Hr.
 
 
 <!-- docsgraph:related -->
@@ -32,16 +34,17 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Limits](https://vercel.com/docs/functions/limitations?from=related) — Learn about the limits and restrictions of using Vercel Functions.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Limits](https://vercel.com/docs/limits?from=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
-- [Legacy Metrics](https://vercel.com/docs/pricing/legacy?from=related) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
-- [Pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing?from=related) — Learn about the pricing for Vercel Blob.
+- [Troubleshoot and optimize Function Invocations on Vercel](https://vercel.com/kb/guide/optimize-function-invocations?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related) — Diagnose which routes drive Function Invocations and learn to optimize them. Separate necessary dynamic traffic from div
+- [Understanding Vercel Functions](https://vercel.com/blog/understanding-vercel-functions?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related)
+- [Higher defaults and limits for Vercel Functions running Fluid compute](https://vercel.com/changelog/higher-defaults-and-limits-for-vercel-functions-running-fluid-compute?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related)
+- [Vercel Functions Limits](https://vercel.com/docs/functions/limitations?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related) — Learn about the limits and restrictions of using Vercel Functions.
+- [Pricing on Vercel](https://vercel.com/docs/pricing?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Limits](https://vercel.com/docs/limits?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
+- [Legacy Metrics](https://vercel.com/docs/pricing/legacy?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
+- [Vercel Blob Pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=related) — Learn about the pricing for Vercel Blob.
 
-Full cross-link map for this page: [/docs/functions/usage-and-pricing/legacy-pricing.graph.md](/docs/functions/usage-and-pricing/legacy-pricing.graph.md)
+Full cross-link map for this page: [/docs/functions/usage-and-pricing/legacy-pricing.graph.md](/docs/functions/usage-and-pricing/legacy-pricing.graph.md?from=related&source_path=%2Fdocs%2Ffunctions%2Fusage-and-pricing%2Flegacy-pricing&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Functions using the Node.js runtime are measured in [GB-hours](/docs/pricing/manage-and-optimize-usage#execution), which is the [memory allocated](/docs/functions/configuring-functions/memory) for each Function in GB, multiplied by the time in hours they were running. For example, a function [configured](/docs/functions/configuring-functions/memory) to use 3GB of memory that executes for 1 second, would be billed at 3 GB-s, requiring 1,200 executions to reach a full GB-Hr.
 
 A function can use up to 50 ms of CPU time per execution unit. If a function uses more than 50 ms, it will be divided into multiple 50 ms units for billing purposes.
 
@@ -49,7 +52,7 @@ See [viewing function usage](#viewing-function-usage) for more information on ho
 
 ## Pricing
 
-> **💡 Note:** This information relates to functions which  use Fluid Compute.
+> **💡 Note:** This information relates to functions which **do not** use Fluid Compute.
 > Fluid Compute is the default for all new functions. To learn about pricing for
 > functions that use Fluid Compute, see
 > [Pricing](/docs/functions/usage-and-pricing).
@@ -109,8 +112,8 @@ You can see the usage for **functions using the Node.js runtime** on the **Funct
 
 | Metric               | Description                                                                                     | Priced                                                                                                                              | Optimize                                       |
 | -------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Function Invocations | The number of times your Functions have been invoked                                            |  | [Learn More](#optimizing-function-invocations) |
-| Function Duration    | The time your Vercel Functions have spent responding to requests                                |      | [Learn More](#optimizing-function-duration)    |
+| Function Invocations | The number of times your Functions have been invoked                                            | \*\*Price:\*\* | [Learn More](#optimizing-function-invocations) |
+| Function Duration    | The time your Vercel Functions have spent responding to requests                                | \*\*Price:\*\*     | [Learn More](#optimizing-function-duration)    |
 | Throttling           | The number of instances where Functions did not execute due to concurrency limits being reached | No                                                                                                                                  | N/A                                            |
 
 ## Managing function invocations

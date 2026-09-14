@@ -3,7 +3,7 @@ title: Uploading Custom SSL Certificates
 product: vercel
 url: /docs/domains/custom-SSL-certificate
 canonical_url: "https://vercel.com/docs/domains/custom-SSL-certificate"
-last_updated: 2026-02-26
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/domains

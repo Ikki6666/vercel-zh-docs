@@ -3,7 +3,7 @@ title: Manage and optimize usage
 product: vercel
 url: /docs/pricing/manage-and-optimize-usage
 canonical_url: "https://vercel.com/docs/pricing/manage-and-optimize-usage"
-last_updated: 2026-07-29
+last_updated: 2026-08-21
 type: reference
 prerequisites:
   - /docs/pricing
@@ -21,23 +21,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## What pricing plan am I on?
 
+There are three plans on Vercel: Hobby, Pro, and Enterprise. To see which plan you are on, select your team from the team switcher. Next to your team name, you will see the plan you are on.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute?from=related) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
-- [Plans](https://vercel.com/docs/plans?from=related) — Learn about the different plans available on Vercel.
-- [Limits and Pricing](https://vercel.com/docs/speed-insights/limits-and-pricing?from=related) — Learn about our limits and pricing when using Vercel Speed Insights. Different limitations are applied depending on your
-- [Pricing & Usage](https://vercel.com/docs/manage-cdn-usage?from=related) — Understand CDN pricing resources, monitor usage from your dashboard, and optimize Fast Data Transfer, Fast Origin Transf
-- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
-- [Legacy Usage & Pricing](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related) — Learn about legacy usage and pricing for Vercel Functions.
+- [Log Drains are now generally available](https://vercel.com/changelog/log-drains-are-now-generally-available?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related)
+- [Lower pricing for Log Drains](https://vercel.com/changelog/lower-pricing-for-log-drains?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related)
+- [One-click linking from Usage to Vercel Observability dashboards](https://vercel.com/changelog/one-click-linking-from-usage-to-vercel-observability-dashboards?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related)
+- [Speed Insights usage can now be viewed by Project](https://vercel.com/changelog/speed-insights-usage-can-now-be-viewed-by-project?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related)
+- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
+- [Protecting your app (and wallet) against malicious traffic](https://vercel.com/blog/protecting-your-app-and-wallet-against-malicious-traffic?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related)
+- [Vercel Pricing](https://vercel.com/pricing?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related) — Choose a Vercel plan and compare features and usage pricing.
+- [Account Plans on Vercel](https://vercel.com/docs/plans?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related) — Learn about the different plans available on Vercel.
+- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
+- [CDN pricing and usage](https://vercel.com/docs/manage-cdn-usage?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related) — Understand CDN pricing resources, monitor usage from your dashboard, and optimize Fast Data Transfer, Fast Origin Transf
+- [Legacy Usage & Pricing for Functions](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related) — Learn about legacy usage and pricing for Vercel Functions.
+- [Observability Insights](https://vercel.com/docs/observability/insights?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=related) — List of available data sources that you can view and monitor with Observability on Vercel.
 
-Full cross-link map for this page: [/docs/pricing/manage-and-optimize-usage.graph.md](/docs/pricing/manage-and-optimize-usage.graph.md)
+Full cross-link map for this page: [/docs/pricing/manage-and-optimize-usage.graph.md](/docs/pricing/manage-and-optimize-usage.graph.md?from=related&source_path=%2Fdocs%2Fpricing%2Fmanage-and-optimize-usage&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-There are three plans on Vercel: Hobby, Pro, and Enterprise. To see which plan you are on, select your team from the team switcher. Next to your team name, you will see the plan you are on.
 
 ## Viewing usage
 
@@ -58,6 +64,8 @@ The usage dashboard helps you understand and project your usage. You can also se
 
 - **Spend Management**: Spend management is an opt-in feature. Pro teams can set up a spend amount for your team to trigger notifications or actions. For example a webhook or pausing your projects when you hit your set amount
 - **Usage Notifications**: Usage notifications are set up automatically. Pro teams can also [configure the threshold](/docs/notifications#on-demand-usage-notifications) for usage alerts to notify you when you're approaching your usage limits
+
+  **Interested in the Enterprise plan?**
 
 ## CDN
 

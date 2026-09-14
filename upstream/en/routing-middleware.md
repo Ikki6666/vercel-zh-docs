@@ -3,7 +3,7 @@ title: Routing Middleware
 product: vercel
 url: /docs/routing-middleware
 canonical_url: "https://vercel.com/docs/routing-middleware"
-last_updated: 2026-08-03
+last_updated: 2026-08-14
 type: conceptual
 prerequisites:
   []
@@ -21,33 +21,43 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Routing Middleware
 
+Routing Middleware **executes code *before* a request is processed on a site**, and are built on top of [fluid compute](/docs/fluid-compute). Based on the request, you can modify the response.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Adding a response header](https://vercel.com/kb/guide/add-response-header?from=related) — Learn how to add a response header in your Middleware.
-- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template?from=related) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
-- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template?from=related) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
-- [Build with a Flask starter template](https://vercel.com/kb/guide/build-with-a-flask-starter-template?from=related) — Deploy a Flask app to Vercel from a starter template. Compare the Flask Hello World starter, AI SDK, alt text generator,
-- [Build with a Hono starter template](https://vercel.com/kb/guide/build-with-a-hono-starter-template?from=related) — Deploy a Hono app to Vercel from a starter template. Compare the Hono API starter, MCP server, AI SDK, Slack Bolt, Next.
-- [Routing](https://vercel.com/docs/routing?from=related) — Learn how Vercel's CDN routes requests through firewall, project routes, and deployment routes before reaching your appl
-- [Features](https://vercel.com/docs/build-output-api/features?from=related) — Learn how to implement common Vercel platform features through the Build Output API.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Routing](https://vercel.com/docs/microfrontends/routing?from=related) — Learn about routing on Vercel.
+- [Advanced Remix integration with streaming SSR and multi-runtime support](https://vercel.com/changelog/advanced-remix-integration-with-streaming-ssr-and-multi-runtime-support?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related)
+- [Edge Config is now generally available ](https://vercel.com/changelog/edge-config-is-now-generally-available?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related)
+- [Edge Function metrics now available in Monitoring](https://vercel.com/changelog/edge-function-metrics-now-available-in-monitoring?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related)
+- [Edge Functions are now available in Public Beta](https://vercel.com/changelog/edge-functions-are-now-available-in-public-beta?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related)
+- [Edge Functions are now generally available](https://vercel.com/changelog/edge-functions-are-now-generally-available?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related)
+- [A/B Testing on Vercel](https://vercel.com/kb/guide/ab-testing-on-vercel?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related) — Learn best practices for A/B testing on Vercel
+- [Adding a response header](https://vercel.com/kb/guide/add-response-header?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related) — Learn how to add a response header in your Middleware.
+- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
+- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
+- [Build with a Flask starter template](https://vercel.com/kb/guide/build-with-a-flask-starter-template?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related) — Deploy a Flask app to Vercel from a starter template. Compare the Flask Hello World starter, AI SDK, alt text generator,
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related)
+- [Billions of dollars, billions of requests: Black Friday-Cyber Monday 2024](https://vercel.com/blog/black-friday-cyber-monday-2024-recap?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=related)
 
-Full cross-link map for this page: [/docs/routing-middleware.graph.md](/docs/routing-middleware.graph.md)
+Full cross-link map for this page: [/docs/routing-middleware.graph.md](/docs/routing-middleware.graph.md?from=related&source_path=%2Fdocs%2Frouting-middleware&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Routing Middleware **executes code *before* a request is processed on a site**, and are built on top of [fluid compute](/docs/fluid-compute). Based on the request, you can modify the response.
 
 Because it runs globally before the cache, Routing Middleware is an effective way of providing personalization to statically generated content. Depending on the incoming request, you can execute custom logic, rewrite, redirect, add headers and more, before returning a response.
 
-Routing Middleware configured with the `proxy` property runs on the [Node.js](/docs/functions/runtimes/node-js) runtime. With the  file convention, the default is [Edge](/docs/functions/runtimes/edge). See [runtime options](#runtime-options) for information on how to change the runtime of your Routing Middleware.
+Routing Middleware configured with the `proxy` property runs on the [Node.js](/docs/functions/runtimes/node-js) runtime. With the `middleware.ts` file convention, the default is [Edge](/docs/functions/runtimes/edge). See [runtime options](#runtime-options) for information on how to change the runtime of your Routing Middleware.
 
 > For \['nextjs', 'nextjs-app']:
+
+> **💡 Note:** **Next.js 16 users:** Next.js 16 renamed the middleware file from
+> `middleware.ts` to `proxy.ts` and changed the function export from
+> `middleware` to `proxy`. When using Next.js 16 or later, use `proxy.ts`
+> instead of `middleware.ts`. The proxy function runs on Node.js only (Edge
+> runtime is not supported). See the [Next.js proxy
+> documentation](https://nextjs.org/docs/app/api-reference/file-conventions/proxy)
+> for details.
 
 ## Creating a Routing Middleware
 
@@ -108,7 +118,7 @@ The entrypoint can live in a subdirectory, such as `src/proxy.ts`. Add [`proxy.m
 
 ### Using the file convention
 
-You can also create a  file at your project's root directory and skip `vercel.json`:
+You can also create a `middleware.ts` file at your project's root directory and skip `vercel.json`:
 
 ```ts filename="middleware.ts" framework=all
 export default function middleware(request: Request) {
@@ -131,6 +141,11 @@ export const config = {
 ```
 
 > For \['nextjs', 'nextjs-app']:
+
+> **💡 Note:** The `middleware.ts` file should be at the same
+> level as your `app` or `pages` directory (even if you're using a `src`
+> directory). See the [Quickstart](/docs/routing-middleware/getting-started)
+> guide for more information.
 
 ## Logging
 
@@ -155,9 +170,14 @@ The following limits apply to requests processed by Routing Middleware:
 
 Routing Middleware is available on the [Node.js](/docs/functions/runtimes/node-js), [Bun](/docs/functions/runtimes/bun), and [Edge](/docs/functions/runtimes/edge) runtimes. An entrypoint set through the [`proxy`](/docs/project-configuration/vercel-json#proxy) property runs on Node.js.
 
-With the  file convention, the default runtime is Edge. You can change the runtime to Node.js by exporting a [`config`](/docs/routing-middleware/api#config-object) object with a `runtime` property in your  file.
+With the `middleware.ts` file convention, the default runtime is Edge. You can change the runtime to Node.js by exporting a [`config`](/docs/routing-middleware/api#config-object) object with a `runtime` property in your `middleware.ts` file.
 
 > For \['nextjs', 'nextjs-app']:
+
+> **💡 Note:** Next.js 16 and later run the proxy on Node.js only. The Edge runtime is not
+> available for Next.js proxy files. See the [Next.js proxy
+> documentation](https://nextjs.org/docs/app/api-reference/file-conventions/proxy)
+> for details.
 
 To use the Bun runtime, set [`bunVersion`](/docs/project-configuration/vercel-json#bunversion) in your `vercel.json` file and your runtime config to `nodejs`.
 

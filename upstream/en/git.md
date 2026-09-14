@@ -3,7 +3,7 @@ title: Deploying Git Repositories with Vercel
 product: vercel
 url: /docs/git
 canonical_url: "https://vercel.com/docs/git"
-last_updated: 2026-07-24
+last_updated: 2026-08-28
 type: conceptual
 prerequisites:
   []
@@ -13,7 +13,7 @@ related:
   - /docs/git/vercel-for-bitbucket
   - /docs/git/vercel-for-azure-pipelines
   - /docs/deployments/environments
-summary: Vercel allows for automatic deployments on every branch push and merges onto the production branch of your GitHub, GitLab, and Bitbucket projects.
+summary: Vercel automatically deploys supported Git repositories on every branch push and when changes merge into the production branch.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -27,18 +27,20 @@ Vercel allows for **automatic deployments on every branch push** and merges onto
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Avoiding duplicate-content SEO with vercel.app URLs and custom domains](https://vercel.com/kb/guide/avoiding-duplicate-content-with-vercel-app-urls?from=related) — Discover why search engines may treat your vercel.app URL and custom domain as separate pages, and how to consolidate ra
-- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop?from=related) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
-- [Build commission-free iOS checkouts with Vercel and Paddle](https://vercel.com/kb/guide/build-commission-free-ios-checkouts-with-vercel-and-paddle?from=related) — A new ruling allows iOS apps to use external checkouts. Learn how to deploy a secure, high-performance external checkout
-- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
-- [Can I use Vercel to deploy to a private cloud?](https://vercel.com/kb/guide/can-i-use-vercel-to-deploy-to-a-private-cloud?from=related) — Learn about if it's possible to deploy to a private cloud with Vercel.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Git Settings](https://vercel.com/docs/project-configuration/git-settings?from=related) — Use the project settings to manage the Git connection, enable Git LFS, and create deploy hooks.
-- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration?from=related) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [Git repositories can now be searched for and imported easily](https://vercel.com/changelog/git-repositories-can-now-be-searched-for-and-imported-easily?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related)
+- [Projects can now be renamed](https://vercel.com/changelog/projects-can-now-be-renamed?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related)
+- [Avoiding duplicate-content SEO with vercel.app URLs and custom domains](https://vercel.com/kb/guide/avoiding-duplicate-content-with-vercel-app-urls?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Discover why search engines may treat your vercel.app URL and custom domain as separate pages, and how to consolidate ra
+- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
+- [Build commission-free iOS checkouts with Vercel and Paddle](https://vercel.com/kb/guide/build-commission-free-ios-checkouts-with-vercel-and-paddle?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — A new ruling allows iOS apps to use external checkouts. Learn how to deploy a secure, high-performance external checkout
+- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
+- [Can I use Vercel to deploy to a private cloud?](https://vercel.com/kb/guide/can-i-use-vercel-to-deploy-to-a-private-cloud?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Learn about if it's possible to deploy to a private cloud with Vercel.
+- [Agentic Infrastructure](https://vercel.com/blog/agentic-infrastructure?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related)
+- [Deploying to Vercel](https://vercel.com/docs/deployments?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
 
-Full cross-link map for this page: [/docs/git.graph.md](/docs/git.graph.md)
+Full cross-link map for this page: [/docs/git.graph.md](/docs/git.graph.md?from=related&source_path=%2Fdocs%2Fgit&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Using Git with Vercel provides the following benefits:
@@ -51,6 +53,29 @@ When working with Git, have a branch that works as your production branch, often
 Vercel will create a production deployment.
 
 You can choose to use a different branch as the [production branch](#production-branch).
+
+## Managing deployment notifications
+
+Choose where to change notification settings based on the source of the message:
+
+| Notification | Where to manage it |
+| --- | --- |
+| Email from GitHub, GitLab, or Bitbucket | Your Git provider's notification preferences. See [Git provider emails](#git-provider-emails). |
+| Vercel bot comments on GitHub pull requests or commits | Your project's **Git** settings. See [Silence GitHub comments](/docs/git/vercel-for-github#silence-github-comments). |
+| GitHub deployment activity on a pull request | The **deployment\_status Events** control in your project's **Git** settings. See [Silence deployment notifications on pull requests](/docs/git/vercel-for-github#silence-deployment-notifications-on-pull-requests). |
+| Notifications sent by Vercel | Your [Vercel notification preferences](/docs/notifications#managing-notifications). |
+
+### Git provider emails
+
+Your Git provider controls email delivery for repository activity and CI workflows. Adjust the preferences for the repository or event type generating the email:
+
+- **GitHub**: Configure email delivery for [watched repositories and conversations](https://docs.github.com/en/subscriptions-and-notifications/get-started/configuring-notifications). If you deploy through GitHub Actions, review [workflow-run notifications](https://docs.github.com/en/actions/concepts/workflows-and-actions/notifications-for-workflow-runs) separately.
+- **GitLab**: Configure [notification levels](https://docs.gitlab.com/user/profile/notifications/) globally, per group, or per project. Use a custom level to choose the events you receive, including pipeline events when you use GitLab CI/CD.
+- **Bitbucket**: Manage [email notifications and watched activity](https://support.atlassian.com/bitbucket-cloud/docs/manage-email-notifications-for-watched-objects/) in your personal Bitbucket settings.
+
+Changing your provider's email preferences affects your notifications. Changing Vercel's bot-comment or deployment-event settings affects the project's Git integration for everyone.
+
+Before disabling GitHub `deployment_status` events, check whether any GitHub Actions workflows depend on them. Follow the [migration instructions](/docs/git/vercel-for-github#migrating-from-deployment_status) to use `repository_dispatch` where appropriate.
 
 ## Supported Git Providers
 

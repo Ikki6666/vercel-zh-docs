@@ -3,7 +3,7 @@ title: vercel global-config
 product: vercel
 url: /docs/cli/global-config
 canonical_url: "https://vercel.com/docs/cli/global-config"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/cli
@@ -27,13 +27,13 @@ The `vercel global-config` command manages [Global Config](/docs/global-config) 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using Global Config](https://vercel.com/docs/global-config/using-global-config?from=related) — Learn how to use Global Configs in your projects.
-- [Global Configs & REST API](https://vercel.com/docs/global-config/vercel-api?from=related) — Learn how to use the Vercel REST API to create and update Global Configs. You can also read data stored in Global Config
-- [Get Global Config items](https://vercel.com/docs/rest-api/global-config/get-global-config-items?from=related)
-- [Create a Global Config](https://vercel.com/docs/rest-api/global-config/create-a-global-config?from=related)
-- [Get Global Configs](https://vercel.com/docs/rest-api/global-config/get-global-configs?from=related)
+- [vercel blob](https://vercel.com/docs/cli/blob?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to interact with Vercel Blob storage using the vercel blob CLI command.
+- [Using Global Config](https://vercel.com/docs/global-config/using-global-config?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to use Global Configs in your projects.
+- [Managing Global Configs with Vercel REST API](https://vercel.com/docs/global-config/vercel-api?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to use the Vercel REST API to create and update Global Configs. You can also read data stored in Global Config
+- [vercel env](https://vercel.com/docs/cli/env?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to manage your environment variables in your Vercel Projects using the vercel env CLI command.
+- [Get Global Config items](https://vercel.com/docs/rest-api/global-config/get-global-config-items?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — GET /v1/global-config/{edgeConfigId}/items — Returns all items of a Global Config.
 
-Full cross-link map for this page: [/docs/cli/global-config.graph.md](/docs/cli/global-config.graph.md)
+Full cross-link map for this page: [/docs/cli/global-config.graph.md](/docs/cli/global-config.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 > **💡 Note:** `vercel edge-config` continues to work as an alias for `vercel global-config`
@@ -297,6 +297,24 @@ Use `vercel global-config get <id-or-slug>` to look up the Global Config ID, the
 
 - [Global Config overview](/docs/global-config)
 - [Global Config REST API reference](/docs/rest-api/global-config)
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel global-config` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

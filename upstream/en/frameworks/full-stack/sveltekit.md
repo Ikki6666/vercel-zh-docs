@@ -3,7 +3,7 @@ title: SvelteKit on Vercel
 product: vercel
 url: /docs/frameworks/full-stack/sveltekit
 canonical_url: "https://vercel.com/docs/frameworks/full-stack/sveltekit"
-last_updated: 2026-02-26
+last_updated: 2026-08-26
 type: conceptual
 prerequisites:
   - /docs/frameworks/full-stack
@@ -11,10 +11,10 @@ prerequisites:
 related:
   - /docs/deployments/environments
   - /docs/functions
+  - /docs/cli
   - /docs/fundamentals/what-is-compute
   - /docs/functions/limitations
-  - /docs/functions/configuring-functions/region
-summary: "Learn how to use Vercel's features with SvelteKit"
+summary: Deploy SvelteKit applications to Vercel and configure the adapter, rendering, streaming, ISR, analytics, and Routing Middleware.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -28,21 +28,30 @@ SvelteKit is a frontend framework that enables you to build Svelte applications 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Build Imgur-style image hosting with Nuxt and Vercel Blob](https://vercel.com/kb/guide/vercel-blob-nuxt-imgur-clone?from=related) — Learn how to build an Imgur-style paste-to-share image host using Nuxt and Vercel Blob, with direct-to-storage client up
-- [Vite](https://nextjs.org/docs/app/guides/migrating/from-vite?from=related) — Learn how to migrate your existing React application from Vite to Next.js.
-- [Vite](https://nextjs.org/docs/pages/guides/migrating/from-vite?from=related) — Learn how to migrate your existing React application from Vite to Next.js.
-- [Nuxt](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related) — Learn how to use Vercel's features with Nuxt.
-- [Getting Started](https://vercel.com/docs/image-optimization/quickstart?from=related) — Learn how you can leverage Vercel Image Optimization in your projects.
-- [Next.js](https://vercel.com/docs/frameworks/full-stack/nextjs?from=related) — Vercel is the native Next.js platform, designed to enhance the Next.js experience.
-- [Vite + Nitro](https://vercel.com/docs/frameworks/full-stack/vite-with-nitro?from=related) — Add a backend to any Vite app with Nitro and deploy to Vercel with zero configuration.
-- [Astro](https://vercel.com/docs/frameworks/frontend/astro?from=related) — Learn how to use Vercel's features with Astro
+- [New features for SvelteKit: Optimize your application with ease](https://vercel.com/blog/feature-complete-sveltekit?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related)
+- [Using SvelteKit 1.0 on Vercel](https://vercel.com/blog/using-sveltekit-1-0-on-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related)
+- [What's new in Svelte 5](https://vercel.com/blog/whats-new-in-svelte-5?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related)
+- [Nuxt on Vercel](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related) — Deploy Nuxt applications to Vercel and configure rendering, functions, middleware, routing, image optimization, and cach
+- [Astro on Vercel](https://vercel.com/docs/frameworks/frontend/astro?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related) — Deploy Astro sites to Vercel and configure server-side rendering, ISR, Web Analytics, Image Optimization, and Routing Mi
+- [Next.js on Vercel](https://vercel.com/docs/frameworks/full-stack/nextjs?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related) — Vercel is the native Next.js platform, designed to enhance the Next.js experience.
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
+- [Vite + Nitro on Vercel](https://vercel.com/docs/frameworks/full-stack/vite-with-nitro?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=related) — Add a backend to any Vite app with Nitro and deploy to Vercel with zero configuration.
 
-Full cross-link map for this page: [/docs/frameworks/full-stack/sveltekit.graph.md](/docs/frameworks/full-stack/sveltekit.graph.md)
+Full cross-link map for this page: [/docs/frameworks/full-stack/sveltekit.graph.md](/docs/frameworks/full-stack/sveltekit.graph.md?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fsveltekit&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 You can deploy your SvelteKit projects to Vercel with zero configuration, enabling you to use [Preview Deployments](/docs/deployments/environments#preview-environment-pre-production), [Web Analytics](#web-analytics), [Vercel functions](/docs/functions), and more.
 
 ## Get started with SvelteKit on Vercel
+
+To get started with SvelteKit on Vercel:
+
+- If you already have a project with SvelteKit, install [Vercel CLI](/docs/cli) and run the vercel command from your project's root directory
+- Clone one of our SvelteKit example repos to your favorite git provider and deploy it on Vercel with the button below:
+
+\- Or, choose a template from Vercel's marketplace:
+
+Vercel deployments can \[integrate with your git provider]\(/docs/git) to \[generate preview URLs]\(/docs/deployments/environments#preview-environment-pre-production) for each pull request you make to your SvelteKit project.
 
 ## Use Vercel features with Svelte
 
@@ -170,8 +179,8 @@ By default, your Vercel Functions will be deployed in *Washington, D.C., USA*, o
 
 Vercel supports streaming API responses over time with SvelteKit, allowing you to render parts of the UI early, then render the rest as data becomes available. Doing so lets users interact with your app before the full page loads, improving their perception of your app's speed. Here's how it works:
 
-- SvelteKit enables you to use a  file to fetch data on the server, which you can access from a `+page.svelte` file located in the same folder
-- You fetch data in a [`load`](https://kit.svelte.dev/docs/load) function defined in . This function returns an object
+- SvelteKit enables you to use a `+page.server.ts` file to fetch data on the server, which you can access from a `+page.svelte` file located in the same folder
+- You fetch data in a [`load`](https://kit.svelte.dev/docs/load) function defined in `+page.server.ts`. This function returns an object
   - Top-level properties that return a promise will resolve before the page renders
   - Nested properties that return a promise [will stream](https://kit.svelte.dev/docs/load#streaming-with-promises)
 
@@ -426,7 +435,7 @@ SvelteKit has a skew protection solution. When it detects version skew, it trigg
 
 When deploying to Vercel, you can optimize your images on demand, keeping your build times fast while improving your page load performance and [Core Web Vitals](/docs/speed-insights/metrics#core-web-vitals-explained).
 
-To use Image Optimization with SvelteKit on Vercel, use the [`@sveltejs/adapter-vercel`](#use-vercel-features-with-svelte) within your  file.
+To use Image Optimization with SvelteKit on Vercel, use the [`@sveltejs/adapter-vercel`](#use-vercel-features-with-svelte) within your `svelte.config.ts` file.
 
 ```js filename="svelte.config.js" framework=all
 import adapter from '@sveltejs/adapter-vercel';

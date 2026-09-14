@@ -3,7 +3,7 @@ title: Two-factor enforcement
 product: vercel
 url: /docs/two-factor-enforcement
 canonical_url: "https://vercel.com/docs/two-factor-enforcement"
-last_updated: 2026-06-16
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   []
@@ -24,13 +24,15 @@ To enhance the security of your Vercel team, you can enforce two-factor authenti
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [SAML SSO](https://vercel.com/docs/saml?from=related) — Learn how to configure SAML SSO for your organization on Vercel.
-- [Directory Sync](https://vercel.com/docs/directory-sync?from=related) — Learn how to configure Directory Sync for your Vercel Team.
-- [Access Control](https://vercel.com/docs/security/access-control?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Restrict access to deployments with Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication?from=related) — Vercel Authentication restricts access to your deployments so only authorized users can view and comment on your site.
-- [RBAC](https://vercel.com/docs/rbac?from=related) — Learn how to manage team members on Vercel, and how to assign roles to each member with role-based access control \\(RBAC
+- [Two-factor authentication (2FA) team enforcement](https://vercel.com/changelog/2fa-team-enforcement?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=related)
+- [Two-Factor Authentication (2FA) is now available](https://vercel.com/changelog/2fa-is-now-available?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=related)
+- [SAML Single Sign-On](https://vercel.com/docs/saml?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=related) — Learn how to configure SAML SSO for your organization on Vercel.
+- [Directory Sync](https://vercel.com/docs/directory-sync?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=related) — Learn how to configure Directory Sync for your Vercel Team.
+- [Access Control](https://vercel.com/docs/security/access-control?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
+- [Restrict access to deployments with Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=related) — Vercel Authentication restricts access to your deployments so only authorized users can view and comment on your site.
+- [Role-based access control \\(RBAC\\)](https://vercel.com/docs/rbac?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=related) — Learn how to manage team members on Vercel, and how to assign roles to each member with role-based access control \\(RBAC
 
-Full cross-link map for this page: [/docs/two-factor-enforcement.graph.md](/docs/two-factor-enforcement.graph.md)
+Full cross-link map for this page: [/docs/two-factor-enforcement.graph.md](/docs/two-factor-enforcement.graph.md?from=related&source_path=%2Fdocs%2Ftwo-factor-enforcement&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 What to expect:

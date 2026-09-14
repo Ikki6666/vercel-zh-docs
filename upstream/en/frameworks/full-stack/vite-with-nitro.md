@@ -3,7 +3,7 @@ title: Vite + Nitro on Vercel
 product: vercel
 url: /docs/frameworks/full-stack/vite-with-nitro
 canonical_url: "https://vercel.com/docs/frameworks/full-stack/vite-with-nitro"
-last_updated: 2026-03-09
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/frameworks/full-stack
@@ -28,20 +28,16 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [What is the Nitro Vite plugin?](https://vercel.com/kb/guide/nitro-vite-plugin?from=related) — The Nitro Vite plugin \\(nitro/vite\\) adds SSR, API routes, and deploy-anywhere server builds to any Vite app. Learn what
-- [How to ship a Nitro app on Vercel](https://vercel.com/kb/guide/ship-a-nitro-app-on-vercel?from=related) — Deploy a Nitro app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [Vite](https://nextjs.org/docs/app/guides/migrating/from-vite?from=related) — Learn how to migrate your existing React application from Vite to Next.js.
-- [Build with a Nitro starter template](https://vercel.com/kb/guide/build-with-a-nitro-starter-template?from=related) — Deploy a Nitro app to Vercel from a starter template. Compare the Nitro Starter, route rules, cached HTTP handler, plugi
-- [Vite](https://nextjs.org/docs/pages/guides/migrating/from-vite?from=related) — Learn how to migrate your existing React application from Vite to Next.js.
-- [Vite](https://vercel.com/docs/frameworks/frontend/vite?from=related) — Learn how to use Vercel's features with Vite.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
-- [SvelteKit](https://vercel.com/docs/frameworks/full-stack/sveltekit?from=related) — Learn how to use Vercel's features with SvelteKit
-- [Remix](https://vercel.com/docs/frameworks/full-stack/remix?from=related) — Learn how to use Vercel's features with Remix.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [What is the Nitro Vite plugin?](https://vercel.com/kb/guide/nitro-vite-plugin?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — The Nitro Vite plugin \\(nitro/vite\\) adds SSR, API routes, and deploy-anywhere server builds to any Vite app. Learn what
+- [How to ship a Nitro app on Vercel](https://vercel.com/kb/guide/ship-a-nitro-app-on-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — Deploy a Nitro app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
+- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
+- [Build a Weather API on Vercel: Express, FastAPI, and Nitro](https://vercel.com/kb/guide/weather-api-with-fastapi?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — Build a weather API on Vercel with FastAPI, Express, or Nitro. Compare the three runtimes, add caching and Observability
+- [How to migrate from Vite to Next.js](https://nextjs.org/docs/app/guides/migrating/from-vite?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — Learn how to migrate your existing React application from Vite to Next.js.
+- [How to migrate from Vite to Next.js](https://nextjs.org/docs/pages/guides/migrating/from-vite?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — Learn how to migrate your existing React application from Vite to Next.js.
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
+- [Astro on Vercel](https://vercel.com/docs/frameworks/frontend/astro?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=related) — Deploy Astro sites to Vercel and configure server-side rendering, ISR, Web Analytics, Image Optimization, and Routing Mi
 
-Full cross-link map for this page: [/docs/frameworks/full-stack/vite-with-nitro.graph.md](/docs/frameworks/full-stack/vite-with-nitro.graph.md)
+Full cross-link map for this page: [/docs/frameworks/full-stack/vite-with-nitro.graph.md](/docs/frameworks/full-stack/vite-with-nitro.graph.md?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fvite-with-nitro&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 By adding Nitro to your existing Vite project, you get:
@@ -148,7 +144,7 @@ With Nitro on Vercel, you get:
 
 Nitro enables SSR for any Vite app with minimal configuration. The setup varies by UI framework.
 
-#### \['React'
+#### React
 
 1. Install the required dependencies:
 
@@ -265,7 +261,7 @@ export default {
 }
 ```
 
-#### 'Vue'
+#### Vue
 
 1. Install the required dependencies:
 
@@ -384,7 +380,7 @@ export default {
 }
 ```
 
-#### 'Preact'
+#### Preact
 
 1. Install the required dependencies:
 
@@ -499,7 +495,7 @@ export default {
 }
 ```
 
-#### 'Solid'
+#### Solid
 
 1. Install the required dependencies:
 
@@ -621,7 +617,7 @@ function Root(props: { appHTML?: string }) {
 }
 ```
 
-#### 'HTML']
+#### HTML
 
 ### HTML SSR setup
 

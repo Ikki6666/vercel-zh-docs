@@ -3,7 +3,7 @@ title: Vercel CDN overview
 product: vercel
 url: /docs/cdn
 canonical_url: "https://vercel.com/docs/cdn"
-last_updated: 2026-06-16
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   []
@@ -27,19 +27,20 @@ Vercel's CDN is a globally distributed network that caches content near your vis
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn?from=related) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
-- [Videos](https://nextjs.org/docs/app/guides/videos?from=related) — Recommendations and best practices for optimizing videos in your Next.js application.
-- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
-- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template?from=related) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
-- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template?from=related) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
-- [Build with a Flask starter template](https://vercel.com/kb/guide/build-with-a-flask-starter-template?from=related) — Deploy a Flask app to Vercel from a starter template. Compare the Flask Hello World starter, AI SDK, alt text generator,
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Runtimes](https://vercel.com/docs/functions/runtimes?from=related) — Runtimes transform your source code into Functions, which are served by our CDN. Learn about the official runtimes suppo
-- [Vercel Primitives](https://vercel.com/docs/build-output-api/primitives?from=related) — Learn about the Vercel platform primitives and how they work together to create a Vercel Deployment.
+- [How to use and optimize videos](https://nextjs.org/docs/app/guides/videos?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related) — Recommendations and best practices for optimizing videos in your Next.js application.
+- [Caching details now available in Runtime Logs](https://vercel.com/changelog/caching-details-now-available-in-runtime-logs?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related)
+- [Python projects now support routing rules](https://vercel.com/changelog/python-projects-now-support-routing-rules?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related)
+- [Vercel CDN gets a new dashboard experience](https://vercel.com/changelog/vercels-cdn-gets-a-new-dashboard-experience?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related)
+- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
+- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
+- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
+- [Build with a Flask starter template](https://vercel.com/kb/guide/build-with-a-flask-starter-template?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related) — Deploy a Flask app to Vercel from a starter template. Compare the Flask Hello World starter, AI SDK, alt text generator,
+- [Build with a Hono starter template](https://vercel.com/kb/guide/build-with-a-hono-starter-template?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related) — Deploy a Hono app to Vercel from a starter template. Compare the Hono API starter, MCP server, AI SDK, Slack Bolt, Next.
+- [Build your own web framework](https://vercel.com/blog/build-your-own-web-framework?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related)
+- [Introducing Flat Rate CDN](https://vercel.com/blog/introducing-flat-rate-cdn?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related)
+- [Replacing Google Optimize with the Vercel Edge Network](https://vercel.com/blog/vercel-edge-google-optimize?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=related)
 
-Full cross-link map for this page: [/docs/cdn.graph.md](/docs/cdn.graph.md)
+Full cross-link map for this page: [/docs/cdn.graph.md](/docs/cdn.graph.md?from=related&source_path=%2Fdocs%2Fcdn&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Unlike traditional CDNs that only cache static assets, Vercel's CDN is framework-aware. It reads your routing, caching, and rendering configuration at build time, with the following benefits:
@@ -65,6 +66,8 @@ You can use Vercel's CDN across a range of architectures:
 ### Get started with templates
 
 Deploy a CDN-ready template to see routing, caching, and revalidation in action:
+
+[View all CDN templates](https://vercel.com/templates/cdn)
 
 ## How Vercel CDN works
 
@@ -138,10 +141,9 @@ You can configure branded error pages for 5xx server errors so visitors see a co
 
 ## Pricing and usage
 
-CDN pricing covers three billable resources: Edge Requests, Fast Data Transfer, and Fast Origin Transfer. Edge Requests and Fast Data Transfer include explicit Pro allowances; Vercel bills Fast Origin Transfer on demand on Pro. Pricing can vary by the region where requests originate.
+CDN pricing covers [CDN requests](/docs/manage-cdn-usage#cdn-requests), data transfer to visitors, and [Fast Origin Transfer](/docs/manage-cdn-usage#fast-origin-transfer). Pricing can vary by the region where requests originate. CDN requests appear as **Edge Requests** in **Billing** and on the **Usage** page.
 
-- [CDN pricing and usage](/docs/manage-cdn-usage)
-- [Networking usage details](/docs/manage-cdn-usage)
+For resource definitions, rates, usage dashboards, and ways to manage or stop charges, see [CDN pricing and usage](/docs/manage-cdn-usage).
 
 
 ---

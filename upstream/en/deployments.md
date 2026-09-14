@@ -3,7 +3,7 @@ title: Deploying to Vercel
 product: vercel
 url: /docs/deployments
 canonical_url: "https://vercel.com/docs/deployments"
-last_updated: 2026-06-17
+last_updated: 2026-09-03
 type: conceptual
 prerequisites:
   []
@@ -13,13 +13,15 @@ related:
   - /docs/git
   - /docs/git/vercel-for-github
   - /docs/git/vercel-for-gitlab
-summary: Learn how to create and manage deployments on Vercel.
+summary: Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Deploying to Vercel
 
-A **deployment** on Vercel is the result of a successful build of your project. Each time you deploy, Vercel generates a unique URL so you and your team can preview changes in a live [environment](/docs/deployments/environments).
+## Deploy and verify applications on Vercel
+
+Create preview and production deployments from Git, Vercel CLI, or the REST API. Verify each deployment URL before you send changes to production.
 
 
 <!-- docsgraph:related -->
@@ -27,19 +29,43 @@ A **deployment** on Vercel is the result of a successful build of your project. 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching?from=related) — Share a single Turborepo cache across your team and CI to avoid duplicated work.
-- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
-- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare?from=related) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
-- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox?from=related) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
-- [Deployments](https://v0.app/docs/deployments?from=related) — Deploy your v0 chats to Vercel with one click and manage production deployments.
-- [Deploying from CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
+- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Share a single Turborepo cache across your team and CI to avoid duplicated work.
+- [Resources tab allows instant searching and filtering of functions, middleware, and static assets](https://vercel.com/changelog/resources-tab-allows-instant-searching-and-filtering-of-functions-middleware?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related)
+- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
+- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
+- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
+- [Agentic Infrastructure](https://vercel.com/blog/agentic-infrastructure?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related)
+- [Introducing the new Vercel Agent](https://vercel.com/blog/vercel-agent?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related)
+- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Learn how to deploy based on tags/releases on Vercel.
+- [Deploying Projects from Vercel CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
 
-Full cross-link map for this page: [/docs/deployments.graph.md](/docs/deployments.graph.md)
+Full cross-link map for this page: [/docs/deployments.graph.md](/docs/deployments.graph.md?from=related&source_path=%2Fdocs%2Fdeployments&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
+
+#### Create a deployment
+
+```bash filename="terminal"
+vercel deploy
+```
+
+#### Verify a preview
+
+```bash filename="terminal"
+# Replace these values with the URL and ID printed by vercel deploy
+vercel curl / --deployment your_preview_url_here
+vercel logs --deployment your_preview_deployment_id_here --level error
+```
+
+#### Deploy to production
+
+```bash filename="terminal"
+vercel deploy --prod
+```
+
+A **deployment** on Vercel is the result of a successful build of your project. Each time you deploy, Vercel generates a unique URL so you and your team can preview changes in a live [environment](/docs/deployments/environments).
 
 Vercel supports multiple ways to create a deployment:
 
@@ -78,23 +104,31 @@ Vercel detects your framework and builds it, or deploys your files as-is when th
 
 ### Vercel CLI
 
-You can deploy your Projects directly from the command line using [Vercel CLI](/docs/cli). This method works whether your project is connected to Git or not.
+Use [Vercel CLI](/docs/cli) to create deployments from a terminal, CI pipeline, or coding agent with terminal access. This method works whether your project is connected to Git or not.
 
 1. **Install Vercel CLI**:
 
-```bash filename="Terminal" package-manager="npm"
+**terminal**
+
+```bash filename="terminal" package-manager="npm"
 npm i -g vercel
 ```
 
-```bash filename="Terminal" package-manager="bun"
+**terminal**
+
+```bash filename="terminal" package-manager="bun"
 bun i -g vercel
 ```
 
-```bash filename="Terminal" package-manager="yarn"
+**terminal**
+
+```bash filename="terminal" package-manager="yarn"
 yarn global add vercel
 ```
 
-```bash filename="Terminal" package-manager="pnpm"
+**terminal**
+
+```bash filename="terminal" package-manager="pnpm"
 pnpm i -g vercel
 ```
 
@@ -122,7 +156,7 @@ Refer to the [Deploy Hooks documentation](/docs/deploy-hooks) for more informati
 
 ### Vercel REST API
 
-The [Vercel REST API](/docs/rest-api) lets you create deployments by making an HTTP `POST` request to the deployment endpoint. In this workflow:
+Use the [Vercel REST API](/docs/rest-api) when a service or agent needs to create deployments through HTTP rather than a local checkout. In this workflow:
 
 1. Generate a SHA for each file you want to deploy
 2. Upload those files to Vercel

@@ -3,13 +3,13 @@ title: Supported domains
 product: vercel
 url: /docs/domains/supported-domains
 canonical_url: "https://vercel.com/docs/domains/supported-domains"
-last_updated: 2026-06-23
+last_updated: 2026-08-26
 type: reference
 prerequisites:
   - /docs/domains
 related:
   - /docs/domains/working-with-domains
-summary: Learn about supported domains on Vercel.
+summary: Find which top-level domains you can buy or transfer to Vercel and whether each TLD supports WHOIS privacy.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -116,7 +116,7 @@ Vercel supports the following top-level domains (TLDs) for [purchase](/docs/doma
 | `.cn.com` | Yes | No |
 | `.co` | Yes | Yes |
 | `.co.com` | Yes | Yes |
-| `.co.za` | Yes | No |
+| `.co.il` | No | No |
 | `.coach` | Yes | Yes |
 | `.codes` | Yes | Yes |
 | `.coffee` | Yes | Yes |

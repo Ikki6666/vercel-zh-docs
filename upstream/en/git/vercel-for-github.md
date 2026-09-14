@@ -3,7 +3,7 @@ title: Deploying GitHub Projects with Vercel
 product: vercel
 url: /docs/git/vercel-for-github
 canonical_url: "https://vercel.com/docs/git/vercel-for-github"
-last_updated: 2026-07-24
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/git
@@ -27,18 +27,20 @@ Vercel for GitHub automatically deploys your GitHub projects with [Vercel](/), p
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I disable Git Notifications from Deployments?](https://vercel.com/kb/guide/how-do-i-disable-git-notifications-from-deployments?from=related) — If your project is connected via a Git account to your deployment, you will receive email notifications whenever the dep
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [How to fix “unable to find your GitHub repository” on Vercel](https://vercel.com/kb/guide/unable-to-find-github-repository?from=related) — Learn how to check GitHub permissions to ensure your Vercel account has sufficient access to import your repository.
-- [Using Vercel Agent to review pull requests](https://vercel.com/kb/guide/vercel-agent-code-review?from=related) — Set up Vercel Agent Code Review to automatically review pull requests, apply validated fixes, request reviews with @verc
-- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [Git Settings](https://vercel.com/docs/project-configuration/git-settings?from=related) — Use the project settings to manage the Git connection, enable Git LFS, and create deploy hooks.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
-- [Integrations](https://vercel.com/docs/comments/integrations?from=related) — Learn how Comments integrates with Git providers like GitHub, GitLab, and BitBucket, as well as the Vercel app for Slack
+- [Consolidated Commit Status now available on GitHub](https://vercel.com/changelog/consolidated-commit-status-now-available-for-github?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related)
+- [Optionally disable deployment_status webhook events for GitHub Actions](https://vercel.com/changelog/optionally-disable-deployment_status-webhook-events-for-github-actions?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related)
+- [Trigger GitHub Actions with enriched deployment data from Vercel](https://vercel.com/changelog/trigger-github-actions-with-enriched-deployment-data-from-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related)
+- [New GitHub App permissions for Actions and Workflows](https://vercel.com/changelog/vercel-github-app-updated-permissions?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related)
+- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
+- [How to fix “unable to find your GitHub repository” on Vercel](https://vercel.com/kb/guide/unable-to-find-github-repository?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related) — Learn how to check GitHub permissions to ensure your Vercel account has sufficient access to import your repository.
+- [Using Vercel Agent to review pull requests](https://vercel.com/kb/guide/vercel-agent-code-review?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related) — Set up Vercel Agent Code Review to automatically review pull requests, apply validated fixes, request reviews with @verc
+- [Introducing `vercel dev`: Serverless, on localhost](https://vercel.com/blog/vercel-dev?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related)
+- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
+- [September 2020](https://vercel.com/blog/changelog-september-2020?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related)
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [July 2020](https://vercel.com/blog/changelog-july-2020?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=related)
 
-Full cross-link map for this page: [/docs/git/vercel-for-github.graph.md](/docs/git/vercel-for-github.graph.md)
+Full cross-link map for this page: [/docs/git/vercel-for-github.graph.md](/docs/git/vercel-for-github.graph.md?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-github&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Supported GitHub Products
@@ -99,6 +101,8 @@ To configure the Vercel for GitHub integration, see [the configuration reference
 ### System environment variables
 
 You may want to use different workflows and APIs based on Git information. To support this, the following [System Environment Variables](/docs/environment-variables/system-environment-variables) are exposed to your Deployments:
+
+<br />
 
 ### `VERCEL`
 
@@ -420,7 +424,7 @@ Contact your GitHub organization's Owner(s) to confirm your current role and rep
 
 ## Silence GitHub comments
 
-By default, comments from the Vercel GitHub bot will appear on your pull requests and commits. You can silence these comments in your project's settings:
+By default, comments from the Vercel GitHub bot will appear on your pull requests and commits. You can disable these comments while continuing to create preview deployments. To silence comments for your project:
 
 1. From the Vercel [dashboard](/dashboard), select your project
 2. From the **Settings** tab, select **Git**

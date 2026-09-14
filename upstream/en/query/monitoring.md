@@ -3,7 +3,7 @@ title: Monitoring
 product: vercel
 url: /docs/query/monitoring
 canonical_url: "https://vercel.com/docs/query/monitoring"
-last_updated: 2026-02-27
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/query
@@ -19,7 +19,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Monitoring
 
-**Monitoring** allows you to visualize and quantify the performance and traffic of your projects on Vercel. You can use [example queries](/docs/query/monitoring/monitoring-reference#example-queries) or create [custom queries](/docs/query/monitoring/quickstart#create-a-new-query) to debug and optimize bandwidth, errors, performance, and bot traffic issues in a production or preview deployment.
+Monitoring is now
 
 
 <!-- docsgraph:related -->
@@ -27,14 +27,32 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Observability Plus replacing legacy Monitoring](https://vercel.com/changelog/observability-plus-replacing-legacy-monitoring?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related)
+- [Introducing Vercel Monitoring](https://vercel.com/blog/introducing-monitoring?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related)
+- [Monitoring is now available to view traffic and performance data for improved observability ](https://vercel.com/changelog/monitoring-is-now-available-to-view-traffic-and-performance-data-for?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related)
+- [Monitoring is in public beta for Enterprise Teams](https://vercel.com/changelog/monitoring-is-in-public-beta-for-enterprise-teams?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related)
+- [Observability](https://vercel.com/docs/observability?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
+- [Manage and optimize usage for Observability](https://vercel.com/docs/manage-and-optimize-observability?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
+- [Observability Insights](https://vercel.com/docs/observability/insights?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=related) — List of available data sources that you can view and monitor with Observability on Vercel.
 
-Full cross-link map for this page: [/docs/query/monitoring.graph.md](/docs/query/monitoring.graph.md)
+Full cross-link map for this page: [/docs/query/monitoring.graph.md](/docs/query/monitoring.graph.md?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
+
+deprecated
+
+. It is no longer available for Pro users or Enterprise customers who subscribed to Observability Plus after June 2025.
+
+Observability Plus
+
+includes
+
+Observability Query
+
+for monitoring your project.
+
+**Monitoring** allows you to visualize and quantify the performance and traffic of your projects on Vercel. You can use [example queries](/docs/query/monitoring/monitoring-reference#example-queries) or create [custom queries](/docs/query/monitoring/quickstart#create-a-new-query) to debug and optimize bandwidth, errors, performance, and bot traffic issues in a production or preview deployment.
 
 > **🔒 Permissions Required**: Monitoring
 

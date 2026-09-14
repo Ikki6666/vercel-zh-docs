@@ -3,7 +3,7 @@ title: vercel deploy
 product: vercel
 url: /docs/cli/deploy
 canonical_url: "https://vercel.com/docs/cli/deploy"
-last_updated: 2026-07-23
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/cli
@@ -27,15 +27,20 @@ The `vercel deploy` command deploys Vercel projects, executable from the project
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Why are my branch specific variables and domains not linked to my CLI deployments?](https://vercel.com/kb/guide/branch-variables-and-domains-not-linked-to-cli-deployments?from=related) — How to link CLI deployments to the correct branch for use with custom environments and branch specific domains and envir
-- [How to alias a preview deployment using the CLI](https://vercel.com/kb/guide/how-to-alias-a-preview-deployment-using-the-cli?from=related) — Learn how to automatically alias a Vercel preview deployment.
-- [Deploying from CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [vercel redeploy](https://vercel.com/docs/cli/redeploy?from=related) — Learn how to redeploy your project using the vercel redeploy CLI command.
-- [vercel curl](https://vercel.com/docs/cli/curl?from=related) — Learn how to make HTTP requests to your Vercel deployments with automatic deployment protection bypass using the vercel
+- [CLI archive deployments are now up to 30% faster with split-tgz archive option](https://vercel.com/changelog/cli-archive-deployments-are-now-up-to-30-faster-with-split-tgz-archive?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related)
+- [Dry-run deployments with Vercel CLI](https://vercel.com/changelog/dry-run-deployments-with-vercel-cli?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related)
+- [Improvements to command line logs](https://vercel.com/changelog/improvements-to-command-line-logs?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related)
+- [Split-tgz is now the default CLI archive deployment behavior](https://vercel.com/changelog/split-tgz-is-now-the-default-cli-archive-deployment-behavior?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related)
+- [Why are my branch specific variables and domains not linked to my CLI deployments?](https://vercel.com/kb/guide/branch-variables-and-domains-not-linked-to-cli-deployments?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related) — How to link CLI deployments to the correct branch for use with custom environments and branch specific domains and envir
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [How to alias a preview deployment using the CLI](https://vercel.com/kb/guide/how-to-alias-a-preview-deployment-using-the-cli?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related) — Learn how to automatically alias a Vercel preview deployment.
+- [Deploying safely on Vercel without merge queues](https://vercel.com/blog/deploy-safely-on-vercel-without-merge-queues?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related)
+- [vercel redeploy](https://vercel.com/docs/cli/redeploy?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related) — Learn how to redeploy your project using the vercel redeploy CLI command.
+- [Deploying Projects from Vercel CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
+- [vercel curl](https://vercel.com/docs/cli/curl?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related) — Learn how to make HTTP requests to your Vercel deployments with automatic deployment protection bypass using the vercel
+- [vercel rolling-release](https://vercel.com/docs/cli/rolling-release?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=related) — Learn how to manage your project's rolling releases using the vercel rolling-release CLI command.
 
-Full cross-link map for this page: [/docs/cli/deploy.graph.md](/docs/cli/deploy.graph.md)
+Full cross-link map for this page: [/docs/cli/deploy.graph.md](/docs/cli/deploy.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fdeploy&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Usage
@@ -332,6 +337,24 @@ vercel deploy --guidance
 
 *Using the \`vercel deploy\` command with the
 \`--guidance\` option to receive command suggestions.*
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel deploy` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

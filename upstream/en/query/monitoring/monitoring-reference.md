@@ -3,7 +3,7 @@ title: Monitoring Reference
 product: vercel
 url: /docs/query/monitoring/monitoring-reference
 canonical_url: "https://vercel.com/docs/query/monitoring/monitoring-reference"
-last_updated: 2026-07-15
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/query/monitoring
@@ -20,7 +20,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Monitoring Reference
 
-## Visualize
+Monitoring is now
 
 
 <!-- docsgraph:related -->
@@ -28,14 +28,28 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Query Reference](https://vercel.com/docs/query/reference?from=related) — This reference covers the dimensions and operators used to create a query.
-- [Web Analytics API](https://vercel.com/docs/analytics/web-analytics-api?from=related) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
-- [vercel metrics](https://vercel.com/docs/cli/metrics?from=related) — Query observability metrics and inspect available metrics, dimensions, and aggregations using the Vercel CLI.
-- [Tools](https://vercel.com/docs/agent-resources/vercel-mcp/tools?from=related) — Available tools in Vercel MCP for searching docs, managing teams, projects, deployments, Web Analytics, runtime logs and
-- [Aggregates page views](https://vercel.com/docs/rest-api/web-analytics/aggregates-page-views?from=related)
+- [Query Reference](https://vercel.com/docs/query/reference?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — This reference covers the dimensions and operators used to create a query.
+- [Query Web Analytics with the API](https://vercel.com/docs/analytics/web-analytics-api?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
+- [Tools](https://vercel.com/docs/agent-resources/vercel-mcp/tools?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — Available tools in Vercel MCP for searching docs, managing teams, projects, deployments, Web Analytics, runtime logs and
+- [Audit Logs](https://vercel.com/docs/audit-log?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — Learn how to track and analyze your team members' activities.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
 
-Full cross-link map for this page: [/docs/query/monitoring/monitoring-reference.graph.md](/docs/query/monitoring/monitoring-reference.graph.md)
+Full cross-link map for this page: [/docs/query/monitoring/monitoring-reference.graph.md](/docs/query/monitoring/monitoring-reference.graph.md?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
+
+deprecated
+
+. It is no longer available for Pro users or Enterprise customers who subscribed to Observability Plus after June 2025.
+
+Observability Plus
+
+includes
+
+Observability Query
+
+for monitoring your project.
+
+## Visualize
 
 The `Visualize` clause selects what query data is displayed. You can select one of the following fields at a time, [aggregating](#aggregations) each field in one of several ways:
 

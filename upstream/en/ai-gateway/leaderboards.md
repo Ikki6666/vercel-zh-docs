@@ -1,9 +1,9 @@
 ---
-title: Leaderboards
+title: AI Gateway Leaderboards
 product: vercel
 url: /docs/ai-gateway/leaderboards
 canonical_url: "https://vercel.com/docs/ai-gateway/leaderboards"
-last_updated: 2026-06-29
+last_updated: 2026-09-08
 type: conceptual
 prerequisites:
   - /docs/ai-gateway
@@ -13,7 +13,7 @@ summary: See which AI models, labs, apps, and providers are most used on AI Gate
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Leaderboards
+# AI Gateway Leaderboards
 
 The [AI Gateway leaderboards](/ai-gateway/leaderboards) show which models, labs, apps, and providers developers use most on AI Gateway. Use them to see what's gaining traction, compare options before you build, and track how usage shifts over time.
 
@@ -23,13 +23,17 @@ The [AI Gateway leaderboards](/ai-gateway/leaderboards) show which models, labs,
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Logs](https://vercel.com/docs/ai-gateway/observability-and-spend/logs?from=related) — Search, filter, and follow individual AI Gateway requests, inspect provider routing for one request, and export the resu
-- [REST API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/rest-api?from=related) — Use the AI Gateway API directly without client libraries using curl and fetch.
-- [Uptime and Status](https://vercel.com/docs/ai-gateway/models-and-providers/uptime?from=related) — See how uptime and status track AI Gateway provider health and end-to-end request success.
-- [Metrics](https://vercel.com/docs/ai-gateway/models-and-providers/metrics?from=related) — Understand how AI Gateway measures throughput and latency per provider.
-- [Observability](https://vercel.com/docs/ai-gateway/observability-and-spend/observability?from=related) — Learn how to monitor and debug your AI Gateway requests.
+- [Access and share AI Gateway leaderboard data](https://vercel.com/changelog/open-data-and-shareable-charts-for-ai-gateway-leaderboards?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related)
+- [AI Gateway production index](https://vercel.com/blog/ai-gateway-production-index?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related)
+- [Open-weight models surge to 29% of volume, price per token flattens](https://vercel.com/blog/ai-gateway-production-index-july-2026?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related)
+- [Live model performance metrics accessible via AI Gateway](https://vercel.com/changelog/live-model-performance-metrics-accessible-via-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related)
+- [DeepSeek enters the fight for token volume, Anthropic continues to dominate spend](https://vercel.com/blog/ai-gateway-production-index-june-2026?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related)
+- [DeepSeek overtakes Google on volume, cost per token falls 13.6%](https://vercel.com/blog/deepseek-overtakes-google-on-volume-cost-per-token-falls?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related)
+- [AI Gateway Request Logs](https://vercel.com/docs/ai-gateway/observability-and-spend/logs?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related) — Search, filter, and follow individual AI Gateway requests, inspect provider routing for one request, and export the resu
+- [Coding Agents and Chat Platforms with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related) — Connect coding agents and chat platforms to AI Gateway. Configure Claude Code, Codex, Chatbox, Open WebUI, and more.
+- [vercel ai-gateway](https://vercel.com/docs/cli/ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=related) — Manage AI Gateway resources from the Vercel CLI: API keys, budgets, routing rules, models, leaderboards, and coding agen
 
-Full cross-link map for this page: [/docs/ai-gateway/leaderboards.graph.md](/docs/ai-gateway/leaderboards.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/leaderboards.graph.md](/docs/ai-gateway/leaderboards.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fleaderboards&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## What's ranked
@@ -81,11 +85,13 @@ For programmatic access, use the export endpoint. It returns the same anonymized
 GET https://vercel.com/api/ai/leaderboard-export
 ```
 
-| Parameter  | Values                                | Default  | Notes                                |
-| ---------- | ------------------------------------- | -------- | ------------------------------------ |
-| `dataset`  | `models`, `labs`, `apps`, `providers` | `models` | Which leaderboard to export.         |
-| `modality` | `all`, `text`, `image`, `video`       | `all`    | Applies to `models` and `labs` only. |
-| `format`   | `json`, `csv`                         | `json`   | `csv` returns a file download.       |
+| Parameter  | Values                                | Default          | Notes                                                        |
+| ---------- | ------------------------------------- | ---------------- | ------------------------------------------------------------ |
+| `dataset`  | `models`, `labs`, `apps`, `providers` | `models`         | Which leaderboard to export.                                   |
+| `modality` | `all`, `text`, `image`, `video`       | `all`            | Applies to `models` and `labs` only.                           |
+| `format`   | `json`, `csv`                         | `json`           | `csv` returns a file download.                                 |
+| `from`     | `YYYY-MM-DD`                          | rolling 2 months | Start of a fixed date range. `models` and `labs` only.         |
+| `to`       | `YYYY-MM-DD`                          | today            | End of the range. Requires `from`; `models` and `labs` only.   |
 
 ```bash
 # Daily share of the top models for text, as JSON
@@ -94,9 +100,22 @@ curl "https://vercel.com/api/ai/leaderboard-export?dataset=models&modality=text"
 # The same data saved as a CSV file
 curl "https://vercel.com/api/ai/leaderboard-export?dataset=models&modality=text&format=csv" -o ai-gateway-models-text.csv
 
+# A fixed historical range instead of the default rolling window
+curl "https://vercel.com/api/ai/leaderboard-export?dataset=models&from=2025-10-01&to=2025-12-31"
+
 # Top providers, ranked by token volume and by spend
 curl "https://vercel.com/api/ai/leaderboard-export?dataset=providers"
 ```
+
+#### Date ranges
+
+Without `from`, the export covers a rolling two-month window. Pass `from` (and
+optionally `to`) to request a fixed range instead. The earliest queryable date
+is **2025-10-01**, the point from which the daily rollups are complete. An
+earlier `from`, a `to` without a `from`, an inverted range, or a range on
+`dataset=apps`/`providers` (which are ranked all-time lists with no day
+dimension) returns `400`. Ranged responses echo the resolved `from`, `to`, and
+`earliest_available_date`.
 
 For `models` and `labs`, each row is one entity's share on one day for one metric. For `apps` and `providers`, each row is one ranked entity:
 

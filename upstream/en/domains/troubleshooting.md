@@ -3,7 +3,7 @@ title: Troubleshooting domains
 product: vercel
 url: /docs/domains/troubleshooting
 canonical_url: "https://vercel.com/docs/domains/troubleshooting"
-last_updated: 2026-07-20
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/domains
@@ -27,18 +27,17 @@ There are many common reasons why your domain configuration may not be working. 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [How to resolve IP blocking issues ](https://vercel.com/kb/guide/how-to-resolve-ip-blocking-issues?from=related) — Learn to troubleshoot IP blocking issues for both shared and personal networks.
-- [Why is my Vercel domain not verified?](https://vercel.com/kb/guide/why-is-my-vercel-domain-unverified?from=related) — Information on why a Vercel domain may not be verified and how to verify it.
-- [How do I add a custom domain to my Vercel project?](https://vercel.com/kb/guide/how-do-i-add-a-custom-domain-to-my-vercel-project?from=related) — Learn how to add a custom domain to your Vercel project.
-- [Configuring Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
-- [Set Up Custom Domain](https://vercel.com/docs/domains/set-up-custom-domain?from=related) — Add and configure a custom domain for your Vercel project using the CLI.
-- [Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
-- [Working with Nameservers](https://vercel.com/docs/domains/working-with-nameservers?from=related) — Learn about nameservers and the benefits Vercel nameservers provide.
-- [Production Checklist](https://vercel.com/docs/production-checklist?from=related) — Ensure your application is ready for launch with this comprehensive production checklist by the Vercel engineering team.
+- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
+- [How to resolve IP blocking issues ](https://vercel.com/kb/guide/how-to-resolve-ip-blocking-issues?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Learn to troubleshoot IP blocking issues for both shared and personal networks.
+- [How to set up email with your Vercel domain](https://vercel.com/kb/guide/set-up-email-with-your-vercel-domain?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Set up email on your Vercel domain by adding your provider's MX and TXT records in Vercel DNS, and send transactional em
+- [Why is my Vercel domain not verified?](https://vercel.com/kb/guide/why-is-my-vercel-domain-unverified?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Information on why a Vercel domain may not be verified and how to verify it.
+- [How can I migrate a site to Vercel without downtime?](https://vercel.com/kb/guide/zero-downtime-migration?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Information about how to assign a Vercel deployment to a domain without downtime.
+- [Configuring Custom Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
+- [Setting up a custom domain](https://vercel.com/docs/domains/set-up-custom-domain?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Add and configure a custom domain for your Vercel project using the CLI.
+- [Working with nameservers](https://vercel.com/docs/domains/working-with-nameservers?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Learn about nameservers and the benefits Vercel nameservers provide.
+- [Production checklist for launch](https://vercel.com/docs/production-checklist?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Ensure your application is ready for launch with this comprehensive production checklist by the Vercel engineering team.
 
-Full cross-link map for this page: [/docs/domains/troubleshooting.graph.md](/docs/domains/troubleshooting.graph.md)
+Full cross-link map for this page: [/docs/domains/troubleshooting.graph.md](/docs/domains/troubleshooting.graph.md?from=related&source_path=%2Fdocs%2Fdomains%2Ftroubleshooting&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - Is your domain [added](/docs/domains/working-with-domains/add-a-domain#add-and-configure-domain) to your Vercel project?
@@ -114,10 +113,10 @@ For more information, see [Why must we use the Domain Nameservers method for Wil
 
 ### Domains and emails
 
-When you buy a new domain, you may want to also set up an email address with this domain. Vercel **does not provide a mail service for domains purchased with or transferred into it**. To learn how to set up email, see [How do I send and receive emails with my Vercel purchased domain?](/kb/guide/using-email-with-your-vercel-domain)
+When you buy a new domain, you may want to also set up an email address with this domain. Vercel **does not provide a mail service for domains purchased with or transferred into it**. To learn how to set up email, see [setting up email for your domain](/docs/domains/managing-dns-records#setting-up-email-for-your-domain)
 
 When you add your custom domain to a project and use Vercel's nameservers, you will need to add `MX` records to continue receiving email. To learn how to add `MX` records, see
-[Why am I no longer receiving email after adding my domain to Vercel?](/kb/guide/why-has-email-stopped-working)
+[troubleshooting email delivery](/docs/domains/managing-dns-records#troubleshooting-email-delivery)
 
 ### Purchasing a domain through Vercel
 
@@ -137,7 +136,9 @@ If verification is needed, you will receive an email with instructions from Verc
 
 ### Emoji and ASCII support
 
-You will need to convert the domain to [punycode](https://www.punycoder.com) in order to add it to your project. For example, a user looking to add a domain such as `jérémie.fr` can do so in the form of `xn--jrmie-bsab.fr`.
+To use a custom domain containing Unicode characters, such as accented letters or emoji, convert it to [Punycode](https://www.punycoder.com) before adding it to Vercel. Punycode represents Unicode domain names using ASCII characters.
+
+If Vercel reports that the domain is not a fully qualified domain name, use the converted value in your project's [Domains settings](/docs/domains/working-with-domains/add-a-domain). For example, add `jérémie.fr` as `xn--jrmie-bsab.fr`.
 
 ### Unable to transfer-in a domain
 
@@ -170,7 +171,7 @@ The following table shows errors that can be encountered when adding a domain to
 | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `This team has already registered this domain`                                              | The domain you are trying to add is already connected to the team you have selected.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `You have already registered this domain`                                                   | The domain you are trying to add is already connected to the Personal Account you have selected.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `The domain mydomain.com is not available` or `Another Vercel account is using this domain` | This domain is already linked to another Vercel account or team. **If you have access to that account:** Transfer the domain to your current account via the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard) by following [the working with domains guide](/docs/domains/working-with-domains/transfer-your-domain). **If you own the domain but not the other account:** Use the **Connect External** option on the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard). You'll receive a TXT record to add to your DNS to verify ownership. Once verified, the domain will automatically transfer to your account. |
+| `The domain mydomain.com is not available` or `Another Vercel account is using this domain` | This domain is already linked to another Vercel account or team. <br /><br />**If you have access to that account:** Transfer the domain to your current account via the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard) by following [the working with domains guide](/docs/domains/working-with-domains/transfer-your-domain). <br /><br />**If you own the domain but not the other account:** Use the **Connect External** option on the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard). You'll receive a TXT record to add to your DNS to verify ownership. Once verified, the domain will automatically transfer to your account. |
 
 ## Common SSL certificate issues
 

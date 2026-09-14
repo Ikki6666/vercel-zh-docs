@@ -1,9 +1,9 @@
 ---
-title: Bring Your Own Key (BYOK)
+title: Bring Your Own Key (BYOK) to AI Gateway
 product: vercel
 url: /docs/ai-gateway/authentication-and-byok/byok
 canonical_url: "https://vercel.com/docs/ai-gateway/authentication-and-byok/byok"
-last_updated: 2026-07-31
+last_updated: 2026-09-08
 type: how-to
 prerequisites:
   - /docs/ai-gateway/authentication-and-byok
@@ -11,14 +11,14 @@ prerequisites:
 related:
   - /docs/ai-gateway/pricing
   - /docs/ai-gateway/observability-and-spend/budgets
+  - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
   - /docs/ai-gateway/security-and-compliance/zdr
-  - /docs/ai-gateway/security-and-compliance/regional-inference
-summary: Learn how to configure your own provider keys with the AI Gateway.
+summary: Learn how to configure your own provider keys with AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Bring Your Own Key (BYOK)
+# Bring Your Own Key (BYOK) to AI Gateway
 
 Using your own credentials with an external AI provider allows AI Gateway to authenticate requests on your behalf with [no added markup](/docs/ai-gateway/pricing#bring-your-own-key-byok).
 This approach is useful for using credits provided by the AI provider or executing AI queries that access private cloud data.
@@ -30,17 +30,17 @@ If a query using your credentials fails, AI Gateway will retry the query with it
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How I use OpenCode with Vercel AI Gateway to build features fast](https://vercel.com/kb/guide/how-i-use-opencode-with-vercel-ai-gateway-to-build-features-fast?from=related) — How to route different AI models to different coding tasks automatically, cutting token costs by ~70% without losing qua
-- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router?from=related) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
-- [AI Gateway](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway?from=related)
-- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced?from=related) — Configure provider options, model fallbacks, BYOK credentials, and prompt caching.
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [Zero Data Retention](https://vercel.com/docs/ai-gateway/security-and-compliance/zdr?from=related) — Learn about zero data retention policies and how to enforce ZDR on a per-request basis with AI Gateway.
-- [Disallow Prompt Training](https://vercel.com/docs/ai-gateway/security-and-compliance/disallow-prompt-training?from=related) — Learn how to prevent AI providers from using your prompts and responses for model training through AI Gateway.
-- [Model Allowlist](https://vercel.com/docs/ai-gateway/security-and-compliance/model-allowlist?from=related) — Restrict which AI models your team can use through AI Gateway. Available on Pro and Enterprise.
+- [10x more capacity for Laguna S 2.1 on AI Gateway](https://vercel.com/changelog/10x-more-capacity-for-laguna-s-2-1-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related)
+- [Claude Sonnet 5 now available on Vercel AI Gateway](https://vercel.com/changelog/claude-sonnet-5-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related)
+- [DeepSeek V4.1 Flash now available on AI Gateway](https://vercel.com/changelog/deepseek-v4-1-flash-now-available-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related)
+- [DeepSeek V4 Flash now runs updated weights on AI Gateway](https://vercel.com/changelog/deepseek-v4-flash-now-runs-updated-weights-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related)
+- [DeepSeek V4 Pro now runs updated weights on AI Gateway](https://vercel.com/changelog/deepseek-v4-pro-now-runs-updated-weights-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related)
+- [How I use OpenCode with Vercel AI Gateway to build features fast](https://vercel.com/kb/guide/how-i-use-opencode-with-vercel-ai-gateway-to-build-features-fast?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related) — How to route different AI models to different coding tasks automatically, cutting token costs by ~70% without losing qua
+- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
+- [Using TanStack AI with Vercel AI Gateway](https://vercel.com/kb/guide/tanstack-ai-vercel-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related) — Connect TanStack AI to Vercel AI Gateway with the @tanstack/ai-vercel-gateway adapter to stream chat, route across provi
+- [AI SDK with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
 
-Full cross-link map for this page: [/docs/ai-gateway/authentication-and-byok/byok.graph.md](/docs/ai-gateway/authentication-and-byok/byok.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/authentication-and-byok/byok.graph.md](/docs/ai-gateway/authentication-and-byok/byok.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fauthentication-and-byok%2Fbyok&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Integrating credentials like this with AI Gateway is sometimes referred to as **Bring-Your-Own-Key**, or **BYOK**. In the Vercel dashboard this feature is found in the **AI Gateway section in the sidebar** under the **Bring Your Own Key (BYOK)** section in the sidebar.
@@ -76,23 +76,317 @@ In addition to configuring credentials in the dashboard, you can pass provider c
 
 When request-scoped BYOK credentials are provided, AI Gateway doesn't consider any cached BYOK credentials configured in the dashboard for that request. Requests may still fall back to system credentials if the provided credentials fail.
 
-### AI SDK usage
+### Request examples
 
-```typescript
-import type { GatewayProviderOptions } from '@ai-sdk/gateway';
+The cURL examples use `jq` to encode the provider key in JSON.
+
+These examples use AI SDK 7 and the AI SDK for Python beta. Set `AI_GATEWAY_API_KEY` before running them. See [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for setup, request fields, and response handling.
+
+#### AI SDK
+
+#### TypeScript
+
+See the [AI SDK BYOK reference](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway#bring-your-own-key-byok) for SDK configuration and usage.
+
+```typescript filename="byok.ts"
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-opus-5',
-  prompt: 'Hello, world!',
+  model: 'anthropic/claude-sonnet-5',
+  prompt: 'Explain quantum computing in two sentences.',
   providerOptions: {
     gateway: {
       byok: {
-        anthropic: [{ apiKey: process.env.ANTHROPIC_API_KEY }],
+        anthropic: [
+          {
+            apiKey: process.env.ANTHROPIC_API_KEY!,
+          },
+        ],
       },
-    } satisfies GatewayProviderOptions,
+    },
   },
 });
+
+console.log(text);
+```
+
+#### Python (beta)
+
+```python filename="byok_ai.py"
+import asyncio
+import os
+import ai
+
+async def main():
+    model = ai.get_model("anthropic/claude-sonnet-5")
+    messages = [ai.user_message("Explain quantum computing in two sentences.")]
+    params = ai.InferenceRequestParams(
+        extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}}
+    )
+    async with ai.stream(model, messages, params=params) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
+
+asyncio.run(main())
+```
+
+#### Chat Completions
+
+#### TypeScript
+
+```typescript filename="byok-chat.ts"
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.chat.completions.create({
+  model: 'anthropic/claude-sonnet-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  // AI Gateway extension fields are not included in the upstream SDK types.
+  ...{
+    providerOptions: {
+      gateway: {
+        byok: {
+          anthropic: [
+            {
+              apiKey: process.env.ANTHROPIC_API_KEY!,
+            },
+          ],
+        },
+      },
+    },
+  },
+});
+
+console.log(response.choices[0]?.message.content);
+```
+
+#### Python
+
+```python filename="byok_chat.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.chat.completions.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}},
+)
+
+print(response.choices[0].message.content)
+```
+
+#### cURL
+
+```bash filename="byok-chat.sh"
+jq -n '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "providerOptions": {
+    "gateway": {
+      "byok": {
+        "anthropic": [
+          {
+            "apiKey": $ENV.ANTHROPIC_API_KEY
+          }
+        ]
+      }
+    }
+  }
+}' | curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data-binary @-
+```
+
+#### Messages API
+
+#### TypeScript
+
+```typescript filename="byok-messages.ts"
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh',
+});
+
+const response = await client.messages.create({
+  model: 'anthropic/claude-sonnet-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  max_tokens: 1024,
+  ...{
+    providerOptions: {
+      gateway: {
+        byok: {
+          anthropic: [
+            {
+              apiKey: process.env.ANTHROPIC_API_KEY!,
+            },
+          ],
+        },
+      },
+    },
+  },
+});
+
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
+}
+```
+
+#### Python
+
+```python filename="byok_messages.py"
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh",
+)
+
+response = client.messages.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    max_tokens=1024,
+    extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}},
+)
+
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="byok-messages.sh"
+jq -n '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "max_tokens": 1024,
+  "providerOptions": {
+    "gateway": {
+      "byok": {
+        "anthropic": [
+          {
+            "apiKey": $ENV.ANTHROPIC_API_KEY
+          }
+        ]
+      }
+    }
+  }
+}' | curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  --data-binary @-
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="byok-responses.ts"
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.responses.create({
+  model: 'anthropic/claude-sonnet-5',
+  input: 'Explain quantum computing in two sentences.',
+  ...{
+    providerOptions: {
+      gateway: {
+        byok: {
+          anthropic: [
+            {
+              apiKey: process.env.ANTHROPIC_API_KEY!,
+            },
+          ],
+        },
+      },
+    },
+  },
+});
+
+console.log(response.output_text);
+```
+
+#### Python
+
+```python filename="byok_responses.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.responses.create(
+    model="anthropic/claude-sonnet-5",
+    input="Explain quantum computing in two sentences.",
+    extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}},
+)
+
+print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="byok-responses.sh"
+jq -n '{
+  "model": "anthropic/claude-sonnet-5",
+  "input": "Explain quantum computing in two sentences.",
+  "providerOptions": {
+    "gateway": {
+      "byok": {
+        "anthropic": [
+          {
+            "apiKey": $ENV.ANTHROPIC_API_KEY
+          }
+        ]
+      }
+    }
+  }
+}' | curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data-binary @-
 ```
 
 ### Credential structure by provider
