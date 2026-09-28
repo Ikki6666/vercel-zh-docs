@@ -1,20 +1,20 @@
 ---
-title: Tool Calling
+title: OpenAI Responses Tool Calling with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/responses/tool-calling
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/tool-calling"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/responses
   - /docs/ai-gateway/sdks-and-apis
 related:
   []
-summary: Define tools the model can call with the OpenAI Responses API.
+summary: Define tools the model can call with the OpenAI Responses API through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Tool Calling
+# OpenAI Responses Tool Calling with AI Gateway
 
 Define tools with JSON Schema parameters. The model can call them, and you can feed the results back in a follow-up request:
 
@@ -24,52 +24,17 @@ Define tools with JSON Schema parameters. The model can call them, and you can f
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Tool Calling](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/tool-calling?from=related) — Define tools the model can call using the OpenResponses API.
-- [Tool Calling](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/tool-calling?from=related) — Use function calling with the Anthropic Messages API to allow models to call tools and functions.
-- [Tool Calling](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/tool-calling?from=related) — Use function calling with the Chat Completions API to enable models to call tools and functions through AI Gateway.
-- [Call Tools](https://ai-sdk.dev/cookbook/node/call-tools?from=related)
-- [Tools](https://ai-sdk.dev/docs/foundations/tools?from=related)
-- [OpenAI](https://ai-sdk.dev/providers/ai-sdk-providers/openai?from=related)
-- [What is an LLM Tool?](https://vercel.com/kb/guide/what-is-an-llm-tool?from=related) — Learn what tools are, how tool calling works, and how you can use them to build agents.
-- [REST API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/rest-api?from=related) — Use the AI Gateway API directly without client libraries using curl and fetch.
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/structured-outputs?from=related) — Constrain OpenResponses API output to a JSON schema so every response parses.
+- [OpenResponses Tool Calling with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/tool-calling?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Ftool-calling&source_site=vercel-docs&relationship=related) — Define tools the model can call using the OpenResponses API through AI Gateway.
+- [Tools](https://ai-sdk.dev/docs/foundations/tools?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Ftool-calling&source_site=vercel-docs&relationship=related)
+- [AI Gateway Tool Use and Function Calling](https://vercel.com/docs/ai-gateway/inputs-and-tools/tool-use?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Ftool-calling&source_site=vercel-docs&relationship=related) — Connect AI Gateway models to application tools with AI SDK 7, Python, Chat Completions, Messages, and Responses examples
+- [OpenAI Chat Completions Tool Calling with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/tool-calling?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Ftool-calling&source_site=vercel-docs&relationship=related) — Use function calling with the Chat Completions API to enable models to call tools and functions through AI Gateway.
+- [Anthropic Messages Tool Calling with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/tool-calling?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Ftool-calling&source_site=vercel-docs&relationship=related) — Use function calling with the Anthropic Messages API to allow models to call tools and functions through AI Gateway.
+- [OpenResponses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Ftool-calling&source_site=vercel-docs&relationship=related) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
 
-Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/responses/tool-calling.graph.md](/docs/ai-gateway/sdks-and-apis/responses/tool-calling.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/responses/tool-calling.graph.md](/docs/ai-gateway/sdks-and-apis/responses/tool-calling.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Ftool-calling&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-#### \['cURL'
-
-```bash filename="tool-calls.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "openai/gpt-5.6-sol",
-    "input": "What is the weather in San Francisco?",
-    "tools": [
-      {
-        "type": "function",
-        "name": "get_weather",
-        "description": "Get the current weather for a location",
-        "strict": true,
-        "parameters": {
-          "type": "object",
-          "properties": {
-            "location": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "location"
-          ],
-          "additionalProperties": false
-        }
-      }
-    ]
-  }'
-```
-
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="tools.ts"
 import OpenAI from 'openai';
@@ -80,7 +45,7 @@ const client = new OpenAI({
 });
 
 const response = await client.responses.create({
-  model: 'openai/gpt-5.6-sol',
+  model: 'openai/gpt-6-astra',
   input: 'What is the weather in San Francisco?',
   tools: [
     {
@@ -108,7 +73,7 @@ for (const item of response.output) {
 }
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="tools.py"
 import os
@@ -121,7 +86,7 @@ client = OpenAI(
 )
 
 response = client.responses.create(
-    model='openai/gpt-5.6-sol',
+    model='openai/gpt-6-astra',
     input='What is the weather in San Francisco?',
     tools=[
         {
@@ -146,16 +111,114 @@ for item in response.output:
         print(f'Call: {item.name}({item.arguments})')
 ```
 
+#### cURL
+
+```bash filename="tool-calls.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-6-astra",
+    "input": "What is the weather in San Francisco?",
+    "tools": [
+      {
+        "type": "function",
+        "name": "get_weather",
+        "description": "Get the current weather for a location",
+        "strict": true,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "location"
+          ],
+          "additionalProperties": false
+        }
+      }
+    ]
+  }'
+```
+
 To continue the conversation with tool results, include the function call and its output in the next request's `input` array:
 
-#### \['cURL'
+#### TypeScript
+
+```typescript
+const functionCall = response.output.find(
+  (item) => item.type === 'function_call',
+);
+
+const followup = await client.responses.create({
+  model: 'openai/gpt-6-astra',
+  input: [
+    { role: 'user', content: 'What is the weather in San Francisco?' },
+    {
+      type: 'function_call',
+      id: functionCall.id,
+      call_id: functionCall.call_id,
+      name: functionCall.name,
+      arguments: functionCall.arguments,
+    },
+    {
+      type: 'function_call_output',
+      call_id: functionCall.call_id,
+      output: JSON.stringify({ temperature: 68, condition: 'Sunny' }),
+    },
+  ],
+  tools: [
+    /* same tools as above */
+  ],
+});
+
+console.log(followup.output_text);
+```
+
+#### Python
+
+```python
+import json
+
+function_call = next(
+    item for item in response.output if item.type == 'function_call'
+)
+
+followup = client.responses.create(
+    model='openai/gpt-6-astra',
+    input=[
+        {'role': 'user', 'content': 'What is the weather in San Francisco?'},
+        {
+            'type': 'function_call',
+            'id': function_call.id,
+            'call_id': function_call.call_id,
+            'name': function_call.name,
+            'arguments': function_call.arguments,
+        },
+        {
+            'type': 'function_call_output',
+            'call_id': function_call.call_id,
+            'output': json.dumps({'temperature': 68, 'condition': 'Sunny'}),
+        },
+    ],
+    tools=[
+        # same tools as above
+    ],
+)
+
+print(followup.output_text)
+```
+
+#### cURL
 
 ```bash filename="tool-followup.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
   -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "openai/gpt-5.6-sol",
+    "model": "openai/gpt-6-astra",
     "input": [
       { "role": "user", "content": "What is the weather in San Francisco?" },
       {
@@ -185,72 +248,6 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
       }
     ]
   }'
-```
-
-#### 'TypeScript'
-
-```typescript
-const functionCall = response.output.find(
-  (item) => item.type === 'function_call',
-);
-
-const followup = await client.responses.create({
-  model: 'openai/gpt-5.6-sol',
-  input: [
-    { role: 'user', content: 'What is the weather in San Francisco?' },
-    {
-      type: 'function_call',
-      id: functionCall.id,
-      call_id: functionCall.call_id,
-      name: functionCall.name,
-      arguments: functionCall.arguments,
-    },
-    {
-      type: 'function_call_output',
-      call_id: functionCall.call_id,
-      output: JSON.stringify({ temperature: 68, condition: 'Sunny' }),
-    },
-  ],
-  tools: [
-    /* same tools as above */
-  ],
-});
-
-console.log(followup.output_text);
-```
-
-#### 'Python']
-
-```python
-import json
-
-function_call = next(
-    item for item in response.output if item.type == 'function_call'
-)
-
-followup = client.responses.create(
-    model='openai/gpt-5.6-sol',
-    input=[
-        {'role': 'user', 'content': 'What is the weather in San Francisco?'},
-        {
-            'type': 'function_call',
-            'id': function_call.id,
-            'call_id': function_call.call_id,
-            'name': function_call.name,
-            'arguments': function_call.arguments,
-        },
-        {
-            'type': 'function_call_output',
-            'call_id': function_call.call_id,
-            'output': json.dumps({'temperature': 68, 'condition': 'Sunny'}),
-        },
-    ],
-    tools=[
-        # same tools as above
-    ],
-)
-
-print(followup.output_text)
 ```
 
 

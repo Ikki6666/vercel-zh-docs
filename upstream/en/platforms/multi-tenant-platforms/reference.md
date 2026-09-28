@@ -3,7 +3,7 @@ title: Multi-tenant Reference
 product: vercel
 url: /docs/platforms/multi-tenant-platforms/reference
 canonical_url: "https://vercel.com/docs/platforms/multi-tenant-platforms/reference"
-last_updated: 2026-07-28
+last_updated: 2026-09-03
 type: reference
 prerequisites:
   - /docs/platforms/multi-tenant-platforms
@@ -11,9 +11,9 @@ prerequisites:
 related:
   - /docs/platforms/platform-elements/blocks/custom-domain
   - /docs/platforms/platform-elements/actions/add-custom-domain
-  - /docs/rest-api/domains/add-an-existing-domain-to-the-vercel-platform
-  - /docs/rest-api/domains/get-information-for-a-single-domain
-  - /docs/rest-api/domains/get-a-domain-s-configuration
+  - /docs/rest-api/projects/add-a-domain-to-a-project
+  - /docs/rest-api/projects/verify-project-domain
+  - /docs/rest-api/projects/get-a-project-domain
 summary: Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -22,30 +22,41 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Custom blocks
 
+Use the [Custom Domain block](/docs/platforms/platform-elements/blocks/custom-domain) and [Add Custom Domain action](/docs/platforms/platform-elements/actions/add-custom-domain) to build domain-management flows with the Vercel API.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
-- [How do I add a custom domain to my Vercel project?](https://vercel.com/kb/guide/how-do-i-add-a-custom-domain-to-my-vercel-project?from=related) — Learn how to add a custom domain to your Vercel project.
-- [Configuring Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
-- [Quickstart](https://vercel.com/docs/platforms/multi-tenant-platforms/quickstart?from=related) — Set up wildcard domains, custom domains, domain verification, and redirects for a multi-tenant application on Vercel.
-- [Limits](https://vercel.com/docs/platforms/multi-tenant-platforms/limits?from=related) — Understand the limits and features available for Vercel for Platforms.
-- [Reference](https://vercel.com/docs/platforms/multi-project-platforms/reference?from=related) — API reference, error codes, troubleshooting, and FAQ for multi-project platforms on Vercel.
-- [Concepts](https://vercel.com/docs/platforms/multi-tenant-platforms/concepts?from=related) — Understand tenants, domains, routing, and architecture for building multi-tenant applications on Vercel for Platforms.
+- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Freference&source_site=vercel-docs&relationship=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
+- [Configuring Custom Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Freference&source_site=vercel-docs&relationship=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
+- [Multi-Tenant Platform Quickstart](https://vercel.com/docs/platforms/multi-tenant-platforms/quickstart?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Freference&source_site=vercel-docs&relationship=related) — Set up wildcard domains, custom domains, domain verification, and redirects for a multi-tenant application on Vercel.
+- [Multi-Project Platforms Reference](https://vercel.com/docs/platforms/multi-project-platforms/reference?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Freference&source_site=vercel-docs&relationship=related) — API reference, error codes, troubleshooting, and FAQ for multi-project platforms on Vercel.
+- [Multi-tenant Limits](https://vercel.com/docs/platforms/multi-tenant-platforms/limits?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Freference&source_site=vercel-docs&relationship=related) — Understand the limits and features available for Vercel for Platforms.
+- [Working with domains](https://vercel.com/docs/domains/working-with-domains?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Freference&source_site=vercel-docs&relationship=related) — Learn how domains work and the options Vercel provides for managing them.
 
-Full cross-link map for this page: [/docs/platforms/multi-tenant-platforms/reference.graph.md](/docs/platforms/multi-tenant-platforms/reference.graph.md)
+Full cross-link map for this page: [/docs/platforms/multi-tenant-platforms/reference.graph.md](/docs/platforms/multi-tenant-platforms/reference.graph.md?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Freference&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-Start with our Custom [Blocks](/docs/platforms/platform-elements/blocks/custom-domain) and [Actions](/docs/platforms/platform-elements/actions/add-custom-domain) that speed up your usage of the Vercel API.
+## Manage tenant domains with project domain APIs
 
-## Domain API reference
+In a multi-tenant platform, one Vercel project serves many tenants. Add each tenant hostname as a project domain so it follows the project's current production deployment.
 
-### Add domain
+The examples use `teamId` to scope requests to a team. You can use `slug` instead to identify the team by its slug.
 
-Add a domain to your Vercel project programmatically using the [create or transfer domain API](/docs/rest-api/domains/add-an-existing-domain-to-the-vercel-platform).
+Use the project domain APIs in this order:
+
+1. Call `addProjectDomain` to add the tenant domain to the project.
+2. If the response returns `verified: false`, give the tenant one of the returned `verification` challenges.
+3. After the tenant configures the DNS record, call `verifyProjectDomain`.
+4. Call `getProjectDomain` or `getProjectDomains` to check the domain status.
+5. Call `removeProjectDomain` to detach the domain from the project.
+
+### Add a domain to a project
+
+Use `vercel.projects.addProjectDomain` to assign a tenant domain to the shared Vercel project. See the [Add a Domain to a Project API](/docs/rest-api/projects/add-a-domain-to-a-project).
 
 **SDK**:
 
@@ -57,13 +68,11 @@ const vercel = new Vercel({
 });
 
 async function run() {
-  const result = await vercel.domains.createOrTransferDomain({
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
+  const result = await vercel.projects.addProjectDomain({
+    idOrName: 'your_project_id_or_name_here',
+    teamId: 'your_team_id_here',
     requestBody: {
-      name: 'example.com',
-      method: 'add',
-      token: 'fdhfr820ad#@FAdlj$$',
+      name: 'your_domain_here',
     },
   });
 
@@ -73,35 +82,9 @@ async function run() {
 run();
 ```
 
-### Get domain status
+### Verify a project domain
 
-Check domain configuration and verification status using the [check domain API](/docs/rest-api/domains/get-information-for-a-single-domain).
-
-**SDK**:
-
-```ts filename="get-domain-status.ts"
-import { Vercel } from '@vercel/sdk';
-
-const vercel = new Vercel({
-  bearerToken: '<YOUR_BEARER_TOKEN_HERE>',
-});
-
-async function run() {
-  const result = await vercel.domains.getDomain({
-    domain: 'example.com',
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
-  });
-
-  console.log(result);
-}
-
-run();
-```
-
-### Verify domain
-
-Trigger domain ownership verification using the [domain configuration API](/docs/rest-api/domains/get-a-domain-s-configuration).
+After the tenant completes a DNS verification challenge, use `vercel.projects.verifyProjectDomain` to verify the domain. See the [Verify Project Domain API](/docs/rest-api/projects/verify-project-domain).
 
 **SDK**:
 
@@ -113,10 +96,10 @@ const vercel = new Vercel({
 });
 
 async function run() {
-  const result = await vercel.domains.getDomainConfig({
-    domain: 'example.com',
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
+  const result = await vercel.projects.verifyProjectDomain({
+    idOrName: 'your_project_id_or_name_here',
+    domain: 'your_domain_here',
+    teamId: 'your_team_id_here',
   });
 
   console.log(result);
@@ -125,9 +108,61 @@ async function run() {
 run();
 ```
 
-### Remove domain
+### Get a project domain
 
-Remove a domain from your project using the [remove domain API](/docs/rest-api/domains/remove-a-domain-by-name).
+Use `vercel.projects.getProjectDomain` to retrieve one project domain and its verification status. See the [Get a Project Domain API](/docs/rest-api/projects/get-a-project-domain).
+
+**SDK**:
+
+```ts filename="get-project-domain.ts"
+import { Vercel } from '@vercel/sdk';
+
+const vercel = new Vercel({
+  bearerToken: '<YOUR_BEARER_TOKEN_HERE>',
+});
+
+async function run() {
+  const result = await vercel.projects.getProjectDomain({
+    idOrName: 'your_project_id_or_name_here',
+    domain: 'your_domain_here',
+    teamId: 'your_team_id_here',
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### List project domains
+
+Use `vercel.projects.getProjectDomains` to retrieve the domains assigned to a project. See the [Retrieve Project Domains API](/docs/rest-api/projects/retrieve-project-domains-by-project-by-id-or-name).
+
+**SDK**:
+
+```ts filename="list-domains.ts"
+import { Vercel } from '@vercel/sdk';
+
+const vercel = new Vercel({
+  bearerToken: '<YOUR_BEARER_TOKEN_HERE>',
+});
+
+async function run() {
+  const result = await vercel.projects.getProjectDomains({
+    idOrName: 'your_project_id_or_name_here',
+    limit: 20,
+    teamId: 'your_team_id_here',
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Remove a domain from a project
+
+Use `vercel.projects.removeProjectDomain` to detach a domain from a project. This operation does not remove account-level domain ownership. See the [Remove a Domain from a Project API](/docs/rest-api/projects/remove-a-domain-from-a-project).
 
 **SDK**:
 
@@ -139,10 +174,10 @@ const vercel = new Vercel({
 });
 
 async function run() {
-  const result = await vercel.domains.deleteDomain({
-    domain: 'example.com',
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
+  const result = await vercel.projects.removeProjectDomain({
+    idOrName: 'your_project_id_or_name_here',
+    domain: 'your_domain_here',
+    teamId: 'your_team_id_here',
   });
 
   console.log(result);
@@ -151,33 +186,14 @@ async function run() {
 run();
 ```
 
-### List domains
+### When to use the Domains API or Aliases API
 
-Get all domains for a project using the [list domains API](/docs/rest-api/domains/list-all-the-domains).
+Project domain APIs cover the standard multi-tenant flow. Use another API when you need different ownership or routing behavior:
 
-**REST API**:
-
-```ts filename="list-domains.ts"
-import { Vercel } from '@vercel/sdk';
-
-const vercel = new Vercel({
-  bearerToken: '<YOUR_BEARER_TOKEN_HERE>',
-});
-
-async function run() {
-  const result = await vercel.domains.getDomains({
-    limit: 20,
-    since: 1609499532000,
-    until: 1612264332000,
-    teamId: 'team_1a2b3c4d5e6f7g8h9i0j1k2l',
-    slug: 'my-team-url-slug',
-  });
-
-  console.log(result);
-}
-
-run();
-```
+| API                                                                                 | Use it when                                                                                                                            |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [Domains API](/docs/rest-api/domains/add-an-existing-domain-to-the-vercel-platform) | You need to manage account-level domain ownership separately from a project. You do not need this step before adding a project domain. |
+| [Aliases API](/docs/rest-api/aliases/assign-an-alias)                               | The domain should remain pinned to one deployment instead of following the project's current production deployment.                    |
 
 ### Error codes
 

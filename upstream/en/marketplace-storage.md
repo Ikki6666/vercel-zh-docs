@@ -3,7 +3,7 @@ title: Storage on Vercel Marketplace
 product: vercel
 url: /docs/marketplace-storage
 canonical_url: "https://vercel.com/docs/marketplace-storage"
-last_updated: 2026-07-29
+last_updated: 2026-09-17
 type: conceptual
 prerequisites:
   []
@@ -21,28 +21,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **🔒 Permissions Required**: Marketplace Storage Integrations
 
+The [Vercel Marketplace](https://vercel.com/marketplace?category=storage) provides integrations with different storage providers to provision databases and data stores directly from your Vercel dashboard.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud?from=related) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
-- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [Overview](https://vercel.com/docs/storage?from=related) — Store large files and global configuration with Vercel's storage products.
-- [Databases](https://v0.app/docs/databases?from=related) — Build full-stack applications with v0's database integrations.
-- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
-- [Marketplace Vercel API](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/vercel?from=related) — Learn about marketplace vercel api on Vercel.
-- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
+- [Native Marketplace integrations now support custom environments](https://vercel.com/changelog/custom-environments-support-for-marketplace-integrations?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related)
+- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
+- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
+- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
+- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
+- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
+- [Introducing the Vercel Marketplace](https://vercel.com/blog/introducing-the-vercel-marketplace?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related)
+- [Introducing storage on Vercel](https://vercel.com/blog/vercel-storage?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related)
+- [Supercharge your Vercel Projects with Integrations](https://vercel.com/blog/integrations-marketplace?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related)
+- [Vercel Storage overview](https://vercel.com/docs/storage?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — Store files with Vercel Blob, runtime configuration with Global Config, and application data with Marketplace databases.
+- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
 
-Full cross-link map for this page: [/docs/marketplace-storage.graph.md](/docs/marketplace-storage.graph.md)
+Full cross-link map for this page: [/docs/marketplace-storage.graph.md](/docs/marketplace-storage.graph.md?from=related&source_path=%2Fdocs%2Fmarketplace-storage&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-The [Vercel Marketplace](https://vercel.com/marketplace?category=storage) provides integrations with different storage providers to provision databases and data stores directly from your Vercel dashboard.
 
 - For Postgres, you can use providers like Neon, Supabase, or AWS Aurora Postgres.
 - For KV (key-value stores), you can use Upstash Redis.
@@ -92,6 +93,52 @@ Run `vercel install <integration-name> --help` to see the available products, me
 Once connected, the integration automatically adds environment variables to your project. You can then use these variables in your application code to connect to your database.
 
 For detailed steps, see [Add a Native Integration](/docs/integrations/install-an-integration/product-integration).
+
+## Use a Marketplace resource in a Custom Environment
+
+Vercel can scope a Native Marketplace resource's project environment variables to an exact Custom Environment. For example, a `staging` deployment can use a staging database without adding the database variables to Production, Preview, or Development in Project Settings.
+
+### Connect the resource
+
+1. Open the project in the Vercel dashboard.
+2. Select **Settings**, and then select [**Environments**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fenvironments\&title=Go+to+Environments+settings). Create the Custom Environment if the project does not have one.
+3. Open **Integrations**, select **Manage** for the integration, and open the resource.
+4. Select **Projects**, and then select **Connect Project**.
+5. Select the project. Under **Environments**, clear all selected built-in environments, including Production and Preview. Then select only the Custom Environment, such as `staging`. Select a built-in environment only when that environment must also use the resource.
+6. Select **Connect Project**.
+
+You can also connect a resource from the CLI. `vercel integration add` (also available as `vercel install`) and `vercel integration resource connect` accept a Custom Environment slug or stable ID. When you pass a slug, the CLI resolves it to the stable ID before it sends the connection request. `vercel integration add` resolves the environment against the linked project. `vercel integration resource connect` resolves the environment against the project argument, or the linked project if you omit the argument.
+
+```bash filename="terminal"
+# Provision a resource and connect it to staging in the linked project
+vercel integration add neon --environment staging
+
+# Connect an existing resource to staging in the linked project
+vercel integration resource connect my-database --environment staging
+```
+
+Repeat `--environment` to connect more environments. If you omit the option, the commands connect `production`, `preview`, and `development`. The default does not include Custom Environments.
+
+### Deploy and verify isolation
+
+1. Open **Project Settings**, and then select [**Environment Variables**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fenvironment-variables\&title=Go+to+Environment+Variables). Confirm that the integration variables have the exact Custom Environment scope.
+2. Deploy to the Custom Environment. For a Custom Environment with the `staging` slug, run `vercel deploy --target=staging`.
+3. Verify that the deployment can connect to the resource. Do not print secret values.
+4. Create a deployment in an environment that you did not select. When no Preview Deployment Action fallback applies, confirm that the environment variables provided by the resource are not available.
+
+> **💡 Note:** A Preview Deployment Action can use a resource’s Preview connection if that
+> resource has no connection for the deployment’s Custom Environment. In that
+> case, the action can add the environment variables from the Preview
+> connection to the deployment even though the Custom Environment is not
+> selected on that connection.
+
+For a Custom Environment, Vercel first uses the provider's Preview secret value. If the provider did not set a Preview value, Vercel uses the default secret value.
+
+Existing deployments do not get new or changed variables. Create a new deployment after you connect a resource, change the environment scope, or rotate a secret.
+
+### Change or disconnect the scope
+
+Open the resource's **Projects** section to change the selected environments. Removing one environment keeps the other selected environments connected. Create a new deployment after each change.
 
 ### Managing storage integrations
 

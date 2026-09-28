@@ -1,10 +1,10 @@
 ---
-title: Cohere Rerank API
+title: Cohere Rerank API with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/cohere-rerank
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/cohere-rerank"
-last_updated: 2026-07-07
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway
@@ -16,7 +16,7 @@ summary: Use the Cohere-compatible Rerank API with AI Gateway to reorder documen
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Cohere Rerank API
+# Cohere Rerank API with AI Gateway
 
 AI Gateway provides Cohere-compatible Rerank API endpoints, so you can use the [Cohere SDK](https://docs.cohere.com/reference/about) or plain HTTP requests to rerank documents through a unified gateway with only a URL change.
 
@@ -26,17 +26,14 @@ AI Gateway provides Cohere-compatible Rerank API endpoints, so you can use the [
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Reranking](https://ai-sdk.dev/docs/ai-sdk-core/reranking?from=related)
-- [rerank](https://ai-sdk.dev/docs/reference/ai-sdk-core/rerank?from=related)
-- [Cohere](https://ai-sdk.dev/providers/ai-sdk-providers/cohere?from=related)
-- [Voyage AI](https://ai-sdk.dev/providers/ai-sdk-providers/voyage?from=related)
-- [Together.ai](https://ai-sdk.dev/providers/ai-sdk-providers/togetherai?from=related)
-- [Models & Providers](https://vercel.com/docs/ai-gateway/models-and-providers?from=related) — Work with models and providers in AI Gateway: provider routing and fallbacks, filtering, timeouts, caching, service tier
-- [Filtering, Ordering & Sorting](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering?from=related) — Control which providers handle your requests, in what order, and how they are ranked using order, only, and sort options
-- [Get virtual model config](https://vercel.com/docs/rest-api/api-ai-gateway/get-virtual-model-config?from=related)
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Reranking](https://ai-sdk.dev/docs/ai-sdk-core/reranking?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fcohere-rerank&source_site=vercel-docs&relationship=related)
+- [rerank](https://ai-sdk.dev/docs/reference/ai-sdk-core/rerank?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fcohere-rerank&source_site=vercel-docs&relationship=related)
+- [Cohere](https://ai-sdk.dev/providers/ai-sdk-providers/cohere?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fcohere-rerank&source_site=vercel-docs&relationship=related)
+- [Voyage AI](https://ai-sdk.dev/providers/ai-sdk-providers/voyage?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fcohere-rerank&source_site=vercel-docs&relationship=related)
+- [Together.ai](https://ai-sdk.dev/providers/ai-sdk-providers/togetherai?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fcohere-rerank&source_site=vercel-docs&relationship=related)
+- [AI Gateway Models and Providers](https://vercel.com/docs/ai-gateway/models-and-providers?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fcohere-rerank&source_site=vercel-docs&relationship=related) — Choose AI Gateway models and providers. Configure routing, fallbacks, timeouts, prompt caching, reasoning, and web searc
 
-Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/cohere-rerank.graph.md](/docs/ai-gateway/sdks-and-apis/cohere-rerank.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/cohere-rerank.graph.md](/docs/ai-gateway/sdks-and-apis/cohere-rerank.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fcohere-rerank&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Reranking reorders a list of documents by their relevance to a query. It is commonly used to improve results in retrieval-augmented generation (RAG) pipelines after an initial retrieval step. To see which models support reranking, use the **Reranking** filter on the [models page](/ai-gateway/models?capabilities=reranking).
@@ -111,24 +108,6 @@ The response contains a ranked list of results, ordered by relevance:
 
 ## Example request
 
-#### cURL
-
-```bash filename="rerank.sh"
-curl https://ai-gateway.vercel.sh/v2/rerank \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "cohere/rerank-v3.5",
-    "query": "What is the capital of the United States?",
-    "documents": [
-      "Carson City is the capital city of the American state of Nevada.",
-      "Washington, D.C. is the capital of the United States.",
-      "Capital punishment has existed in the United States since before it was a country."
-    ],
-    "top_n": 2
-  }'
-```
-
 #### TypeScript
 
 ```typescript filename="rerank.ts"
@@ -176,6 +155,24 @@ response = co.rerank(
 )
 
 print(response.results)
+```
+
+#### cURL
+
+```bash filename="rerank.sh"
+curl https://ai-gateway.vercel.sh/v2/rerank \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "cohere/rerank-v3.5",
+    "query": "What is the capital of the United States?",
+    "documents": [
+      "Carson City is the capital city of the American state of Nevada.",
+      "Washington, D.C. is the capital of the United States.",
+      "Capital punishment has existed in the United States since before it was a country."
+    ],
+    "top_n": 2
+  }'
 ```
 
 ## Object documents and `return_documents`

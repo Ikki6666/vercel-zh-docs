@@ -3,7 +3,7 @@ title: Routing Middleware API
 product: vercel
 url: /docs/routing-middleware/api
 canonical_url: "https://vercel.com/docs/routing-middleware/api"
-last_updated: 2026-07-15
+last_updated: 2026-08-20
 type: reference
 prerequisites:
   - /docs/routing-middleware
@@ -20,29 +20,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Routing Middleware file location and name
 
+The Routing Middleware file should be named `middleware.ts` and placed at the root of your project, at the same level as your `package.json` file. This is where Vercel will look for the Routing Middleware when processing requests.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Adding a response header](https://vercel.com/kb/guide/add-response-header?from=related) — Learn how to add a response header in your Middleware.
-- [Filtering query parameters](https://vercel.com/kb/guide/filter-query-parameters?from=related) — Learn how to filter query parameters in your Middleware.
-- [Modifying request headers](https://vercel.com/kb/guide/modify-request-headers?from=related) — Learn how to modify request headers in your Middleware.
-- [Rendering content based on device](https://vercel.com/kb/guide/rendering-content-based-on-device?from=related) — Learn how to render different content based on the user agent in your Middleware.
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [Version 15](https://nextjs.org/docs/app/guides/upgrading/version-15?from=related) — Upgrade your Next.js Application from Version 14 to 15.
-- [route.js](https://nextjs.org/docs/app/api-reference/file-conventions/route?from=related) — API reference for the route.js special file.
-- [Getting Started](https://vercel.com/docs/routing-middleware/getting-started?from=related) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
-- [Node.js](https://vercel.com/docs/functions/runtimes/node-js?from=related) — Learn how to use the Node.js runtime to create functions and deploy Node.js servers on Vercel.
-- [CDN Cache](https://vercel.com/docs/caching/cdn-cache?from=related) — Learn how Vercel's CDN cache stores your content across a global network to reduce latency and origin load.
-- [Request Headers](https://vercel.com/docs/headers/request-headers?from=related) — Learn about the request headers sent to each Vercel deployment and how to use them to process requests before sending a
-- [vercel.ts](https://vercel.com/docs/project-configuration/vercel-ts?from=related) — Define your Vercel configuration in vercel.ts with @vercel/config for type-safe routing and build settings.
+- [Adding a response header](https://vercel.com/kb/guide/add-response-header?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how to add a response header in your Middleware.
+- [Filtering query parameters](https://vercel.com/kb/guide/filter-query-parameters?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how to filter query parameters in your Middleware.
+- [Modifying request headers](https://vercel.com/kb/guide/modify-request-headers?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how to modify request headers in your Middleware.
+- [Rendering content based on device](https://vercel.com/kb/guide/rendering-content-based-on-device?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how to render different content based on the user agent in your Middleware.
+- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
+- [How to use Next.js as a backend for your frontend](https://nextjs.org/docs/app/guides/backend-for-frontend?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how to use Next.js as a backend framework
+- [route.js](https://nextjs.org/docs/app/api-reference/file-conventions/route?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — API reference for the route.js special file.
+- [Proxy](https://nextjs.org/docs/pages/api-reference/file-conventions/proxy?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how to use Proxy to run code before a request is completed.
+- [Vercel Edge Middleware: Dynamic at the speed of static (historical)](https://vercel.com/blog/vercel-edge-middleware-dynamic-at-the-speed-of-static?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related)
+- [Getting Started with Routing Middleware](https://vercel.com/docs/routing-middleware/getting-started?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
+- [Using the Node.js Runtime with Vercel Functions](https://vercel.com/docs/functions/runtimes/node-js?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Learn how to use the Node.js runtime to create functions and deploy Node.js servers on Vercel.
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=related) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
 
-Full cross-link map for this page: [/docs/routing-middleware/api.graph.md](/docs/routing-middleware/api.graph.md)
+Full cross-link map for this page: [/docs/routing-middleware/api.graph.md](/docs/routing-middleware/api.graph.md?from=related&source_path=%2Fdocs%2Frouting-middleware%2Fapi&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-The Routing Middleware file should be named  and placed at the root of your project, at the same level as your `package.json` file. This is where Vercel will look for the Routing Middleware when processing requests.
 
 The Routing Middleware must be a default export, with the function being named anything you like. For example, you can name it `router`, `middleware`, or any other name that makes sense for your application.
 
@@ -53,6 +53,14 @@ export default function middleware() {}
 To use a different name or directory, set [`proxy.entrypoint`](/docs/project-configuration/vercel-json#proxy) in `vercel.json`.
 
 > For \['nextjs', 'nextjs-app']:
+
+> **💡 Note:** **Next.js 16 users:** Next.js 16 renamed the middleware file from
+> `middleware.ts` to `proxy.ts` and changed the function export from
+> `middleware` to `proxy`. When using Next.js 16 or later, use `proxy.ts`
+> instead of `middleware.ts`. The proxy function runs on Node.js only (Edge
+> runtime is not supported). See the [Next.js proxy
+> documentation](https://nextjs.org/docs/app/api-reference/file-conventions/proxy)
+> for details.
 
 ## `config` object
 
@@ -69,6 +77,11 @@ To decide which route the Routing Middleware should be run on, you can use a cus
 If you configure your entrypoint with [`proxy`](/docs/project-configuration/vercel-json#proxy), set the matcher here or in `proxy.matcher`.
 
 > For \['nextjs']:
+
+> **💡 Note:** Routing Middleware run on **all** `/_next/data/` requests for
+> `getServerSideProps` and `getStaticProps` pages for the sake of consistency.
+> For more information see the [Next.js matcher
+> docs](https://nextjs.org/docs/advanced-features/middleware#matcher).
 
 #### Match a single path
 
@@ -294,6 +307,11 @@ The example below will:
 
 > For \["other"]:
 
+> **💡 Note:** `Response.json()` is a new addition to the `Response` object and has not yet
+> been added by the TypeScript team. This means that you will likely see a red
+> error line under `Response.json()` in your editor. You can ignore this error,
+> as it is a false positive.
+
 ```ts filename="middleware.ts" framework=nextjs
 import type { NextFetchEvent } from 'next/server';
 
@@ -472,6 +490,29 @@ You can access these helper methods with the `request` and `response` objects in
 > For \['other']:
 
 Add the `@vercel/functions` package to your project with:
+
+<CodeBlock>
+  <Code tab="pnpm">
+    ```bash
+    pnpm i @vercel/functions
+    ```
+  </Code>
+  <Code tab="yarn">
+    ```bash
+    yarn i @vercel/functions
+    ```
+  </Code>
+  <Code tab="npm">
+    ```bash
+    npm i @vercel/functions
+    ```
+  </Code>
+  <Code tab="bun">
+    ```bash
+    bun i @vercel/functions
+    ```
+  </Code>
+</CodeBlock>
 
 ### Geolocation
 
@@ -917,6 +958,29 @@ export function middleware(request) {
 ```
 
 > For \['other']:
+
+<CodeBlock>
+  <Code tab="pnpm">
+    ```bash
+    pnpm i @vercel/functions
+    ```
+  </Code>
+  <Code tab="yarn">
+    ```bash
+    yarn i @vercel/functions
+    ```
+  </Code>
+  <Code tab="npm">
+    ```bash
+    npm i @vercel/functions
+    ```
+  </Code>
+  <Code tab="bun">
+    ```bash
+    bun i @vercel/functions
+    ```
+  </Code>
+</CodeBlock>
 
 ```js filename="middleware.js" framework=other
 import { next } from '@vercel/functions';

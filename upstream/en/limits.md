@@ -3,7 +3,7 @@ title: Limits
 product: vercel
 url: /docs/limits
 canonical_url: "https://vercel.com/docs/limits"
-last_updated: 2026-08-03
+last_updated: 2026-09-16
 type: reference
 prerequisites:
   []
@@ -21,31 +21,32 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Request a limit increase
 
+You can raise many of the limits on this page. The process depends on your plan:
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Vercel Integration](https://v0.app/docs/vercel-integration?from=related) — How v0 and Vercel work in tandem.
-- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
-- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
-- [Troubleshooting Build Error: "Build step did not complete within the maximum of 45 minutes"](https://vercel.com/kb/guide/troubleshooting-build-error-build-step-did-not-complete-within-45-minutes?from=related) — Learn common reasons Vercel builds hit the 45-minute limit and how to reduce build times so your deployments stay fast a
-- [Why has my account or deployment been paused?](https://vercel.com/kb/guide/why-is-my-account-deployment-blocked?from=related) — Learn why a Vercel account or deployment gets paused, from budget and usage limits to policy violations, and how to resu
-- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
-- [Legacy Usage & Pricing](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related) — Learn about legacy usage and pricing for Vercel Functions.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Plans](https://vercel.com/docs/plans?from=related) — Learn about the different plans available on Vercel.
-- [Limits](https://vercel.com/docs/platforms/multi-tenant-platforms/limits?from=related) — Understand the limits and features available for Vercel for Platforms.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [Vercel Integration](https://v0.app/docs/vercel-integration?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — How v0 and Vercel work in tandem.
+- [CDN origin timeout increased to two minutes](https://vercel.com/changelog/cdn-origin-timeout-increased-to-two-minutes?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related)
+- [CLI deployment limits removed](https://vercel.com/changelog/cli-deployment-limits-removed?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related)
+- [Increased limit for projects per Git repo](https://vercel.com/changelog/increased-limit-for-projects-per-git-repo?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related)
+- [Vercel Sandbox now supports 10,000 concurrent sandboxes and 5,000 vCPUs per minute](https://vercel.com/changelog/vercel-sandbox-now-supports-10-000-concurrent-sandboxes-and-5-000-vcpus-per-minute?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related)
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
+- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
+- [Troubleshooting Build Error: "Build step did not complete within the maximum of 45 minutes"](https://vercel.com/kb/guide/troubleshooting-build-error-build-step-did-not-complete-within-45-minutes?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — Learn common reasons Vercel builds hit the 45-minute limit and how to reduce build times so your deployments stay fast a
+- [Why has my account or deployment been paused?](https://vercel.com/kb/guide/why-is-my-account-deployment-blocked?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — Learn why a Vercel account or deployment gets paused, from budget and usage limits to policy violations, and how to resu
+- [Vercel Pricing](https://vercel.com/pricing?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — Choose a Vercel plan and compare features and usage pricing.
+- [Configuring Maximum Duration for Vercel Functions](https://vercel.com/docs/functions/configuring-functions/duration?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=related) — Learn how to set the maximum duration of a Vercel Function.
 
-Full cross-link map for this page: [/docs/limits.graph.md](/docs/limits.graph.md)
+Full cross-link map for this page: [/docs/limits.graph.md](/docs/limits.graph.md?from=related&source_path=%2Fdocs%2Flimits&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-You can raise many of the limits on this page. The process depends on your plan:
-
 - **Enterprise**: Contact your Vercel account team to request a limit increase. Limits marked as **Custom** are set in your contract.
-- **Pro**: [Contact our support team](/help) to request a limit increase, or [talk to sales](/contact/sales) about Enterprise for custom limits.
+- **Pro**: [Talk to sales](/contact/sales) about Enterprise for custom limits.
 - **Hobby**: [Upgrade to Pro](/docs/plans/pro-plan) for higher limits.
 
 ## General limits
@@ -67,57 +68,7 @@ To prevent abuse of our platform, we apply the following limits to all accounts.
 | Cron Jobs (per project)                                                                   | [100\*](/docs/cron-jobs/usage-and-pricing)                                         | 100                                                                     | 100                                                             |
 | [Deploy Hooks](/docs/deploy-hooks) (per project)                                          | 5                                                                                  | 5                                                                       | 10                                                              |
 
-## Usage summary
-
-|                      | Hobby       | Pro         |
-| -------------------- | ----------- | ----------- |
-| Active CPU           | 4 CPU-hrs   | Usage-based |
-| Provisioned Memory   | 360 GB-hrs  | Usage-based |
-| Invocations          | 1 million   | Usage-based |
-| Fast Data Transfer   | 100 GB      | 1 TB        |
-| Fast Origin Transfer | Up to 10 GB | Usage-based |
-
-For Teams on the Pro plan, a monthly usage credit applies to billable resources. After applicable included allowances and credit, Vercel bills usage [on demand](/docs/limits#on-demand-resources-for-pro).
-
-## On-demand resources for Pro
-
-Pro includes a credit that you can use across billable resources and a pay-as-you-go model for additional consumption. Vercel automatically charges extra usage at the following rates:
-
-| Resource | Price | Included (Pro) |
-|----------|-------|----------------|
-| [Fast Data Transfer](/docs/pricing/regional-pricing) | Regional | First 1 TB |
-| [Function Invocations](/docs/functions/usage-and-pricing#invocations) | $0.60 per 1,000,000 Invocations | N/A |
-| [Fast Origin Transfer](/docs/pricing/regional-pricing) | Regional | N/A |
-| [Active CPU](/docs/functions/usage-and-pricing#active-cpu) | Starting at $0.128 per hour | N/A |
-| [Edge Requests](/docs/pricing/regional-pricing) | Regional | First 10,000,000 |
-| [Provisioned Memory](/docs/functions/usage-and-pricing#provisioned-memory) | Starting at $0.0106 per GB-hr | N/A |
-| [Build CPU Minutes](/docs/builds/managing-builds) | Starting at $0.0035 per CPU Minute | N/A |
-| [Edge Request CPU Duration](/docs/pricing/regional-pricing) | Regional | 1 Hour |
-| [Global Config Reads](/docs/global-config/using-global-config) | $3.00 per 1,000,000 reads | N/A |
-| [Global Config Writes](/docs/global-config/using-global-config) | $10 per 1K writes | N/A |
-| [Web Analytics Events](/docs/analytics/limits-and-pricing#what-is-an-event-in-vercel-web-analytics) | $0.03 | N/A |
-| [Image Optimization Transformations](/docs/image-optimization/limits-and-pricing#image-transformations) | $0.05 per 1K transformations | N/A |
-| [Image Optimization Cache Reads](/docs/image-optimization/limits-and-pricing#image-cache-reads) | $0.40 per 1M reads | N/A |
-| [Image Optimization Cache Writes](/docs/image-optimization/limits-and-pricing#image-cache-writes) | $4.00 per 1M writes | N/A |
-| [Speed Insights Events](/docs/speed-insights/limits-and-pricing) | $0.65 | N/A |
-| [WAF Rate Limiting](/docs/vercel-firewall/vercel-waf/rate-limiting) | Regional | N/A |
-| [Observability Plus Events](/docs/observability#tracked-events) | $1.20 | N/A |
-| [OWASP CRS per request number](/docs/vercel-firewall/vercel-waf/managed-rulesets) | Regional | N/A |
-| [OWASP CRS per request size](/docs/vercel-firewall/vercel-waf/managed-rulesets) | Regional | 4KB of each inspected request |
-| [Blob Storage Size](/docs/vercel-blob/usage-and-pricing#pricing) | Regional | N/A |
-| [Blob Simple Operations](/docs/vercel-blob/usage-and-pricing#pricing) | Regional | N/A |
-| [Blob Advanced Operations](/docs/vercel-blob/usage-and-pricing#pricing) | Regional | N/A |
-| [Blob Data Transfer](/docs/vercel-blob/usage-and-pricing#pricing) | Regional | N/A |
-| [Private Data Transfer](/docs/networking/static-ips) | Regional | N/A |
-| [Workflow Events](/docs/workflows/pricing) | $0.02 per 1K events | Based on usage |
-| [Workflow Data Written](/docs/workflows/pricing) | $0.50 per GB | Based on usage |
-| [Workflow Data Retained](/docs/workflows/pricing) | $0.50 per GB-month | Based on usage |
-| [Queue API Operations](/docs/queues/pricing) | Regional | N/A |
-| [Drains](/docs/drains#usage-and-pricing) | $0.50 per 1 GB | N/A |
-| [Service Requests](/docs/services/pricing) | Regional | N/A |
-| [ISR Reads](/docs/incremental-static-regeneration/limits-and-pricing) | $0.0004 per 1K reads | N/A |
-| [ISR Writes](/docs/incremental-static-regeneration/limits-and-pricing) | $0.004 per 1K writes | N/A |
-
+Hobby teams get a monthly allotment of each billable resource. Pro teams get a monthly credit that applies across billable resources, and Vercel charges for additional usage on demand once you use that credit. For the allotments and the on-demand rates, see [typical monthly usage guidelines](/docs/limits/fair-use-guidelines#typical-monthly-usage-guidelines).
 
 ## Pro trial limits
 
@@ -139,7 +90,7 @@ When the limit is reached, the Build Step will be interrupted and the Deployment
 
 ### Build container resources
 
-Every build container has a fixed amount of resources available to it. You can find the resources available for each build machine type [here](/docs/builds/managing-builds#larger-build-machines).
+Every build container has a fixed amount of resources available to it. You can find the resources available for each build machine type [here](/docs/builds/managing-builds#build-machine-types).
 
 For more information on troubleshooting these, see [Build container resources](/docs/deployments/troubleshoot-a-build#build-container-resources).
 
@@ -149,7 +100,18 @@ When using the CLI to deploy, the maximum size of the source files that can be u
 
 ### Build cache maximum size
 
-The maximum size of the Build's cache is 1 GB. It is retained for one month and it applies at the level of each [Build cache key](/docs/deployments/troubleshoot-a-build#caching-process).
+The maximum size of the Build's cache depends on the [build machine type](/docs/builds/managing-builds#build-machines):
+
+| Build machine type | Maximum cache size |
+| ------------------ | ------------------ |
+| Basic              | 1.5 GB             |
+| Standard           | 1.5 GB             |
+| Enhanced           | 3 GB               |
+| Turbo              | 4.75 GB            |
+
+Elastic build machines use the limit of the machine type assigned to each build.
+
+The cache is retained for one month and applies at the level of each [Build cache key](/docs/deployments/troubleshoot-a-build#caching-process).
 
 ## Monitoring
 
@@ -207,7 +169,7 @@ See the Cron Jobs [limits](/docs/cron-jobs/usage-and-pricing) section for more i
 
 ## Vercel Workflows limits
 
-Vercel Workflows limits include concurrency limits of up to 100,000, 50 MB max payload size, and 2 GB max entity storage per run. See [Workflow pricing and limits](/docs/workflows/pricing#workflow-run-limits) for the full list of run, stream, and platform constraints.
+Vercel Workflows limits the size and throughput of each workflow run, including events and steps per run, payload size, stored data per run, and stream throughput. It also rate limits the requests your team's workflows make to the Workflows backend, such as creating events, writing to streams, and reading run data. Requests over the rate limit are retried automatically with backoff, so hitting it slows your workflows down but does not cause them to fail. See [Workflow limits](/docs/workflows/pricing#workflow-run-limits) and [Workflow rate limits](/docs/workflows/pricing#rate-limits) for the values on each plan.
 
 ## Vercel Functions
 
@@ -403,6 +365,8 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Uploads per day (Free). | 5000 | 86400 | `owner` |
 | Uploads per day (Pro). | 40000 | 86400 | `owner` |
 | Uploads per day (Enterprise). | 80000 | 86400 | `owner` |
+| API key creation per team per hour. | 500 | 3600 | `team` |
+| API key creation per user per hour. | 32 | 3600 | `user` |
 | Token retrieval per minute. | 160 | 60 | `owner` |
 | Token creation per hour. | 32 | 3600 | `owner` |
 | Token deletion per ten minutes. | 120 | 600 | `owner` |
@@ -417,7 +381,7 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Monitoring updates per ten minutes. | 10 | 600 | `owner` |
 | Web Analytics updates per ten minutes. | 10 | 600 | `owner` |
 | Preview Deployment Suffix updates per ten minutes. | 10 | 600 | `owner` |
-| Advanced Deployment Protection updates per ten minutes. | 10 | 600 | `owner` |
+| Team Level Password Protection updates per ten minutes. | 10 | 600 | `owner` |
 | Retry payment per ten minutes. | 25 | 600 | `owner` |
 | Alias retrieval per ten minutes. | 300 | 600 | `user` |
 | Alias creation per ten minutes. | 120 | 600 | `owner` |
@@ -576,6 +540,7 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Store get retrieval per minute. | 400 | 60 | `user` |
 | Access credentials per minute. | 1000 | 60 | `user` |
 | Blob stores create per minute. | 100 | 60 | `user` |
+| Blob stores create per minute for Hobby teams. | 10 | 60 | `user` |
 | Blob stores update per minute. | 100 | 60 | `user` |
 | Blob stores delete per minute. | 100 | 60 | `user` |
 | Postgres stores create per minute. | 100 | 60 | `user` |

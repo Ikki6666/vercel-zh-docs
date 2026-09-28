@@ -3,13 +3,15 @@ title: Adding & Configuring a Custom Domain
 product: vercel
 url: /docs/domains/working-with-domains/add-a-domain
 canonical_url: "https://vercel.com/docs/domains/working-with-domains/add-a-domain"
-last_updated: 2026-02-27
+last_updated: 2026-09-16
 type: how-to
 prerequisites:
   - /docs/domains/working-with-domains
   - /docs/domains
 related:
   - /docs/domains/working-with-domains/deploying-and-redirecting
+  - /docs/domains/managing-dns-records
+  - /docs/domains/troubleshooting
 summary: Learn how to add a custom domain to your Vercel project, verify it, and correctly set the DNS or Nameserver values.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -24,19 +26,19 @@ Vercel provides all deployments with a `vercel.app` URL, which enables you to sh
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I add a custom domain to my Vercel project?](https://vercel.com/kb/guide/how-do-i-add-a-custom-domain-to-my-vercel-project?from=related) — Learn how to add a custom domain to your Vercel project.
-- [Custom domain](https://v0.app/docs/custom-domains?from=related) — Add custom domains to your v0 deployments to give your applications a professional, branded URL.
-- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
-- [Accessing Vercel-hosted sites from mainland China](https://vercel.com/kb/guide/accessing-vercel-hosted-sites-from-mainland-china?from=related) — Understand why Vercel-hosted sites may be slow or inaccessible in mainland China, and explore steps to improve performan
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [Set Up Custom Domain](https://vercel.com/docs/domains/set-up-custom-domain?from=related) — Add and configure a custom domain for your Vercel project using the CLI.
-- [Adding a Domain to an Environment](https://vercel.com/docs/domains/working-with-domains/add-a-domain-to-environment?from=related) — Learn how to add a custom domain to your Vercel project, verify it, and correctly set the DNS or Nameserver values.
-- [Managing DNS Records](https://vercel.com/docs/domains/managing-dns-records?from=related) — Learn how to add, verify, and remove DNS records for your domains on Vercel with this guide.
-- [Add a domain to a project](https://vercel.com/docs/rest-api/projects/add-a-domain-to-a-project?from=related)
-- [Custom Domain](https://vercel.com/docs/platforms/platform-elements/blocks/custom-domain?from=related) — A complete domain management interface with DNS verification and real-time status tracking.
+- [Custom domain](https://v0.app/docs/custom-domains?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Add custom domains to your v0 deployments to give your applications a professional, branded URL.
+- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
+- [Accessing Vercel-hosted sites from mainland China](https://vercel.com/kb/guide/accessing-vercel-hosted-sites-from-mainland-china?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Understand why Vercel-hosted sites may be slow or inaccessible in mainland China, and explore steps to improve performan
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
+- [How to set up a staging environment on Vercel](https://vercel.com/kb/guide/set-up-a-staging-environment-on-vercel?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Set up a staging environment on Vercel with custom environments, staged production deployments, or a branch-based previe
+- [Setting up a custom domain](https://vercel.com/docs/domains/set-up-custom-domain?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Add and configure a custom domain for your Vercel project using the CLI.
+- [Assigning a custom domain to an environment](https://vercel.com/docs/domains/working-with-domains/add-a-domain-to-environment?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Learn how to add a custom domain to your Vercel project, verify it, and correctly set the DNS or Nameserver values.
+- [Working with DNS](https://vercel.com/docs/domains/working-with-dns?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Learn how DNS works to properly configure your domain.
+- [Working with nameservers](https://vercel.com/docs/domains/working-with-nameservers?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Learn about nameservers and the benefits Vercel nameservers provide.
+- [Build Features for Customizing Deployments](https://vercel.com/docs/builds/build-features?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=related) — Learn how to customize your deployments using Vercel's build features.
 
-Full cross-link map for this page: [/docs/domains/working-with-domains/add-a-domain.graph.md](/docs/domains/working-with-domains/add-a-domain.graph.md)
+Full cross-link map for this page: [/docs/domains/working-with-domains/add-a-domain.graph.md](/docs/domains/working-with-domains/add-a-domain.graph.md?from=related&source_path=%2Fdocs%2Fdomains%2Fworking-with-domains%2Fadd-a-domain&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 You can manage all domain settings related to a project from **Settings** and then **Domains** in the sidebar, regardless of whether you are using [apex domains](#apex-domains) or [subdomains](#subdomains) in your project. This document will guide you through both options.
@@ -65,11 +67,43 @@ The following steps provide an overview of how to add and configure a custom dom
 
 - ### Using wildcard domain
   You can also use your **custom domain** as a **wildcard domain** by prefixing it with `*.`.
-  > **💡 Note:** If using your custom domain as a wildcard domain, you **must use the
-  > nameservers method for verification**.
+  > **💡 Note:** Vercel needs access to DNS challenges to issue and renew wildcard
+  > certificates. Use the [nameservers method](#vercel-nameservers), or [delegate
+  > certificate validation](#use-wildcard-domains-with-an-external-dns-provider)
+  > if you can't change your domain's nameservers.
   To add a **wildcard domain**, use the prefix `*`, for example `*.acme.com`.
 
   ![Image](`/docs-assets/static/docs/concepts/projects/custom-domains/wildcard-domain.png`)
+  #### Use wildcard domains with an external DNS provider
+  If you can't change your domain's nameservers, delegate the `_acme-challenge` subdomain to Vercel for certificate issuance and renewal. Your existing DNS provider continues to manage the rest of your DNS records, including the wildcard record that routes traffic to Vercel.
+
+  The following steps use the `acme.com` DNS zone and cover both `*.acme.com` and `*.foo.acme.com`. The apex domain is `acme.com`; neither wildcard configures the apex domain itself.
+  > **⚠️ Warning:** Use this workaround only if you can't change your domain's nameservers.
+  > Delegating the challenge can prevent other hosting providers from issuing or
+  > renewing certificates that use the same challenge name.
+  1. Add your wildcard domain to your project's **Settings > Domains**.
+
+  2. In your team's **Domains** page, select `acme.com`. Under **DNS Records**, click **Enable Vercel DNS**. Keep your existing nameservers configured at your registrar.
+
+  3. At your **existing DNS provider**, add both `NS` records for the wildcard you're configuring. The names below are relative to the `acme.com` DNS zone:
+
+     | Wildcard domain  | Type | Name                  | Value                 |
+     | ---------------- | ---- | --------------------- | --------------------- |
+     | `*.acme.com`     | `NS` | `_acme-challenge`     | `ns1.vercel-dns.com.` |
+     | `*.acme.com`     | `NS` | `_acme-challenge`     | `ns2.vercel-dns.com.` |
+     | `*.foo.acme.com` | `NS` | `_acme-challenge.foo` | `ns1.vercel-dns.com.` |
+     | `*.foo.acme.com` | `NS` | `_acme-challenge.foo` | `ns2.vercel-dns.com.` |
+
+     If your provider requires a full record name, use `_acme-challenge.acme.com` or `_acme-challenge.foo.acme.com`, respectively. These records delegate certificate validation; they don't route website traffic.
+
+  4. At the **same DNS provider**, add the matching wildcard `CNAME` record to route traffic to Vercel:
+
+     | Wildcard domain  | Type    | Name    | Value                     |
+     | ---------------- | ------- | ------- | ------------------------- |
+     | `*.acme.com`     | `CNAME` | `*`     | `cname.vercel-dns-0.com.` |
+     | `*.foo.acme.com` | `CNAME` | `*.foo` | `cname.vercel-dns-0.com.` |
+
+  5. After the records propagate, check the domain's configuration and certificate status in your project's **Settings > Domains**. Keep the `NS` records in place so Vercel can renew the certificate automatically.
 
 - ### Configure the domain
   Once you have added your custom domain, you will need to configure the DNS records of your domain with your registrar so it can be used with your Project. The dashboard will automatically display different methods for configuring it:
@@ -77,9 +111,11 @@ The following steps provide an overview of how to add and configure a custom dom
   - If you're using an [**Apex domain**](#apex-domains) (e.g. example.com), you will need to configure it with an **A** record
   - If you're using a [**Subdomain**](#subdomains) (e.g. docs.example.com), you will need to configure it with a **CNAME** record
   Both **apex domains** and **subdomains** can also be configured using the [**Nameservers**](#vercel-nameservers) method.
-  > **⚠️ Warning:** If you are verifying your domain by changing nameservers, you will need to add
-  > any DNS records to Vercel that you wish to keep from your previous DNS
-  > provider.
+  > **⚠️ Warning:** Before changing nameservers, [copy your existing DNS
+  > records](/docs/domains/managing-dns-records#migrating-dns-records-from-an-external-registrar)
+  > to Vercel, including MX records for email and any verification TXT records.
+  > Changing only the website's A or CNAME record at your current DNS provider
+  > does not require moving the rest of your DNS records.
   #### Apex domains
   You can configure apex domains with an **A** record.
 
@@ -106,6 +142,19 @@ Once the domain has been configured and Vercel has verified it, the status of th
 > Vercel will attempt to redirect them to your domain. For more robust
 > protection, you should explicitly add this domain and [redirect
 > it](/docs/domains/working-with-domains/deploying-and-redirecting#redirecting-domains).
+
+## Troubleshooting domain setup
+
+If the domain does not show a valid configuration, compare the records at your authoritative DNS provider with the values shown in the project's **Domains** settings.
+
+| Symptom | What to check |
+| --- | --- |
+| The domain has an invalid configuration | Check for conflicting A, AAAA, or CNAME records for the same hostname. Use the values shown for your project rather than copying another project's records. |
+| A subdomain does not resolve | For `www.example.com`, use `www` as the record name in Vercel's DNS form. Other DNS providers may use a different name format. |
+| The apex domain works but `www` does not, or the reverse | Add both domains to the project and [configure a redirect](/docs/domains/working-with-domains/deploying-and-redirecting#redirecting-domains) to your preferred domain. |
+| Email stopped arriving after a nameserver change | Restore your email provider's records using the [email troubleshooting steps](/docs/domains/managing-dns-records#troubleshooting-email-delivery). |
+
+DNS changes can take time to propagate. Use [DNS verification](/docs/domains/managing-dns-records#verifying-dns-records) to compare the published records, and see [domain troubleshooting](/docs/domains/troubleshooting) for configuration and certificate errors.
 
 
 ---

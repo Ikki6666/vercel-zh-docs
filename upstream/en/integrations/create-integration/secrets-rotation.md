@@ -3,7 +3,7 @@ title: Implementing secrets rotation
 product: vercel
 url: /docs/integrations/create-integration/secrets-rotation
 canonical_url: "https://vercel.com/docs/integrations/create-integration/secrets-rotation"
-last_updated: 2026-07-15
+last_updated: 2026-09-17
 type: how-to
 prerequisites:
   - /docs/integrations/create-integration
@@ -25,18 +25,18 @@ When your integration provisions resources with credentials (like API keys, data
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to rotate the secrets of your Supabase integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-supabase-integration?from=related) — Rotate Supabase API keys, JWT secrets, and database passwords.
-- [How to rotate the secrets of your Hypertune integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-hypertune-integration?from=related) — Rotate Hypertune API keys with zero-downtime.
-- [How to rotate the secrets of your Clerk integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-clerk-integration?from=related) — Rotate Clerk API keys
-- [How to rotate the secrets of your Upstash integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-upstash-integration?from=related) — Rotate Upstash API keys, JWT secrets, and database passwords.
-- [How to rotate the secrets of your Redis integration](https://vercel.com/kb/guide/how-to-reset-the-secret-for-your-redis-integration?from=related) — This will guide you how to update the password for a Redis databse.
-- [Rotating Environment Variables](https://vercel.com/docs/environment-variables/rotating-secrets?from=related) — Safely rotate API keys, tokens, and other secrets in your Vercel environment variables.
-- [Rotate Installation Credential](https://vercel.com/docs/rest-api/marketplace/rotate-installation-credential?from=related)
-- [Key rotation](https://vercel.com/docs/kms/concepts/key-rotation?from=related) — How Vercel KMS stages a pending signing key, schedules its activation, and retires the previous key so already-issued to
-- [Update Resource Secrets](https://vercel.com/docs/rest-api/marketplace/update-resource-secrets?from=related)
-- [Native Integration Flows](https://vercel.com/docs/integrations/create-integration/marketplace-flows?from=related) — Learn how information flows between the integration user, Vercel, and the integration provider for Vercel native integra
+- [Rotating Secrets for Vercel Marketplace Integrations](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-supabase-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — Rotate the Supabase service role key, JWT secret, and database password from your Vercel integration, then apply the new
+- [How to rotate the secrets of your Hypertune integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-hypertune-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — Rotate Hypertune API keys with zero-downtime.
+- [How to rotate the secrets of your Clerk integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-clerk-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — Rotate Clerk API keys
+- [How to rotate the secrets of your Upstash integration](https://vercel.com/kb/guide/how-to-reset-the-secrets-of-your-upstash-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — Rotate Upstash API keys, JWT secrets, and database passwords.
+- [How to rotate the secrets of your Redis integration](https://vercel.com/kb/guide/how-to-reset-the-secret-for-your-redis-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — This will guide you how to update the password for a Redis databse.
+- [Rotating environment variables](https://vercel.com/docs/environment-variables/rotating-secrets?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — Safely rotate API keys, tokens, and other secrets in your Vercel environment variables.
+- [Rotate Installation Credential](https://vercel.com/docs/rest-api/marketplace/rotate-installation-credential?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — POST /v1/installations/{integrationConfigurationId}/credentials/rotate — Issues a replacement access token for an instal
+- [Vercel KMS Key Rotation](https://vercel.com/docs/kms/concepts/key-rotation?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — How Vercel KMS stages a pending signing key, schedules its activation, and retires the previous key so already-issued to
+- [Update Resource Secrets](https://vercel.com/docs/rest-api/marketplace/update-resource-secrets?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — PUT /v1/installations/{integrationConfigurationId}/resources/{resourceId}/secrets — This endpoint updates the secrets of
+- [Revoke Installation Credential](https://vercel.com/docs/rest-api/marketplace/revoke-installation-credential?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=related) — POST /v1/installations/{integrationConfigurationId}/credentials/revoke — Retires a superseded installation credential, s
 
-Full cross-link map for this page: [/docs/integrations/create-integration/secrets-rotation.graph.md](/docs/integrations/create-integration/secrets-rotation.graph.md)
+Full cross-link map for this page: [/docs/integrations/create-integration/secrets-rotation.graph.md](/docs/integrations/create-integration/secrets-rotation.graph.md?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fsecrets-rotation&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 > **💡 Note:** This functionality must be turned on by Vercel for your integration. Contact your partner support team in Slack to have it enabled on your test integration(s) to begin development and then on your production integration once you're ready to go live.
@@ -48,7 +48,7 @@ Vercel calls your partner API to trigger a rotation. This happens when a user or
 1. The customer clicks "rotate secret" in the Vercel dashboard for a resource you manage
 2. Vercel makes a `POST` request to your `/v1/installations/{installationId}/resources/{resourceId}/secrets/rotate` endpoint
 3. Your backend either generates new secrets for the resource and returns them in the response or returns `sync: false` and performs the rotation asynchronously, calling the `https://api.vercel.com/v1/installations/{installationId}/resources/{resourceId}/secrets` endpoint on Vercel to complete the rotation
-4. Once Vercel has the new secrets for the resource, the customer's linked projects will be redeployed to pick up the new secrets.
+4. Vercel updates the environment variables provided by the resource in the customer's linked projects and does not redeploy the projects. The customer must create new deployments to use the new values.
 5. After the period of time specified in `delayOldSecretsExpirationHours`, the old secrets should stop working and be deleted by your code
 
 > **💡 Note:** It's critical that you keep the old secrets active for the amount of time specified in the request to your rotate secrets endpoint. Failing to do so will prevent customer's applications from being able to connect to the resource until their projects are redeployed. This may take a long time for customers that have many linked projects.
@@ -85,7 +85,9 @@ When using user authentication, the token contains claims about the user who ini
 - `reason` (optional): A string explaining why the rotation was requested
 - `delayOldSecretsExpirationHours` (optional): Number of hours (0-720, max 30 days) before old secrets expire. Can be a decimal amount (ex: `2.5`).
 
-Once you receive this request, you should rotate the secrets for this resource and keep the old ones live for the specified amount of time, to allow for linked projects to be redeployed to get the new values.
+Once you receive this request, rotate the secrets for this resource and keep the old secrets live for the specified time. Customers need time to create new deployments that use the new values.
+
+For a Custom Environment, Vercel first uses the Preview-specific secret value. If no Preview-specific value exists, Vercel uses the default secret value.
 
 > **💡 Note:** Discuss with Vercel partner support what values should be sent to your backend for `delayOldSecretsExpirationHours`.
 
@@ -239,7 +241,8 @@ When testing your implementation:
 5. For synchronous rotation, confirm Vercel receives and updates the secrets
 6. For asynchronous rotation, verify your background job completes and calls Vercel's API
 7. Confirm the resource now displays the correct environment variables on the resource page in the Vercel dashboard
-8. Confirm old credentials expire at the correct time
+8. Create a new deployment and confirm that the deployment uses the new values
+9. Confirm old credentials expire at the correct time
 
 ## Best practices
 

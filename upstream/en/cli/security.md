@@ -3,7 +3,7 @@ title: vercel security
 product: vercel
 url: /docs/cli/security
 canonical_url: "https://vercel.com/docs/cli/security"
-last_updated: 2018-10-20
+last_updated: 2026-08-17
 type: reference
 prerequisites:
   - /docs/cli
@@ -11,7 +11,8 @@ related:
   - /docs/security/security-dashboard
   - /docs/security
   - /docs/rbac/access-roles
-summary: Learn about vercel security on Vercel.
+  - /docs/cli/global-options
+summary: "Inspect the security posture of your Vercel team from the terminal: run every security check, list findings, and scope the report to a project."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -25,13 +26,14 @@ The `vercel security` command runs your team's security checks and prints them i
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [List all checks for a project](https://vercel.com/docs/rest-api/checks-v2/list-all-checks-for-a-project?from=related)
-- [List runs for a check](https://vercel.com/docs/rest-api/checks-v2/list-runs-for-a-check?from=related)
-- [Get a check run](https://vercel.com/docs/rest-api/checks-v2/get-a-check-run?from=related)
-- [vercel api](https://vercel.com/docs/cli/api?from=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
-- [Get a check](https://vercel.com/docs/rest-api/checks-v2/get-a-check?from=related)
+- [Vercel Security Dashboard is now generally available](https://vercel.com/changelog/vercel-security-dashboard-is-now-generally-available?from=related&source_path=%2Fdocs%2Fcli%2Fsecurity&source_site=vercel-docs&relationship=related)
+- [vercel alerts](https://vercel.com/docs/cli/alerts?from=related&source_path=%2Fdocs%2Fcli%2Fsecurity&source_site=vercel-docs&relationship=related) — List and inspect alerts, and manage alert rules for projects and teams with the Vercel CLI.
+- [vercel list](https://vercel.com/docs/cli/list?from=related&source_path=%2Fdocs%2Fcli%2Fsecurity&source_site=vercel-docs&relationship=related) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
+- [vercel api](https://vercel.com/docs/cli/api?from=related&source_path=%2Fdocs%2Fcli%2Fsecurity&source_site=vercel-docs&relationship=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
+- [vercel metrics](https://vercel.com/docs/cli/metrics?from=related&source_path=%2Fdocs%2Fcli%2Fsecurity&source_site=vercel-docs&relationship=related) — Discover and query observability metrics, and inspect available dimensions and aggregations using the Vercel CLI.
+- [vercel comments](https://vercel.com/docs/cli/comments?from=related&source_path=%2Fdocs%2Fcli%2Fsecurity&source_site=vercel-docs&relationship=related) — Review and manage Vercel Toolbar comment threads from the terminal with the vercel comments CLI command.
 
-Full cross-link map for this page: [/docs/cli/security.graph.md](/docs/cli/security.graph.md)
+Full cross-link map for this page: [/docs/cli/security.graph.md](/docs/cli/security.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fsecurity&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Security checks run against the current team, so you need a team scope. If no team is selected, run `vercel switch` to choose one before running the command.
@@ -177,6 +179,24 @@ vercel security check --json | jq '.report'
 - [Vercel security overview](/docs/security)
 - [Vercel security dashboard](/docs/security/security-dashboard)
 - [Access roles](/docs/rbac/access-roles)
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel security` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

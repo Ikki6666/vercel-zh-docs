@@ -3,7 +3,7 @@ title: Workflow Pricing and Limits
 product: workflows
 url: /docs/workflows/pricing
 canonical_url: "https://vercel.com/docs/workflows/pricing"
-last_updated: 2026-06-16
+last_updated: 2026-09-16
 type: reference
 prerequisites:
   - /docs/workflows
@@ -27,20 +27,20 @@ Vercel bills Workflows usage across three resources:
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide?from=related) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
-- [How to migrate from Cloudflare Workflows to Vercel Workflows](https://vercel.com/kb/guide/migrate-cloudflare-workflows-to-vercel-workflows?from=related) — Migrate from Cloudflare Workflows to Vercel Workflows by mapping WorkflowEntrypoint, step.do, and waitForEvent to workfl
-- [Workflow SDK vs AWS Bedrock AgentCore](https://workflow-sdk.dev/docs/comparisons/workflow-sdk-vs-aws-agentcore?from=related) — AgentCore hosts and operates AI agents in isolated microVMs but is not a durable-execution engine. The Workflow SDK prov
-- [Workflow SDK vs AWS Step Functions](https://workflow-sdk.dev/docs/comparisons/workflow-sdk-vs-aws-step-functions?from=related) — AWS Step Functions is a managed state-machine orchestrator authored in declarative ASL JSON. The Workflow SDK expresses
-- [Workflow SDK vs Cloudflare Workflows](https://workflow-sdk.dev/docs/comparisons/workflow-sdk-vs-cloudflare-workflows?from=related) — Cloudflare Workflows is a durable engine on Workers and Durable Objects. It and the Workflow SDK both replay, but differ
-- [Workflow SDK vs Inngest](https://workflow-sdk.dev/docs/comparisons/workflow-sdk-vs-inngest?from=related) — Inngest is an event-driven durable-functions platform that invokes your code over HTTP and memoizes step results. The Wo
-- [Vercel vs Webflow Cloud](https://vercel.com/kb/guide/vercel-vs-webflow-cloud?from=related) — Compare Vercel and Webflow Cloud for deploying Next.js and Astro apps, including runtime, framework support, storage, pr
-- [Limits](https://vercel.com/docs/limits?from=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
-- [Legacy Usage & Pricing](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related) — Learn about legacy usage and pricing for Vercel Functions.
-- [Pricing and Limits](https://vercel.com/docs/eve/pricing?from=related) — Understand how eve usage maps to Vercel resources and inherited platform limits.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing?from=related) — Learn about the pricing for Vercel Blob.
+- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
+- [How to migrate from Cloudflare Workflows to Vercel Workflows](https://vercel.com/kb/guide/migrate-cloudflare-workflows-to-vercel-workflows?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Migrate from Cloudflare Workflows to Vercel Workflows by mapping WorkflowEntrypoint, step.do, and waitForEvent to workfl
+- [Run a research workspace on Vercel](https://vercel.com/kb/guide/run-research-workspace-vercel?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Plan a durable research workspace on Vercel's Agentic Infrastructure with Workflows, internal API tools, Vercel Sandbox
+- [Workflow SDK vs AWS Bedrock AgentCore](https://workflow-sdk.dev/docs/comparisons/workflow-sdk-vs-aws-agentcore?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — AgentCore hosts and operates AI agents in isolated microVMs but is not a durable-execution engine. The Workflow SDK prov
+- [Workflow SDK vs AWS Step Functions](https://workflow-sdk.dev/docs/comparisons/workflow-sdk-vs-aws-step-functions?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — AWS Step Functions is a managed state-machine orchestrator authored in declarative ASL JSON. The Workflow SDK expresses
+- [Workflow SDK vs Cloudflare Workflows](https://workflow-sdk.dev/docs/comparisons/workflow-sdk-vs-cloudflare-workflows?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Cloudflare Workflows is a durable engine on Workers and Durable Objects. It and the Workflow SDK both replay, but differ
+- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
+- [How to run background jobs in Next.js](https://vercel.com/kb/guide/how-to-run-background-jobs-in-nextjs-on-vercel?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Learn the durable way to run background jobs in Next.js on Vercel with the Workflow SDK, and when to reach for Queues or
+- [Limits](https://vercel.com/docs/limits?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
+- [Workflow Concepts](https://vercel.com/docs/workflows/concepts?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Learn how workflows, steps, sleeps, and hooks work together to build durable applications.
+- [Pricing and Limits](https://vercel.com/docs/eve/pricing?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Understand how eve usage maps to Vercel resources and inherited platform limits.
+- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
 
-Full cross-link map for this page: [/docs/workflows/pricing.graph.md](/docs/workflows/pricing.graph.md)
+Full cross-link map for this page: [/docs/workflows/pricing.graph.md](/docs/workflows/pricing.graph.md?from=related&source_path=%2Fdocs%2Fworkflows%2Fpricing&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - **Workflow Events**: Every state transition in a workflow run is persisted as an event. See [Events](#events) for more details.
@@ -87,13 +87,13 @@ The following limits apply to all Workflow runs.
 | Limit                                   | Value                                                      | Details                                                                                                                                                                                                              |
 | --------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Run creations per second                          | 1,000 |                                                                                                                                                         |
-| Events per run                          | 25,000 limit                                               |                                                                                                                                                         |
-| Steps per run                           | 10,000                                                     |                                                                                                                                                         |
-| Event creations per run per second      | 200                                                        |                                                                                                                                                          |
-| Hook creations per second               | 200                                                        |                                                                                                                                                          |
-| Max payload size                        | 50 MB                                                      |                                                  |
-| Maximum total entity storage per run    | 2 GB                                                       |                                                                                      |
-| Max workflow replay duration            | 240s                                                       |  |
+| Events per run                          | 25,000 limit                                               | (Reach out if you need a higher limit.)                                                                                                                                                        |
+| Steps per run                           | 10,000                                                     | (Reach out if you need a higher limit.)                                                                                                                                                        |
+| Event creations per run per second      | 200                                                        | (Throttled and re-tried when exceeded)                                                                                                                                                         |
+| Hook creations per second               | 200                                                        | (Throttled and re-tried when exceeded)                                                                                                                                                         |
+| Max payload size                        | 50 MB                                                      | (Maximum size of any run/step/hook input/output. Streams passed into a run or step do not count towards this limit and have their own limits.)                                                 |
+| Maximum total entity storage per run    | 2 GB                                                       | (The total amount of data stored in managed persistence for run state and events, excluding stream data.)                                                                                     |
+| Max workflow replay duration            | 240s                                                       | (If a workflow orchestration attempt takes longer than 240 seconds, due to memory pressure, a large amount of events, or complex code within your workflow functions, the run may be aborted.) |
 | Maximum run duration                    | No limit                                                   |                                                                                                                                                                                                                      |
 | Maximum `sleep` duration                | No limit                                                   |                                                                                                                                                                                                                      |
 | Max runtime of individual step          | see [Vercel Functions limits](/docs/functions/limitations) |                                                                                                                                                                                                                      |
@@ -101,8 +101,10 @@ The following limits apply to all Workflow runs.
 | Max stream chunk size                   | 10 MB                                                      |                                                                                                                                                                                                                      |
 | Max stream chunks per second per stream | 1,000                                                      |                                                                                                                                                                                                                      |
 | Hook token size                         | 255 bytes                                                  |                                                                                                                                                                                                                      |
-| Workflow name                           | 255 bytes                                                  |                                                                                                                              |
-| Step name                               | 255 bytes                                                  |                                                                                                                                  |
+| Attributes per run                      | 64                                                         | (Keys are 1-256 characters and values are strings up to 256 bytes. Keys starting with $ are reserved.)                                                                                        |
+| Attribute write size                    | 8 KiB                                                      | (Maximum size of the event data written by a single setAttributes call, including keys, values, and writer metadata. Split larger updates across calls.)                                     |
+| Workflow name                           | 255 bytes                                                  | (Workflow names are derived from the file path and function name.)                                                                                                                             |
+| Step name                               | 255 bytes                                                  | (Step names are derived from the file path and function name.)                                                                                                                                 |
 
 > **💡 Note:** Runs that exceed 2,000 events or 1 GB of total entity storage have slower replay times. To maintain high performance, we recommend [creating child workflows](https://workflow-sdk.dev/docs/foundations/starting-workflows) to break long-running workflows into smaller pieces.
 
@@ -115,7 +117,7 @@ The following limits apply to all Workflow runs.
 | Schedules/cron            | No limit                                                            |                                                                                                                                               |
 | Projects                  | Unlimited                                                           |                                                                                                                                               |
 | Real-time connections     | No limit                                                            |                                                                                                                                               |
-| Observability retention   | See [Observability](/docs/observability)                            |  |
+| Observability retention   | See [Observability](/docs/observability)                            | (Plan-based retention applies. See the Storage Retention section for retention of managed persistence and stream data.) |
 | Compute resources         | See [Vercel Functions limits](/docs/functions/limitations)          |                                                                                                                                               |
 | Maximum total bundle size | 250MB, see [Vercel Functions limits](/docs/functions/limitations)   |                                                                                                                                               |
 
@@ -127,9 +129,9 @@ This means hitting the rate limit will not cause your workflow to fail, but it w
 
 | Plan       | Requests per minute |
 | ---------- | ------------------- |
-| Hobby      | 100,000             |
-| Pro        | 1,000,000           |
-| Enterprise | 5,000,000           |
+| Hobby      | 50,000              |
+| Pro        | 500,000             |
+| Enterprise | 2,500,000           |
 
 
 ---

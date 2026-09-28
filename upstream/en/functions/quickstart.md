@@ -3,7 +3,7 @@ title: Getting started with Vercel Functions
 product: vercel
 url: /docs/functions/quickstart
 canonical_url: "https://vercel.com/docs/functions/quickstart"
-last_updated: 2026-03-20
+last_updated: 2026-09-11
 type: tutorial
 prerequisites:
   - /docs/functions
@@ -27,15 +27,29 @@ In this guide, you'll learn how to get started with Vercel Functions using your 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to ship a Fastify app on Vercel](https://vercel.com/kb/guide/ship-a-fastify-app-on-vercel?from=related) — Deploy a Fastify app to Vercel with zero configuration, then add streaming, lifecycle hooks, cron jobs, and observabilit
-- [Node.js](https://vercel.com/docs/functions/runtimes/node-js?from=related) — Learn how to use the Node.js runtime to create functions and deploy Node.js servers on Vercel.
-- [Rust](https://vercel.com/docs/functions/runtimes/rust?from=related) — Build fast, memory-safe serverless functions with Rust on Vercel.
-- [Runtime](https://vercel.com/docs/functions/configuring-functions/runtime?from=related) — Learn how to configure the runtime for Vercel Functions.
-- [Go](https://vercel.com/docs/functions/runtimes/go?from=related) — Learn how to use the Go runtime to run Go APIs on Vercel.
-- [Vite](https://vercel.com/docs/frameworks/frontend/vite?from=related) — Learn how to use Vercel's features with Vite.
+- [Function invocations now billed per unit](https://vercel.com/changelog/function-invocations-now-billed-per-unit?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related)
+- [Vercel Functions now have faster and fewer cold starts](https://vercel.com/changelog/vercel-functions-now-have-faster-and-fewer-cold-starts?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related)
+- [How to ship a Fastify app on Vercel](https://vercel.com/kb/guide/ship-a-fastify-app-on-vercel?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related) — Deploy a Fastify app to Vercel with zero configuration, then add streaming, lifecycle hooks, cron jobs, and observabilit
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
+- [Using the Node.js Runtime with Vercel Functions](https://vercel.com/docs/functions/runtimes/node-js?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related) — Learn how to use the Node.js runtime to create functions and deploy Node.js servers on Vercel.
+- [Using the Rust Runtime with Vercel functions](https://vercel.com/docs/functions/runtimes/rust?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related) — Build fast, memory-safe serverless functions with Rust on Vercel.
+- [Express on Vercel](https://vercel.com/docs/frameworks/backend/express?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related) — Deploy Express applications to Vercel with zero configuration. Learn about middleware and Vercel Functions.
+- [How Vercel builds your application](https://vercel.com/docs/fundamentals/builds?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
 
-Full cross-link map for this page: [/docs/functions/quickstart.graph.md](/docs/functions/quickstart.graph.md)
+Full cross-link map for this page: [/docs/functions/quickstart.graph.md](/docs/functions/quickstart.graph.md?from=related&source_path=%2Fdocs%2Ffunctions%2Fquickstart&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
+
+**Agent prompt**
+
+```text
+Help me create a Vercel Function in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). Then: 1. Run `vercel link` to connect the project. 2. Create an API route handler at app/api/hello/route.ts that fetches data from https://api.vercel.app/products and returns it as JSON. Use the standard Web API Request/Response objects. 3. Test locally with `vercel dev`, then deploy with `vercel --prod`.
+```
+
+> Install the [Vercel plugin](/docs/agent-resources/vercel-plugin?from=docs-callout\&source_path=%2Fdocs%2Ffunctions%2Fquickstart) to create and deploy a Vercel Function with your coding agent.
+>
+> ```bash
+> npx plugins add vercel/vercel-plugin
+> ```
 
 ## Prerequisites
 
@@ -66,7 +80,9 @@ Full cross-link map for this page: [/docs/functions/quickstart.graph.md](/docs/f
 
 ## Create a Vercel Function
 
-Open the code block in  for a walk through on creating a Vercel Function with the below code, or copy the code into your project. The function fetches data from the [Vercel API](https://api.vercel.app/products) and returns it as a JSON response.
+Open the code block in v0 for a walk through on creating a Vercel Function with the below code, or copy the code into your project. The function fetches data from the [Vercel API](https://api.vercel.app/products) and returns it as a JSON response.
+
+**app/api/hello/route.ts**
 
 ```ts v0="build" filename="app/api/hello/route.ts" framework=nextjs-app
 export async function GET(request: Request) {
@@ -76,6 +92,8 @@ export async function GET(request: Request) {
 }
 ```
 
+**app/api/hello/route.js**
+
 ```js v0="build" filename="app/api/hello/route.js" framework=nextjs-app
 export async function GET(request) {
   const response = await fetch('https://api.vercel.app/products');
@@ -83,6 +101,8 @@ export async function GET(request) {
   return Response.json(products);
 }
 ```
+
+**pages/api/hello.ts**
 
 ```ts v0="build" filename="pages/api/hello.ts" framework=nextjs
 export async function GET(request: Request) {
@@ -92,6 +112,8 @@ export async function GET(request: Request) {
 }
 ```
 
+**pages/api/hello.js**
+
 ```js v0="build" filename="pages/api/hello.js" framework=nextjs
 export async function GET(request) {
   const response = await fetch('https://api.vercel.app/products');
@@ -99,6 +121,8 @@ export async function GET(request) {
   return Response.json(products);
 }
 ```
+
+**api/hello.ts**
 
 ```ts filename="api/hello.ts" framework=other
 export default {
@@ -109,6 +133,8 @@ export default {
   },
 };
 ```
+
+**api/hello.js**
 
 ```js filename="api/hello.js" framework=other
 export default {

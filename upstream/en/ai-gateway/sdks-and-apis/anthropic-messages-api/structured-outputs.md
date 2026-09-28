@@ -1,10 +1,10 @@
 ---
-title: Structured Outputs
+title: Anthropic Messages Structured Outputs with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api
   - /docs/ai-gateway/sdks-and-apis
@@ -14,9 +14,9 @@ summary: Get JSON responses conforming to a JSON Schema from Anthropic models th
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Structured Outputs
+# Anthropic Messages Structured Outputs with AI Gateway
 
-Structured outputs let you constrain model responses to follow a specific JSON Schema, guaranteeing valid, parseable JSON every time. This is useful when you need to extract structured data, build reliable pipelines, or integrate model responses directly into your application.
+Structured outputs constrain completed model responses to a JSON Schema. Check for refusals, errors, and output-token limits before parsing the result. This is useful when you need to extract structured data, build reliable pipelines, or integrate model responses directly into your application.
 
 
 <!-- docsgraph:related -->
@@ -24,18 +24,15 @@ Structured outputs let you constrain model responses to follow a specific JSON S
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Generating Structured Data](https://ai-sdk.dev/docs/ai-sdk-core/generating-structured-data?from=related)
-- [Output](https://ai-sdk.dev/docs/reference/ai-sdk-core/output?from=related)
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/structured-outputs?from=related) — Constrain OpenResponses API output to a JSON schema so every response parses.
-- [Output Schema](https://eve.dev/docs/guides/client/output-schema?from=related) — Request structured results from eve client turns and read typed data from MessageResult.
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs?from=related) — Generate structured JSON responses that conform to a specific schema using the Chat Completions API.
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/structured-outputs?from=related) — Constrain a response to a JSON schema with the OpenAI Responses API.
-- [Stream Object](https://ai-sdk.dev/cookbook/next/stream-object?from=related)
-- [Generate Object](https://ai-sdk.dev/cookbook/node/generate-object?from=related)
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming?from=related) — Stream Anthropic Messages API responses token by token as they are generated.
+- [Generating Structured Data](https://ai-sdk.dev/docs/ai-sdk-core/generating-structured-data?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=related)
+- [Output](https://ai-sdk.dev/docs/reference/ai-sdk-core/output?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=related)
+- [Output Schema](https://eve.dev/docs/guides/client/output-schema?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=related) — Request structured results from eve client turns and read typed data from MessageResult.
+- [OpenAI Chat Completions Structured Outputs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=related) — Generate structured JSON responses that conform to a specific schema using the Chat Completions API through AI Gateway.
+- [OpenResponses Structured Outputs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/structured-outputs?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=related) — Request schema-constrained JSON with OpenResponses through AI Gateway, and handle provider support and response validati
+- [AI Gateway Text Generation](https://vercel.com/docs/ai-gateway/modalities/text-generation?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=related) — Generate and stream text from hundreds of models through AI Gateway, with tool calling and structured output.
+- [AI SDK with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
 
-Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs.graph.md](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs.graph.md](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fanthropic-messages-api%2Fstructured-outputs&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 AI Gateway supports two approaches for structured outputs with Anthropic models:
@@ -50,40 +47,6 @@ For full details on structured outputs, see the [Anthropic structured outputs do
 The GA API uses the `output_config.format` field to specify a JSON Schema. No beta header is required.
 
 Example request
-
-#### cURL
-
-```bash filename="structured-output.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-sonnet-5",
-    "max_tokens": 1024,
-    "messages": [
-      {
-        "role": "user",
-        "content": "Generate a profile for a software engineer in Austin, TX."
-      }
-    ],
-    "output_config": {
-      "format": {
-        "type": "json_schema",
-        "schema": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "name": { "type": "string" },
-            "age": { "type": "number" },
-            "email": { "type": "string" },
-            "skills": { "type": "array", "items": { "type": "string" } }
-          },
-          "required": ["name", "age", "email", "skills"]
-        }
-      }
-    }
-  }'
-```
 
 #### TypeScript
 
@@ -121,7 +84,7 @@ const message = await anthropic.messages.create({
       content: 'Generate a profile for a software engineer in Austin, TX.',
     },
   ],
-  // @ts-expect-error -- output_config is not yet in the TS SDK types
+
   output_config: {
     format: {
       type: 'json_schema',
@@ -188,6 +151,40 @@ person = json.loads(text_block.text)
 print(person['name'], person['skills'])
 ```
 
+#### cURL
+
+```bash filename="structured-output.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-sonnet-5",
+    "max_tokens": 1024,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Generate a profile for a software engineer in Austin, TX."
+      }
+    ],
+    "output_config": {
+      "format": {
+        "type": "json_schema",
+        "schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": { "type": "string" },
+            "age": { "type": "number" },
+            "email": { "type": "string" },
+            "skills": { "type": "array", "items": { "type": "string" } }
+          },
+          "required": ["name", "age", "email", "skills"]
+        }
+      }
+    }
+  }'
+```
+
 You can combine `format` with `effort` in the same `output_config` object:
 
 ```typescript
@@ -205,49 +202,6 @@ output_config: {
 The beta API uses the `output_format` field along with the `structured-outputs-2025-11-13` beta header.
 
 Example request
-
-#### cURL
-
-```bash filename="structured-output-beta.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "anthropic-beta: structured-outputs-2025-11-13" \
-  -d '{
-    "model": "anthropic/claude-sonnet-5",
-    "max_tokens": 1024,
-    "messages": [
-      { "role": "user", "content": "Give me a weather forecast for San Francisco, CA." }
-    ],
-    "output_format": {
-      "type": "json_schema",
-      "schema": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "location": { "type": "string" },
-          "temperature": { "type": "number" },
-          "conditions": { "type": "string" },
-          "forecast": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "day": { "type": "string" },
-                "high": { "type": "number" },
-                "low": { "type": "number" },
-                "conditions": { "type": "string" }
-              },
-              "required": ["day", "high", "low", "conditions"]
-            }
-          }
-        },
-        "required": ["location", "temperature", "conditions", "forecast"]
-      }
-    }
-  }'
-```
 
 #### TypeScript
 
@@ -286,7 +240,7 @@ const forecastSchema = {
   required: ['location', 'temperature', 'conditions', 'forecast'],
 };
 
-const message = await anthropic.messages.create({
+const message = await anthropic.beta.messages.create({
   model: 'anthropic/claude-sonnet-5',
   max_tokens: 1024,
   messages: [
@@ -295,7 +249,7 @@ const message = await anthropic.messages.create({
       content: 'Give me a weather forecast for San Francisco, CA.',
     },
   ],
-  // @ts-expect-error -- output_format is not yet in the TS SDK types
+
   output_format: {
     type: 'json_schema',
     schema: forecastSchema,
@@ -374,15 +328,9 @@ forecast = json.loads(text_block.text)
 print(forecast['location'], forecast['temperature'])
 ```
 
-## Streaming structured outputs
-
-Structured outputs work with streaming. The model produces valid JSON incrementally, and each `text_delta` event contains a fragment of the JSON. Accumulate the fragments and parse the complete JSON when the stream ends.
-
-Example request
-
 #### cURL
 
-```bash filename="structured-output-stream.sh"
+```bash filename="structured-output-beta.sh"
 curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
   -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
   -H "Content-Type: application/json" \
@@ -390,7 +338,6 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
   -d '{
     "model": "anthropic/claude-sonnet-5",
     "max_tokens": 1024,
-    "stream": true,
     "messages": [
       { "role": "user", "content": "Give me a weather forecast for San Francisco, CA." }
     ],
@@ -423,6 +370,12 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
     }
   }'
 ```
+
+## Streaming structured outputs
+
+Structured outputs work with streaming. The model produces valid JSON incrementally, and each `text_delta` event contains a fragment of the JSON. Accumulate the fragments and parse the complete JSON when the stream ends.
+
+Example request
 
 #### TypeScript
 
@@ -461,7 +414,7 @@ const recipeSchema = {
   required: ['name', 'cuisine', 'difficulty', 'servings', 'ingredients', 'steps'],
 };
 
-const stream = await anthropic.messages.create({
+const stream = await anthropic.beta.messages.create({
   model: 'anthropic/claude-sonnet-5',
   max_tokens: 2048,
   stream: true,
@@ -471,7 +424,7 @@ const stream = await anthropic.messages.create({
       content: 'Give me a recipe for classic Italian lasagna.',
     },
   ],
-  // @ts-expect-error -- output_format is not yet in the TS SDK types
+
   output_format: {
     type: 'json_schema',
     schema: recipeSchema,
@@ -561,9 +514,53 @@ recipe = json.loads(full_json)
 print(recipe['name'], recipe['cuisine'])
 ```
 
+#### cURL
+
+```bash filename="structured-output-stream.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-beta: structured-outputs-2025-11-13" \
+  -d '{
+    "model": "anthropic/claude-sonnet-5",
+    "max_tokens": 1024,
+    "stream": true,
+    "messages": [
+      { "role": "user", "content": "Give me a weather forecast for San Francisco, CA." }
+    ],
+    "output_format": {
+      "type": "json_schema",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "location": { "type": "string" },
+          "temperature": { "type": "number" },
+          "conditions": { "type": "string" },
+          "forecast": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "day": { "type": "string" },
+                "high": { "type": "number" },
+                "low": { "type": "number" },
+                "conditions": { "type": "string" }
+              },
+              "required": ["day", "high", "low", "conditions"]
+            }
+          }
+        },
+        "required": ["location", "temperature", "conditions", "forecast"]
+      }
+    }
+  }'
+```
+
 ## Response format
 
-When structured outputs are enabled, the model returns valid JSON in a `text` content block:
+A completed structured response contains JSON in a `text` content block:
 
 ```json
 {

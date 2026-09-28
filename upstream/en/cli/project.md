@@ -3,16 +3,16 @@ title: vercel project
 product: vercel
 url: /docs/cli/project
 canonical_url: "https://vercel.com/docs/cli/project"
-last_updated: 2026-07-07
+last_updated: 2026-09-01
 type: reference
 prerequisites:
   - /docs/cli
 related:
   - /docs/sandbox/concepts/regions
   - /docs/plans/pro-plan/trials
+  - /docs/cli/cache
+  - /docs/caching/cdn-cache
   - /docs/analytics
-  - /docs/analytics/limits-and-pricing
-  - /docs/speed-insights
 summary: "Perform the following commands from the terminal for your Vercel Projects: list, add, inspect, update settings, rename, remove, and configure access,..."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,14 +27,15 @@ The `vercel project` command manages your Vercel Projects from the terminal: lis
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
-- [vercel connect](https://vercel.com/docs/cli/connect?from=related) — Learn how to manage Vercel Connect connectors using the vercel connect CLI command.
-- [Global Options](https://vercel.com/docs/cli/global-options?from=related) — Global options are commonly available to use with multiple Vercel CLI commands. Learn about Vercel CLI's global options
-- [vercel tokens](https://vercel.com/docs/cli/tokens?from=related) — Manage your personal Vercel authentication tokens from the CLI: list, create, and remove access tokens for use with the
-- [vercel api](https://vercel.com/docs/cli/api?from=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
-- [vercel env](https://vercel.com/docs/cli/env?from=related) — Learn how to manage your environment variables in your Vercel Projects using the vercel env CLI command.
+- [Update Project Settings from the Vercel CLI](https://vercel.com/changelog/update-project-settings-from-the-vercel-cli?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=related)
+- [How do I change the name of my Vercel Project?](https://vercel.com/kb/guide/how-do-i-change-the-name-of-my-vercel-project?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=related) — Change your Vercel project name in the dashboard, CLI, or REST API, then update the environment variables, callbacks, an
+- [Managing projects](https://vercel.com/docs/projects/managing-projects?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=related) — Learn how to manage your projects through the Vercel Dashboard.
+- [vercel integration](https://vercel.com/docs/cli/integration?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=related) — Learn how to manage marketplace native integrations, provision resources, manage individual resources, and discover avai
+- [vercel traces](https://vercel.com/docs/cli/traces?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=related) — Search spans, inspect request traces, capture session traces, or manage trace sampling rules for a project from the term
+- [Audit Logs](https://vercel.com/docs/audit-log?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=related) — Learn how to track and analyze your team members' activities.
+- [Pause a project](https://vercel.com/docs/rest-api/projects/pause-a-project?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=related) — POST /v1/projects/{projectId}/pause — Pause a project by passing its project \\`id\\` in the URL. If the project does not
 
-Full cross-link map for this page: [/docs/cli/project.graph.md](/docs/cli/project.graph.md)
+Full cross-link map for this page: [/docs/cli/project.graph.md](/docs/cli/project.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fproject&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 `vercel projects` is an alias for the same command.
@@ -177,6 +178,26 @@ Remove a project.
 
 ```bash filename="terminal"
 vercel project rm <name>
+```
+
+### `dangerously-delete-immutable-static-asset`
+
+Permanently delete an immutable static asset from storage. Unlike [cache
+deletion](/docs/cli/cache), which flushes cached content that regenerates on
+the next request, this deletes the stored asset itself for both the production
+and preview environments: its URL serves a `410 Gone` response for seven days,
+then a `404`, and the project's build hash salt rotates so your next deployment
+emits different asset URLs. You cannot undo this operation.
+
+The command only runs interactively and asks you to type the asset path to
+confirm. The path must exactly match the stored asset path, start with
+`_vercel/immutable/` or `_next/static/immutable/`, and contain no leading
+slash. See [Deleting immutable static
+assets](/docs/caching/cdn-cache#deleting-immutable-static-assets) for details,
+including why deleting the asset does not delete the content.
+
+```bash filename="terminal"
+vercel project dangerously-delete-immutable-static-asset _next/static/immutable/chunks/example.js
 ```
 
 ### `checks`
@@ -395,7 +416,7 @@ Enable or disable [Speed Insights](/docs/speed-insights) for a project. The `act
 vercel project speed-insights [action] [name] [options]
 ```
 
-Both `enable` and `disable` ask for confirmation and have no flag to skip it, so run the command in an interactive terminal. On Hobby, Speed Insights is only available for one project. On Pro and Enterprise, enabling incurs charges. The `--format json` option only changes the output format and the confirmation will come first.
+Both `enable` and `disable` ask for confirmation and have no flag to skip it, so run the command in an interactive terminal. `enable` upgrades the project to [Speed Insights Plus](/docs/speed-insights/limits-and-pricing). Vercel bills Speed Insights Plus usage on Pro and Enterprise. Teams on Hobby must upgrade to Pro before continuing. `disable` downgrades the project back to Speed Insights. The `--format json` option only changes the output format and the confirmation will come first.
 
 #### Options
 
@@ -533,6 +554,24 @@ vercel project token my-project
 # Token as JSON
 vercel project token my-project --format=json
 ```
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel project` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

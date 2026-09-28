@@ -3,7 +3,7 @@ title: Billing FAQ for Pro Plan
 product: vercel
 url: /docs/plans/pro-plan/billing
 canonical_url: "https://vercel.com/docs/plans/pro-plan/billing"
-last_updated: 2026-07-15
+last_updated: 2026-09-17
 type: reference
 prerequisites:
   - /docs/plans/pro-plan
@@ -28,14 +28,15 @@ The Vercel Pro plan is designed for professional developers, freelancers, and bu
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Billing FAQ](https://vercel.com/docs/plans/enterprise/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
-- [Pricing](https://v0.app/docs/pricing?from=related) — Understand the v0 plans, pricing, and usage limits.
-- [Hobby Plan](https://vercel.com/docs/plans/hobby?from=related) — Learn about the Hobby plan and how it compares to the Pro plan.
-- [Pro Plan Trial](https://vercel.com/docs/plans/pro-plan/trials?from=related) — Learn all about Vercel's Pro Plan free trial, including features, usage limits, and options post-trial. Learn how to man
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Billing and Refunds](https://vercel.com/docs/integrations/create-integration/billing?from=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
+- [A more flexible Pro plan for modern teams](https://vercel.com/blog/new-pro-pricing-plan?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=related)
+- [Billing FAQ for Enterprise Plan](https://vercel.com/docs/plans/enterprise/billing?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=related)
+- [Vercel Hobby Plan](https://vercel.com/docs/plans/hobby?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=related) — Learn about the Hobby plan and how it compares to the Pro plan.
+- [Understanding Vercel](https://vercel.com/docs/plans/pro-plan/trials?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=related) — Learn all about Vercel's Pro Plan free trial, including features, usage limits, and options post-trial. Learn how to man
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Manage Billing and Refunds for Integrations](https://vercel.com/docs/integrations/create-integration/billing?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
 
-Full cross-link map for this page: [/docs/plans/pro-plan/billing.graph.md](/docs/plans/pro-plan/billing.graph.md)
+Full cross-link map for this page: [/docs/plans/pro-plan/billing.graph.md](/docs/plans/pro-plan/billing.graph.md?from=related&source_path=%2Fdocs%2Fplans%2Fpro-plan%2Fbilling&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Payments
@@ -145,6 +146,18 @@ If you are having trouble receiving these emails, please review the spam setting
 ### Can I repay an invoice if I've used the wrong payment method?
 
 No. Once an invoice is paid, it cannot be recharged with a different payment method, and refunds are not provided in these cases.
+
+### What happens to my invoices if I delete my team?
+
+Deleting a team permanently removes the team and its data from Vercel, including its invoice history. After the team is deleted, its past invoices are no longer available to view or download from the dashboard, and they cannot be recovered.
+
+Before you delete a team, download a PDF copy of every invoice you may need for accounting or tax purposes:
+
+1. From your [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard), go to the Team's page from the team switcher
+2. Open **Settings** in the sidebar followed by the **Invoices** link on the left
+3. Download each invoice as a PDF by selecting the icon on the invoice row
+
+Vercel also [emails each invoice](#can-invoices-be-sent-to-my-email) to the team's invoice email recipient. Keep these emails: for a team that is later deleted, they are your permanent record of its past charges.
 
 ## Billing
 

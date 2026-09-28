@@ -3,7 +3,7 @@ title: Accessing Metrics with Vercel CLI
 product: vercel
 url: /docs/speed-insights/accessing-metrics-with-vercel-cli
 canonical_url: "https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli"
-last_updated: 2026-06-25
+last_updated: 2026-09-10
 type: how-to
 prerequisites:
   - /docs/speed-insights
@@ -25,14 +25,15 @@ Use `vercel metrics` to query Speed Insights data from your terminal. You can re
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Improve Cumulative Layout Shift \\(CLS\\) on Vercel](https://vercel.com/kb/guide/cls-on-vercel?from=related) — Read, diagnose, and fix Cumulative Layout Shift on Vercel using Speed Insights and Next.js best practices.
-- [Using Speed Insights](https://vercel.com/docs/speed-insights/using-speed-insights?from=related) — Learn how to use Speed Insights to analyze your application's performance data.
-- [Getting Started](https://vercel.com/docs/speed-insights/quickstart?from=related) — Vercel Speed Insights provides you detailed insights into your website's performance. This quickstart guide will help yo
-- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Query Speed Insights from the Vercel CLI](https://vercel.com/changelog/query-speed-insights-from-the-vercel-cli?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=related)
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
+- [How Core Web Vitals affect SEO](https://vercel.com/blog/how-core-web-vitals-affect-seo?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=related)
+- [Using Speed Insights](https://vercel.com/docs/speed-insights/using-speed-insights?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=related) — Learn how to use Speed Insights to analyze your application's performance data.
+- [Getting started with Speed Insights](https://vercel.com/docs/speed-insights/quickstart?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=related) — Vercel Speed Insights provides you detailed insights into your website's performance. This quickstart guide will help yo
+- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
+- [Observability](https://vercel.com/docs/observability?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=related) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
 
-Full cross-link map for this page: [/docs/speed-insights/accessing-metrics-with-vercel-cli.graph.md](/docs/speed-insights/accessing-metrics-with-vercel-cli.graph.md)
+Full cross-link map for this page: [/docs/speed-insights/accessing-metrics-with-vercel-cli.graph.md](/docs/speed-insights/accessing-metrics-with-vercel-cli.graph.md?from=related&source_path=%2Fdocs%2Fspeed-insights%2Faccessing-metrics-with-vercel-cli&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Speed Insights metrics are available through `vercel metrics` without [Observability Plus](/docs/observability/observability-plus).
@@ -62,7 +63,7 @@ When you group a Speed Insights value metric, `vercel metrics` orders results by
 Query P75 Interaction to Next Paint by device type:
 
 ```bash filename="terminal"
-vercel metrics vercel.speed_insights.inp_ms --aggregation p75 --group-by device_type --since 7d --order-by count --project project-name --prod
+vercel metrics vercel.speed_insights.inp_ms --aggregation p75 --group-by deviceType --since 7d --order-by count --project project-name --prod
 ```
 
 Query P75 Cumulative Layout Shift by country:
@@ -74,34 +75,25 @@ vercel metrics vercel.speed_insights.cls --aggregation p75 --group-by country --
 Query daily P75 Largest Contentful Paint for one route:
 
 ```bash filename="terminal"
-vercel metrics vercel.speed_insights.lcp_ms --aggregation p75 --filter "route eq '/dashboard'" --since 7d --granularity 1d --project project-name --prod
+vercel metrics vercel.speed_insights.lcp_ms --aggregation p75 --filter 'route:/dashboard' --since 7d --granularity 1d --project project-name --prod
 ```
 
 ## Query collected data points
 
-Each Speed Insights value metric has a matching count metric for collected data points.
-Use data point counts to evaluate how representative a metric value is. Fewer data points can make comparisons less reliable.
-
-| Value metric | Data point count metric |
-| - | - |
-| `vercel.speed_insights.lcp_ms` | `vercel.speed_insights.lcp_count` |
-| `vercel.speed_insights.fcp_ms` | `vercel.speed_insights.fcp_count` |
-| `vercel.speed_insights.inp_ms` | `vercel.speed_insights.inp_count` |
-| `vercel.speed_insights.ttfb_ms` | `vercel.speed_insights.ttfb_count` |
-| `vercel.speed_insights.cls` | `vercel.speed_insights.cls_count` |
+Each Speed Insights value metric supports the `count` aggregation for collected data points. Use data point counts to evaluate how representative a metric value is. Fewer data points can make comparisons less reliable.
 
 By default, grouped queries return the results with the most data points first. To make this explicit, use `--order-by count`.
 
 Query collected LCP data points by route:
 
 ```bash filename="terminal"
-vercel metrics vercel.speed_insights.lcp_count --aggregation sum --group-by route --since 7d --project project-name --prod
+vercel metrics vercel.speed_insights.lcp_ms --aggregation count --group-by route --since 7d --project project-name --prod
 ```
 
 Query collected CLS data points by country:
 
 ```bash filename="terminal"
-vercel metrics vercel.speed_insights.cls_count --aggregation sum --group-by country --since 7d --limit 10 --project project-name --prod
+vercel metrics vercel.speed_insights.cls --aggregation count --group-by country --since 7d --limit 10 --project project-name --prod
 ```
 
 ## Find best and worst performing pages
@@ -135,18 +127,18 @@ The following query shapes are not available in the Speed Insights dashboard. Us
 
 ### Filter multiple paths and exclude values
 
-Use `startswith()` to include multiple path prefixes, `ne` to exclude a value, and repeated `--group-by` options to compare Core Web Vitals for selected path prefixes:
+Use a field-scoped `OR` expression to include multiple path prefixes, `!=` to exclude a value, and repeated `--group-by` options to compare Core Web Vitals for selected path prefixes:
 
 ```bash filename="terminal"
-vercel metrics vercel.speed_insights.lcp_ms --aggregation p75 --filter "startswith(request_path, '/docs') or startswith(request_path, '/guides')" --filter "country ne 'US'" --group-by route --group-by device_type --since 7d --project project-name --prod
+vercel metrics vercel.speed_insights.lcp_ms --aggregation p75 --filter 'requestPath:(/docs* OR /guides*)' --filter 'country != US' --group-by route --group-by deviceType --since 7d --project project-name --prod
 ```
 
 ### Query every project in your team
 
-Use `--all` with `project_id` to compare Speed Insights metrics across every project in the current team:
+Use `--all` with `projectId` to compare Speed Insights metrics across every project in the current team:
 
 ```bash filename="terminal"
-vercel metrics vercel.speed_insights.lcp_ms --all --aggregation p75 --group-by project_id --group-by country --since 7d --limit 20 --prod
+vercel metrics vercel.speed_insights.lcp_ms --all --aggregation p75 --group-by projectId --group-by country --since 7d --limit 20 --prod
 ```
 
 For all options, see the [`vercel metrics` reference](/docs/cli/metrics). For what each dashboard metric measures, see [Speed Insights Metrics](/docs/speed-insights/metrics).

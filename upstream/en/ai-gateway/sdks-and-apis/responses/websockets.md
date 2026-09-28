@@ -1,9 +1,9 @@
 ---
-title: Responses API over WebSocket
+title: OpenAI Responses API WebSocket Mode with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/responses/websockets
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/websockets"
-last_updated: 2026-07-22
+last_updated: 2026-09-08
 type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/responses
@@ -15,7 +15,7 @@ summary: Keep a persistent connection open across turns with the OpenAI Response
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Responses API over WebSocket
+# OpenAI Responses API WebSocket Mode with AI Gateway
 
 AI Gateway supports WebSocket mode for the [Responses API](/docs/ai-gateway/sdks-and-apis/responses). Instead of opening a new HTTP request for every turn, you open one WebSocket connection and send each turn as a frame. The connection to the model provider stays open between turns, which removes a connection handshake from every turn and cuts per-turn latency in agent loops that make many tool calls.
 
@@ -25,14 +25,15 @@ AI Gateway supports WebSocket mode for the [Responses API](/docs/ai-gateway/sdks
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [OpenAI Responses API](https://ai-sdk.dev/cookbook/guides/openai-responses?from=related)
-- [OpenResponses API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses?from=related) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming?from=related) — Stream responses token by token using the OpenResponses API.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming?from=related) — Stream tokens as they are generated with the OpenAI Responses API.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [Text Generation](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/text-generation?from=related) — Generate text responses using the OpenResponses API.
+- [WebSocket support for OpenAI Responses API live on AI Gateway](https://vercel.com/changelog/websocket-support-for-openai-responses-api-live-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=related)
+- [AI Gateway supports OpenAI's Responses API](https://vercel.com/changelog/ai-gateway-supports-openais-responses-api?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=related)
+- [OpenResponses API now supported on Vercel AI Gateway](https://vercel.com/changelog/openresponses-api-now-supported-on-vercel-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=related)
+- [OpenResponses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=related) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
+- [OpenAI Responses Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=related) — Stream tokens as they are generated with the OpenAI Responses API through AI Gateway.
+- [OpenResponses Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=related) — Stream responses token by token using the OpenResponses API through AI Gateway.
+- [OpenAI Codex with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/openai-codex?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=related) — Connect OpenAI Codex to AI Gateway with one CLI command, or configure it manually.
 
-Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/responses/websockets.graph.md](/docs/ai-gateway/sdks-and-apis/responses/websockets.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/responses/websockets.graph.md](/docs/ai-gateway/sdks-and-apis/responses/websockets.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fwebsockets&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 The wire protocol is OpenAI's Responses WebSocket protocol: you send `response.create` frames and receive the same `response.*` events the HTTP streaming API emits.
@@ -59,7 +60,7 @@ ws.on('open', () => {
   ws.send(
     JSON.stringify({
       type: 'response.create',
-      model: 'openai/gpt-5.6-sol',
+      model: 'openai/gpt-6-astra',
       input: 'Why is the sky blue?',
       store: false,
     }),
@@ -94,7 +95,7 @@ Send the next `response.create` frame on the same socket after the previous turn
 ws.send(
   JSON.stringify({
     type: 'response.create',
-    model: 'openai/gpt-5.6-sol',
+    model: 'openai/gpt-6-astra',
     input: 'Now explain it to a five-year-old.',
     store: false,
     previous_response_id: firstResponse.id, // from the previous response.completed event
@@ -154,7 +155,7 @@ Close codes:
 
 Errors arrive as `error` frames with the same shape as HTTP error responses (`status`, `error.message`, `error.type`), followed by a close. Handle the `error` event type in your message handler rather than relying only on the close code.
 
-For request parameters, tool calling, structured output, and reasoning configuration, the frames accept the same fields as the HTTP [Responses API](/docs/ai-gateway/sdks-and-apis/responses) — WebSocket mode changes the transport, not the API surface.
+For request parameters, tool calling, structured output, and reasoning configuration, the frames accept the same fields as the HTTP [Responses API](/docs/ai-gateway/sdks-and-apis/responses). WebSocket mode uses the same API fields over a different transport.
 
 
 ---

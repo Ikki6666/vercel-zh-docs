@@ -3,7 +3,7 @@ title: Configuring a Build
 product: vercel
 url: /docs/builds/configure-a-build
 canonical_url: "https://vercel.com/docs/builds/configure-a-build"
-last_updated: 2026-07-15
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/builds
@@ -27,18 +27,20 @@ When you make a [deployment](/docs/deployments), Vercel **builds** your project.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Does Vercel support Yarn 2?](https://vercel.com/kb/guide/does-vercel-support-yarn-2?from=related) — Information on Vercel's support for Yarn 2.
-- [Does Vercel support Yarn 3?](https://vercel.com/kb/guide/does-vercel-support-yarn-3?from=related) — Information on Vercel's support for Yarn 3.
-- [Does Vercel support Yarn 4?](https://vercel.com/kb/guide/does-vercel-support-yarn-4?from=related) — Information on Vercel's support for Yarn 4.
-- [How to pin a specific Bun version for Vercel builds?](https://vercel.com/kb/guide/how-to-pin-a-specific-bun-version-for-vercel-builds?from=related) — Learn how to use a specific Bun version for Vercel builds.
-- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare?from=related) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
-- [Supported Frameworks](https://vercel.com/docs/frameworks?from=related) — Vercel supports a wide range of the most popular frameworks, optimizing how your application builds and runs no matter w
-- [All Frameworks](https://vercel.com/docs/frameworks/more-frameworks?from=related) — Learn about the frameworks that can be deployed to Vercel.
-- [Build Output API](https://vercel.com/docs/build-output-api?from=related) — The Build Output API is a file-system-based specification for a directory structure that can produce a Vercel deployment
-- [Frontends](https://vercel.com/docs/frameworks/frontend?from=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [Vercel now supports Build Commands for FastAPI and Flask](https://vercel.com/changelog/vercel-now-supports-build-commands-for-fastapi-and-flask?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related)
+- [Yarn 2+ dependency caching now supported](https://vercel.com/changelog/yarn-2-dependency-caching-now-supported?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related)
+- [Does Vercel support Yarn 2?](https://vercel.com/kb/guide/does-vercel-support-yarn-2?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Information on Vercel's support for Yarn 2.
+- [Does Vercel support Yarn 3?](https://vercel.com/kb/guide/does-vercel-support-yarn-3?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Information on Vercel's support for Yarn 3.
+- [Does Vercel Support Yarn? \\(Versions 2, 3, and 4\\)](https://vercel.com/kb/guide/does-vercel-support-yarn-4?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Vercel supports Yarn 1, 2, 3, and 4. Learn which version your build uses by default, and how to pin Yarn 4 with Corepack
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [How to pin a specific Bun version for Vercel builds?](https://vercel.com/kb/guide/how-to-pin-a-specific-bun-version-for-vercel-builds?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Learn how to use a specific Bun version for Vercel builds.
+- [Announcing the Build Output API](https://vercel.com/blog/build-output-api?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related)
+- [Advanced Project Settings](https://vercel.com/blog/advanced-project-settings?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related)
+- [Frameworks on Vercel](https://vercel.com/docs/frameworks?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Vercel supports a wide range of the most popular frameworks, optimizing how your application builds and runs no matter w
+- [Supported Frameworks on Vercel](https://vercel.com/docs/frameworks/more-frameworks?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Learn about the frameworks that can be deployed to Vercel.
+- [Frontends on Vercel](https://vercel.com/docs/frameworks/frontend?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
 
-Full cross-link map for this page: [/docs/builds/configure-a-build.graph.md](/docs/builds/configure-a-build.graph.md)
+Full cross-link map for this page: [/docs/builds/configure-a-build.graph.md](/docs/builds/configure-a-build.graph.md?from=related&source_path=%2Fdocs%2Fbuilds%2Fconfigure-a-build&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Vercel automatically configures the build settings for many front-end frameworks, but you can also customize the build according to your requirements.
@@ -96,6 +98,8 @@ Inside the Framework Preset settings, use the drop-down menu to select the frame
   - [Deploy](https://vercel.com/new/clone?demo-title=eve+Chat+Template&demo-description=A+persisted+Next.js+chat+template+for+eve%2C+built+with+shadcn%2Fui%2C+Tailwind+CSS%2C+Streamdown%2C+Better+Auth%2C+Drizzle%2C+and+Neon.&demo-url=https%3A%2F%2Feve-chat-template.labs.vercel.dev%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2FYXYTquqpBmvVFbASdIvrC%2F04d5a87ebe706ed31adc65193f3b4cdd%2Feve-chat__1_.png&project-name=eve+Chat+Template&repository-name=eve-chat-template&repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Feve-chat-template&from=templates&skippable-integrations=1) | [View Demo](https://eve-chat-template.labs.vercel.dev/)
 - **Express**: Fast, unopinionated, minimalist web framework for Node.js
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/express) | [View Demo](https://express-vercel-example-demo.vercel.app/)
+- **Factory (Eve)**: A software factory built with Eve.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/factory-eve)
 - **FastAPI**: FastAPI framework, high performance, easy to learn, fast to code, ready for production
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/fastapi) | [View Demo](https://vercel-fastapi-gamma-smoky.vercel.app/)
 - **FastHTML**: The fastest way to create an HTML app
@@ -213,7 +217,7 @@ If you'd like to override the Build Command for **all deployments** in your Proj
 
 If you would like to override the Build Command for a **specific deployment**, add [`buildCommand`](/docs/project-configuration/vercel-json#buildcommand) to your `vercel.json` configuration.
 
-> **💡 Note:** If you update the  setting, it will be applied on your next
+> **💡 Note:** If you update the **Override** setting, it will be applied on your next
 > deployment.
 
 ### Output Directory
@@ -222,7 +226,7 @@ After building a project, most frameworks output the resulting build in a direct
 
 If Vercel detects a framework, the output directory will automatically be configured.
 
-> **💡 Note:** If you update the  setting, it will be applied on your next
+> **💡 Note:** If you update the **Override** setting, it will be applied on your next
 > deployment.
 
 For projects that [do not require building](#skip-build-step), you might want to serve the files in the root directory. In this case, do the following:

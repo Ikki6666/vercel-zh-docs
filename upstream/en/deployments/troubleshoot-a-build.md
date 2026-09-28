@@ -3,7 +3,7 @@ title: Troubleshooting Build Errors
 product: vercel
 url: /docs/deployments/troubleshoot-a-build
 canonical_url: "https://vercel.com/docs/deployments/troubleshoot-a-build"
-last_updated: 2026-06-15
+last_updated: 2026-09-21
 type: conceptual
 prerequisites:
   - /docs/deployments
@@ -11,8 +11,8 @@ related:
   - /docs/deployments/logs
   - /docs/project-configuration
   - /docs/rbac
-  - /docs/builds/managing-builds
-  - /docs/environment-variables
+  - /docs/integrations
+  - /docs/integrations/create-integration/deployment-integration-action
 summary: Learn how to resolve common scenarios you may encounter during the Build step, including build errors that cancel a deployment and long build times.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,17 +27,20 @@ You can troubleshoot build errors that occur during the Build step of your deplo
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Troubleshooting Build Error: "Build step did not complete within the maximum of 45 minutes"](https://vercel.com/kb/guide/troubleshooting-build-error-build-step-did-not-complete-within-45-minutes?from=related) — Learn common reasons Vercel builds hit the 45-minute limit and how to reduce build times so your deployments stay fast a
-- [Troubleshooting Builds Failing with SIGKILL or Out of Memory Errors](https://vercel.com/kb/guide/troubleshooting-sigkill-out-of-memory-errors?from=related) — Learn how to troubleshoot builds failing with SIGKILL or Out of Memory errors on a Vercel Deployment.
-- [How to debug 404 errors](https://vercel.com/kb/guide/how-to-debug-404-errors?from=related) — Learn the systematic steps to identify and resolve 404 issues.
-- [Why are my Vercel builds queued?](https://vercel.com/kb/guide/why-are-my-vercel-builds-queued?from=related) — Learn about why your Vercel builds may be getting queued and how to resolve this.
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
-- [Turborepo](https://vercel.com/docs/monorepos/turborepo?from=related) — Learn about Turborepo, a build system for monorepos that allows you to have faster incremental builds, content-aware has
-- [Debug Cache Issues](https://vercel.com/docs/caching/cdn-cache/debug-cache-issues?from=related) — Diagnose stale content and fix CDN cache, data cache, and build cache issues using the CLI.
-- [Build Features](https://vercel.com/docs/builds/build-features?from=related) — Learn how to customize your deployments using Vercel's build features.
-- [Deploy Hooks](https://vercel.com/docs/deploy-hooks?from=related) — Learn how to create and trigger deploy hooks to integrate Vercel deployments with other systems.
+- [Build cache storage increased for larger build machines](https://vercel.com/changelog/build-cache-storage-increased-for-larger-build-machines?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related)
+- [Enhanced Builds now have double the compute](https://vercel.com/changelog/enhanced-builds-now-have-double-the-compute?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related)
+- [Improved error messages for failed or canceled builds](https://vercel.com/changelog/improved-error-messages-for-failed-or-canceled-builds?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related)
+- [More detailed report on out of memory or disk space errors on builds](https://vercel.com/changelog/report-on-out-of-memory-or-disk-space?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related)
+- [Yarn 2+ dependency caching now supported](https://vercel.com/changelog/yarn-2-dependency-caching-now-supported?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related)
+- [Does Vercel Support Yarn? \\(Versions 2, 3, and 4\\)](https://vercel.com/kb/guide/does-vercel-support-yarn-4?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related) — Vercel supports Yarn 1, 2, 3, and 4. Learn which version your build uses by default, and how to pin Yarn 4 with Corepack
+- [Troubleshooting Build Error: "Build step did not complete within the maximum of 45 minutes"](https://vercel.com/kb/guide/troubleshooting-build-error-build-step-did-not-complete-within-45-minutes?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related) — Learn common reasons Vercel builds hit the 45-minute limit and how to reduce build times so your deployments stay fast a
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [How to debug 404 errors](https://vercel.com/kb/guide/how-to-debug-404-errors?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related) — Learn the systematic steps to identify and resolve 404 issues.
+- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
+- [Deploying Turborepo to Vercel](https://vercel.com/docs/monorepos/turborepo?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related) — Learn about Turborepo, a build system for monorepos that allows you to have faster incremental builds, content-aware has
+- [Build Features for Customizing Deployments](https://vercel.com/docs/builds/build-features?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=related) — Learn how to customize your deployments using Vercel's build features.
 
-Full cross-link map for this page: [/docs/deployments/troubleshoot-a-build.graph.md](/docs/deployments/troubleshoot-a-build.graph.md)
+Full cross-link map for this page: [/docs/deployments/troubleshoot-a-build.graph.md](/docs/deployments/troubleshoot-a-build.graph.md?from=related&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Troubleshooting views
@@ -55,6 +58,12 @@ You can navigate to these views from the Deployment page by clicking on the **So
 If your build fails, Vercel will report the error message on the **Deployments** page so that you can investigate and fix the underlying issue.
 
 In the following we show you how to look up the error message of your failed build.
+
+> Install the [Vercel plugin](/docs/agent-resources/vercel-plugin?from=docs-callout\&source_path=%2Fdocs%2Fdeployments%2Ftroubleshoot-a-build) to troubleshoot this failed build with your coding agent.
+>
+> ```bash
+> npx plugins add vercel/vercel-plugin
+> ```
 
 ### Investigating Build logs
 
@@ -86,10 +95,30 @@ Builds can fail without providing any build logs when Vercel detects a missing p
 - An invalid [`vercel.json` configuration](/docs/project-configuration) was committed
 - When using [Ignored Build Steps](/kb/guide/how-do-i-use-the-ignored-build-step-field-on-vercel)
 - Commits were made from a contributor that is not a [team member](/docs/rbac)
+- A [Marketplace integration](/docs/integrations) resource connected to the project failed to provision before the build started
 
 In this case, you cannot access the **Building** accordion described above, and instead, Vercel will present an overlay that contains the error message.
 
 ![Image](`/docs-assets/static/docs/concepts/deployments/build-error-no-logs-v2-light.png`)
+
+### Integration resource provisioning failures
+
+If your project is connected to a [Marketplace integration](/docs/integrations) resource, Vercel provisions integration resources and runs any configured [deployment integration actions](/docs/integrations/create-integration/deployment-integration-action) before the Build step starts. While this happens, the deployment is held in a provisioning state and the build does not begin.
+
+If provisioning fails, the deployment fails before any build output is produced, so no build logs are available. This can happen when the integration provider cannot complete the request, for example because the integration account is suspended on the provider's side.
+
+To identify a provisioning failure:
+
+1. From your Vercel [dashboard](/dashboard), select the project and then **Deployments** in the sidebar
+2. Select the failed deployment
+3. In the **Deployment Details** section, expand the **Provisioning Integrations** step. It lists each connected integration resource and deployment action with its status. A failed or timed-out item is marked with an error state, which tells you the deployment failed during provisioning rather than during the build
+
+To resolve the failure:
+
+1. Open the affected integration from the **Integrations** section of your dashboard and select **Manage** to open the provider's dashboard, then resolve the issue on the provider's side
+2. [Redeploy](/docs/deployments/managing-deployments#redeploy-a-project) the project. Provisioning runs again on the new deployment
+
+While the **Provisioning Integrations** step is still pending, you can also select **Skip** to let the deployment continue without waiting for the integration. Only skip provisioning if your build does not depend on the resource, since the resource may not be ready when the build runs.
 
 ## Cancelled Builds due to limits
 
@@ -97,7 +126,7 @@ Sometimes, your Deployment Build can hit platform limits so that the build will 
 
 ### Build container resources
 
-Every build container has a fixed amount of resources available to it. You can find the resources available for each build machine type [here](/docs/builds/managing-builds#larger-build-machines).
+Every build container has a fixed amount of resources available to it. You can find the resources available for each build machine type [here](/docs/builds/managing-builds#build-machine-types).
 
 By default, the system generates this report only when it detects a problem. To receive a report for every deployment, set `VERCEL_BUILD_SYSTEM_REPORT=1` as an [environment variable](/docs/environment-variables#creating-environment-variables).
 
@@ -181,7 +210,8 @@ Sometimes, you may not want to use the Build cache for a specific deployment. Yo
 
 - Use the **Redeploy** button for the specific deployment in the Project's [Deployments](/docs/deployments/managing-deployments) page. In the popup window that follows, leave the checkbox **Use existing Build Cache** unchecked. See [Redeploying a project](/docs/deployments/managing-deployments#redeploy-a-project) for more information.
 - Use [`vercel --force`](/docs/cli/deploy#force) with [Vercel CLI](/docs/cli) to build and deploy the project **without** the Build cache
-- Use an Environment Variable `VERCEL_FORCE_NO_BUILD_CACHE` with a value of `1` on your project to skip the Build cache
+- Use an Environment Variable `VERCEL_FORCE_NO_BUILD_CACHE` with a value of `1` on your project to skip **restoring** the existing Build cache at the start of the build, so the build starts with an empty cache. A successful build still uploads a fresh cache afterward.
+- Use an Environment Variable `VERCEL_FORCE_NO_BUILD_CACHE_UPLOAD` with a value of `1` on your project to skip **uploading** the Build cache at the end of the build, so the existing cache is left unchanged. This does not affect cache restore.
 - Use an Environment Variable `TURBO_FORCE` with a value of `true` on your project to skip Turborepo [Remote Cache](/docs/monorepos/remote-caching)
 - Use the `forceNew` optional query parameter with a value of `1` when [creating a new deployment with the Vercel API](/docs/rest-api/deployments/create-a-new-deployment) to skip the Build cache
 
