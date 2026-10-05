@@ -3,7 +3,7 @@ title: Ecosystem
 product: vercel
 url: /docs/sandbox/ecosystem
 canonical_url: "https://vercel.com/docs/sandbox/ecosystem"
-last_updated: 2026-08-04
+last_updated: 2026-09-23
 type: conceptual
 prerequisites:
   - /docs/sandbox
@@ -20,9 +20,8 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 # Ecosystem
 
 Vercel Sandbox integrates with the agent frameworks, model SDKs, and coding
-agents you already use. Give your agent a tool that executes code inside a
-sandbox, and model-generated code runs in an isolated Firecracker microVM
-instead of on your host.
+agents you already use. Run a coding agent or give your agent a code execution
+tool inside an isolated Firecracker microVM.
 
 
 <!-- docsgraph:related -->
@@ -30,28 +29,27 @@ instead of on your host.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Building an agent with OpenAI Agents SDK and Vercel Sandbox](https://vercel.com/kb/guide/building-an-agent-with-openai-agents-sdk-and-vercel-sandbox?from=related) — Learn how to build an agent with with OpenAI Agents SDK and Vercel Sandbox
-- [Using Vercel Sandbox to run Claude’s Agent SDK](https://vercel.com/kb/guide/using-vercel-sandbox-claude-agent-sdk?from=related) — Learn how to deploy Claude's Agent SDK in Vercel Sandbox for secure and isolated execution of AI-powered code generation
-- [How to run Herdr coding agents in isolated Vercel Sandboxes](https://vercel.com/kb/guide/run-herdr-coding-agents-isolated-vercel-sandboxes?from=related) — Install the vercel.sandbox plugin for Herdr, approve an upload manifest, run each AI coding agent in its own isolated Ve
-- [Deploy to Vercel](https://eve.dev/docs/guides/deployment/vercel?from=related) — Deploy an eve agent with Vercel Workflow, Sandbox, Cron, and project credentials.
-- [Build an agent with Vercel and Flue](https://vercel.com/kb/guide/build-an-agent-with-vercel-and-flue?from=related) — Build and deploy an agent with Flue, Vercel Sandbox, and AI Gateway
-- [Multi-Agent](https://vercel.com/docs/sandbox/concepts/multi-agent?from=related) — Give each AI agent an isolated Linux user in a Vercel Sandbox with the @vercel/sandbox createUser, createGroup, and asUs
-- [Concepts](https://vercel.com/docs/eve/concepts?from=related) — Learn how eve agents, sessions, channels, tools, skills, connections, and sandboxes fit together.
-- [eve](https://vercel.com/docs/eve?from=related) — Learn how to deploy and run durable backend AI agents built with the open-source eve framework on Vercel.
-- [Concepts](https://vercel.com/docs/sandbox/concepts?from=related) — Learn how Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applicat
-- [Quickstart](https://vercel.com/docs/sandbox/quickstart?from=related) — Learn how to run your first code in a Vercel Sandbox.
+- [Building an agent with OpenAI Agents SDK and Vercel Sandbox](https://vercel.com/kb/guide/building-an-agent-with-openai-agents-sdk-and-vercel-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fecosystem&source_site=vercel-docs&relationship=related) — Learn how to build an agent with with OpenAI Agents SDK and Vercel Sandbox
+- [Using TanStack AI with Vercel Sandbox](https://vercel.com/kb/guide/tanstack-ai-vercel-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fecosystem&source_site=vercel-docs&relationship=related) — Run coding agents in isolated Vercel Sandbox microVMs with the @tanstack/ai-sandbox-vercel provider, with durable resume
+- [Run untrusted code with Vercel Sandbox, now generally available](https://vercel.com/blog/vercel-sandbox-is-now-generally-available?from=related&source_path=%2Fdocs%2Fsandbox%2Fecosystem&source_site=vercel-docs&relationship=related)
+- [How to run Herdr coding agents in isolated Vercel Sandboxes](https://vercel.com/kb/guide/run-herdr-coding-agents-isolated-vercel-sandboxes?from=related&source_path=%2Fdocs%2Fsandbox%2Fecosystem&source_site=vercel-docs&relationship=related) — Install the vercel.sandbox plugin for Herdr, approve an upload manifest, run each AI coding agent in its own isolated Ve
+- [Run Python code securely with AI SDK and Vercel Sandbox](https://vercel.com/kb/guide/python-ai-sdk-vercel-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fecosystem&source_site=vercel-docs&relationship=related) — Add an \\`executeCode\\` tool to your AI SDK agent with the \\`ai-sdk-tool-code-execution\\` package to run Python 3.13 insi
+- [Running OpenCode securely with the Vercel Sandbox](https://vercel.com/kb/guide/running-opencode-securely-with-the-vercel-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fecosystem&source_site=vercel-docs&relationship=related) — Run OpenCode in an isolated Vercel Sandbox MicroVM with controlled egress, using the SDK to restrict network access so t
 
-Full cross-link map for this page: [/docs/sandbox/ecosystem.graph.md](/docs/sandbox/ecosystem.graph.md)
+Full cross-link map for this page: [/docs/sandbox/ecosystem.graph.md](/docs/sandbox/ecosystem.graph.md?from=related&source_path=%2Fdocs%2Fsandbox%2Fecosystem&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Framework and SDK integrations
 
-These guides show the same pattern in each framework: define a `run_code`
+The LangChain, OpenAI SDK, and Anthropic SDK guides define a `run_code`
 tool backed by
-[`sandbox.runCommand()`](/docs/sandbox/sdk-reference#sandboxruncommand),
+[`sandbox.runCommand()`](/docs/sandbox/sdk-reference#sandbox.runcommand),
 pass it to the framework's tool-calling loop, and return the command output
 to the model. Model requests route through [AI Gateway](/docs/ai-gateway),
 while Vercel credentials authenticate the sandbox.
+
+TanStack AI uses a dedicated Sandbox provider to run coding agents with
+workspace configuration and policies.
 
 | Integration                                            | Type            | Use case                                    |
 | ------------------------------------------------------ | --------------- | ------------------------------------------- |
@@ -59,14 +57,48 @@ while Vercel credentials authenticate the sandbox.
 | [OpenAI SDK](/docs/sandbox/ecosystem/openai-sdk)       | Model SDK       | Function calling through the Responses API  |
 | [Anthropic SDK](/docs/sandbox/ecosystem/anthropic-sdk) | Model SDK       | Tool use through the Messages API           |
 | [AI SDK](/docs/sandbox/working-with-sandbox)           | AI SDK          | Tool calling with the AI SDK                |
+| [TanStack AI](/docs/sandbox/ecosystem/tanstack-ai) | Agent framework | Coding agents with sandboxed workspaces |
+
+## Hosted agent APIs
+
+Build a [v0-style app builder](/kb/guide/v0-clone-openai-agents-vercel-sandbox)
+that turns a prompt into a Next.js app with a live preview. Users can refine
+the app through follow-up messages.
+
+OpenAI Agents API manages the agent session, while Vercel Sandbox provides
+an isolated workspace to edit files and run the app. These integrations use
+the provider's API credentials.
+
+| Integration | Type | Use case |
+| --- | --- | --- |
+| [OpenAI Agents API](/docs/sandbox/ecosystem/openai-agents-api) | Hosted agent API | OpenAI-managed sessions with Sandbox execution and persistent files |
+
+## Content and storage
+
+These integrations give an agent a filesystem view of a content or object
+store, so it reads and writes through standard file operations instead of
+calling a storage API. The files live in the provider, not the sandbox. That
+means the provider's permissions decide what the agent can open, and the
+agent's work is still there after the sandbox is deleted.
+
+| Integration                                    | Type             | Use case                                              |
+| ---------------------------------------------- | ---------------- | ----------------------------------------------------- |
+| [Box Mount](/docs/sandbox/ecosystem/box-mount) | Content platform | Agents reading and writing Box content as local files |
 
 ## Coding agents
 
 | Integration                            | Type          | Use case                                    |
 | -------------------------------------- | ------------- | ------------------------------------------- |
+| [Cursor](/docs/sandbox/ecosystem/cursor) | Coding agent | Cursor Cloud Agents on Self-Hosted Machines |
 | [Devin](/docs/sandbox/ecosystem/devin) | Coding agent  | Devin Outposts sessions in Sandbox microVMs |
 | [Herdr](/docs/sandbox/ecosystem/herdr) | Agent manager | Terminal coding agents in persistent Sandboxes |
 | [Hermes](/docs/sandbox/ecosystem/hermes) | Coding agent | Hermes terminal commands in Sandbox microVMs |
+
+## Eval harnesses
+
+| Integration                              | Type         | Use case                                        |
+| ---------------------------------------- | ------------ | ------------------------------------------------ |
+| [Harbor](/docs/sandbox/ecosystem/harbor) | Eval harness | Terminal-Bench and benchmark trials in Sandbox microVMs |
 
 
 ---

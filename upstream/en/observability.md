@@ -3,23 +3,25 @@ title: Observability
 product: vercel
 url: /docs/observability
 canonical_url: "https://vercel.com/docs/observability"
-last_updated: 2026-07-06
+last_updated: 2026-09-10
 type: conceptual
 prerequisites:
   []
 related:
-  - /docs/notebooks
   - /docs/observability/observability-plus
   - /docs/observability/insights
   - /docs/observability/debug-production-errors
-  - /docs/query/monitoring
-summary: Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application performance.
+  - /docs/notebooks
+  - /docs/query
+summary: Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Observability
 
-> **🔒 Permissions Required**: Observability
+## Debug applications with Vercel Observability
+
+Find production errors, capture request traces, and discover queryable metrics from the dashboard or Vercel CLI.
 
 
 <!-- docsgraph:related -->
@@ -27,35 +29,52 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel?from=related) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
-- [How to prepare your storefront for Black Friday traffic](https://vercel.com/kb/guide/black-friday-preparation?from=related) — A practical checklist for keeping your storefront fast and your checkout path healthy through Black Friday and Cyber Mon
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [Running Docker on Vercel](https://vercel.com/kb/guide/docker?from=related) — Learn how to run Docker on Vercel by deploying OCI container images as Vercel Functions, storing them in Vercel Containe
-- [Hosting your API on Vercel](https://vercel.com/kb/guide/hosting-backend-apis?from=related) — Learn how to build and scale performant APIs on Vercel.
-- [Step executed multiple times](https://workflow-sdk.dev/docs/errors/step-executed-multiple-times?from=related) — Diagnose duplicate step_started events caused by function timeouts, OOMs, or network issues.
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
-- [Query](https://vercel.com/docs/query?from=related) — Query and visualize your Vercel usage, traffic, and more in observability.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Limits and Pricing](https://vercel.com/docs/speed-insights/limits-and-pricing?from=related) — Learn about our limits and pricing when using Vercel Speed Insights. Different limitations are applied depending on your
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [AI query prompting now available in Observability Plus](https://vercel.com/changelog/ai-query-prompting-now-available-in-observability-plus?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related)
+- [Anomaly alert configuration now available](https://vercel.com/changelog/anomaly-alert-configuration-now-available?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related)
+- [Create and share queries with notebooks in Vercel Observability](https://vercel.com/changelog/create-and-share-queries-with-notebooks-in-vercel-observability?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related)
+- [Edge Function metrics now available in Monitoring](https://vercel.com/changelog/edge-function-metrics-now-available-in-monitoring?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related)
+- [Enhanced firewall data now available in Monitoring](https://vercel.com/changelog/enhanced-firewall-data-now-available-in-monitoring?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related)
+- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
+- [How to prepare your storefront for Black Friday traffic](https://vercel.com/kb/guide/black-friday-preparation?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related) — A practical checklist for keeping your storefront fast and your checkout path healthy through Black Friday and Cyber Mon
+- [Running Docker on Vercel](https://vercel.com/kb/guide/docker?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related) — Learn how to run Docker on Vercel by deploying OCI container images as Vercel Functions, storing them in Vercel Containe
+- [Build an incident response sre agent with eve](https://vercel.com/kb/guide/eve-incident-sre-agent?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related) — sre is an incident response agent for Slack. It investigates production issues using a hypothesis-driven approach and re
+- [How to handle order-ahead traffic spikes on Vercel](https://vercel.com/kb/guide/handle-order-ahead-traffic-spikes-on-vercel?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related) — Order-ahead traffic spikes hit the same routes every lunch hour. Learn how to scale, cache, queue, and test a restaurant
+- [Agentic Infrastructure](https://vercel.com/blog/agentic-infrastructure?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related)
+- [How to integrate AI into your business](https://vercel.com/blog/how-to-integrate-ai-into-your-business?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=related)
 
-Full cross-link map for this page: [/docs/observability.graph.md](/docs/observability.graph.md)
+Full cross-link map for this page: [/docs/observability.graph.md](/docs/observability.graph.md?from=related&source_path=%2Fdocs%2Fobservability&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-Observability provides a way for you to monitor and analyze the performance and traffic of your projects on Vercel through a variety of [events](#tracked-events) and [insights](#available-insights), aligned with your app's architecture.
+#### Inspect 500 errors
 
-- Learn how to [use Observability](#using-observability) and the available [insight sections](/docs/observability#available-insights)
-- Learn how you can save and organize your Observability queries with [Notebooks](/docs/notebooks)
+```bash filename="terminal"
+vercel logs --environment production --status-code 500 --json
+```
+
+#### Capture a request trace
+
+```bash filename="terminal"
+vercel curl --trace --json /api/hello
+```
+
+#### List metrics
+
+```bash filename="terminal"
+# Most metrics require Observability Plus
+vercel metrics schema
+```
+
+> **Availability**: Observability is available on all plans
 
 ### Observability feature access
 
 You can use Observability on all plans to monitor your projects. [Observability Plus](/docs/observability/observability-plus) is available on Paid Pro and Enterprise teams, providing [additional features and metrics](/docs/observability/observability-plus#limitations), higher limits, and increased retention. Pro Trial does not include Observability Plus by default.
 
-[Try Observability](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fobservability\&title=Try+Observability) to get started.
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/observability/O11y-Tab-Light.png)
 
-![Image](`/docs-assets/static/docs/concepts/observability/O11y-Tab-Light.png`)
+## Debug errors and latency with Observability
 
-## Using Observability
+Use logs to find failing requests, traces to inspect one request path, and metrics to compare behavior over time. Use JSON output when a script or coding agent needs structured data.
 
 How you use Observability depends on the needs of your project, for example, perhaps builds are taking longer than expected, or your Vercel Functions seem to be increasing in cost. A brief overview of how you might use the tab would be:
 
@@ -63,7 +82,7 @@ How you use Observability depends on the needs of your project, for example, per
 2. Use the date picker or the time range selector to choose the time period you want to investigate. Users on [Observability Plus](/docs/observability/observability-plus) will have a longer retention period and more granular data.
 3. Let's investigate our graphs in more detail, for example, **Error Rate**. Click and drag to select a period of time and press the **Zoom In** button.
 
-![Image](`/docs-assets/static/docs/concepts/observability/error-rate-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/observability/error-rate-light.png)
 
 4. Then, from the list of routes below, choose to reorder either based on the error rate or the duration to get an idea of which routes are causing the most issues.
 5. To learn more about specific routes, click on the route.
@@ -78,7 +97,7 @@ Observability provides different sections of features and traffic sources that h
 | --------------------------------------------------------------------------------------------------------- | ---------- | ------------- |
 | [Vercel Functions](/docs/observability/insights#vercel-functions)                                         | ✓          | ✓             |
 | [External APIs](/docs/observability/insights#external-apis)                                               | ✓          | ✓             |
-| [Edge Requests](/docs/observability/insights#edge-requests)                                               | ✓          | ✓             |
+| [CDN Requests](/docs/observability/insights#cdn-requests)                                               | ✓          | ✓             |
 | [Middleware](/docs/observability/insights#middleware)                                                     | ✓          | ✓             |
 | [Fast Data Transfer](/docs/observability/insights#fast-data-transfer)                                     | ✓          | ✓             |
 | [Image Optimization](/docs/observability/insights#image-optimization)                                     | ✓          | ✓             |
@@ -94,7 +113,7 @@ Observability provides different sections of features and traffic sources that h
 
 Vercel tracks the following event types for Observability:
 
-- Edge Requests
+- CDN Requests
 - Vercel Function Invocations
 - External API Requests
 - Routing Middleware Invocations
@@ -102,9 +121,9 @@ Vercel tracks the following event types for Observability:
 
 Vercel creates one or more of these events each time a request is made to your site. Depending on your application and configuration a single request to Vercel might be:
 
-- 1 edge request event if it's cached.
-- 1 Edge Request, 1 Middleware, 1 Function Invocation, 2 External API calls, and 1 AI Gateway request, for a total of 6 events.
-- 1 edge request event if it's a static asset.
+- 1 CDN request event if it's cached.
+- 1 CDN Request, 1 Middleware, 1 Function Invocation, 2 External API calls, and 1 AI Gateway request, for a total of 6 events.
+- 1 CDN request event if it's a static asset.
 
 Vercel tracks events at the team level, counting them across all projects in the team.
 
@@ -132,7 +151,7 @@ For step-by-step debugging workflows using the Vercel CLI with Observability dat
 
 **Notebooks**: Save and organize Observability queries. [Learn more →](/docs/notebooks)
 
-**Monitoring**: Build dashboards and alerts on top of metrics. [Learn more →](/docs/query/monitoring)
+**Query**: Query and visualize your usage, traffic, and more. [Learn more →](/docs/query)
 
 **Debug production errors**: Step-by-step CLI workflow for debugging 500 errors. [Learn more →](/docs/observability/debug-production-errors)
 

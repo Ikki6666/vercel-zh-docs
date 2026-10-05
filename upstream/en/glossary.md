@@ -3,7 +3,7 @@ title: Glossary
 product: vercel
 url: /docs/glossary
 canonical_url: "https://vercel.com/docs/glossary"
-last_updated: 2026-07-29
+last_updated: 2026-09-18
 type: reference
 prerequisites:
   []
@@ -27,20 +27,20 @@ A full glossary of terms used in Vercel's products and documentation.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Introduction](https://turborepo.dev/docs?from=related) — Learn what Turborepo is, how it solves monorepo scaling problems, and how to navigate the documentation.
-- [Structuring a repository](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository?from=related) — Set up a multi-package workspace with the directory structure, package.json files, and lockfile that Turborepo expects.
-- [Add to an existing repository](https://turborepo.dev/docs/getting-started/add-to-existing-repository?from=related) — Incrementally adopt Turborepo in an existing single-package or multi-package repository.
-- [Single-package workspaces](https://turborepo.dev/docs/guides/single-package-workspaces?from=related) — Use Turborepo's caching and task parallelization in a standalone application without a monorepo.
-- [Recursive `turbo` invocations](https://turborepo.dev/docs/messages/recursive-turbo-invocations?from=related) — How to fix infinite loops caused by package.json scripts that recursively invoke `turbo`.
-- [Vercel vs Webflow Cloud](https://vercel.com/kb/guide/vercel-vs-webflow-cloud?from=related) — Compare Vercel and Webflow Cloud for deploying Next.js and Astro apps, including runtime, framework support, storage, pr
-- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
-- [Runtimes](https://vercel.com/docs/functions/runtimes?from=related) — Runtimes transform your source code into Functions, which are served by our CDN. Learn about the official runtimes suppo
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Introduction](https://turborepo.dev/docs?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — Learn what Turborepo is, how it solves monorepo scaling problems, and how to navigate the documentation.
+- [Structuring a repository](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — Set up a multi-package workspace with the directory structure, package.json files, and lockfile that Turborepo expects.
+- [Add to an existing repository](https://turborepo.dev/docs/getting-started/add-to-existing-repository?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — Incrementally adopt Turborepo in an existing single-package or multi-package repository.
+- [Single-package workspaces](https://turborepo.dev/docs/guides/single-package-workspaces?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — Use Turborepo's caching and task parallelization in a standalone application without a monorepo.
+- [Recursive `turbo` invocations](https://turborepo.dev/docs/messages/recursive-turbo-invocations?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — How to fix infinite loops caused by package.json scripts that recursively invoke `turbo`.
+- [s1ngularity: supply chain attack in Nx packages](https://vercel.com/changelog/s1ngularity-supply-chain-attack-in-nx-packages?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related)
+- [Vercel Pricing](https://vercel.com/pricing?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — Choose a Vercel plan and compare features and usage pricing.
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related)
+- [How to handle order-ahead traffic spikes on Vercel](https://vercel.com/kb/guide/handle-order-ahead-traffic-spikes-on-vercel?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — Order-ahead traffic spikes hit the same routes every lunch hour. Learn how to scale, cache, queue, and test a restaurant
+- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
+- [Application authentication on Vercel](https://vercel.com/kb/guide/application-authentication-on-vercel?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — Secure application authentication on Vercel across layers: proxy checks, the Data Access Layer, PPR-safe rendering, and
+- [Projects overview](https://vercel.com/docs/projects?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=related) — A project is where you deploy and operate frontend apps, APIs, backends, containers, and agent workloads on Vercel.
 
-Full cross-link map for this page: [/docs/glossary.graph.md](/docs/glossary.graph.md)
+Full cross-link map for this page: [/docs/glossary.graph.md](/docs/glossary.graph.md?from=related&source_path=%2Fdocs%2Fglossary&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## A
@@ -287,7 +287,7 @@ Automatic connection between your Git repository (GitHub, GitLab, Bitbucket, Azu
 
 ### Global Config
 
-A global data store that enables ultra-fast data reads in the region closest to the user (within 15ms at P99, often less than 1ms) for configuration data like feature flags.
+A global data store for configuration data like feature flags. Reads on Vercel typically complete in less than a millisecond, with [latency depending on your application's usage patterns](/docs/global-config#read-latency).
 
 ## H
 
@@ -419,7 +419,7 @@ Tools that install your project's dependencies. Vercel auto-detects npm, Yarn, p
 
 ### Password Protection
 
-A deployment protection method that restricts access to deployments using a password, available on Enterprise plans or through the Advanced Deployment Protection add-on for Pro plans.
+A deployment protection method that restricts access using a password. Pro teams pay $20 per month for each protected project. Enterprise includes Team Level Password Protection for every project, while existing Pro teams with the legacy Advanced Deployment Protection package retain team-level coverage for $150 per month per team. See [Usage & Pricing for Deployment Protection](/docs/deployment-protection/usage-and-pricing) for the full plan comparison.
 
 ### Plans
 
@@ -487,15 +487,15 @@ HTTP responses that tell clients to make a new request to a different URL, usefu
 
 ### Redis
 
-An in-memory key-value store connected to your Vercel project through the [Vercel Marketplace](#vercel-marketplace), provisioned from providers such as Upstash. Replaces the deprecated Vercel KV. See [Redis on Vercel](/docs/redis).
+An in-memory key-value store connected to your Vercel project through the [Vercel Marketplace](#vercel-marketplace), provisioned from providers such as Upstash. See [Redis on Vercel](/docs/redis).
 
 ### Region
 
-Geographic locations where Vercel can run your functions and store data. Vercel has 20 compute-capable regions globally.
+Geographic locations where Vercel can run your functions and store data. Vercel has 19 compute-capable regions globally.
 
 ### Release Phases
 
-The stages a Vercel product passes through before becoming generally available: Alpha (under development), Beta (pre-GA without an SLA), Private Beta (under NDA), Limited Beta (publicly announced with gated access), and General Availability (GA). See [Release Phases](/docs/release-phases).
+The stages a Vercel product passes through before becoming generally available: Alpha (under development), Beta (pre-GA without an SLA), Private Beta (under NDA), Limited Beta (publicly announced with gated access), Public Beta (available without special invitation), and General Availability (GA). See [Release Phases](/docs/release-phases).
 
 ### Repository
 
@@ -599,7 +599,7 @@ A high-performance build system for monorepos that provides fast incremental bui
 
 ### Two-factor Authentication (2FA)
 
-An additional login verification step using either an authenticator app for time-based one-time passwords or a passkey through a WebAuthN-compatible device. You can configure recovery codes to regain access if you lose your second factor. See [Two-factor authentication](/docs/two-factor-authentication).
+An additional login verification step using either an authenticator app for time-based one-time passwords or a passkey through a WebAuthn-compatible device. You can configure recovery codes to regain access if you lose your second factor. See [Two-factor authentication](/docs/two-factor-authentication).
 
 ## V
 

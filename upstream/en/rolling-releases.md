@@ -3,7 +3,7 @@ title: Rolling Releases
 product: vercel
 url: /docs/rolling-releases
 canonical_url: "https://vercel.com/docs/rolling-releases"
-last_updated: 2026-06-30
+last_updated: 2026-09-15
 type: conceptual
 prerequisites:
   []
@@ -19,7 +19,9 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Rolling Releases
 
-> **🔒 Permissions Required**: Rolling Releases
+> **Availability**: Rolling Releases are available on Enterprise and Pro plans
+
+Rolling Releases allow you to roll out new deployments to a small fraction of your users before promoting them to everyone.
 
 
 <!-- docsgraph:related -->
@@ -27,21 +29,21 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Implementing Blue-Green Deployments on Vercel](https://vercel.com/kb/guide/blue_green_deployments_on_vercel?from=related) — This guide outlines how to implement blue-green deployments on Vercel, leveraging GitHub Actions for seamless and contro
-- [Connection Pooling with Vercel Functions](https://vercel.com/kb/guide/connection-pooling-with-functions?from=related) — Learn best practices for connecting to relational databases with Vercel Functions and Fluid compute
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [How to gradually roll out new versions of your backend](https://vercel.com/kb/guide/how-to-gradually-roll-out-new-versions-of-your-backend?from=related) — Incrementally release updates to your backend to minimize impact of mistakes.
-- [Implementing Canary Deployments on Vercel](https://vercel.com/kb/guide/implementing_canary_deployments_on_vercel?from=related) — This guide explains how to set up canary deployments on Vercel, enabling developers to gradually roll out new versions t
-- [Complete the rolling release for the project](https://vercel.com/docs/rest-api/rolling-release/complete-the-rolling-release-for-the-project?from=related)
-- [Rollback Production](https://vercel.com/docs/deployments/rollback-production-deployment?from=related) — Recover from a bad production deployment by rolling back, investigating the root cause, and redeploying a fix.
-- [Audit Logs](https://vercel.com/docs/audit-log?from=related) — Learn how to track and analyze your team members' activities.
-- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [Rolling Releases are now generally available](https://vercel.com/changelog/rolling-releases-are-now-generally-available?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related)
+- [Implementing Blue-Green Deployments on Vercel](https://vercel.com/kb/guide/blue_green_deployments_on_vercel?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — This guide outlines how to implement blue-green deployments on Vercel, leveraging GitHub Actions for seamless and contro
+- [Connection Pooling with Vercel Functions](https://vercel.com/kb/guide/connection-pooling-with-functions?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — Learn best practices for connecting to relational databases with Vercel Functions and Fluid compute
+- [How to gradually roll out new versions of your backend](https://vercel.com/kb/guide/how-to-gradually-roll-out-new-versions-of-your-backend?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — Incrementally release updates to your backend to minimize impact of mistakes.
+- [Implementing Canary Deployments on Vercel](https://vercel.com/kb/guide/implementing_canary_deployments_on_vercel?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — This guide explains how to set up canary deployments on Vercel, enabling developers to gradually roll out new versions t
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Releasing safe and cost-efficient blue-green deployments](https://vercel.com/blog/releasing-safe-and-cost-efficient-blue-green-deployments?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related)
+- [Scale to one: How Fluid solves cold starts](https://vercel.com/blog/scale-to-one-how-fluid-solves-cold-starts?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related)
+- [The real serverless compute to database connection problem, solved](https://vercel.com/blog/the-real-serverless-compute-to-database-connection-problem-solved?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related)
+- [Rolling Releases](https://vercel.com/docs/agent-resources/vercel-mcp/tools/rolling-releases?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — Vercel MCP tools for rolling releases.
+- [Audit Logs](https://vercel.com/docs/audit-log?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — Learn how to track and analyze your team members' activities.
+- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
 
-Full cross-link map for this page: [/docs/rolling-releases.graph.md](/docs/rolling-releases.graph.md)
+Full cross-link map for this page: [/docs/rolling-releases.graph.md](/docs/rolling-releases.graph.md?from=related&source_path=%2Fdocs%2Frolling-releases&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Rolling Releases allow you to roll out new deployments to a small fraction of your users before promoting them to everyone.
 
 Vercel offers Rolling Releases on Pro and Enterprise. Pro teams can use Rolling Releases for one project. Enterprise limits are custom.
 
@@ -94,9 +96,9 @@ a new rolling release. This includes:
 
 The rolling release will proceed to its first stage, sending a portion of traffic to the release candidate.
 
-If a rolling release is in progress when one of the **promote** actions triggers, the project's
+If a rolling release is in progress when one of the **promote** actions triggers for a different deployment, the project's
 state won't change. The active rolling release must be resolved (either completed or aborted) before starting
-a new one.
+a new one. Promoting the current release candidate while its rolling release is in progress completes the rollout to 100%.
 
 #### CI/CD pipelines
 
@@ -263,7 +265,7 @@ To stop an active rolling release programmatically, use one of these approaches:
 
 2. **Promote the canary to 100%:** Call `POST /v1/projects/{idOrName}/rolling-release/complete`. The canary deployment then serves all production traffic and the rolling release is complete.
 
-If you disable Rolling Releases via the config endpoint (PATCH or DELETE) while a rolling release is in progress, the config change alone does not stop the current rolling release—it only affects future deployments. After disabling, you must still call the complete endpoint or the rollback endpoint to resolve the active rolling release.
+If you disable Rolling Releases via the config endpoint (PATCH or DELETE) while a rolling release is in progress, the config change alone does not stop the current rolling release. It only affects future deployments. After disabling, you must still call the complete endpoint or the rollback endpoint to resolve the active rolling release.
 
 For detailed API specifications, request/response schemas, and code examples:
 

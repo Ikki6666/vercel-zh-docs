@@ -3,23 +3,25 @@ title: Spend Management
 product: vercel
 url: /docs/spend-management
 canonical_url: "https://vercel.com/docs/spend-management"
-last_updated: 2026-07-15
+last_updated: 2026-09-18
 type: how-to
 prerequisites:
   []
 related:
-  - /docs/limits
   - /docs/plans/pro-plan
+  - /docs/plans/enterprise
+  - /docs/pricing/flex-commit
+  - /docs/limits
   - /docs/pricing
-  - /docs/rbac/access-roles
-  - /docs/notifications
 summary: Learn how to get notified about your account spend and configure a webhook.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Spend Management
 
-> **🔒 Permissions Required**: Spend Management
+> **Availability**: Spend Management is available on Enterprise and Pro plans (Enterprise teams require the Flexible Commitment plan)
+
+Spend management is a way for you to notify or to automatically take action on your account when your team hits a [set spend amount](#what-does-spend-management-include). The actions you can take are:
 
 
 <!-- docsgraph:related -->
@@ -27,37 +29,43 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Pause your project](https://vercel.com/kb/guide/pause-your-project?from=related) — Use a webhook to pause your project based on spend management.
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
-- [Vercel vs Northflank](https://vercel.com/kb/guide/vercel-vs-northflank?from=related) — A detailed guide to Vercel vs Northflank: Fluid compute, CDN and caching, security defaults, AI infrastructure, GPU comp
-- [Observability and Spend](https://vercel.com/docs/ai-gateway/observability-and-spend?from=related) — Monitor AI Gateway requests and manage spend: observability, custom reporting, usage and billing APIs, and spending budg
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Plans](https://vercel.com/docs/plans?from=related) — Learn about the different plans available on Vercel.
-- [Managing projects](https://vercel.com/docs/projects/managing-projects?from=related) — Learn how to manage your projects through the Vercel Dashboard.
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
+- [Spend Management expands to Enterprise Flexible Commitment plans](https://vercel.com/changelog/spend-management-enterprise-flex?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related)
+- [Pause your project](https://vercel.com/kb/guide/pause-your-project?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related) — Use a webhook to pause your project based on spend management.
+- [How to reduce Vercel Image Optimization costs](https://vercel.com/kb/guide/reduce-image-optimization-costs-on-vercel?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related) — Learn how to reduce Vercel Image Optimization costs in Next.js by tuning cache TTLs, image sizes, formats, and quality.
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs CDN infrastructure layer, covering framework su
+- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
+- [Spend Management now available for Pro users](https://vercel.com/changelog/spend-management-now-available-for-pro-users?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related)
+- [Spend Management now pauses production deployments by default](https://vercel.com/changelog/spend-management-now-pauses-production-deployments-by-default?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related)
+- [Improved hard caps for Spend Management](https://vercel.com/changelog/improved-hard-caps-for-spend-management?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related)
+- [Spend Management now enabled by default on Pro](https://vercel.com/changelog/spend-management-now-enabled-by-default-on-pro?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related)
+- [Account Plans on Vercel](https://vercel.com/docs/plans?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related) — Learn about the different plans available on Vercel.
+- [Billing FAQ for Pro Plan](https://vercel.com/docs/plans/pro-plan/billing?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
 
-Full cross-link map for this page: [/docs/spend-management.graph.md](/docs/spend-management.graph.md)
+Full cross-link map for this page: [/docs/spend-management.graph.md](/docs/spend-management.graph.md?from=related&source_path=%2Fdocs%2Fspend-management&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Spend management is a way for you to notify or to automatically take action on your account when your team hits a [set spend amount](#what-does-spend-management-include). The actions you can take are:
 
 - [Receive a notification](/docs/spend-management#managing-alert-threshold-notifications)
 - [Trigger a webhook](/docs/spend-management#configuring-a-webhook)
 - [Pause the production deployment of all your projects](/docs/spend-management#pausing-projects)
 
-  > **💡 Note:** Setting a spend amount does not automatically stop usage. If you want to pause
-  > all your projects at a certain amount, you must [enable the
-  > option](#pausing-projects).
+  > **💡 Note:** Setting a spend amount does not stop usage on its own. To stop incurring
+  > costs above your spend amount, turn on [**Pause Production
+  > Deployments**](#pausing-projects) so Vercel pauses your projects when the
+  > amount is reached.
 
-The spend amount is set per billing cycle.
+Spend Management is available at no additional cost to [Pro](/docs/plans/pro-plan) teams and to [Enterprise](/docs/plans/enterprise) teams on the [Flexible Commitment](/docs/pricing/flex-commit) plan.
 
-Setting the amount halfway through a billing cycle considers your current spend. You can increase or decrease your spend amount as needed. If you configure it below the current monthly spend, Spend Management will trigger any configured actions (including pausing all projects).
+The spend amount, shown as **On-Demand Budget** in your billing settings, is set per billing cycle.
+
+Setting the amount halfway through a billing cycle considers your current spend. You can increase or decrease your spend amount as needed. If you configure it below the current monthly spend, Spend Management will trigger any configured actions (including pausing all projects) on its [next check](#how-vercel-checks-your-spend-amount).
 
 ## What does Spend Management include?
 
-The spend amount that you set covers [metered resources](/docs/limits#additional-resources) that go beyond your Pro plan [credits and usage allocation](/docs/plans/pro-plan#credit-and-usage-allocation) for all projects on your team.
+The spend amount applies to [metered resources](/docs/limits#additional-resources) used by all projects on your team. What counts toward it depends on your plan:
+
+- **Pro**: metered usage that goes beyond your Pro plan [monthly credit](/docs/plans/pro-plan#monthly-credit)
+- **Enterprise on Flexible Commitment**: the metered usage that draws down from your prepaid balance
 
 It **does not** include seats, integrations (such as Marketplace), or separate [add-ons](/docs/pricing#pro-plan-add-ons), which Vercel charges on a monthly basis.
 
@@ -69,28 +77,28 @@ Because these checks are not continuous, notifications, webhooks, and project pa
 
 ## Managing your spend amount
 
-1. To enable spend management, you must have an [Owner](/docs/rbac/access-roles#owner-role) or [Billing](/docs/rbac/access-roles#billing-role) role on your [Pro](/docs/plans/pro-plan) team
+1. To enable spend management, you must have an [Owner](/docs/rbac/access-roles#owner-role) or [Billing](/docs/rbac/access-roles#billing-role) role on your team
 2. From your team's [dashboard](/dashboard), open **Settings** in the sidebar
 3. Select [**Billing**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fbilling\&title=Go+to+Billing) from the list
 4. Under **Spend Management**, toggle the switch to enabled:
 
-![Image](https://vercel.com/docs-assets/static/docs/concepts/teams/spend-manage-light.png)
+![Spend Management section with toggle enabled.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/teams/spend-manage-light.png)
 
-5. Set the amount in USD at which you would like to receive a notification or trigger an action
+5. Set the **On-Demand Budget** amount in USD at which you would like to receive a notification or trigger an action
 6. Select the action(s) to happen when your spend amount is reached: [pause all your projects](#pausing-projects), [send notifications](#managing-alert-threshold-notifications), or [trigger a webhook URL](#configuring-a-webhook)
 
 ## Managing alert threshold notifications
 
 When you set a spend amount, Vercel automatically enables web and email notifications for your team. These get triggered when spending on your team reaches **50%, 75%, and 100%** of the spend amount. You can also receive [SMS notifications](/docs/spend-management#sms-notifications) when your team reaches **100%** of the spend amount. To manage your notifications:
 
-1. You must have an [Owner](/docs/rbac/access-roles#owner-role) or [Billing](/docs/rbac/access-roles#billing-role) role on your [Pro](/docs/plans/pro-plan) team
+1. You must have an [Owner](/docs/rbac/access-roles#owner-role) or [Billing](/docs/rbac/access-roles#billing-role) role on your team
 2. From your team's [dashboard](/dashboard), open **Settings** in the sidebar
 3. Select **My Notifications** from the list
 4. Under **Team**, ensure that **Spend Management** is selected
 5. Select the  icon and select the thresholds for which you would like to receive web and email notification, as described in [Notifications](/docs/notifications)
 6. Repeat the previous step for the Web, Email, and SMS notification sections
 
-   > **💡 Note:** Following these steps only configures  notifications. Team members
+   > **💡 Note:** Following these steps only configures **your** notifications. Team members
    > with the Owner or Billing role can configure their own preferences
 
 ### SMS notifications
@@ -99,7 +107,7 @@ In addition to web and email notifications, you can enable SMS notifications for
 
 To enable SMS notifications:
 
-1. You must have an [Owner](/docs/rbac/access-roles#owner-role) or [Billing](/docs/rbac/access-roles#billing-role) role on your [Pro](/docs/plans/pro-plan) team. Note that following these steps only configures **your** SMS notifications. Each member with an Owner or Billing role can configure their own SMS notifications for Spend Management
+1. You must have an [Owner](/docs/rbac/access-roles#owner-role) or [Billing](/docs/rbac/access-roles#billing-role) role on your team. Note that following these steps only configures **your** SMS notifications. Each member with an Owner or Billing role can configure their own SMS notifications for Spend Management
 2. Set your [spend amount](#managing-your-spend-amount)
 3. From your team's [dashboard](/dashboard), open **Settings** in the sidebar
 4. Select **My Notifications** from the list, scroll to **SMS** at the bottom of the page and toggle the switch to Enabled. If your personal profile has a phone number associated with it, SMS notifications will be enabled by default
@@ -108,14 +116,16 @@ To enable SMS notifications:
 
 ## Pausing projects
 
-Vercel provides an option to automatically pause the production deployment for all of your projects when your spend amount is reached.
+Vercel provides an option to automatically pause the production deployment for all of your projects when your spend amount is reached. While paused, your production deployments stop serving traffic: your websites, APIs, and functions are unavailable to visitors until you resume each project.
 
 1. In the **Spend Management** section of your team's settings, enable and set your [spend amount](#managing-your-spend-amount)
-2. Ensure the **Pause production deployment** switch is **Enabled**
+2. Ensure the **Pause Production Deployments** switch is **Enabled**
 3. Confirm the action by entering the team name and select **Continue**. Your changes save automatically
 4. When your team reaches the spend amount, Vercel automatically pauses the production deployment for **all projects** on your team
 
 > **💡 Note:** Pausing is not instantaneous. Because Vercel [checks your spend](#how-vercel-checks-your-spend-amount) every few minutes, projects can keep serving traffic and accruing usage for several minutes after you cross the spend amount.
+
+Pausing only affects production deployments. It does not stop [AI Gateway](/docs/ai-gateway) API key usage or v0 usage billed to your team, which continue to count toward your spend amount.
 
 When visitors access your production deployment while it is paused, they will see a [503 DEPLOYMENT\_PAUSED error](/docs/errors/deployment_paused).
 
@@ -129,15 +139,12 @@ Projects won't automatically unpause if you increase the spend amount, you must 
 
 You can configure a webhook URL to trigger events such as serving a static version of your site, [pausing a project](/docs/projects#pausing-a-project), or sending a Slack notification.
 
-Vercel will send a [HTTPS POST request](#webhook-payload) to the URL that you provide when the following events happen:
-
-- [When a spend amount reaches 100%](#spend-amount)
-- [At the end of your billing cycle](#end-of-billing-cycle)
+Vercel will send a [HTTPS POST request](#webhook-payload) to the URL that you provide [when a spend amount reaches a threshold](#spend-amount).
 
 To configure a webhook for spend management:
 
 1. In the **Spend Management** section of your team's settings, set your [spend amount](#managing-your-spend-amount)
-2. Enter the webhook URL for the endpoint that will receive a POST request. In order to be accessible, make sure your endpoints are public
+2. Enter the webhook URL for the endpoint that will receive a POST request. To be accessible, make sure your endpoints are public
 3. Secure your webhooks by comparing the [`x-vercel-signature`](/docs/headers/request-headers#x-vercel-signature) request header to the SHA that is generated when you save your webhook. To learn more, see the [securing webhooks](/docs/webhooks/webhooks-api#securing-webhooks) documentation
 
 ### Webhook payload
@@ -148,12 +155,12 @@ The webhook URL receives an HTTP POST request with the following JSON payload fo
 
 Sent when the team hits 50%, 75%, and 100% of their spend amount. For budgets created before September 2025, this is only sent at 100%.
 
-| Parameters         | Type                              | Description                                                                                                                                                                                   |
-| ------------------ | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `budgetAmount`     |     | The [spend amount](/docs/spend-management#managing-your-spend-amount) that you have set                                                                                                       |
-| `currentSpend`     |     | The [total cost](/docs/spend-management#managing-your-spend-amount) that your team [has accrued](/docs/spend-management#what-does-spend-management-include) during the current billing cycle. |
-| `teamId`           |  | Your Vercel Team ID                                                                                                                                                                           |
-| `thresholdPercent` |     | The percentage of the total budget amount for the threshold that triggered this alert                                                                                                         |
+| Parameters         | Type                              | Description                                                                                                                                                                                    |
+| ------------------ | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `budgetAmount`     | int    | The [spend amount](/docs/spend-management#managing-your-spend-amount) that you have set                                                                                                        |
+| `currentSpend`     | int    | The [total cost](/docs/spend-management#managing-your-spend-amount) that your team [has accrued](/docs/spend-management#what-does-spend-management-include) during the current billing cycle. |
+| `teamId`           | string | Your Vercel Team ID                                                                                                                                                                            |
+| `thresholdPercent` | int    | The percentage of the total budget amount for the threshold that triggered this alert                                                                                                          |
 
 ```json filename="webhook-payload.json"
 {
@@ -161,22 +168,6 @@ Sent when the team hits 50%, 75%, and 100% of their spend amount. For budgets cr
   "currentSpend": 500,
   "teamId": "team_jkT8yZ3oE1u6xLo8h6dxfNc3",
   "thresholdPercent": 100
-}
-```
-
-### End of billing cycle
-
-Sent when the billing cycle ends. You can use this event to resume paused projects.
-
-| Parameters | Type                              | Description         |
-| ---------- | --------------------------------- | ------------------- |
-| `teamId`   |  | Your Vercel Team ID |
-| `type`     |  | The type of event   |
-
-```json filename="webhook-payload.json"
-{
-  "teamId": "team_jkT8yZ3oE1u6xLo8h6dxfNc3",
-  "type": "endOfBillingCycle"
 }
 ```
 

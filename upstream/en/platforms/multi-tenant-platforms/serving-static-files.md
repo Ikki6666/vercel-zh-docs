@@ -3,7 +3,7 @@ title: Serving Static Files
 product: vercel
 url: /docs/platforms/multi-tenant-platforms/serving-static-files
 canonical_url: "https://vercel.com/docs/platforms/multi-tenant-platforms/serving-static-files"
-last_updated: 2026-07-28
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/platforms/multi-tenant-platforms
@@ -26,33 +26,31 @@ Multi-tenant applications need tenant-specific versions of static files like `ro
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to serve documentation for agents](https://vercel.com/kb/guide/how-to-serve-documentation-for-agents?from=related) — Learn how to serve markdown to agents and HTML for humans from the same URL
-- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn?from=related) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
-- [How can I use files in Vercel Functions?](https://vercel.com/kb/guide/how-can-i-use-files-in-serverless-functions?from=related) — Learn how to import files inside Serverless Functions on Vercel.
-- [Proxy and Routing](https://vercel.com/docs/platforms/multi-tenant-platforms/middleware-and-routing?from=related) — Resolve tenants and route requests by subdomain, custom domain, or path using Next.js Proxy on Vercel.
-- [Concepts](https://vercel.com/docs/platforms/multi-tenant-platforms/concepts?from=related) — Understand tenants, domains, routing, and architecture for building multi-tenant applications on Vercel for Platforms.
-- [Custom Subpaths](https://vercel.com/docs/platforms/multi-tenant-platforms/custom-subpaths?from=related) — Host platform content on custom subpaths of customer domains while maintaining a single Next.js application.
-- [Overview](https://vercel.com/docs/cdn?from=related) — Vercel's CDN is a globally distributed platform that handles routing, caching, security, and compression for every deplo
-- [Features](https://vercel.com/docs/build-output-api/features?from=related) — Learn how to implement common Vercel platform features through the Build Output API.
+- [How do I generate a “sitemap.xml” for my Next.js app on Vercel?](https://vercel.com/kb/guide/how-do-i-generate-a-sitemap-for-my-nextjs-app-on-vercel?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Guidance on how to generate a "sitemap.xml" at build time and runtime.
+- [How to Load Data from a File in Next.js](https://vercel.com/kb/guide/loading-static-file-nextjs-api-route?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Learn how to display and read the contents of a static json file in your Next.js application.
+- [How can I share my Vercel cache across deployments?](https://vercel.com/kb/guide/share-vercel-cache-across-deployments-nextjs?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Learn how to reuse cached responses across deployments with the Next.js App Router and the Vercel Data Cache.
+- [How can I use files in Vercel Functions?](https://vercel.com/kb/guide/how-can-i-use-files-in-serverless-functions?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Learn how to import files inside Serverless Functions on Vercel.
+- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
+- [Proxy and Routing](https://vercel.com/docs/platforms/multi-tenant-platforms/proxy-and-routing?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Resolve tenants and route requests by subdomain, custom domain, or path using Next.js Proxy on Vercel.
+- [Multi-Tenant Platform Concepts](https://vercel.com/docs/platforms/multi-tenant-platforms/concepts?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Understand tenants, domains, routing, and architecture for building multi-tenant applications on Vercel for Platforms.
+- [Nuxt on Vercel](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Deploy Nuxt applications to Vercel and configure rendering, functions, middleware, routing, image optimization, and cach
+- [Features](https://vercel.com/docs/build-output-api/features?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=related) — Learn how to implement common Vercel platform features through the Build Output API.
 
-Full cross-link map for this page: [/docs/platforms/multi-tenant-platforms/serving-static-files.graph.md](/docs/platforms/multi-tenant-platforms/serving-static-files.graph.md)
+Full cross-link map for this page: [/docs/platforms/multi-tenant-platforms/serving-static-files.graph.md](/docs/platforms/multi-tenant-platforms/serving-static-files.graph.md?from=related&source_path=%2Fdocs%2Fplatforms%2Fmulti-tenant-platforms%2Fserving-static-files&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Next.js provides [built-in metadata file conventions](https://nextjs.org/docs/app/api-reference/file-conventions/metadata) for `robots.txt`, `sitemap.xml`, and other common files. Use route handlers when you need to serve files not covered by the metadata API, like `llms.txt` or custom discovery files.
 
 ## Route handler
 
-Create a route handler that resolves the tenant and returns the appropriate content:
+Create a route handler that resolves the tenant from the request hostname and returns the appropriate content:
 
-```ts filename="app/[domain]/robots.txt/route.ts"
+```ts filename="app/robots.txt/route.ts"
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ domain: string }> },
-) {
-  const { domain } = await params;
-  const tenant = await getTenant(domain);
+export async function GET(request: NextRequest) {
+  const hostname = request.headers.get('host') ?? '';
+  const tenant = await getTenant(hostname);
 
   if (!tenant) {
     return new NextResponse('Not found', { status: 404 });
@@ -76,6 +74,8 @@ Sitemap: https://${tenant.domain}/sitemap.xml`;
 Your [Proxy](https://nextjs.org/docs/app/getting-started/proxy) must allow static file paths to reach route handlers instead of rewriting them:
 
 ```ts filename="proxy.ts"
+import { NextRequest, NextResponse } from 'next/server';
+
 const STATIC_FILE_PATHS = [
   '/robots.txt',
   '/sitemap.xml',

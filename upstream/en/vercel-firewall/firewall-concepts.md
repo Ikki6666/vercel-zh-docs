@@ -3,7 +3,7 @@ title: Firewall concepts
 product: vercel
 url: /docs/vercel-firewall/firewall-concepts
 canonical_url: "https://vercel.com/docs/vercel-firewall/firewall-concepts"
-last_updated: 2026-06-16
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/vercel-firewall
@@ -12,7 +12,7 @@ related:
   - /docs/vercel-firewall/vercel-waf
   - /docs/vercel-firewall/vercel-waf/custom-rules
   - /docs/vercel-firewall
-  - /docs/manage-cdn-usage
+  - /docs/drains
 summary: Understand the fundamentals behind the Vercel Firewall.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -21,44 +21,46 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## How Vercel secures requests
 
+To safeguard your application against malicious activity, Vercel's platform-wide firewall is the first line of defense, inspecting requests as they arrive at Vercel's CDN. Once a request passes this layer, [deployment protection](/docs/deployment-protection) checks whether it can continue based on access rules set at the level of your project.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
-- [How to Utilize Vercel’s Bot Management Features](https://vercel.com/kb/guide/how-to-utilize-vercels-bot-management-features?from=related) — A practical, step-by-step guide to identifying unwanted automated traffic and securing your Vercel apps with Bot Protect
-- [How to protect your AI endpoints with Vercel BotID](https://vercel.com/kb/guide/protect-ai-endpoints-with-vercel-botid?from=related) — Gate every request to your AI endpoints with Vercel BotID and checkBotId\\(\\) so inference runs only for verified callers
-- [Vercel BotID vs Cloudflare Turnstile](https://vercel.com/kb/guide/vercel-botid-vs-cloudflare-turnstile?from=related) — Compare Vercel BotID and Cloudflare Turnstile for bot protection, including detection model, hosting requirements, check
-- [Supporting Compliance with Vercel WAF](https://vercel.com/kb/guide/supporting-compliance-with-vercel-waf?from=related) — Vercel Firewall provides edge-based traffic filtering and monitoring to help teams meet compliance requirements in secur
-- [Firewall Observability](https://vercel.com/docs/vercel-firewall/firewall-observability?from=related) — Learn how firewall traffic monitoring and alerts help you react quickly to potential security threats.
-- [DDoS Mitigation](https://vercel.com/docs/vercel-firewall/ddos-mitigation?from=related) — Learn how the Vercel Firewall mitigates against DoS and DDoS attacks
-- [Security](https://vercel.com/docs/cdn-security?from=related) — Learn how Vercel's CDN secures every request with HTTPS, TLS, DDoS mitigation, firewall protection, and security headers
-- [Overview](https://vercel.com/docs/security?from=related) — Vercel provides built-in and customizable features to ensure that your site is secure.
-- [Encryption & TLS](https://vercel.com/docs/cdn-security/encryption?from=related) — Learn how Vercel encrypts data in transit and at rest.
+- [Bot Protection is now generally available](https://vercel.com/changelog/bot-protection-is-now-generally-available?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [Bot Protection is now in public beta](https://vercel.com/changelog/bot-protection-is-now-in-public-beta?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [New firewall challenge metrics now available](https://vercel.com/changelog/new-firewall-challenge-metrics-now-available?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
+- [How to Utilize Vercel’s Bot Management Features](https://vercel.com/kb/guide/how-to-utilize-vercels-bot-management-features?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related) — A practical, step-by-step guide to identifying unwanted automated traffic and securing your Vercel apps with Bot Protect
+- [How to protect your AI endpoints with Vercel BotID](https://vercel.com/kb/guide/protect-ai-endpoints-with-vercel-botid?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related) — Gate every request to your AI endpoints with Vercel BotID and checkBotId\\(\\) so inference runs only for verified callers
+- [Protectd: Evolving Vercel’s always-on denial-of-service mitigations](https://vercel.com/blog/protectd-evolving-vercels-always-on-denial-of-service-mitigations?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [Life of a Vercel request: Securing your app's traffic with Vercel](https://vercel.com/blog/life-of-a-request-securing-your-apps-traffic-with-vercel?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [Preventing infrastructure abuse with Vercel Firewall](https://vercel.com/blog/preventing-infrastructure-abuse-with-vercel-firewall?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [Vercel security roundup: improved bot defenses, DoS mitigations, and insights](https://vercel.com/blog/vercel-security-roundup-improved-bot-defenses-dos-mitigations-and-insights?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [Vercel security roundup: Faster defenses and better visibility for your apps](https://vercel.com/blog/vercel-security-roundup-faster-defenses-and-better-visibility-for-your-apps?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related)
+- [Firewall Observability](https://vercel.com/docs/vercel-firewall/firewall-observability?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=related) — Learn how firewall traffic monitoring and alerts help you react quickly to potential security threats.
 
-Full cross-link map for this page: [/docs/vercel-firewall/firewall-concepts.graph.md](/docs/vercel-firewall/firewall-concepts.graph.md)
+Full cross-link map for this page: [/docs/vercel-firewall/firewall-concepts.graph.md](/docs/vercel-firewall/firewall-concepts.graph.md?from=related&source_path=%2Fdocs%2Fvercel-firewall%2Ffirewall-concepts&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-To safeguard your application against malicious activity, Vercel's platform-wide firewall is the first line of defense, inspecting requests as they arrive at Vercel's CDN. Once a request passes this layer, [deployment protection](/docs/deployment-protection) checks whether it can continue based on access rules set at the level of your project.
 
 If allowed to go through, the request is subject to the rules that you configured with the [Web Application Firewall (WAF)](/docs/vercel-firewall/vercel-waf) at the level of your project. If the request is not blocked by the WAF rules, your deployment can process and serve it.
 
 If you [enabled a persistent action](/docs/vercel-firewall/vercel-waf/custom-rules#persistent-actions) for a WAF rule and it blocks the request, the source IP address is stored in the platform firewall so that future requests from this source continue to be blocked for the specified time period. These future blocks happen at the level of the platform-wide firewall.
 
-![Image](`/docs-assets/static/docs/security/vercel-firewall-protection-concept-light.png`)
+![How Vercel protects every incoming request with multiple layers](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/vercel-firewall-protection-concept-light.png)
 
 ## Firewall actions
 
-The Vercel Firewall allows several possible actions to be taken when traffic matches a rule. These actions, that can be taken by custom rules or system DDoS mitigations, apply when detecting malicious traffic. You can view the actions and their results in the [Firewall and Monitoring](/docs/vercel-firewall#observability) tabs.
+The Vercel Firewall allows several possible actions to be taken when traffic matches a rule. These actions, that can be taken by custom rules or system DDoS mitigations, apply when detecting malicious traffic. You can view the actions and their results in the [**Firewall** and **Observability**](/docs/vercel-firewall#observability) sections of the dashboard.
 
 ### Log
 
 The log action allows you to monitor and record specific traffic patterns without affecting the request. When a request matches a rule with the log action:
 
 - The request is allowed to proceed normally.
-- Details about the request are logged and displayed in the Firewall and Monitoring tabs, and sent to log drains for analysis.
+- Details about the request are logged and displayed in the **Firewall** and **Observability** sections of the dashboard, and sent to [Drains](/docs/drains) for analysis.
 - There is no impact on the visitor's experience.
 
 This is useful for monitoring suspicious patterns or gathering data about specific types of traffic before implementing stricter actions.
@@ -69,7 +71,7 @@ The deny action blocks requests immediately when they match a rule. When a reque
 
 - A `403 Forbidden` response is returned.
 - The request does not reach your application.
-- The request does not incur [Edge Requests](/docs/manage-cdn-usage#edge-requests) or [Fast Data Transfer](/docs/manage-cdn-usage#fast-data-transfer).
+- The request does not incur [CDN Requests](/docs/manage-cdn-usage#cdn-requests) or [Fast Data Transfer](/docs/manage-cdn-usage#fast-data-transfer).
 
 This is the most restrictive action and you should use it for known malicious traffic patterns or IP addresses.
 
@@ -84,7 +86,7 @@ When the challenge action is applied:
 - ### Initial challenge
   During this process, visitors see a **Vercel Security Checkpoint** screen:
 
-  ![Image](https://vercel.com/docs-assets/static/docs/security/challenge-light.png)
+  ![Vercel challenge page](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/challenge-light.png)
   - The browser must execute JavaScript code to prove it's a real browser.
   - The code computes and submits a challenge solution.
   - The system validates browser characteristics to prevent automated tools from passing.
@@ -151,7 +153,7 @@ The goal of a Layer 7 (L7) DDoS attack is to crash and slow down software at the
 
 Vercel Firewall leverages [JA3](#ja3) and [JA4](#ja4) TLS fingerprints to identify and restrict malicious traffic. TLS fingerprints allow the unique identification of user sessions inspecting details in the Transport Layer Security (TLS) protocol initiation process.
 
-> **🔒 Permissions Required**: TLS Fingerprints
+> **Availability**: TLS Fingerprints are available on all plans
 
 ### TLS fingerprinting
 

@@ -3,16 +3,16 @@ title: Rewrites on Vercel
 product: vercel
 url: /docs/routing/rewrites
 canonical_url: "https://vercel.com/docs/routing/rewrites"
-last_updated: 2026-07-01
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/routing
 related:
   - /docs/project-configuration/vercel-json
+  - /docs/headers/request-headers
+  - /docs/environment-variables
   - /docs/caching/cache-control-headers
   - /docs/caching/cdn-cache/purge
-  - /docs/drains/using-drains
-  - /docs/observability/insights
 summary: Learn how to use rewrites to send users to different URLs without modifying the visible URL.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,19 +27,20 @@ A rewrite routes a request to a different destination without changing the URL i
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to enable CORS on Vercel](https://vercel.com/kb/guide/how-to-enable-cors?from=related) — Learn how to enable CORS on Vercel with vercel.json, Routing Middleware, framework config, and route handlers, plus how
-- [Manage cache tags for external origins](https://vercel.com/kb/guide/how-to-manage-cache-tags-for-external-origins?from=related) — Learn how to use cache tags to optimally serve fresh content on Vercel when content from your external origin changes
-- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
-- [rewrites](https://nextjs.org/docs/pages/api-reference/config/next-config-js/rewrites?from=related) — Add rewrites to your Next.js app.
-- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn?from=related) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
-- [How can I increase the limit of redirects or use dynamic redirects on Vercel?](https://vercel.com/kb/guide/how-can-i-increase-the-limit-of-redirects-or-use-dynamic-redirects-on-vercel?from=related) — Instructions on how to use Serverless Functions to handle redirects on Vercel.
-- [Redirects](https://vercel.com/docs/routing/redirects?from=related) — Learn how to use redirects on Vercel to instruct Vercel's platform to redirect incoming requests to a new URL.
-- [Configuration Redirects](https://vercel.com/docs/routing/redirects/configuration-redirects?from=related) — Learn how to define static redirects in your framework configuration or vercel.json with support for wildcards, pattern
-- [Incremental Migration](https://vercel.com/docs/incremental-migration?from=related) — Learn how to migrate your app or website to Vercel with minimal risk and high impact.
-- [Features](https://vercel.com/docs/build-output-api/features?from=related) — Learn how to implement common Vercel platform features through the Build Output API.
-- [Project Routing Rules](https://vercel.com/docs/routing/project-routing-rules?from=related) — Add redirects, rewrites, headers, and status codes to your project from the dashboard or API, without deploying new code
+- [Vercel CDN now respects Cache-Control headers from external origins by default](https://vercel.com/changelog/vercels-cdn-now-respects-cache-control-headers-from-external-origins-by-default?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related)
+- [How to enable CORS on Vercel](https://vercel.com/kb/guide/how-to-enable-cors?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Learn how to enable CORS on Vercel with vercel.json, Routing Middleware, framework config, and route handlers, plus how
+- [Manage cache tags for external origins](https://vercel.com/kb/guide/how-to-manage-cache-tags-for-external-origins?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Learn how to use cache tags to optimally serve fresh content on Vercel when content from your external origin changes
+- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
+- [rewrites](https://nextjs.org/docs/pages/api-reference/config/next-config-js/rewrites?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Add rewrites to your Next.js app.
+- [How can I increase the limit of redirects or use dynamic redirects on Vercel?](https://vercel.com/kb/guide/how-can-i-increase-the-limit-of-redirects-or-use-dynamic-redirects-on-vercel?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Instructions on how to use Serverless Functions to handle redirects on Vercel.
+- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
+- [Redirects and rewrites now available in Observability](https://vercel.com/changelog/redirects-and-rewrites-now-available-in-observability?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related)
+- [Life of a Vercel request: Application-aware routing](https://vercel.com/blog/life-of-a-request-application-aware-routing?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related)
+- [Redirects](https://vercel.com/docs/routing/redirects?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Learn how to use redirects on Vercel to instruct Vercel's platform to redirect incoming requests to a new URL.
+- [Configuration Redirects](https://vercel.com/docs/routing/redirects/configuration-redirects?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Learn how to define static redirects in your framework configuration or vercel.json with support for wildcards, pattern
+- [Incremental Migration to Vercel](https://vercel.com/docs/incremental-migration?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=related) — Learn how to migrate your app or website to Vercel with minimal risk and high impact.
 
-Full cross-link map for this page: [/docs/routing/rewrites.graph.md](/docs/routing/rewrites.graph.md)
+Full cross-link map for this page: [/docs/routing/rewrites.graph.md](/docs/routing/rewrites.graph.md?from=related&source_path=%2Fdocs%2Frouting%2Frewrites&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 There are two main types:
@@ -138,6 +139,56 @@ Example: Forward API requests to an external endpoint:
 ```
 
 A request to `/api/users` will be forwarded to `https://api.example.com/users` without changing the URL in the browser.
+
+### Identifying the visitor at your origin
+
+Vercel forwards [request headers](/docs/headers/request-headers) that identify the original visitor to your external origin. You don't need to add your own headers to pass this information along:
+
+| Header                                                                   | Value                                                     |
+| ------------------------------------------------------------------------ | --------------------------------------------------------- |
+| [`x-real-ip`](/docs/headers/request-headers#x-real-ip)                   | The public IP address of the visitor                      |
+| [`x-forwarded-for`](/docs/headers/request-headers#x-forwarded-for)       | The public IP address of the visitor                      |
+| [`x-forwarded-host`](/docs/headers/request-headers#x-forwarded-host)     | The host the visitor requested, such as your domain       |
+| [`x-forwarded-proto`](/docs/headers/request-headers#x-forwarded-proto)   | The protocol the visitor used, such as `https`            |
+
+If your origin sits behind its own load balancer or proxy, configure it to trust these headers only for requests that come from Vercel. See [restricting your origin to Vercel traffic](#restricting-your-origin-to-vercel-traffic).
+
+### Restricting your origin to Vercel traffic
+
+When Vercel proxies traffic to your origin, you usually want the origin to reject requests that bypass Vercel and hit it directly. To do this, have Vercel attach a secret request header on every rewrite, then check that header at your origin.
+
+1. Generate a long random value, for example with `openssl rand -hex 32`.
+
+2. Add it to your project as an [environment variable](/docs/environment-variables), such as `ORIGIN_SECRET`.
+
+3. Use a [`routes` transform](/docs/project-configuration/vercel-json#in-transforms) to set the header on requests that you rewrite to your origin:
+
+   ```json filename="vercel.json"
+   {
+     "$schema": "https://openapi.vercel.sh/vercel.json",
+     "routes": [
+       {
+         "src": "/(.*)",
+         "dest": "https://origin.example.com/$1",
+         "transforms": [
+           {
+             "type": "request.headers",
+             "op": "set",
+             "target": {
+               "key": "x-origin-secret"
+             },
+             "args": "$ORIGIN_SECRET",
+             "env": ["ORIGIN_SECRET"]
+           }
+         ]
+       }
+     ]
+   }
+   ```
+
+4. At your origin or load balancer, reject any request where `x-origin-secret` doesn't match the expected value. Use a timing-safe comparison when you check the value in application code.
+
+Because the `set` operation replaces any existing value, a visitor can't supply their own `x-origin-secret` header to get through. To rotate the secret, have your origin accept both the old and new values, update the environment variable, redeploy, and then remove the old value from your origin.
 
 ### Caching rewrites to external origins
 
@@ -330,6 +381,8 @@ You can capture and forward parts of a path using wildcards:
   ]
 }
 ```
+
+> **💡 Note:** Some redirects and rewrites configurations can accidentally become gateways for semantic attacks. Learn how to check and protect your configurations with the [Enhancing Security for Redirects and Rewrites guide](/kb/guide/enhancing-security-for-redirects-and-rewrites).
 
 A request to `/docs/getting-started/install` will be forwarded to `/help/getting-started/install`.
 

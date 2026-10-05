@@ -3,7 +3,7 @@ title: Queues concepts
 product: vercel
 url: /docs/queues/concepts
 canonical_url: "https://vercel.com/docs/queues/concepts"
-last_updated: 2026-06-30
+last_updated: 2026-09-10
 type: conceptual
 prerequisites:
   - /docs/queues
@@ -27,17 +27,15 @@ Vercel Queues is a durable event streaming system for asynchronous workloads. Yo
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
-- [Framework Integrations](https://workflow-sdk.dev/docs/how-it-works/framework-integrations?from=related) — Build a custom framework integration using the Workflow SDK compiler and runtime.
-- [Sending Emails from an application on Vercel](https://vercel.com/kb/guide/sending-emails-from-an-application-on-vercel?from=related) — SMTP is the harder path inside Vercel Functions. Learn how to send emails over an HTTP API, which Next.js pattern fits y
-- [Building an AI chat app with RAG and source citations on Vercel](https://vercel.com/kb/guide/building-ai-chat-app-with-rag-and-citations-on-vercel?from=related) — A production stack for AI chat with retrieval, reranking, source citations, and background ingestion on Vercel using Nex
-- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related) — Set up Vercel Queues with the SDK.
-- [Observability](https://vercel.com/docs/queues/observability?from=related) — Monitor queue throughput, message age, and consumer performance to optimize your queue-based workflows.
-- [Celery](https://vercel.com/docs/frameworks/backend/celery?from=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
-- [Build Queues](https://vercel.com/docs/builds/build-queues?from=related) — Understand how concurrency and same branch build queues manage multiple simultaneous deployments.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [ Run a Docker monolith with workers on Vercel](https://vercel.com/kb/guide/docker-monolith-workers-vercel?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=related) — Run a Dockerized monolith on Vercel with Container Images, move long-running workers to Vercel Queues and Vercel Workflo
+- [How to run background jobs in Next.js](https://vercel.com/kb/guide/how-to-run-background-jobs-in-nextjs-on-vercel?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=related) — Learn the durable way to run background jobs in Next.js on Vercel with the Workflow SDK, and when to reach for Queues or
+- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
+- [Framework Integrations](https://workflow-sdk.dev/docs/how-it-works/framework-integrations?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=related) — Build a custom framework integration using the Workflow SDK compiler and combined runtime handler.
+- [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=related)
+- [How to handle order-ahead traffic spikes on Vercel](https://vercel.com/kb/guide/handle-order-ahead-traffic-spikes-on-vercel?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=related) — Order-ahead traffic spikes hit the same routes every lunch hour. Learn how to scale, cache, queue, and test a restaurant
+- [Run background tasks with Celery on Vercel](https://vercel.com/docs/frameworks/backend/celery?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
 
-Full cross-link map for this page: [/docs/queues/concepts.graph.md](/docs/queues/concepts.graph.md)
+Full cross-link map for this page: [/docs/queues/concepts.graph.md](/docs/queues/concepts.graph.md?from=related&source_path=%2Fdocs%2Fqueues%2Fconcepts&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Queues is useful when you need to decouple request handling from background processing, absorb traffic spikes, and keep work reliable across function failures or deployment changes.
@@ -88,6 +86,14 @@ A topic is a durable, append-only log of messages. Producers publish messages to
 
 A consumer group is an independent subscriber to a topic. Each group tracks its own position in the log and processes messages at its own pace. Because groups are fully isolated, a slow or failing consumer in one group has no effect on any other.
 
+```mermaid
+flowchart LR
+    T["Topic<br/>(append-only log)"]
+    T --> CG1["Group A, position: 950"]
+    T --> CG2["Group B, position: 720"]
+    T --> CG3["Group C, position: 950"]
+```
+
 > **💡 Note:** In poll mode, you can add a new consumer group at any time. New groups start reading from the beginning of the topic, giving you access to all non-expired messages. This makes it straightforward to backfill data or add new processing pipelines without republishing. Push mode consumers are configured at deploy time and cannot be added dynamically. JavaScript and TypeScript projects define triggers in `vercel.json`. Python projects declare subscriber entrypoints in `pyproject.toml`.
 
 ### Scaling
@@ -98,13 +104,21 @@ Vercel manages partitioning and scaling for you. You don't need to pre-configure
 
 When Vercel Queues accepts a message, it guarantees the message can be consumed. Every message is synchronously written to **three separate availability zones** before the publish call returns. This means your message is fully replicated before your producer receives confirmation. Even if an entire availability zone goes down, the message is safe.
 
+```mermaid
+flowchart LR
+    P["Producer"] -->|"Publish"| Q["Queues"]
+    Q -->|"Replicate to 3 AZs"| Q
+    Q -->|"Acknowledged"| P
+    Q -->|"Deliver"| C["Consumer"]
+```
+
 After replication, the publish acknowledgment and consumer notification happen simultaneously. This means a consumer may receive and begin processing a message before the producer's publish call returns, depending on network latency.
 
 Once Vercel accepts a message, it retries delivery until the message is successfully processed or [expires](/docs/queues/pricing#limits). Vercel only removes a message from the topic after your consumer acknowledges it. If your consumer crashes, a deployment rolls out, or the function times out, Vercel redelivers the message automatically.
 
 ### At-least-once delivery
 
-Vercel Queues provides **at-least-once** delivery semantics. Every accepted message is delivered to each consumer group at least one time. In most cases, a message is delivered exactly once, but there are edge cases where a message may be delivered more than once:
+Vercel Queues provides **at-least-once** delivery semantics. Every accepted message is delivered to each consumer group at least one time, as long as it becomes visible before its retention period (TTL) expires. In most cases, a message is delivered exactly once, but there are edge cases where a message may be delivered more than once:
 
 - **Consumer timeouts**: If your function processes a message but doesn't acknowledge it before the visibility timeout expires, Vercel assumes the delivery failed and redelivers the message.
 - **Infrastructure events**: During rare events like availability zone failovers, a message that was already delivered may be redelivered.
@@ -117,6 +131,15 @@ When a message is delivered to a consumer, it becomes temporarily invisible to o
 
 If your consumer processes the message and acknowledges it before the timeout expires, the message is removed. If the consumer crashes, times out, or fails to acknowledge, the visibility timeout expires and the message becomes available for redelivery.
 
+```mermaid
+flowchart TD
+    Q["Queues"] -->|"Deliver"| C["Consumer"]
+    C -->|"Acknowledge"| Q2["Message removed"]
+    Q3["Queues"] -->|"Deliver"| C2["Consumer crashes"]
+    C2 -.-|"Timeout expires"| Q4["Message visible again"]
+    Q4 -->|"Redeliver"| C3["Consumer (deliveryCount + 1)"]
+```
+
 This is how Vercel Queues handles failures without manual intervention. You don't need to build retry infrastructure or monitor for stuck messages. If a Vercel Function crashes mid-processing or hits its execution time limit, the message automatically returns to the queue and gets delivered to the next available consumer.
 
 The default visibility timeout is **60 seconds**. You can configure it per receive request from 0 to 3,600 seconds (60 minutes). Setting it to `0` peeks at the message without leasing it. If your consumer needs more time mid-processing, you can extend the lease using the [ExtendLease](/docs/queues/api#extendlease) API.
@@ -124,6 +147,17 @@ The default visibility timeout is **60 seconds**. You can configure it per recei
 ## Message lifecycle
 
 A message moves through several states from the time it's published to when it's processed or expires:
+
+```mermaid
+flowchart TD
+    S["SendMessage"] --> P["Pending"]
+    P -->|"delay expires"| V["Visible"]
+    V -->|"ReceiveMessages"| IF["In-Flight (leased)"]
+    IF -->|"Acknowledge"| Done["Processed (removed)"]
+    IF -->|"ExtendLease"| IF
+    IF -->|"Lease expires"| V
+    V -->|"TTL expires"| Expired["Expired (deleted)"]
+```
 
 1. **SendMessage** writes the message. If a delay is configured, the message enters a pending state.
 2. Once the delay expires (or immediately if no delay), the message becomes **visible** to consumers.
@@ -137,7 +171,7 @@ See the [API reference](/docs/queues/api) for details on each operation.
 
 ## Regions and data residency
 
-Vercel Queues is available in all 20 [Vercel regions](/docs/regions). When you create a queue, you select a region, and your message data is persisted in that region. The three-zone replication described in [Durability](#durability) happens across availability zones within your selected region.
+Vercel Queues is available in all 19 [Vercel regions](/docs/regions). When you create a queue, you select a region, and your message data is persisted in that region. The three-zone replication described in [Durability](#durability) happens across availability zones within your selected region.
 
 Choose a region close to your producers and consumers to minimize latency. If you need queues in multiple regions, create separate queues in each region. See the [regions documentation](/docs/regions#region-list) for the full list of available regions.
 
@@ -151,11 +185,37 @@ Vercel writes queue data to the region you select. During a regional outage, Ver
 
 On Vercel, topics are **partitioned by deployment ID** by default. In push mode, Vercel delivers messages back to the same deployment that published them.
 
+```mermaid
+flowchart TD
+    subgraph A["Deployment A (current)"]
+        direction LR
+        PA["Producer"] --> TA["orders topic"] --> CA["Consumer"]
+    end
+    subgraph B["Deployment B (previous)"]
+        direction LR
+        PB["Producer"] --> TB["orders topic"] --> CB["Consumer"]
+    end
+    A ~~~ B
+```
+
 This design means you don't have to worry about message compatibility across deployments. When you change a message schema or update your consumer logic, the new deployment produces and consumes its own messages. There's no risk of a new deployment consuming messages published by an older version with a different format.
 
 This is useful during rollouts: both the current and previous deployments can have active queues processing their own messages independently until the old deployment drains.
 
 > **💡 Note:** In [poll mode](/docs/queues/poll-mode), you can reference the deployment ID as an opaque version identifier to partition your consumers manually, or omit it entirely and handle versioning at the application level.
+
+### Stopping deliveries to a deployment
+
+Because messages stay pinned to the deployment that published them, promoting or rolling back to a different deployment does not stop deliveries to the old one. Its consumer functions keep being invoked, and keep being retried, until every message it published is acknowledged or expires. A deployment that was in production for a few minutes can therefore stay busy for up to the message retention period (24 hours by default) if its messages keep failing.
+
+To stop a deployment's consumers from running, **delete the deployment**. Vercel stops invoking its functions immediately. Pending messages stay in the queue until they expire, but no compute is used for them.
+
+Two settings bound how much compute resources a failing deployment can consume:
+
+- **Cap retries.** Set [`maxDeliveries`](#consumer-function-security) on the trigger so a message that keeps failing is dropped after a bounded number of deliveries.
+- **Acknowledge bad messages.** As an alternative to the above, you can return `{ acknowledge: true }` from the SDK's [retry callback](/docs/queues/sdk#custom-retry-behavior) based on any checks you want to perform, which will stop the message from being redelivered.
+
+To see which deployments are consuming compute, open the Observability **Query** tab with [function duration grouped by deployment](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fobservability%2Fquery%3Fmetric%3DserverlessFunctionInvocation.functionDurationGbhr%26aggregation%3Dsum%26by%3DdeploymentId\&title=Function+duration+by+deployment). A deployment that is no longer current but still accounts for a large share of GB-hours is a deployment with failing consumers.
 
 ## Delivery
 
@@ -184,7 +244,8 @@ Queue consumer functions on Vercel are not accessible from the outside world. Ja
           "type": "queue/v2beta",
           "topic": "orders",
           "retryAfterSeconds": 60,
-          "initialDelaySeconds": 0
+          "initialDelaySeconds": 0,
+          "maxDeliveries": 20
         }
       ]
     }
@@ -202,6 +263,7 @@ The `vercel.json` queue trigger supports these options for JavaScript and TypeSc
 | `topic`               | `string` | -            | Topic name to consume. Supports wildcards (e.g., `order-*`) |
 | `retryAfterSeconds`   | `number` | 60 seconds   | Time before a failed message is retried                     |
 | `initialDelaySeconds` | `number` | Zero seconds | Delay before the consumer starts processing after deploy    |
+| `maxDeliveries`       | `number` | Unlimited    | Deliveries after which a message is no longer retried. See [Retries](#retries) |
 
 Multiple route files with the same topic create separate consumer groups, each receiving a copy of every message.
 
@@ -235,7 +297,7 @@ In practice, this means:
 - **Push and poll mode consumers** never receive the duplicate message. It's filtered out before delivery. The original message is unaffected.
 - **ReceiveMessageById** returns a `409` response with the `originalMessageId` if you try to receive a duplicate by its ID. This lets you follow the redirect to the original message.
 
-The deduplication window lasts for the entire lifetime of the original message (up to its TTL). As long as the original message hasn't expired, any republish with the same idempotency key is deduplicated. This means you're protected from duplicate messages for the full retention period, whether that's 60 seconds or 7 days.
+The deduplication window is the message's retention period, capped at 24 hours: `min(retention, 24 hours)`. Within that window, any republish with the same idempotency key is deduplicated. A message with a retention period shorter than 24 hours is deduplicated for its full retention period. A message with a longer retention period (up to 7 days) is only deduplicated for the first 24 hours.
 
 This is useful when your producer might retry a publish (for example, after a network timeout) and you need to guarantee exactly-once publishing.
 
@@ -247,7 +309,11 @@ This is useful when your consumer calls a rate-limited downstream service, or wh
 
 ## Retries
 
-Vercel Queues retries failed messages automatically until they expire. For the first 32 delivery attempts, Vercel respects your configured retry delay. After 32 attempts, the system begins forcing exponential backoff to maintain system health and prevent runaway deliveries.
+Vercel Queues retries failed messages automatically until they expire or reach the trigger's `maxDeliveries`. A delivery counts as failed when the consumer does not acknowledge the message before its lease runs out, whichever way that happens: the handler threw, the function crashed or timed out, or the function could not be reached.
+
+### Cost of failed deliveries
+
+Every delivery to a push consumer is a function invocation. If a delivery fails by timing out, it is billed for the function's full `maxDuration` at its configured memory. To prevent runaway costs for misconfigured deployments, set up a [retry depth alert](/docs/queues/observability#alerting-on-retries), and stop it as described in [Stopping deliveries to a deployment](#stopping-deliveries-to-a-deployment).
 
 ### Dead-letter queue (DLQ)
 

@@ -3,7 +3,7 @@ title: JS SDK Reference
 product: vercel
 url: /docs/sandbox/sdk-reference
 canonical_url: "https://vercel.com/docs/sandbox/sdk-reference"
-last_updated: 2026-08-04
+last_updated: 2026-09-15
 type: reference
 prerequisites:
   - /docs/sandbox
@@ -12,7 +12,7 @@ related:
   - /docs/sandbox/concepts/persistent-sandboxes
   - /docs/sandbox/concepts/tags
   - /docs/sandbox/concepts/regions
-  - /docs/sandbox/pricing
+  - /docs/sandbox/concepts/secure-compute
 summary: A comprehensive reference for the Vercel Sandbox JavaScript SDK, which lets you run code in a secure, isolated environment.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,18 +27,19 @@ Use the Vercel Sandbox JavaScript SDK to create isolated Linux microVMs on deman
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox?from=related) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
-- [How to process user-uploaded files with Vercel Sandbox and Vercel Blob](https://vercel.com/kb/guide/user-uploaded-files-vercel-sandbox-and-blob?from=related) — Learn how to upload files to Vercel Blob, process them safely with FFmpeg in an isolated Vercel Sandbox, and store the r
-- [The Complete Guide to Vercel Drives](https://vercel.com/kb/guide/vercel-drives?from=related) — Learn how Vercel Drives provide persistent storage for Vercel Sandboxes, and how to create, mount, list, and delete a dr
-- [How Vercel Sandbox duration and persistence work](https://vercel.com/kb/guide/vercel-sandbox-duration-and-persistence?from=related) — Session duration and persistence are two separate controls in Vercel Sandbox. The timeout option keeps a single run aliv
-- [How to use snapshots for faster sandbox startup](https://vercel.com/kb/guide/how-to-use-snapshots-for-faster-sandbox-startup?from=related) — Learn how to save sandbox state with snapshots and skip installation on future runs.
-- [Create a named sandbox](https://vercel.com/docs/rest-api/sandboxes/create-a-named-sandbox?from=related)
-- [Concepts](https://vercel.com/docs/sandbox/concepts?from=related) — Learn how Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applicat
-- [Fork a named sandbox](https://vercel.com/docs/rest-api/sandboxes/fork-a-named-sandbox?from=related)
-- [Update a sandbox](https://vercel.com/docs/rest-api/sandboxes/update-a-sandbox?from=related)
-- [Get a named sandbox](https://vercel.com/docs/rest-api/sandboxes/get-a-named-sandbox?from=related)
+- [Port 8080 is now available in Vercel Sandboxes](https://vercel.com/changelog/port-8080-is-now-available-in-vercel-sandboxes?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related)
+- [Vercel Sandbox supports forking](https://vercel.com/changelog/vercel-sandbox-supports-forking?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related)
+- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
+- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
+- [How to process user-uploaded files with Vercel Sandbox and Vercel Blob](https://vercel.com/kb/guide/user-uploaded-files-vercel-sandbox-and-blob?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — Learn how to upload files to Vercel Blob, process them safely with FFmpeg in an isolated Vercel Sandbox, and store the r
+- [Build a v0-style app builder with OpenAI Agents API and Vercel Sandbox](https://vercel.com/kb/guide/v0-clone-openai-agents-vercel-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — Build a chat-to-app workspace with live Next.js previews, follow-up edits, and saved projects using the OpenAI Agents AP
+- [The Complete Guide to Vercel Drives](https://vercel.com/kb/guide/vercel-drives?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — Learn how Vercel Drives provide persistent storage for Vercel Sandboxes, and how to create, mount, list, and delete a dr
+- [Get a named sandbox](https://vercel.com/docs/rest-api/sandboxes/get-a-named-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — GET /v2/sandboxes/{name} — Retrieves a named sandbox by name, including its current sandbox and routes. If the sandbox i
+- [Understanding Sandboxes](https://vercel.com/docs/sandbox/concepts?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — Learn how Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applicat
+- [Fork a named sandbox](https://vercel.com/docs/rest-api/sandboxes/fork-a-named-sandbox?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — POST /v2/sandboxes/{name}/fork — Forks a named sandbox, creating a new named sandbox from the source's configuration. Re
+- [Stop a session](https://vercel.com/docs/rest-api/sandboxes/stop-a-session?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=related) — POST /v2/sandboxes/sessions/{sessionId}/stop — Stops a running session and releases its allocated resources. All running
 
-Full cross-link map for this page: [/docs/sandbox/sdk-reference.graph.md](/docs/sandbox/sdk-reference.graph.md)
+Full cross-link map for this page: [/docs/sandbox/sdk-reference.graph.md](/docs/sandbox/sdk-reference.graph.md?from=related&source_path=%2Fdocs%2Fsandbox%2Fsdk-reference&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 For Python, see the [Python SDK Reference](/docs/sandbox/python-sdk-reference).
@@ -55,7 +56,7 @@ Install the SDK:
   </Code>
   <Code tab="yarn">
     ```bash
-    yarn i @vercel/sandbox
+    yarn add @vercel/sandbox
     ```
   </Code>
   <Code tab="npm">
@@ -65,7 +66,7 @@ Install the SDK:
   </Code>
   <Code tab="bun">
     ```bash
-    bun i @vercel/sandbox
+    bun add @vercel/sandbox
     ```
   </Code>
 </CodeBlock>
@@ -80,7 +81,7 @@ After installation, link your project and pull environment variables with `verce
 | [`SandboxUser`](#sandboxuser-class)         | Runs commands and file operations as a Linux user  | `const user = await sandbox.createUser('alice')` |
 | [`Session`](#session-class)                 | Represents a single running VM inside a sandbox    | `const session = sandbox.currentSession()`      |
 | [`FileSystem`](#filesystem-class)           | Provides a `node:fs/promises`-compatible API       | `await sandbox.fs.readFile('/tmp/a.txt')`       |
-| [`Command`](#command-class)                 | Handles running commands inside the sandbox        | `const cmd = await sandbox.runCommand()`        |
+| [`Command`](#command-class)                 | Handles running commands inside the sandbox        | `const cmd = await sandbox.runCommand('ls')`    |
 | [`CommandFinished`](#commandfinished-class) | Contains the result after a command completes      | Access `cmd.exitCode` and `cmd.stdout()`        |
 | [`NetworkPolicy`](#networkpolicy-class)     | Defines firewall rules for sandbox traffic         | `Sandbox.create({ networkPolicy: 'deny-all' })` |
 | [`Snapshot`](#snapshot-class)               | Represents a saved sandbox state for fast restarts | `const snapshot = await sandbox.snapshot()`     |
@@ -225,6 +226,16 @@ The additional [regions](/docs/sandbox/concepts/regions#failover-regions) this s
 console.log(sandbox.failoverRegions);
 ```
 
+#### `networkId`
+
+The ID of the [Secure Compute network](/docs/sandbox/concepts/secure-compute) assigned to this sandbox. Returns `undefined` when no network is assigned. An updated ID reflects the saved configuration. Once updated, a running session uses the new network after it stops and resumes.
+
+**Returns:** `string | undefined`.
+
+```ts
+console.log(sandbox.networkId);
+```
+
 #### `createdAt` and `updatedAt`
 
 Timestamps for when the sandbox was created and last updated.
@@ -354,6 +365,10 @@ for await (const sandbox of result) {
 
 `Sandbox.create()` launches a new microVM with your chosen image, source, and resource settings. Defaults to an empty workspace when no source is provided. Pass `source.depth` when cloning large repositories to shorten setup time.
 
+The promise resolves when the sandbox is ready to run commands and access files. Creation time includes startup and, when using a snapshot, the wait to restore it. Restoring a snapshot that isn't cached can take longer.
+
+To compare end-to-end performance, measure from the start of creation through completion of the same first command or file operation.
+
 Sandboxes are persistent by default: when the sandbox stops, the filesystem is automatically snapshotted and restored on the next resume. Pass `persistent: false` to opt out.
 
 **Returns:** `Promise<Sandbox>`.
@@ -361,19 +376,20 @@ Sandboxes are persistent by default: when the sandbox stops, the filesystem is a
 | Parameter            | Type                         | Required | Details                                                                                                                                                                                                             |
 | -------------------- | ---------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `name`               | `string`                     | No       | Unique sandbox name within the project. A random name is generated if omitted. Cannot be changed after creation.                                                                                                    |
-| `source`             | `git`                        | No       | Clone a Git repository.  `url`: string  `username`: string  `password`: string  `depth`?: number  `revision`?: string                                                                 |
-| `source`             | `tarball`                    | No       | Mount a tarball.  `url`: string                                                                                                                                                                               |
-| `source`             | `snapshot`                   | No       | Create from a snapshot.  `snapshotId`: string                                                                                                                                                                 |
+| `source`             | `git`                        | No       | Clone a Git repository. <br /> `url`: string <br /> `username`: string <br /> `password`: string <br /> `depth`?: number <br /> `revision`?: string                                                                 |
+| `source`             | `tarball`                    | No       | Mount a tarball. <br /> `url`: string                                                                                                                                                                               |
+| `source`             | `snapshot`                   | No       | Create from a snapshot. <br /> `snapshotId`: string                                                                                                                                                                 |
 | `resources.vcpus`    | `number`                     | No       | Number of vCPUs (2048 MB RAM per vCPU). Defaults to 2.                                                                                                                                                              |
 | `runtime`            | `string`                     | No       | Deprecated: use [`image`](#image) for image-based sandboxes. Runtime image such as `"node26"`, `"node24"`, `"node22"`, or `"python3.13"`.                                                                           |
 | `image`              | `string`                     | No       | VCR image reference, either a [Vercel Managed Image](/docs/sandbox/concepts/images#vercel-managed-images) or [custom image](/docs/sandbox/concepts/images#custom-images). Defaults to `"vercel/sandbox/universal"`. |
 | `ports`              | `number[]`                   | No       | Ports to expose for `sandbox.domain()`. Up to 15.                                                                                                                                                                   |
 | `timeout`            | `number`                     | No       | Session timeout in milliseconds. Defaults to 5 minutes.                                                                                                                                                             |
 | `region`             | `string`                     | No       | [Region](/docs/sandbox/concepts/regions) to create the sandbox in. Defaults to the [project's default sandbox region](/docs/sandbox/concepts/regions#set-a-default-region-for-your-project), or `iad1`.                                                                                     |
-| `failoverRegions`    | `string[]`                   | No       | Additional [regions](/docs/sandbox/concepts/regions#failover-regions) the sandbox can fall back to when the main region is unavailable. Must not include the main `region`. Not supported together with `mounts`. Available on Pro and Enterprise plans, excluding [Pro trials](/docs/plans/pro-plan/trials).            |
+| `failoverRegions`    | `string[]`                   | No       | Additional [regions](/docs/sandbox/concepts/regions#failover-regions) the sandbox can fall back to when the main region is unavailable. Must not include the main `region`. Available on Pro and Enterprise plans, excluding [Pro trials](/docs/plans/pro-plan/trials).            |
 | `networkPolicy`      | `NetworkPolicy`              | No       | Firewall rules for sandbox egress traffic. Defaults to `"allow-all"`.                                                                                                                                               |
+| `networkId`          | `string`                     | No       | [Secure Compute network ID](/docs/sandbox/concepts/secure-compute) to use from the first session.                                                                                                                                              |
 | `env`                | `Record<string, string>`     | No       | Default environment variables for commands run in this sandbox. Per-command `runCommand({ env })` values override these defaults.                                                                                   |
-| `mounts`             | `SandboxMounts`              | No       | Drives to attach to the sandbox, keyed by absolute mount path. Drives can be mounted as `"read-write"` (default) or `"read-only"`.                                                                                  |
+| `mounts`             | `SandboxMounts`              | No       | Drives to attach to the sandbox, keyed by absolute mount path. Pass a `Drive` for read-write access or `drive.snapshot()` for a point-in-time, read-only snapshot.                                                  |
 | `tags`               | `Record<string, string>`     | No       | Up to five key-value [tags](/docs/sandbox/concepts/tags).                                                                                                                                                           |
 | `persistent`         | `boolean`                    | No       | Auto-snapshot the filesystem on stop and restore on resume. Defaults to `true`.                                                                                                                                     |
 | `snapshotExpiration` | `number`                     | No       | Default snapshot TTL in milliseconds. Defaults to 30 days (`2,592,000,000` ms). Use `0` for no expiration.                                                                                                          |
@@ -413,7 +429,7 @@ const sandbox = await Sandbox.get({ name: 'my-sandbox' });
 
 #### `Sandbox.getOrCreate()`
 
-`Sandbox.getOrCreate()` is the recommended pattern for long-lived sandboxes: it resumes the sandbox if it exists or creates it if it doesn't. Use `onCreate` for one-time setup and `onResume` for setup that should run on every session start.
+`Sandbox.getOrCreate()` is the recommended pattern for long-lived sandboxes: it retrieves the sandbox if it exists, or creates it if it doesn't. An existing sandbox resumes on the first SDK call, or immediately when you pass `resume: true`. Use `onCreate` for one-time setup and `onResume` for setup that should run on every session start.
 
 Creation parameters (such as `keepLastSnapshots` or `snapshotExpiration`) apply only when `getOrCreate` creates the sandbox. If a sandbox with the same `name` already exists, `getOrCreate` returns it with its existing configuration and ignores the creation parameters you pass. To change the configuration of an existing sandbox, call [`sandbox.update()`](#sandbox.update).
 
@@ -429,7 +445,7 @@ Creation parameters (such as `keepLastSnapshots` or `snapshotExpiration`) apply 
 
 Behavior:
 
-- If a sandbox with that `name` exists, `getOrCreate` retrieves it without resuming it by default. The sandbox resumes on the first SDK call (such as `runCommand`), and `onResume` fires at that point — not before `getOrCreate` resolves. Pass `resume: true` to resume immediately and have `onResume` awaited before `getOrCreate` resolves.
+- If a sandbox with that `name` exists, `getOrCreate` retrieves it without resuming it by default. The sandbox resumes on the first SDK call (such as `runCommand`), and `onResume` fires at that point, not before `getOrCreate` resolves. Pass `resume: true` to resume immediately and have `onResume` awaited before `getOrCreate` resolves.
 - If a sandbox with that `name` exists, its configuration is not updated. Creation parameters passed to `getOrCreate` are ignored; use [`sandbox.update()`](#sandbox.update) to change the configuration of an existing sandbox.
 - If no sandbox exists, a fresh sandbox is created with the parameters you pass, and `onCreate` is awaited before `getOrCreate` resolves.
 - If the sandbox exists but its snapshot expired, the stale sandbox is deleted, re-created with the same name, and `onCreate` fires.
@@ -451,9 +467,11 @@ const sandbox = await Sandbox.getOrCreate({
 
 `Sandbox.fork()` creates a new sandbox seeded from the current snapshot of an existing one. The new sandbox inherits the source's config, including its environment variables. Any field you pass in overrides the copied value. If the source has no current snapshot, the fork falls back to a fresh create with the source's `image` plus the copied config.
 
-Pass `env` to override the copied environment variables. `image` is not accepted as an override — when the source has a snapshot the image is inherited from it; otherwise it is copied from the source sandbox.
+Pass `env` to override the copied environment variables. `image` is not accepted as an override. When the source has a snapshot, the image is inherited from it; otherwise it is copied from the source sandbox.
 
 The fork runs in the source sandbox's [region](/docs/sandbox/concepts/regions) unless you pass `region`. The fork also inherits the source's failover regions; pass `failoverRegions` to replace them. If the source has a snapshot, that snapshot must be available in the target region.
+
+The fork also inherits the source sandbox's [Secure Compute network](/docs/sandbox/concepts/secure-compute) unless you pass `networkId`.
 
 **Returns:** `Promise<Sandbox>`.
 
@@ -656,7 +674,7 @@ console.log(result.networkTransfer); // { ingress, egress }
 
 #### `sandbox.update()`
 
-`sandbox.update()` updates any mutable parameter on the sandbox. When `ports` is provided, it is treated as the **full** desired port list: any currently exposed port not present in the array is deregistered. `networkPolicy` is applied to the current session as well as future sessions.
+`sandbox.update()` updates any mutable parameter on the sandbox. When `ports` is provided, it replaces the full current port list. When `mounts` is provided, it replaces all mounts and applies to the next session. `networkPolicy` is applied to the current session and future sessions. Changes to `networkId` take effect when the sandbox starts its next session, not in the running session.
 
 ```ts
 await sandbox.update({
@@ -669,7 +687,9 @@ await sandbox.update({
   snapshotExpiration: 14 * 24 * 60 * 60 * 1000,
   keepLastSnapshots: { count: 1 },
   currentSnapshotId: 'snap_xyz', // Roll back to a previous snapshot
-  failoverRegions: ['cle1'], // Replaces the list; pass [] to remove them
+  mounts: {
+    '/data': { drive: 'workspace-cache', mode: 'read-write' },
+  }, // Replaces the mounts; pass {} to remove them
 });
 ```
 
@@ -678,13 +698,15 @@ await sandbox.update({
 | `resources.vcpus`    | `number`                   | No       | New vCPU count (memory auto-scales to 2048 MB per vCPU).                                               |
 | `timeout`            | `number`                   | No       | New session timeout in milliseconds.                                                                   |
 | `networkPolicy`      | `NetworkPolicy`            | No       | Replace the firewall policy on the current and future sessions.                                        |
+| `networkId`          | `string \| null`           | No       | Assign a [Secure Compute network](/docs/sandbox/concepts/secure-compute) by ID, or pass `null` to remove it. The running session keeps its current network until it stops and resumes. |
 | `ports`              | `number[]`                 | No       | Replace the exposed ports. Ports not present in the array are deregistered.                            |
 | `tags`               | `Record<string, string>`   | No       | Replace the tag set. Pass `{}` to clear.                                                               |
 | `persistent`         | `boolean`                  | No       | Enable or disable auto-snapshotting on stop.                                                           |
 | `snapshotExpiration` | `number`                   | No       | New default snapshot TTL in milliseconds. Use `0` for no expiration.                                   |
 | `keepLastSnapshots`  | `object \| null`           | No       | Retention policy that keeps only the N most recent snapshots. Pass `null` to clear. See [`keepLastSnapshots`](#keeplastsnapshots) for field details. |
 | `currentSnapshotId`  | `string`                   | No       | Point the sandbox at a different snapshot. New sessions resume from it.                                |
-| `failoverRegions`    | `string[]`                 | No       | Replace the [failover regions](/docs/sandbox/concepts/regions#failover-regions). Must not include the sandbox's main region. Not supported for sandboxes with mounts. Pass `[]` to remove them. Applies to the next session; the running session keeps the region it started in. Available on Pro and Enterprise plans, excluding [Pro trials](/docs/plans/pro-plan/trials). |
+| `failoverRegions`    | `string[]`                 | No       | Replace the [failover regions](/docs/sandbox/concepts/regions#failover-regions). Must not include the sandbox's main region. Pass `[]` to remove them. Applies to the next session; the running session keeps the region it started in. Available on Pro and Enterprise plans, excluding [Pro trials](/docs/plans/pro-plan/trials). |
+| `mounts`             | `SandboxMounts`            | No       | Replace the drives mounted in the next session. Pass a `Drive` for read-write access or `drive.snapshot()` for a point-in-time, read-only snapshot. Pass `{}` to remove all mounts. |
 | `opts.signal`        | `AbortSignal`              | No       | Cancel the operation.                                                                                  |
 
 **Returns:** `Promise<void>`.
@@ -1470,7 +1492,7 @@ The `deny-all` mode can be set to restrict sandbox network access. It blocks all
 
 #### `allow`
 
-> **🔒 Permissions Required**: Transformation and forwarding rules
+> **Availability**: Transformation and forwarding rules are available on Enterprise and Pro plans
 
 The `allow` property allows the user to provide a list of website or API domains to allow access to.
 Traffic identification is based on SNI (server-name indicator), hence only TLS traffic is currently supported.
@@ -1486,6 +1508,48 @@ The `allow` property can be set as an object providing the websites to allow tra
 When such rules are defined, encryption is intercepted to allow request alteration.
 
 Each rule can define a set of [matchers](/docs/sandbox/concepts/firewall#matchers) on the path, method, query parameters, and headers. When defined, only requests matching the specified dimensions will be transformed or forwarded. Learn more about transformation rules and forwarding rules in the [firewall documentation](/docs/sandbox/concepts/firewall).
+
+```ts filename="index.ts"
+// Allow traffic only to the provided websites.
+{
+  "allow": ["ai-gateway.vercel.sh", "google.com"]
+}
+
+// Allow traffic to all websites and add transformations to specific ones.
+{
+  "allow": {
+    "ai-gateway.vercel.sh": [{
+      "transform": [{
+        "headers": {
+          "x-api-key": "secret-key"
+        }
+      }]
+    }],
+    "*.github.com": [{
+      "match": {
+        "method": {
+          "exact": "POST"
+        }
+      },
+      "forwardURL": "https://my-proxy.vercel.app/github"
+    }],
+    "*.openai.com": [{
+      "match": {
+        "path": {
+          "startsWith": "/v1/chat/completions"
+        }
+      },
+      "transform": [{
+        "headers": {
+          "x-api-key": "other-secret-key"
+        }
+      }]
+    }],
+    // Optionally allow traffic to all other domains.
+    "*": []
+  }
+}
+```
 
 #### `subnets.allow`
 
@@ -1665,11 +1729,11 @@ await snapshot.delete();
 
 ## Drive class
 
-> **🔒 Permissions Required**: Drives
+> **Availability**: Drives (Private Beta) are available to Enterprise and Pro plans
 
 A `Drive` represents persistent storage that can be mounted into a sandbox. To learn more, see [Drives](/docs/sandbox/concepts/drives).
 
-Create drives with [`Drive.getOrCreate()`](/docs/sandbox/sdk-reference#drive.getorcreate), list them with [`Drive.list()`](/docs/sandbox/sdk-reference#drive.list), and delete them with [`drive.delete()`](/docs/sandbox/sdk-reference#drive.delete). Mount them into sandboxes by using the [`mounts` property in `Sandbox.create()`](/docs/sandbox/sdk-reference#sandbox.create).
+Create drives with [`Drive.getOrCreate()`](/docs/sandbox/sdk-reference#drive.getorcreate), list them with [`Drive.list()`](/docs/sandbox/sdk-reference#drive.list), and delete them with [`drive.delete()`](/docs/sandbox/sdk-reference#drive.delete). Mount a drive with read-write access, or use [`drive.snapshot()`](/docs/sandbox/sdk-reference#drive.snapshot) to mount a read-only snapshot.
 
 Once you are added to the [private beta](https://vercel.com/changelog/drives-for-vercel-sandbox-in-private-beta), install the beta version of the `@vercel/sandbox` SDK:
 
@@ -1681,7 +1745,7 @@ Once you are added to the [private beta](https://vercel.com/changelog/drives-for
   </Code>
   <Code tab="yarn">
     ```bash
-    yarn i @vercel/sandbox@beta
+    yarn add @vercel/sandbox@beta
     ```
   </Code>
   <Code tab="npm">
@@ -1691,12 +1755,22 @@ Once you are added to the [private beta](https://vercel.com/changelog/drives-for
   </Code>
   <Code tab="bun">
     ```bash
-    bun i @vercel/sandbox@beta
+    bun add @vercel/sandbox@beta
     ```
   </Code>
 </CodeBlock>
 
 ### Drive class accessors
+
+#### `driveId`
+
+The `driveId` accessor returns the drive's unique ID.
+
+**Returns:** `string`.
+
+```ts filename="index.ts"
+console.log(drive.driveId);
+```
 
 #### `name`
 
@@ -1784,15 +1858,13 @@ console.log(drive.updatedAt);
 
 Use `Drive.list()` to enumerate drives for a project. Filter by name prefix when you need to find drives for a specific workspace or user.
 
-**Returns:** `Promise<{ drives: Drive[]; pagination: Pagination; }>` with async pagination helpers.
+**Returns:** `Promise<Paginated<{ drives: Drive[]; pagination: Pagination; }>>`.
 
 | Parameter    | Type                                             | Required | Details                                      |
 | ------------ | ------------------------------------------------ | -------- | -------------------------------------------- |
 | `projectId`  | `string`                                         | No       | Project whose drives you want to list.       |
 | `limit`      | `number`                                         | No       | Maximum number of drives to return.          |
-| `cursor`     | `string \| number`                               | No       | Pagination cursor from a previous response.  |
-| `since`      | `number \| string`                               | No       | Lower pagination bound for returned drives.  |
-| `until`      | `number \| string`                               | No       | Upper pagination bound for returned drives.  |
+| `cursor`     | `string`                                         | No       | Pagination cursor returned by the previous page. |
 | `sortBy`     | `"createdAt" \| "updatedAt" \| "name"`           | No       | Field to sort drives by.                     |
 | `sortOrder`  | `"asc" \| "desc"`                                | No       | Sort direction.                              |
 | `namePrefix` | `string`                                         | No       | Filter drives by name prefix.                |
@@ -1833,12 +1905,12 @@ Use `Drive.getOrCreate()` to retrieve an existing drive by name or create it if 
 
 **Returns:** `Promise<Drive>`.
 
-| Parameter | Type          | Required | Details                                                                                          |
-| --------- | ------------- | -------- | ------------------------------------------------------------------------------------------------ |
-| `name`    | `string`      | Yes      | Drive name. Must be unique within the project.                                                    |
-| `region`  | `string`      | No       | [Region](/docs/sandbox/concepts/regions#regions-and-drives) where the drive is created and stores its data. Defaults to `iad1`. |
-| `maxSize` | `number`      | No       | Drive size limit in bytes. Defaults to 100 GiB when omitted, and can be configured up to 1 TiB. |
-| `signal`  | `AbortSignal` | No       | Cancel the request if necessary.                                                                 |
+| Parameter | Type          | Required | Details                                                                                                                                                    |
+| --------- | ------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`    | `string`      | Yes      | Drive name. Must be unique within the project.                                                                                                             |
+| `region`  | `string`      | No       | [Region](/docs/sandbox/concepts/regions#regions-and-drives) where the drive is created and stores its data. Defaults to `iad1`.                            |
+| `maxSize` | `number`      | No       | Maximum drive size in bytes. Defaults to 1 TiB when omitted. The default maximum quota is 16 TiB. |
+| `signal`  | `AbortSignal` | No       | Cancel the request if necessary.                                                                                                                           |
 
 A drive's region can't change after creation. Calling `Drive.getOrCreate()` with a `region` or `maxSize` that doesn't match the existing drive fails with a `conflict` error.
 
@@ -1853,6 +1925,24 @@ const drive = await Drive.getOrCreate({
 ```
 
 ### Drive class instance methods
+
+#### `drive.snapshot()`
+
+Call `drive.snapshot()` to return a read-only snapshot mount configuration. You can use the configuration to mount the drive on multiple sandboxes at the same time.
+
+**Returns:** `{ drive: string; mode: "snapshot" }`.
+
+```ts filename="index.ts"
+import { Drive, Sandbox } from '@vercel/sandbox';
+
+const drive = await Drive.getOrCreate({ name: 'workspace-cache' });
+
+await Sandbox.create({
+  mounts: {
+    '/data': drive.snapshot(),
+  },
+});
+```
 
 #### `drive.delete()`
 
@@ -1917,8 +2007,10 @@ To learn more on each method, see [Authentication](/docs/sandbox/concepts/authen
 - **Timeouts:** The default timeout is 5 minutes. You can extend it programmatically up to 45 minutes on the Hobby plan and up to 24 hours on Pro and Enterprise plans.
 - **Sudo:** `sudo` commands run as `vercel-sandbox` with the root home directory set to `/root`.
 
-> **💡 Note:** The filesystem is ephemeral. You must export artifacts to durable storage if
-> you need to keep them after the sandbox stops.
+> **💡 Note:** Sandboxes are persistent by default. The filesystem is automatically
+> snapshotted when a session stops and restored on the next resume. For one-off
+> workloads, pass `persistent: false` to opt out. See
+> [Persistence](/docs/sandbox/concepts/persistent-sandboxes).
 
 
 ---

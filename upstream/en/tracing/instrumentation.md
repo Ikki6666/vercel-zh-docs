@@ -3,7 +3,7 @@ title: Instrumentation
 product: vercel
 url: /docs/tracing/instrumentation
 canonical_url: "https://vercel.com/docs/tracing/instrumentation"
-last_updated: 2026-02-17
+last_updated: 2026-09-15
 type: how-to
 prerequisites:
   - /docs/tracing
@@ -25,20 +25,20 @@ Observability is crucial for understanding and optimizing the behavior and perfo
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [MLflow](https://ai-sdk.dev/providers/observability/mlflow?from=related)
-- [Instrumentation](https://nextjs.org/docs/app/guides/instrumentation?from=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
-- [Instrumentation](https://nextjs.org/docs/pages/guides/instrumentation?from=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
-- [OpenTelemetry](https://nextjs.org/docs/pages/guides/open-telemetry?from=related) — Learn how to instrument your Next.js app with OpenTelemetry.
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [SigNoz](https://ai-sdk.dev/providers/observability/signoz?from=related)
-- [Observability](https://eve.dev/docs/guides/instrumentation?from=related) — Trace an agent with OpenTelemetry in instrumentation.ts, read the workflow run tags eve emits, and debug discovery with
-- [instrumentation.js](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation?from=related) — API reference for the instrumentation.js file.
-- [Langfuse](https://ai-sdk.dev/providers/observability/langfuse?from=related)
-- [Laminar](https://ai-sdk.dev/providers/observability/laminar?from=related)
-- [Always-on Tracing](https://vercel.com/docs/tracing/always-on-tracing?from=related) — Learn about always-on tracing on Vercel.
+- [MLflow](https://ai-sdk.dev/providers/observability/mlflow?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Track, visualize, and debug Vercel AI SDK traces with MLflow Tracing
+- [How to set up instrumentation](https://nextjs.org/docs/app/guides/instrumentation?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
+- [How to set up instrumentation](https://nextjs.org/docs/pages/guides/instrumentation?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
+- [How to instrument your Next.js app with OpenTelemetry](https://nextjs.org/docs/pages/guides/open-telemetry?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to instrument your Next.js app with OpenTelemetry.
+- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
+- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
+- [OpenTelemetry](https://eve.dev/docs/observability/otel?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Configure OpenTelemetry destinations, content capture, and third-party exports.
+- [Instrument and trace applications with the OpenTelemetry collector](https://vercel.com/changelog/instrument-and-trace-applications-with-the-opentelemetry-collector?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
+- [Agent Runs](https://eve.dev/docs/observability/agent-runs?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Inspect eve sessions in Vercel and configure the Agent Runs destination.
+- [Instrumentation](https://eve.dev/docs/observability/instrumentation?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related) — Configure lifecycle instrumentation, handle runtime events, and control the content each destination receives.
+- [Native support for SvelteKit's new OpenTelemetry spans](https://vercel.com/changelog/native-support-for-sveltekits-new-opentelemetry-spans?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
+- [@vercel/otel 1.3.0](https://vercel.com/changelog/vercel-otel-1-3-0?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=related)
 
-Full cross-link map for this page: [/docs/tracing/instrumentation.graph.md](/docs/tracing/instrumentation.graph.md)
+Full cross-link map for this page: [/docs/tracing/instrumentation.graph.md](/docs/tracing/instrumentation.graph.md?from=related&source_path=%2Fdocs%2Ftracing%2Finstrumentation&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Getting started
@@ -53,7 +53,7 @@ To get started, install the following packages:
   </Code>
   <Code tab="yarn">
     ```bash
-    yarn i @opentelemetry/api @vercel/otel
+    yarn add @opentelemetry/api @vercel/otel
     ```
   </Code>
   <Code tab="npm">
@@ -63,7 +63,7 @@ To get started, install the following packages:
   </Code>
   <Code tab="bun">
     ```bash
-    bun i @opentelemetry/api @vercel/otel
+    bun add @opentelemetry/api @vercel/otel
     ```
   </Code>
 </CodeBlock>
@@ -124,7 +124,7 @@ registerOTel({ serviceName: 'your-project-name' });
 
 Context propagation connects operations across service boundaries so you can trace a request through your entire system. When your app calls another service, context propagation passes trace metadata (for example,trace IDs, span IDs) along with the request, typically through HTTP headers like `traceparent`. This lets OpenTelemetry link all the spans together into a single, complete trace.
 
-Without context propagation, each service generates isolated spans you can't connect. With it, you see exactly how a request flows through your infrastructure—from the initial API call through databases, queues, and external services.
+Without context propagation, each service generates isolated spans you can't connect. With it, you see exactly how a request flows through your infrastructure, from the initial API call through databases, queues, and external services.
 
 For more details on how context propagation works, see the [OpenTelemetry context propagation documentation](https://opentelemetry.io/docs/concepts/context-propagation/).
 

@@ -3,7 +3,7 @@ title: Vercel CLI Overview
 product: vercel
 url: /docs/cli
 canonical_url: "https://vercel.com/docs/cli"
-last_updated: 2026-07-29
+last_updated: 2026-09-17
 type: reference
 prerequisites:
   []
@@ -27,20 +27,20 @@ Vercel gives you multiple ways to interact with and configure your Vercel Projec
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [AI Gateway](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway?from=related)
-- [Vercel Flags](https://flags-sdk.dev/docs/providers/vercel?from=related)
-- [Terminal commands](https://v0.app/docs/terminal-commands?from=related) — v0 can run bash commands in your project sandbox to test, debug, and use platform CLIs. Control its autonomy with three
-- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
-- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
-- [How to build a browser agent that works behind a login](https://vercel.com/kb/guide/build-a-browser-agent?from=related) — Build a browser agent with eve, Vercel Connect, and KERNEL managed auth that signs a user in through a human-in-the-loop
-- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template?from=related) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
-- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template?from=related) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [AI Gateway](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related) — Learn how to use the AI Gateway provider with the AI SDK.
+- [Vercel Flags](https://flags-sdk.dev/docs/providers/vercel?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related)
+- [Terminal commands](https://v0.app/docs/terminal-commands?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related) — v0 can run bash commands in your project sandbox to test, debug, and use platform CLIs. Control its autonomy with three
+- [Agent Runs now available in the Vercel MCP and CLI](https://vercel.com/changelog/agent-runs-vercel-mcp-cli?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related)
+- [Configure weighted traffic splits for Vercel Flags from the Vercel CLI](https://vercel.com/changelog/configure-weighted-traffic-splits-for-vercel-flags-from-the-vercel-cli?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related)
+- [Copy-to-Prompt instructions now available for Flags](https://vercel.com/changelog/copy-to-prompt-instructions-now-available-for-flags?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related)
+- [Deploy Hono backends with zero configuration](https://vercel.com/changelog/deploy-hono-backends-with-zero-configuration?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related)
+- [Experimental native binaries for Vercel CLI](https://vercel.com/changelog/experimental-native-binaries-for-vercel-cli?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related)
+- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
+- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
+- [How to automatically approve tool calls in eve with Jev](https://vercel.com/kb/guide/auto-approve-tool-calls-eve-jev?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related) — Use Jev to review tool calls in eve, allow routine actions, and request human approval when needed. Configure the policy
+- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=related) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
 
-Full cross-link map for this page: [/docs/cli.graph.md](/docs/cli.graph.md)
+Full cross-link map for this page: [/docs/cli.graph.md](/docs/cli.graph.md?from=related&source_path=%2Fdocs%2Fcli&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 If you'd like to interface with the platform programmatically, check out the [REST API documentation](/docs/rest-api).
@@ -52,22 +52,22 @@ To download and install Vercel CLI, run the following command:
 <CodeBlock>
   <Code tab="pnpm">
     ```bash
-    pnpm i vercel
+    pnpm i -g vercel
     ```
   </Code>
   <Code tab="yarn">
     ```bash
-    yarn i vercel
+    yarn global add vercel
     ```
   </Code>
   <Code tab="npm">
     ```bash
-    npm i vercel
+    npm i -g vercel
     ```
   </Code>
   <Code tab="bun">
     ```bash
-    bun i vercel
+    bun add -g vercel
     ```
   </Code>
 </CodeBlock>
@@ -81,22 +81,22 @@ If you have installed our command-line interface through [npm](http://npmjs.org/
 <CodeBlock>
   <Code tab="pnpm">
     ```bash
-    pnpm i vercel
+    pnpm i -g vercel@latest
     ```
   </Code>
   <Code tab="yarn">
     ```bash
-    yarn i vercel
+    yarn global add vercel@latest
     ```
   </Code>
   <Code tab="npm">
     ```bash
-    npm i vercel
+    npm i -g vercel@latest
     ```
   </Code>
   <Code tab="bun">
     ```bash
-    bun i vercel
+    bun add -g vercel@latest
     ```
   </Code>
 </CodeBlock>
@@ -115,7 +115,7 @@ vercel --version
 
 ## Using in a CI/CD environment
 
-Vercel CLI requires you to log in and authenticate before accessing resources or performing administrative tasks. In a terminal environment, you can use [`vercel login`](/docs/cli/login), which requires manual input. In a CI/CD environment where manual input is not possible, you can create a token on your [tokens page](/account/tokens) and then authenticate using one of these methods:
+Vercel CLI requires you to log in and authenticate before accessing resources or performing administrative tasks. In a terminal environment, you can use [`vercel login`](/docs/cli/login), which requires manual input. If you don't have a Vercel account yet, you can create one with [`vercel signup`](/docs/cli/signup). In a CI/CD environment where manual input is not possible, you can create a token on your [tokens page](/account/tokens) and then authenticate using one of these methods:
 
 - Set the `VERCEL_TOKEN` environment variable
 - Pass the [`--token` option](/docs/cli/global-options#token) to the command
@@ -302,7 +302,7 @@ vercel comments resolve <thread> -m 'Fixed in the latest deployment.'
 
 ### connect
 
-Manage connectors: create, list, attach to projects, request runtime tokens, and remove them. This is a beta command.
+Manage connectors: create, list, attach to projects, request runtime tokens, and remove them.
 
 ```bash
 vercel connect create <service>
@@ -344,7 +344,7 @@ vercel crons run /api/cron
 
 ### curl
 
-Make HTTP requests to your Vercel deployments with automatic deployment protection bypass. This is a beta command.
+Make HTTP requests to your Vercel deployments with automatic deployment protection bypass.
 
 ```bash
 vercel curl [path]
@@ -651,11 +651,11 @@ vercel mcp --project
 List and query metrics from your terminal, and inspect the schema to discover available dimensions and aggregations.
 
 ```bash
-vercel metrics list
+vercel metrics schema
 vercel metrics schema <metric-or-prefix>
-vercel metrics database.duration_ms --filter "plan:pro"
+vercel metrics database.duration_ms --filter 'plan:pro'
 vercel metrics <metric-id> --since 7d --granularity 1d --project project-name --prod
-vercel metrics <metric-id> --all --group-by project_id --since 24h --prod
+vercel metrics <metric-id> --all --group-by projectId --since 24h --prod
 ```
 
 [Learn more about the metrics command](/docs/cli/metrics)
@@ -824,6 +824,28 @@ vercel security check [check-name]
 
 [Learn more about the security command](/docs/cli/security)
 
+### setup
+
+Set up coding agents for Vercel: install the Vercel plugin for Claude Code and Codex, and connect your agents to AI Gateway.
+
+```bash
+vercel setup
+vercel setup --gateway
+vercel setup --dry-run
+```
+
+[Learn more about the setup command](/docs/cli/setup)
+
+### signup
+
+Create a new Vercel account through CLI. Once sign-up is complete, you are signed in with the new account.
+
+```bash
+vercel signup
+```
+
+[Learn more about the signup command](/docs/cli/signup)
+
 ### skills
 
 Discover agent skills relevant to your project, or search the skill catalog.
@@ -906,6 +928,13 @@ vercel traces get [request-id] --open
 vercel traces config ls
 vercel traces config set production 25
 vercel traces config rm production
+```
+
+Open a trace directly in the tree or waterfall view:
+
+```bash
+vercel traces get [request-id] --open --view=tree
+vercel traces get [request-id] --open --view=waterfall
 ```
 
 [Learn more about the traces command](/docs/cli/traces)

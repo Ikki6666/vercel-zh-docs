@@ -1,9 +1,9 @@
 ---
-title: SDK Reference
+title: "Vercel Queues: JS SDK Reference"
 product: vercel
 url: /docs/queues/sdk
 canonical_url: "https://vercel.com/docs/queues/sdk"
-last_updated: 2026-07-02
+last_updated: 2026-08-12
 type: reference
 prerequisites:
   - /docs/queues
@@ -12,7 +12,7 @@ related:
   - /docs/queues
   - /docs/queues/api
   - /docs/queues/poll-mode
-summary: Publish and consume messages with the @vercel/queue SDK.
+summary: Publish and consume messages with the Vercel Queues SDK for JavaScript and TypeScript.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -26,13 +26,17 @@ The `@vercel/queue` SDK lets JavaScript and TypeScript apps publish and consume 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related) — Set up Vercel Queues with the SDK.
-- [Concepts](https://vercel.com/docs/queues/concepts?from=related) — Learn delivery, retries, visibility timeouts, and deployment isolation in Vercel Queues.
-- [Celery](https://vercel.com/docs/frameworks/backend/celery?from=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
-- [Dramatiq](https://vercel.com/docs/frameworks/backend/dramatiq?from=related) — Deploy Dramatiq workers on Vercel. Learn how Dramatiq actors use Vercel Queues and Vercel Functions to process backgroun
-- [API Reference](https://vercel.com/docs/functions/functions-api-reference?from=related) — Learn about available APIs when working with Vercel Functions.
+- [Vercel Python Queues SDK is now available in beta](https://vercel.com/changelog/vercel-python-queues-sdk-is-now-available-in-beta?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related)
+- [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related)
+- [Vercel Queues is now in Limited Beta](https://vercel.com/changelog/vercel-queues-is-now-in-limited-beta?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related)
+- [How to run background jobs in Next.js](https://vercel.com/kb/guide/how-to-run-background-jobs-in-nextjs-on-vercel?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related) — Learn the durable way to run background jobs in Next.js on Vercel with the Workflow SDK, and when to reach for Queues or
+- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
+- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related) — Set up Vercel Queues with the SDK.
+- [Run background tasks with Celery on Vercel](https://vercel.com/docs/frameworks/backend/celery?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
+- [Observability Insights](https://vercel.com/docs/observability/insights?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Queues Observability](https://vercel.com/docs/queues/observability?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=related) — Monitor queue throughput, message age, retries, and consumer performance to optimize your queue-based workflows.
 
-Full cross-link map for this page: [/docs/queues/sdk.graph.md](/docs/queues/sdk.graph.md)
+Full cross-link map for this page: [/docs/queues/sdk.graph.md](/docs/queues/sdk.graph.md?from=related&source_path=%2Fdocs%2Fqueues%2Fsdk&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Installation
@@ -45,7 +49,7 @@ Full cross-link map for this page: [/docs/queues/sdk.graph.md](/docs/queues/sdk.
   </Code>
   <Code tab="yarn">
     ```bash
-    yarn i @vercel/queue
+    yarn add @vercel/queue
     ```
   </Code>
   <Code tab="npm">
@@ -55,7 +59,7 @@ Full cross-link map for this page: [/docs/queues/sdk.graph.md](/docs/queues/sdk.
   </Code>
   <Code tab="bun">
     ```bash
-    bun i @vercel/queue
+    bun add @vercel/queue
     ```
   </Code>
 </CodeBlock>
@@ -134,7 +138,7 @@ await send('orders', payload, {
 | `region`           | `string`                 | Auto-detected | Target a specific region for this message                                   |
 | `retentionSeconds` | `number`                 | 24 hours      | Message TTL. Minimum 60 seconds, maximum 7 days (604,800 seconds)           |
 | `delaySeconds`     | `number`                 | Zero seconds  | Delay before message becomes visible. Maximum 7 days, capped at message TTL |
-| `idempotencyKey`   | `string`                 | -             | Deduplication key for the message                                           |
+| `idempotencyKey`   | `string`                 | -             | Deduplication key for the message. Deduplication window: `min(retention, 24 hours)`. Maximum 256 characters |
 | `headers`          | `Record<string, string>` | -             | Custom headers to include with this message                                 |
 
 ## Consuming messages in push mode
@@ -303,13 +307,12 @@ Queues also run in `nitro dev`. Run `vercel link` and `vercel env pull` first so
 
 ## Error handling
 
-The SDK provides typed error classes for each failure mode.
+The SDK provides typed error classes for each failure mode. Import the ones you handle and check instances in your `catch` block.
 
 ```ts
 import {
   UnauthorizedError,
   BadRequestError,
-  DuplicateMessageError,
   MessageNotFoundError,
   QueueEmptyError,
 } from '@vercel/queue';
@@ -319,11 +322,32 @@ try {
 } catch (error) {
   if (error instanceof UnauthorizedError) {
     // Invalid or expired token
-  } else if (error instanceof DuplicateMessageError) {
-    // Idempotency key collision
+  } else if (error instanceof BadRequestError) {
+    // Invalid request parameters
   }
 }
 ```
+
+A repeated `send` with the same `idempotencyKey` is not an error. The publish succeeds and the duplicate is deduplicated server-side after the call returns.
+
+The SDK exports the following error classes:
+
+| Error class                         | Thrown when                                                                       |
+| ----------------------------------- | --------------------------------------------------------------------------------- |
+| `UnauthorizedError`                 | Authentication fails because the token is missing, invalid, or expired            |
+| `ForbiddenError`                    | Access is forbidden, for example the queue belongs to a different environment or project |
+| `BadRequestError`                   | Request parameters are invalid                                                    |
+| `MessageNotFoundError`              | A message does not exist or has expired                                           |
+| `MessageNotAvailableError`          | A message exists but cannot be processed because it is in the wrong state or already claimed by another consumer |
+| `MessageCorruptedError`             | Message data is corrupted or cannot be parsed                                     |
+| `MessageLockedError`                | A message is temporarily locked by another consumer and currently being processed. Exposes an optional `retryAfter` (seconds) |
+| `MessageAlreadyProcessedError`      | You attempt to process a message that has already been successfully processed     |
+| `QueueEmptyError`                   | No messages are available in the queue                                            |
+| `InvalidLimitError`                 | A batch limit parameter is outside the valid range of 1 to 10 (inclusive)         |
+| `TooManyRequestsError`              | The server rate-limits a request (HTTP 429). Exposes an optional `retryAfter` (seconds) |
+| `InternalServerError`               | The server encounters an unexpected error                                         |
+| `ConsumerDiscoveryError`            | Consumer discovery fails because the deployment could not be reached or is not configured correctly |
+| `ConsumerRegistryNotConfiguredError`| The consumer registry is not configured for the project                           |
 
 ## Transports
 

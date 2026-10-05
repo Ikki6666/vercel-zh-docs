@@ -1,9 +1,9 @@
 ---
-title: Ecosystem
+title: AI Gateway Ecosystem and Integrations
 product: vercel
 url: /docs/ai-gateway/ecosystem
 canonical_url: "https://vercel.com/docs/ai-gateway/ecosystem"
-last_updated: 2026-07-28
+last_updated: 2026-09-15
 type: conceptual
 prerequisites:
   - /docs/ai-gateway
@@ -12,12 +12,12 @@ related:
   - /docs/ai-gateway/ecosystem/framework-integrations/llamaindex
   - /docs/ai-gateway/ecosystem/framework-integrations/mastra
   - /docs/ai-gateway/ecosystem/framework-integrations/pydantic-ai
-  - /docs/ai-gateway/ecosystem/framework-integrations/litellm
-summary: Explore community framework integrations and ecosystem features for the AI Gateway.
+  - /docs/ai-gateway/ecosystem/framework-integrations/tanstack-ai
+summary: Connect frameworks, coding tools, and billing integrations to AI Gateway. Configure app attribution and explore integrations for your AI applications.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Ecosystem
+# AI Gateway Ecosystem and Integrations
 
 AI Gateway integrates with the AI development ecosystem you use. Whether you're building with LangChain, LlamaIndex, or other popular frameworks, connect through compatible APIs and get unified billing, observability, and model access.
 
@@ -27,13 +27,16 @@ AI Gateway integrates with the AI development ecosystem you use. Whether you're 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Integrations for Models](https://vercel.com/docs/agent-resources/integrations-for-models?from=related) — Integrate powerful AI services and models seamlessly into your Vercel projects.
-- [Chat Platforms](https://vercel.com/docs/ai-gateway/chat-platforms?from=related) — Configure AI chat platforms to use the AI Gateway for unified model access and spend monitoring.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [OpenAI](https://vercel.com/docs/agent-resources/integrations-for-models/openai?from=related) — Integrate your Vercel project with OpenAI's powerful suite of models.
-- [SDKs & APIs](https://vercel.com/docs/ai-gateway/sdks-and-apis?from=related) — Use the AI Gateway with various SDKs and API specifications including OpenAI, Anthropic, and OpenResponses.
+- [Using TanStack AI with Vercel AI Gateway](https://vercel.com/kb/guide/tanstack-ai-vercel-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Connect TanStack AI to Vercel AI Gateway with the @tanstack/ai-vercel-gateway adapter to stream chat, route across provi
+- [Building an AI chatbot with Next.js, Langchain, and OpenAI](https://vercel.com/kb/guide/nextjs-langchain-vercel-ai?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Dive into the world of LangChain.js and Next.js with our detailed guide. Learn how to set up a chatbot, structure output
+- [Building AI apps on Vercel: an overview](https://vercel.com/kb/guide/how-to-build-ai-app?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Learn the key AI concepts and tools for building and scaling AI apps.
+- [AI Gateway](https://vercel.com/docs/agent-resources/vercel-mcp/tools/ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Vercel MCP tools for ai gateway.
+- [Getting Started with AI Gateway](https://vercel.com/docs/ai-gateway/getting-started?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Set up AI Gateway with a coding agent, route the agent through AI Gateway, or make your first request with cURL, TypeScr
+- [AI SDK with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
+- [Build with AI on Vercel](https://vercel.com/docs/agent-resources/integrations-for-models?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Integrate powerful AI services and models seamlessly into your Vercel projects.
+- [AI SDK for Python with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=related) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 200+ models.
 
-Full cross-link map for this page: [/docs/ai-gateway/ecosystem.graph.md](/docs/ai-gateway/ecosystem.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/ecosystem.graph.md](/docs/ai-gateway/ecosystem.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fecosystem&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Framework integrations
@@ -46,6 +49,7 @@ These popular frameworks work through Chat Completions endpoints or native integ
 | [LlamaIndex](/docs/ai-gateway/ecosystem/framework-integrations/llamaindex)   | Python     | Native package   | Knowledge assistants, document Q\&A   |
 | [Mastra](/docs/ai-gateway/ecosystem/framework-integrations/mastra)           | TypeScript | Native           | AI workflows and agents              |
 | [Pydantic AI](/docs/ai-gateway/ecosystem/framework-integrations/pydantic-ai) | Python     | Native           | Type-safe agents, structured outputs |
+| [TanStack AI](/docs/ai-gateway/ecosystem/framework-integrations/tanstack-ai) | TypeScript/JS | Native adapter | Chat, embeddings, image generation |
 | [LiteLLM](/docs/ai-gateway/ecosystem/framework-integrations/litellm)         | Python     | Native prefix    | Unified LLM interface                |
 | [Langfuse](/docs/ai-gateway/ecosystem/framework-integrations/langfuse)       | Any        | Observability    | LLM analytics and tracing            |
 
@@ -98,6 +102,40 @@ agent = Agent(
 result = agent.run_sync("What is the capital of France?")
 ```
 
+### TanStack AI
+
+Install `@tanstack/ai` and `@tanstack/ai-vercel-gateway`, then set `AI_GATEWAY_API_KEY` in your server environment. Use the native adapter to stream a chat response:
+
+```ts filename="index.mts" framework=all
+import { chat } from '@tanstack/ai';
+import { vercelGatewayText } from '@tanstack/ai-vercel-gateway';
+
+const stream = chat({
+  adapter: vercelGatewayText('anthropic/claude-opus-5'),
+  messages: [{ role: 'user', content: 'Explain RAG in one sentence.' }],
+});
+
+for await (const chunk of stream) {
+  console.log(chunk);
+}
+```
+
+```js filename="index.mjs" framework=all
+import { chat } from '@tanstack/ai';
+import { vercelGatewayText } from '@tanstack/ai-vercel-gateway';
+
+const stream = chat({
+  adapter: vercelGatewayText('anthropic/claude-opus-5'),
+  messages: [{ role: 'user', content: 'Explain RAG in one sentence.' }],
+});
+
+for await (const chunk of stream) {
+  console.log(chunk);
+}
+```
+
+The example logs stream events containing the model's response. Follow [TanStack AI with AI Gateway](/docs/ai-gateway/ecosystem/framework-integrations/tanstack-ai) for installation, authentication, and run commands.
+
 See the [Framework Integrations documentation](/docs/ai-gateway/ecosystem/framework-integrations) for complete setup guides.
 
 ## Stripe billing
@@ -117,7 +155,7 @@ Works with the AI SDK, OpenAI Chat Completions API, and Anthropic Messages API. 
 
 ## App attribution
 
-[App Attribution](/docs/ai-gateway/ecosystem/app-attribution) lets you identify your application in requests. When you include attribution headers, Vercel can feature your app—increasing visibility for your project.
+[App Attribution](/docs/ai-gateway/ecosystem/app-attribution) lets you identify your application in requests. When you include attribution headers, Vercel can feature your app, increasing visibility for your project.
 
 Add attribution to your requests:
 
@@ -132,7 +170,7 @@ const response = await fetch('https://ai-gateway.vercel.sh/v1/chat/completions',
 });
 ```
 
-Attribution is optional—your requests work normally without these headers.
+Attribution is optional. Your requests work normally without these headers.
 
 ## Next steps
 

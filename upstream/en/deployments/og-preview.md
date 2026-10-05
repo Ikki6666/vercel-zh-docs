@@ -3,7 +3,7 @@ title: Inspecting your Open Graph metadata
 product: vercel
 url: /docs/deployments/og-preview
 canonical_url: "https://vercel.com/docs/deployments/og-preview"
-last_updated: 2026-02-27
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/deployments
@@ -24,15 +24,19 @@ You can use the **Open Graph** section in the sidebar on every deployment on Ver
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Displaying headlines in social previews with Vercel OG](https://vercel.com/kb/guide/displaying-article-headlines-in-social-previews?from=related) — Twitter/X is planning to remove headlines from social previews. To get around this limitation, Vercel OG offers a way to
-- [Metadata and OG images](https://nextjs.org/docs/app/getting-started/metadata-and-og-images?from=related) — Learn how to add metadata to your pages and create dynamic OG images.
-- [Generated URLs](https://vercel.com/docs/deployments/generated-urls?from=related) — When you create a new deployment, Vercel will automatically generate a unique URL which you can use to access that parti
-- [List deployments](https://vercel.com/docs/rest-api/deployments/list-deployments?from=related)
-- [Getting Started](https://vercel.com/docs/analytics/quickstart?from=related) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
-- [Managing Comments](https://vercel.com/docs/comments/managing-comments?from=related) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [OG Image Generation: The Complete Customization Guide](https://vercel.com/kb/guide/using-custom-font?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Learn how to use custom fonts in your Vercel OG image, plus emoji, external images, non-Latin text, dynamic titles, and
+- [Inspect and validate Open Graph metadata for enhanced link sharing](https://vercel.com/changelog/open-graph-link-sharing-inspector?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related)
+- [Inspect Open Graph data with the Vercel Toolbar](https://vercel.com/changelog/inspect-open-graph-data-with-the-vercel-toolbar?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related)
+- [Metadata and OG images](https://nextjs.org/docs/app/getting-started/metadata-and-og-images?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Learn how to add metadata to your pages and create dynamic OG images.
+- [Using an SVG image in your OG image](https://vercel.com/kb/guide/using-svg-image?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Learn how to use SVG embedded content to generate your OG images.
+- [Using Tailwind CSS with your OG Image](https://vercel.com/kb/guide/using-tailwind?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Learn how to use Tailwind CSS to style your OG images.
+- [Deployments](https://vercel.com/docs/agent-resources/vercel-mcp/tools/deployments?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Vercel MCP tools for deployments.
+- [Using an external image as OG image](https://vercel.com/kb/guide/using-an-external-dynamic-image?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Learn how to pass the username as a URL parameter to pull an external profile image for the image generation.
+- [Using dynamic text as your OG Image](https://vercel.com/kb/guide/dynamic-text-as-image?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Learn how to pass the image title as a URL parameter.
+- [List deployments](https://vercel.com/docs/rest-api/deployments/list-deployments?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — GET /v7/deployments — List deployments under the authenticated user or team. If a deployment hasn't finished uploading \\
+- [Getting started with Vercel Web Analytics](https://vercel.com/docs/analytics/quickstart?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=related) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
 
-Full cross-link map for this page: [/docs/deployments/og-preview.graph.md](/docs/deployments/og-preview.graph.md)
+Full cross-link map for this page: [/docs/deployments/og-preview.graph.md](/docs/deployments/og-preview.graph.md?from=related&source_path=%2Fdocs%2Fdeployments%2Fog-preview&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 To view your data:
@@ -42,7 +46,7 @@ To view your data:
 3. From the **Deployments** section in the sidebar, select the deployment you wish to view the metadata for
 4. Select the Open Graph tab:
 
-![Image](`/docs-assets/static/docs/concepts/deployments/og-tab-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/og-tab-light.png)
 
 5. From here, you can view the metadata and a preview for [Twitter](/docs/deployments/og-preview#twitter-specific-metadata), Slack, Facebook, and LinkedIn for [specific pages](/docs/deployments/og-preview#filter-by-pathname) in your deployment
 
@@ -63,16 +67,20 @@ These properties set by the [Open Graph protocol](https://ogp.me/#metadata).
 | `og:description` | A one to two sentence description for link previews.                    | You can use this to override the meta description if you want the OG title to be different.  |
 | `og:url`         | A canonical URL for link previews.                                      | You should provide the absolute URL.                                                         |
 
-```html filename="index.js"
+```jsx filename="index.js"
 <div>
   <head>
     <meta name="og:title" content="Vercel CDN" />
     <meta name="og:description" content="Vercel CDN" />
-    <meta name="og:image" content={ // Because OG images must have a absolute
-    URL, we use the // `VERCEL_URL` environment variable to get the deployment’s
-    URL. // More info: // https://vercel.com/docs/environment-variables
-    `${ process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''
-    }/api/vercel` } />
+    <meta
+      name="og:image"
+      content={
+        // Because OG images must have an absolute URL, we use the
+        // `VERCEL_URL` environment variable to get the deployment's URL.
+        // More info: https://vercel.com/docs/environment-variables
+        `${process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : ''}/api/vercel`
+      }
+    />
     <meta
       name="og:url"
       content="https://vercel.com/docs/cdn"

@@ -1,9 +1,9 @@
 ---
-title: Markdown Access
+title: Markdown and Agent Discovery
 product: vercel
 url: /docs/agent-resources/markdown-access
 canonical_url: "https://vercel.com/docs/agent-resources/markdown-access"
-last_updated: 2026-02-27
+last_updated: 2026-09-17
 type: conceptual
 prerequisites:
   - /docs/agent-resources
@@ -11,7 +11,9 @@ related:
   - /docs/agent-resources/vercel-plugin
   - /docs/graph.json
   - /docs/functions.graph.md
-summary: Access Vercel documentation as markdown using .md endpoints or the copy button.
+  - /docs/rest-api
+  - /docs/agent-resources/vercel-mcp
+summary: Learn how Vercel serves documentation to AI agents as Markdown and helps them discover related pages through content negotiation, discovery indexes,...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -25,27 +27,27 @@ Vercel documentation is available as HTML for humans and structured Markdown for
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Make your documentation readable by AI agents](https://vercel.com/kb/guide/make-your-documentation-readable-by-ai-agents?from=related) — Serve markdown to AI agents using content negotiation, .md endpoints, agent auto-detection, llms.txt,   sitemap.md, and
-- [How to serve documentation for agents](https://vercel.com/kb/guide/how-to-serve-documentation-for-agents?from=related) — Learn how to serve markdown to agents and HTML for humans from the same URL
-- [Agent Readability: A Specification for AI-Optimized Websites](https://vercel.com/kb/guide/agent-readability-spec?from=related) — When an agent visits your site, it needs to quickly find, read, and understand your pages. Sites that are easy for agent
-- [AEO & GEO](https://docs.vercel.shop/docs/anatomy/aeo-geo?from=related) — How the storefront makes itself legible to AI answer engines and generative search, with built-in content negotiation, s
-- [Contribution Guide](https://nextjs.org/docs/community/contribution-guide?from=related) — Learn how to contribute to Next.js Documentation
-- [Introduction](https://docs.vercel.shop/docs?from=related) — Learn about the Vercel Shop template and what it offers.
-- [Text Prompting](https://v0.app/docs/text-prompting?from=related) — Use text prompting to create initial UIs and ask technical questions with natural language.
-- [MDX](https://nextjs.org/docs/pages/guides/mdx?from=related) — Learn how to configure MDX to write JSX in your markdown files.
-- [Extending with Agents](https://docs.vercel.shop/docs/getting-started/extending-with-agents?from=related) — Use coding agents like Claude Code, Cursor, and Codex to personalize and extend your storefront.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
-- [vercel agent](https://vercel.com/docs/cli/agent?from=related) — Generate an AGENTS.md file with Vercel deployment best practices using the vercel agent CLI command.
+- [How to serve documentation for agents](https://vercel.com/kb/guide/how-to-serve-documentation-for-agents?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Learn how to serve markdown to agents and HTML for humans from the same URL
+- [Making agent-friendly pages with content negotiation](https://vercel.com/blog/making-agent-friendly-pages-with-content-negotiation?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related)
+- [Docs pages support Markdown responses](https://vercel.com/changelog/docs-pages-support-markdown-responses?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related)
+- [Making your catalog discoverable to AI agents](https://vercel.com/kb/guide/agentic-commerce-readiness?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Agentic commerce readiness starts with the initial HTML response. Server-render your product catalog, ship JSON-LD, and
+- [Docs Contribution Guide](https://nextjs.org/docs/community/contribution-guide?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Learn how to contribute to Next.js Documentation
+- [How to set up your Next.js project for AI coding agents](https://nextjs.org/docs/app/guides/ai-agents?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Learn how to configure your Next.js project so AI coding agents use up-to-date documentation instead of outdated trainin
+- [Vercel Deployment Guide](https://ai-sdk.dev/docs/advanced/vercel-deployment-guide?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Learn how to deploy an AI application to production on Vercel
+- [AEO & GEO](https://docs.vercel.shop/docs/anatomy/aeo-geo?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — How the storefront makes itself legible to AI answer engines and generative search, with built-in content negotiation, s
+- [Open Vercel documentation pages in AI providers](https://vercel.com/changelog/open-vercel-documentation-pages-in-ai-providers?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related)
+- [How to build an MCP server with Nuxt](https://vercel.com/kb/guide/how-to-build-an-mcp-server-with-nuxt?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Add an MCP server to your Nuxt app with the Nuxt MCP Toolkit. Create tools, resources, and prompt templates that AI assi
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, connect Vercel MCP, and deploy your first project.
+- [vercel agent](https://vercel.com/docs/cli/agent?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=related) — Generate an AGENTS.md file with Vercel deployment best practices using the vercel agent CLI command.
 
-Full cross-link map for this page: [/docs/agent-resources/markdown-access.graph.md](/docs/agent-resources/markdown-access.graph.md)
+Full cross-link map for this page: [/docs/agent-resources/markdown-access.graph.md](/docs/agent-resources/markdown-access.graph.md?from=related&source_path=%2Fdocs%2Fagent-resources%2Fmarkdown-access&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## How agents receive Markdown
 
-A canonical docs URL such as `https://vercel.com/docs/functions` returns HTML to an ordinary browser request. The same URL returns `text/markdown` when Vercel detects an AI agent or the request includes the `Accept: text/markdown` header.
+A canonical docs URL such as `https://vercel.com/docs/functions` returns HTML to an ordinary browser request. The same URL returns `text/markdown` when the request prefers Markdown, or when Vercel detects an AI agent without a format preference.
 
-Recognized AI agents receive Markdown even if they send an HTML `Accept` header. This lets you give an agent a canonical docs URL without changing the URL first.
+Vercel honors explicit format preferences. A recognized AI agent receives HTML when it requests `text/html`. When the agent does not distinguish between HTML and Markdown, Vercel returns Markdown.
 
 To request Markdown from the canonical URL, send the `Accept` header:
 
@@ -72,7 +74,20 @@ Both curl commands return the Vercel Functions page as Markdown.
 
 ### What a Markdown response contains
 
-Each Markdown response starts with YAML frontmatter. The frontmatter includes structured fields such as the title, product, canonical URL, last updated date, content type, prerequisites, related pages, and summary. The `prerequisites` and `related` arrays are empty when no relationships are available.
+Each Markdown response starts with YAML frontmatter with these fields:
+
+| Field | Value |
+| --- | --- |
+| `title` | The page title |
+| `product` | The product the page documents, such as `vercel` or `nextjs` |
+| `url` | The page path, such as `/docs/functions` |
+| `canonical_url` | The full canonical URL of the HTML page |
+| `last_updated` | The date the page last changed, in `YYYY-MM-DD` format |
+| `type` | The content type: `conceptual`, `tutorial`, `how-to`, `reference`, or `integration` |
+| `prerequisites` | Paths of pages to read first. Empty (`[]`) when none are available |
+| `related` | Paths of curated related pages. Empty (`[]`) when none are available |
+| `summary` | A one-sentence description of the page |
+| `install_vercel_plugin` | The command to install the [Vercel Plugin](/docs/agent-resources/vercel-plugin) |
 
 The response body preserves headings, links, fenced code blocks, and tables. When the docs graph has curated links for the page, the Markdown response also includes a **Related pages** section after the introduction.
 
@@ -99,26 +114,32 @@ Append `.graph.md` to a page URL for a smaller cross-link map designed for agent
 - Pages that the source page links to
 - Pages that link to the source page, grouped by site
 
-Each outbound or inbound link section renders at most 100 links. When a section overflows, the response points to [`/docs/graph.json`](/docs/graph.json) for the complete data.
+Each `.graph.md` response contains the page's complete set of relationships, and section headings include the link count. The header of every response links to [`/docs/graph.json`](/docs/graph.json) and states when the graph was built. Pages that are newer than the last nightly build return a `200` response explaining that no cross-link map exists yet.
 
 ## Site-wide discovery files
 
-Agents can use these files to navigate or load the broader documentation set:
+Agents can use these files to discover Vercel documentation, the REST API, and other machine-readable resources:
 
 | File | Use |
 | --- | --- |
-| `https://vercel.com/llms.txt` | A compact index of Vercel documentation |
+| `https://vercel.com/llms.txt` | A compact index of Vercel documentation and platform resources. Also served at `https://vercel.com/agent.txt` |
 | `https://vercel.com/docs/llms-full.txt` | The full Vercel docs corpus in one file |
 | `https://vercel.com/docs/sitemap.md` | A semantic page index with summaries and prerequisites |
+| `https://vercel.com/kb/sitemap.md` | A page index for the Vercel Knowledge Base |
 | `https://vercel.com/docs/taxonomy.json` | Canonical product names, aliases, and deprecations |
 | `https://vercel.com/docs/graph.json` | The complete cross-site documentation graph |
+| `https://vercel.com/openapi.json` | The OpenAPI 3.0 description of the [Vercel REST API](/docs/rest-api) |
+| `https://vercel.com/.well-known/ai-catalog.json` | A catalog of Vercel's agent-facing resources, including [Vercel MCP](/docs/agent-resources/vercel-mcp) OAuth metadata, the REST API OpenAPI description, and the documentation graph |
+| `https://vercel.com/.well-known/api-catalog` | An [RFC 9727](https://www.rfc-editor.org/rfc/rfc9727) API catalog that links the REST API to its OpenAPI description, documentation, and status endpoint |
 
 ## View or copy Markdown in the browser
 
-Open the page-actions menu on a docs page to access its Markdown:
+Every docs page has a **Copy page** button at the top of the content. Click the button to copy the page as Markdown to your clipboard, or open its menu for more options:
 
-- **View as Markdown** requests the canonical URL with `Accept: text/markdown`, creates a browser-local plain-text Blob, and opens the Blob URL in a new tab. The Blob URL is temporary and only works in your browser session. Share the page's `.md` URL instead.
 - **Copy page** copies the page as Markdown to your clipboard so you can paste it into an AI assistant.
+- **View as Markdown** opens the page's durable `.md` URL in a new tab so you can view or share its Markdown representation.
+- **Open in v0** and **Ask AI about this page** send the page to an AI assistant as context.
+- **OpenAPI Specification** appears on [REST API](/docs/rest-api) reference pages and opens the API's OpenAPI description.
 
 ## Feeding documentation to AI assistants
 

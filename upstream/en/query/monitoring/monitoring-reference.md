@@ -3,7 +3,7 @@ title: Monitoring Reference
 product: vercel
 url: /docs/query/monitoring/monitoring-reference
 canonical_url: "https://vercel.com/docs/query/monitoring/monitoring-reference"
-last_updated: 2026-07-15
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/query/monitoring
@@ -20,7 +20,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Monitoring Reference
 
-## Visualize
+Monitoring is now
 
 
 <!-- docsgraph:related -->
@@ -28,20 +28,34 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Query Reference](https://vercel.com/docs/query/reference?from=related) — This reference covers the dimensions and operators used to create a query.
-- [Web Analytics API](https://vercel.com/docs/analytics/web-analytics-api?from=related) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
-- [vercel metrics](https://vercel.com/docs/cli/metrics?from=related) — Query observability metrics and inspect available metrics, dimensions, and aggregations using the Vercel CLI.
-- [Tools](https://vercel.com/docs/agent-resources/vercel-mcp/tools?from=related) — Available tools in Vercel MCP for searching docs, managing teams, projects, deployments, Web Analytics, runtime logs and
-- [Aggregates page views](https://vercel.com/docs/rest-api/web-analytics/aggregates-page-views?from=related)
+- [Query Reference](https://vercel.com/docs/query/reference?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — Use this reference to find the event types, metrics, aggregations, dimensions, and operators available in Query.
+- [Query Web Analytics with the API](https://vercel.com/docs/analytics/web-analytics-api?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
+- [Aggregates page views](https://vercel.com/docs/rest-api/web-analytics/aggregates-page-views?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — GET /v1/query/web-analytics/visits/aggregate — Counts pageviews on a project, within the requested date range. Results a
+- [Counts page views](https://vercel.com/docs/rest-api/web-analytics/counts-page-views?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — GET /v1/query/web-analytics/visits/count — Counts the number of page views on a project \\(production only\\), since Web A
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
 
-Full cross-link map for this page: [/docs/query/monitoring/monitoring-reference.graph.md](/docs/query/monitoring/monitoring-reference.graph.md)
+Full cross-link map for this page: [/docs/query/monitoring/monitoring-reference.graph.md](/docs/query/monitoring/monitoring-reference.graph.md?from=related&source_path=%2Fdocs%2Fquery%2Fmonitoring%2Fmonitoring-reference&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
+
+deprecated
+
+. It is no longer available for Pro users or Enterprise customers who subscribed to Observability Plus after June 2025.
+
+Observability Plus
+
+includes
+
+Observability Query
+
+for monitoring your project.
+
+## Visualize
 
 The `Visualize` clause selects what query data is displayed. You can select one of the following fields at a time, [aggregating](#aggregations) each field in one of several ways:
 
 | **Field Name**                    | **Description**                                                                                                                  | **Aggregations**                                       |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| **Edge Requests**                 | The number of [Edge Requests](/docs/manage-cdn-usage#edge-requests)                                                              | Count, Count per Second, Percentages                   |
+| **CDN Requests**                 | The number of [CDN Requests](/docs/manage-cdn-usage#cdn-requests)                                                              | Count, Count per Second, Percentages                   |
 | **Duration**                      | The time spent serving a request, as measured by Vercel's CDN                                                                    | Sum, Sum per Second, Min/Max, Percentages, Percentiles |
 | **Incoming Fast Data Transfer**   | The amount of [Fast Data Transfer](/docs/manage-cdn-usage#fast-data-transfer) used by the request.                               | Sum, Sum per Second, Min/Max, Percentages, Percentiles |
 | **Outgoing Fast Data Transfer**   | The amount of [Fast Data Transfer](/docs/manage-cdn-usage#fast-data-transfer) used by the response.                              | Sum, Sum per Second, Min/Max, Percentages, Percentiles |
@@ -144,7 +158,7 @@ All your project's resources like pages, functions, and images have a path type:
 
 ## Chart view
 
-![Image](`/docs-assets/static/docs/monitoring/monitoring-top-bar-light.png`)
+![Monitoring options including Data Granularity of day or hour](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/monitoring/monitoring-top-bar-light.png)
 
 In the chart view (vertical bar or line), `Limit` is applied at the level of each day or hour (based the value of the **Data Granularity** dropdown). When you hover over each step of the horizontal axis, you can see a list of the results returned and associated colors.
 
@@ -169,7 +183,7 @@ On the left navigation bar, you will find a list of example queries to get start
 | Bandwidth Per Second by Project, Hostname | The outgoing bandwidth per second for each `host` and `project_id`                                |
 | Bandwidth by Path, Hostname               | The outgoing bandwidth for each `host` and `source_path`                                          |
 | Request Cache Hits                        | The total number of request cache hits for each `host`                                            |
-| Request Cache Misses                      | The total number of request cache misses for each`host`                                           |
+| Request Cache Misses                      | The total number of request cache misses for each `host`                                          |
 | Cache Hit Rates                           | The percentage of cache hits and misses over time                                                 |
 | 429 Status Codes by Host, Path            | The total 429 (Too Many Requests) status code requests for each `host` and `source_path`          |
 | 5XX Status Codes by Host, Path            | The total 5XX (server-related HTTPS error) status code requests for each `host` and `source_path` |
