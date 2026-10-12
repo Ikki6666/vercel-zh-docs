@@ -3,18 +3,18 @@ title: Nuxt on Vercel
 product: vercel
 url: /docs/frameworks/full-stack/nuxt
 canonical_url: "https://vercel.com/docs/frameworks/full-stack/nuxt"
-last_updated: 2026-07-03
+last_updated: 2026-08-26
 type: conceptual
 prerequisites:
   - /docs/frameworks/full-stack
   - /docs/frameworks
 related:
+  - /docs/cli
   - /docs/functions
   - /docs/incremental-static-regeneration
   - /docs/cdn
   - /docs/image-optimization
-  - /docs/speed-insights
-summary: "Learn how to use Vercel's features with Nuxt."
+summary: Deploy Nuxt applications to Vercel and configure rendering, functions, middleware, routing, image optimization, and caching.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -28,20 +28,32 @@ Nuxt is an open-source framework that streamlines the process of creating modern
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to ship a Nitro app on Vercel](https://vercel.com/kb/guide/ship-a-nitro-app-on-vercel?from=related) — Deploy a Nitro app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
-- [How to Optimize Next.js + Sitecore JSS](https://vercel.com/kb/guide/how-to-optimize-next.js-sitecore-jss?from=related) — This guide covers performance and usage considerations when building and deploying your Next.js and Sitecore JSS applica
-- [Next.js](https://vercel.com/docs/frameworks/full-stack/nextjs?from=related) — Vercel is the native Next.js platform, designed to enhance the Next.js experience.
-- [SvelteKit](https://vercel.com/docs/frameworks/full-stack/sveltekit?from=related) — Learn how to use Vercel's features with SvelteKit
-- [Vite + Nitro](https://vercel.com/docs/frameworks/full-stack/vite-with-nitro?from=related) — Add a backend to any Vite app with Nitro and deploy to Vercel with zero configuration.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
-- [Frontends](https://vercel.com/docs/frameworks/frontend?from=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
+- [Improved support for Nuxt on Vercel](https://vercel.com/blog/nuxt-on-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related)
+- [How to optimize Next.js and Sitecore Content SDK apps](https://vercel.com/kb/guide/how-to-optimize-next.js-sitecore-content-sdk?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Learn how to choose a rendering strategy, configure proxy middleware, and optimize costs for Next.js and Sitecore Conten
+- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
+- [How to reduce ISR Writes by shrinking cached output](https://vercel.com/kb/guide/how-to-reduce-isr-writes?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Reduce ISR Write units by finding large changed routes and removing unnecessary data from their cached output.
+- [How to ship a NestJS app on Vercel](https://vercel.com/kb/guide/ship-a-nestjs-app-on-vercel?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Deploy a NestJS app to Vercel with zero configuration. Learn how to ship from a template, the Nest CLI, or Git, and conf
+- [SvelteKit on Vercel](https://vercel.com/docs/frameworks/full-stack/sveltekit?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Deploy SvelteKit applications to Vercel and configure the adapter, rendering, streaming, ISR, analytics, and Routing Mid
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
+- [Astro on Vercel](https://vercel.com/docs/frameworks/frontend/astro?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Deploy Astro sites to Vercel and configure server-side rendering, ISR, Web Analytics, Image Optimization, and Routing Mi
+- [Vite + Nitro on Vercel](https://vercel.com/docs/frameworks/full-stack/vite-with-nitro?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Add a backend to any Vite app with Nitro and deploy to Vercel with zero configuration.
+- [Frontends on Vercel](https://vercel.com/docs/frameworks/frontend?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
 
-Full cross-link map for this page: [/docs/frameworks/full-stack/nuxt.graph.md](/docs/frameworks/full-stack/nuxt.graph.md)
+Full cross-link map for this page: [/docs/frameworks/full-stack/nuxt.graph.md](/docs/frameworks/full-stack/nuxt.graph.md?from=related&source_path=%2Fdocs%2Fframeworks%2Ffull-stack%2Fnuxt&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 You can deploy Nuxt static and server-side rendered sites on Vercel with no configuration required.
 
 ## Getting started
+
+To get started with Nuxt on Vercel:
+
+- If you already have a project with Nuxt, install [Vercel CLI](/docs/cli) and run the vercel command from your project's root directory
+- Clone one of our Nuxt example repos to your favorite git provider and deploy it on Vercel with the button below:
+
+\- Or, choose a template from Vercel's marketplace:
+
+Vercel deployments can \[integrate with your git provider]\(/docs/git) to \[generate preview URLs]\(/docs/deployments/environments#preview-environment-pre-production) for each pull request you make to your Nuxt project.
 
 ### Choosing a build command
 
@@ -176,7 +188,7 @@ To write files, mount [Redis storage](https://nitro.unjs.io/guide/storage) with 
 
 First, [install Upstash Redis from the Vercel Marketplace](https://vercel.com/marketplace/upstash) to get your Redis credentials.
 
-Then update your  file:
+Then update your `nuxt.config.ts` file:
 
 ```ts filename="nuxt.config.ts" framework=all
 export default defineNuxtConfig({
@@ -292,9 +304,9 @@ You could then access that data in a page on the frontend with the [`useRequestE
 The following example demonstrates a page fetching data with `useRequestEvent`:
 
 ```tsx filename="example.vue" framework=all
-<script>
+<script setup>
   const event = useRequestEvent();
-  const user = ref(event.context?.user);
+  const user = ref(event?.context?.user);
 </script>
 
 <template>
@@ -308,9 +320,9 @@ The following example demonstrates a page fetching data with `useRequestEvent`:
 ```
 
 ```js filename="example.vue" framework=all
-<script>
+<script setup>
   const event = useRequestEvent();
-  const user = ref(event.context?.user);
+  const user = ref(event?.context?.user);
 </script>
 
 <template>
@@ -451,7 +463,7 @@ export default defineNuxtConfig({
 
 To deploy a fully static site on Vercel, build your project with `nuxt generate`.
 
-Alternatively, you can statically generate some Nuxt routes at build time using the `prerender` route rule in your :
+Alternatively, you can statically generate some Nuxt routes at build time using the `prerender` route rule in your `nuxt.config.ts`:
 
 ```ts filename="nuxt.config.ts" framework=all
 export default defineNuxtConfig({
@@ -482,7 +494,7 @@ export default defineNuxtConfig({
 
 [Incremental Static Regeneration (ISR)](/docs/incremental-static-regeneration) allows you to create or update content *without* redeploying your site. ISR has two main benefits for developers: better performance and faster build times.
 
-To enable ISR in a Nuxt route, add a `routeRules` option to your , as shown in the example below:
+To enable ISR in a Nuxt route, add a `routeRules` option to your `nuxt.config.ts`, as shown in the example below:
 
 ```ts filename="nuxt.config.ts" framework=all
 export default defineNuxtConfig({
@@ -527,7 +539,7 @@ You should use the `isr` option rather than `swr` to enable ISR in a route. The 
 
 ## Redirects and Headers
 
-You can define redirects and response headers with Nuxt on Vercel in your :
+You can define redirects and response headers with Nuxt on Vercel in your `nuxt.config.ts`:
 
 ```js filename="nuxt.config.js" framework=all
 export default defineNuxtConfig({
@@ -597,10 +609,10 @@ The following example demonstrates using Open Graph (OG) image generation with [
 </template>
 ```
 
-```js filename="components/OgImage/BlogPost.vue" framework=all
-<script setup lang="js">
-  withDefaults(defineProps(), {
-    title: 'title',
+```js filename="components/OgImage/Template.vue" framework=all
+<script setup>
+  defineProps({
+    title: { type: String, default: 'title' },
   })
 </script>
 <template>

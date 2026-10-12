@@ -3,7 +3,7 @@ title: Troubleshooting Sign in with Vercel
 product: vercel
 url: /docs/sign-in-with-vercel/troubleshooting
 canonical_url: "https://vercel.com/docs/sign-in-with-vercel/troubleshooting"
-last_updated: 2026-02-26
+last_updated: 2026-08-21
 type: how-to
 prerequisites:
   - /docs/sign-in-with-vercel
@@ -25,15 +25,14 @@ When users try to authorize your app, several errors can occur. Common troublesh
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The complete guide to authentication on Vercel](https://vercel.com/kb/guide/complete-guide-authentication-vercel?from=related) — Learn how to implement authentication in your Vercel applications. Covers NextAuth/Auth.js setup, environment variable c
-- [Why am I unable to login or signup to the Vercel platform?](https://vercel.com/kb/guide/why-can-i-not-signup?from=related) — Information on what to do if you are experiencing issues logging in or signing up to the Vercel platform.
-- [Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
-- [Tokens](https://vercel.com/docs/sign-in-with-vercel/tokens?from=related) — Learn how to Sign in with Vercel
-- [Quickstart](https://vercel.com/docs/kms/quickstart?from=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
-- [SDK Reference](https://vercel.com/docs/kms/ts-sdk-reference?from=related) — API reference for @vercel/kms, including signToken, signMessage, region resolution, and signing the KMS API directly wit
-- [Revoke a signing key](https://vercel.com/docs/rest-api/kms/revoke-a-signing-key?from=related)
+- [The complete guide to authentication on Vercel](https://vercel.com/kb/guide/complete-guide-authentication-vercel?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Learn how to implement authentication in your Vercel applications. Covers NextAuth/Auth.js setup, environment variable c
+- [Vercel KMS Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
+- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/token — Sign a JWT with a KMS issuer's active signing key. Authenticate the request
+- [Tokens](https://vercel.com/docs/sign-in-with-vercel/tokens?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Learn how to Sign in with Vercel
+- [OIDC Federation Reference](https://vercel.com/docs/oidc/reference?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — Review helper libraries to help you connect with your backend and understand the structure of an OIDC token.
+- [Revoke a signing key](https://vercel.com/docs/rest-api/kms/revoke-a-signing-key?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Ftroubleshooting&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/keys/{keyId}/revoke — Immediately revoke a signing key that is already scheduled for rev
 
-Full cross-link map for this page: [/docs/sign-in-with-vercel/troubleshooting.graph.md](/docs/sign-in-with-vercel/troubleshooting.graph.md)
+Full cross-link map for this page: [/docs/sign-in-with-vercel/troubleshooting.graph.md](/docs/sign-in-with-vercel/troubleshooting.graph.md?from=related&source_path=%2Fdocs%2Fsign-in-with-vercel%2Ftroubleshooting&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - Checking that all required parameters are included in your requests
@@ -134,7 +133,7 @@ When an app allows only members of its owning team to sign in, Vercel denies aut
 
 ## Token endpoint client authentication errors
 
-These errors occur when you call the token or revoke endpoint with an invalid JWT client assertion.
+These errors occur when you call the token or revoke endpoint with an invalid OIDC token or JWT client assertion.
 
 ### `kid` required for multiple JWKS keys
 
@@ -177,6 +176,40 @@ When Vercel cannot find a JWKS key for the assertion, verification fails.
 When your JWKS contains more than 32 keys, Vercel cannot load it.
 
 **Fix**: Keep the JWKS to 32 keys or fewer.
+
+### Unsupported `client_assertion_type`
+
+When `client_assertion_type` is not an allowed value, Vercel returns an `invalid_client` error with the description:
+
+```plaintext
+Invalid request: `client_assertion_type` should be equal to one of the allowed values "urn:ietf:params:oauth:client-assertion-type:jwt-bearer, urn:vercel:params:oauth:client-assertion-type:oidc-bearer".
+```
+
+**Fix**: Set `client_assertion_type` to `urn:ietf:params:oauth:client-assertion-type:jwt-bearer` for a [JWT assertion](/docs/sign-in-with-vercel/authorization-server-api#authenticate-with-a-jwt-assertion), or `urn:vercel:params:oauth:client-assertion-type:oidc-bearer` for an [OIDC token](/docs/sign-in-with-vercel/authorization-server-api#authenticate-with-an-oidc-token).
+
+### Issuer not trusted (OIDC token)
+
+When the token's `iss` claim does not exactly match the issuer URL of any configured trusted issuer, or the app has no issuers configured, Vercel rejects the request with an invalid client credentials error.
+
+**Fix**: Add the issuer in the dashboard. The issuer URL must match the token's `iss` claim exactly.
+
+### Claims do not match (OIDC token)
+
+When the token's claims do not satisfy any configured entry for that issuer, Vercel rejects the request.
+
+**Fix**: Compare the token's actual claims against the configured entry. To express alternatives, add another entry for the same issuer.
+
+### Invalid `aud` claim (OIDC token)
+
+Unless a matching issuer entry configures an `aud` claim, the token's `aud` must be `https://api.vercel.com/login/oauth/token`.
+
+**Fix**: Request a token with that audience from your issuer, or add `aud` with the token's audience to the matching issuer entry's claims.
+
+### Expired token or signature verification failed (OIDC token)
+
+The token's `exp` must be in the future, the token must include `iss`, `sub`, `aud`, and `exp`, and its signature must verify against keys from the issuer's OpenID configuration (`jwks_uri`). Vercel discovers the issuer's keys from its OpenID configuration, so the issuer's discovery document and JWKS must be publicly reachable.
+
+**Fix**: Send a fresh token, and confirm the issuer publishes its OpenID configuration and JWKS.
 
 
 ---

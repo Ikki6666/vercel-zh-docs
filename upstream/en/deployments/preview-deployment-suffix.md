@@ -3,7 +3,7 @@ title: Preview Deployment Suffix
 product: vercel
 url: /docs/deployments/preview-deployment-suffix
 canonical_url: "https://vercel.com/docs/deployments/preview-deployment-suffix"
-last_updated: 2026-02-27
+last_updated: 2026-09-18
 type: conceptual
 prerequisites:
   - /docs/deployments
@@ -17,7 +17,9 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Preview Deployment Suffix
 
-> **🔒 Permissions Required**: Preview Deployment Suffix
+> **Availability**: Preview Deployment Suffix is available on Enterprise and Pro plans
+
+Preview Deployment Suffixes allow you to customize the URL of a [preview deployment](/docs/deployments/environments#preview-environment-pre-production) by replacing the default `vercel.app` suffix with a [custom domain](/docs/domains/working-with-domains/add-a-domain) of your choice.
 
 
 <!-- docsgraph:related -->
@@ -25,26 +27,23 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
-- [Why do my Vercel deployments have multiple domains?](https://vercel.com/kb/guide/why-do-my-vercel-deployments-have-multiple-domains?from=related) — Learn about why Vercel auto generates URLs for your deployments.
-- [Custom domain](https://v0.app/docs/custom-domains?from=related) — Add custom domains to your v0 deployments to give your applications a professional, branded URL.
-- [How do I add a custom domain to my Vercel project?](https://vercel.com/kb/guide/how-do-i-add-a-custom-domain-to-my-vercel-project?from=related) — Learn how to add a custom domain to your Vercel project.
-- [Avoiding duplicate-content SEO with vercel.app URLs and custom domains](https://vercel.com/kb/guide/avoiding-duplicate-content-with-vercel-app-urls?from=related) — Discover why search engines may treat your vercel.app URL and custom domain as separate pages, and how to consolidate ra
-- [Generated URLs](https://vercel.com/docs/deployments/generated-urls?from=related) — When you create a new deployment, Vercel will automatically generate a unique URL which you can use to access that parti
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [Deployment Protection](https://vercel.com/docs/deployment-protection?from=related) — Learn how to control access to your Vercel project's preview and production URLs with Deployment Protection. Configure p
-- [Pro Plan](https://vercel.com/docs/plans/pro-plan?from=related) — Learn about the Vercel Pro plan with credit-based billing, free viewer seats, and self-serve enterprise features for pro
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Preview URLs optimized for multi-tenant platforms](https://vercel.com/changelog/preview-urls-optimized-for-multi-tenant-platforms?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related)
+- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
+- [Preview deployments for retail campaign review](https://vercel.com/kb/guide/preview-deployments-retail-campaign-review?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related) — Use preview deployments so merchandising, brand, and engineering review a retail campaign on one live URL before launch.
+- [Project-level deployment suffixes](https://vercel.com/changelog/project-level-deployment-suffixes?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related)
+- [Accessing Deployments through Generated URLs](https://vercel.com/docs/deployments/generated-urls?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related) — When you create a new deployment, Vercel will automatically generate a unique URL which you can use to access that parti
+- [Deployments](https://vercel.com/docs/agent-resources/vercel-mcp/tools/deployments?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related) — Vercel MCP tools for deployments.
+- [Configuring Custom Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
+- [Working with domains](https://vercel.com/docs/domains/working-with-domains?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related) — Learn how domains work and the options Vercel provides for managing them.
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
 
-Full cross-link map for this page: [/docs/deployments/preview-deployment-suffix.graph.md](/docs/deployments/preview-deployment-suffix.graph.md)
+Full cross-link map for this page: [/docs/deployments/preview-deployment-suffix.graph.md](/docs/deployments/preview-deployment-suffix.graph.md?from=related&source_path=%2Fdocs%2Fdeployments%2Fpreview-deployment-suffix&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
-
-Preview Deployment Suffixes allow you to customize the URL of a [preview deployment](/docs/deployments/environments#preview-environment-pre-production) by replacing the default `vercel.app` suffix with a [custom domain](/docs/domains/working-with-domains/add-a-domain) of your choice.
 
 The entered custom domain must be:
 
 - Available and active within the team that enabled the Preview Deployment Suffix
-- Using Vercel's [Nameservers](/docs/domains/working-with-domains/add-a-domain#vercel-nameservers)
+- Using Vercel's [nameservers](/docs/domains/working-with-domains/add-a-domain#vercel-nameservers), or [delegating certificate validation to Vercel](#use-an-external-dns-provider)
 
 ### Enabling the Preview Deployment Suffix
 
@@ -60,9 +59,26 @@ To enable Preview Deployment Suffix, and customize the appearance of any of your
 5. Open **General** in the sidebar and scroll down to the **Preview Deployment Suffix** section
 6. Enter the custom domain of your choice in the input, and push **Save**
 
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployment-suffix-light.png`)
+![Selecting a custom value for the Preview Deployment Suffix.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/preview-deployment-suffix-light.png)
 
-If you are not able to use Vercel's Nameservers, see our guide on [how to use a custom domain without Vercel's Nameservers](/kb/guide/preview-deployment-suffix-without-vercel-nameservers).
+### Use an external DNS provider
+
+If you can't switch nameservers, delegate certificate validation to Vercel while keeping the rest of your DNS at your current provider. For a suffix of `preview.example.com`, add these records in your provider's `example.com` zone:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| NS | `_acme-challenge.preview` | `ns1.vercel-dns.com.` |
+| NS | `_acme-challenge.preview` | `ns2.vercel-dns.com.` |
+| CNAME | `*.preview` | `cname.vercel-dns-0.com.` |
+
+If the domain is attached to a project and **Settings > Domains** recommends a different CNAME target, use that project-specific value. The wildcard CNAME routes deployment traffic; the NS records let Vercel issue and renew the wildcard certificate. Some providers require full names, such as `_acme-challenge.preview.example.com`, instead of prefixes.
+
+On your team's **Domains** page, select the apex domain (`example.com`) and choose **Enable Vercel DNS** if it isn't already enabled. This activates the Vercel zone without changing your registrar's nameservers. Then save `preview.example.com` as the Preview Deployment Suffix and confirm a new preview URL resolves and has a valid certificate.
+
+> **💡 Note:** Delegating `_acme-challenge` to Vercel can prevent other hosting providers
+> from issuing certificates that need the same challenge name. Check their
+> certificate requirements before delegating, and keep the delegation in place
+> for Vercel's certificate renewals.
 
 See the [plans add-ons](/docs/pricing#pro-plan-add-ons) documentation for information on pricing.
 

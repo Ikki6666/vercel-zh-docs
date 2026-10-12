@@ -3,7 +3,7 @@ title: Vercel KMS Quickstart
 product: vercel
 url: /docs/kms/quickstart
 canonical_url: "https://vercel.com/docs/kms/quickstart"
-last_updated: 2018-10-20
+last_updated: 2026-08-18
 type: tutorial
 prerequisites:
   - /docs/kms
@@ -27,13 +27,14 @@ Sign a JWT from a Vercel Function with a Vercel-managed key, then verify it agai
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Concepts](https://vercel.com/docs/kms/concepts?from=related) — Understand how Vercel KMS rotates signing keys and how it authorizes signing, management, and verification.
-- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related)
-- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related)
-- [Pricing and Limits](https://vercel.com/docs/kms/pricing?from=related) — How Vercel KMS is billed per signing operation, the platform limits that apply, and how to stop being billed.
-- [Activate a signing key](https://vercel.com/docs/rest-api/kms/activate-a-signing-key?from=related)
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys?from=related&source_path=%2Fdocs%2Fkms%2Fquickstart&source_site=vercel-docs&relationship=related)
+- [Vercel KMS Concepts](https://vercel.com/docs/kms/concepts?from=related&source_path=%2Fdocs%2Fkms%2Fquickstart&source_site=vercel-docs&relationship=related) — Understand how Vercel KMS rotates signing keys and how it authorizes signing, management, and verification.
+- [Key Management](https://vercel.com/docs/agent-resources/vercel-mcp/tools/key-management?from=related&source_path=%2Fdocs%2Fkms%2Fquickstart&source_site=vercel-docs&relationship=related) — Vercel MCP tools for key management.
+- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related&source_path=%2Fdocs%2Fkms%2Fquickstart&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/token — Sign a JWT with a KMS issuer's active signing key. Authenticate the request
+- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related&source_path=%2Fdocs%2Fkms%2Fquickstart&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/keys — Create a new signing key for a KMS issuer. Depending on the activation mode, the
+- [Sign a message](https://vercel.com/docs/rest-api/kms/sign-a-message?from=related&source_path=%2Fdocs%2Fkms%2Fquickstart&source_site=vercel-docs&relationship=related) — POST /v1/kms/issuers/{issuerId}/sign/message — Sign a raw message with a KMS issuer's active signing key. Authenticate t
 
-Full cross-link map for this page: [/docs/kms/quickstart.graph.md](/docs/kms/quickstart.graph.md)
+Full cross-link map for this page: [/docs/kms/quickstart.graph.md](/docs/kms/quickstart.graph.md?from=related&source_path=%2Fdocs%2Fkms%2Fquickstart&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Prerequisites
@@ -55,16 +56,16 @@ Full cross-link map for this page: [/docs/kms/quickstart.graph.md](/docs/kms/qui
   ```
 
 - #### Sign a token from a Vercel Function
-  Call `signToken` inside a route handler. Inside a Vercel Function, the deployment's [OIDC token](/docs/oidc) authorizes the request automatically, so you pass no credentials:
-  > **⚠️ Warning:** `signToken` resolves the function's OIDC token at call time, which requires an
+  Call `signJWT` inside a route handler. Inside a Vercel Function, the deployment's [OIDC token](/docs/oidc) authorizes the request automatically, so you pass no credentials:
+  > **⚠️ Warning:** `signJWT` resolves the function's OIDC token at call time, which requires an
   > active request context. Call it inside a [route
   > handler](https://nextjs.org/docs/app/getting-started/route-handlers) or Server
   > Component, not at the module top level.
   ```ts filename="app/api/sign/route.ts"
-  import { signToken } from '@vercel/kms';
+  import { signJWT } from '@vercel/kms';
 
   export async function GET() {
-    const token = await signToken({
+    const { token } = await signJWT({
       issuerId: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
       claims: { sub: 'user_123', scope: 'read:data' },
       ttl: 300, // seconds

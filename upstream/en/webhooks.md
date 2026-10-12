@@ -3,7 +3,7 @@ title: Setting Up Webhooks
 product: vercel
 url: /docs/webhooks
 canonical_url: "https://vercel.com/docs/webhooks"
-last_updated: 2026-06-16
+last_updated: 2026-09-16
 type: conceptual
 prerequisites:
   []
@@ -27,22 +27,24 @@ A webhook is a trigger-based HTTP endpoint configured to receive HTTP POST reque
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How can I run end-to-end tests after my Vercel Preview Deployment?](https://vercel.com/kb/guide/how-can-i-run-end-to-end-tests-after-my-vercel-preview-deployment?from=related) — Learn how to use the Vercel CLI in combination with your CI/CD provider to run end-to-end tests for every code change.
-- [Create Webhook](https://v0.app/docs/api/v2/reference/webhooks/create-webhook?from=related) — Creates a new webhook that listens for specific events. Supports optional association with a chat.
-- [Creates a webhook](https://vercel.com/docs/rest-api/webhooks/creates-a-webhook?from=related)
-- [vercel webhooks](https://vercel.com/docs/cli/webhooks?from=related) — Learn how to manage webhooks for your Vercel account using the vercel webhooks CLI command.
-- [Get a webhook](https://vercel.com/docs/rest-api/webhooks/get-a-webhook?from=related)
-- [Get a list of webhooks](https://vercel.com/docs/rest-api/webhooks/get-a-list-of-webhooks?from=related)
-- [Deploy Hooks](https://vercel.com/docs/deploy-hooks?from=related) — Learn how to create and trigger deploy hooks to integrate Vercel deployments with other systems.
+- [How can I run end-to-end tests after my Vercel Preview Deployment?](https://vercel.com/kb/guide/how-can-i-run-end-to-end-tests-after-my-vercel-preview-deployment?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — Learn how to use the Vercel CLI in combination with your CI/CD provider to run end-to-end tests for every code change.
+- [Webhooks are now generally available](https://vercel.com/changelog/webhooks-are-now-generally-available?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related)
+- [Integration Webhooks are now easier to configure](https://vercel.com/changelog/integration-webhooks-are-now-easier-to-configure?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related)
+- [Configurable webhooks ](https://vercel.com/changelog/configurable-webhooks?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related)
+- [Creates a webhook](https://vercel.com/docs/rest-api/webhooks/creates-a-webhook?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — POST /v1/webhooks — Creates a webhook
+- [Get a webhook](https://vercel.com/docs/rest-api/webhooks/get-a-webhook?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — GET /v1/webhooks/{id} — Get a webhook
+- [Get a list of webhooks](https://vercel.com/docs/rest-api/webhooks/get-a-list-of-webhooks?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — GET /v1/webhooks — Get a list of webhooks
+- [vercel webhooks](https://vercel.com/docs/cli/webhooks?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — Learn how to manage webhooks for your Vercel account using the vercel webhooks CLI command.
+- [Webhook triggers for Vercel Connect](https://vercel.com/docs/connect/concepts/triggers?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=related) — Incoming webhooks from third-party services, verified by Vercel Connect and forwarded to your projects.
 
-Full cross-link map for this page: [/docs/webhooks.graph.md](/docs/webhooks.graph.md)
+Full cross-link map for this page: [/docs/webhooks.graph.md](/docs/webhooks.graph.md?from=related&source_path=%2Fdocs%2Fwebhooks&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 Webhooks configured with Vercel can trigger a deployment when a specific event occurs. Vercel integrations receive platform events through webhooks.
 
 ## Account Webhooks
 
-> **🔒 Permissions Required**: Account Webhooks
+> **Availability**: Account Webhooks are available on Enterprise and Pro plans
 
 Vercel allows you to add a [generic](# "What is a generic webhook?") endpoint for events from your dashboard. [Pro](/docs/plans/pro-plan) and [Enterprise](/docs/plans/enterprise) teams will be able to configure these webhooks at the account level.
 
@@ -52,7 +54,7 @@ Vercel allows you to add a [generic](# "What is a generic webhook?") endpoint fo
   Choose your team scope on the dashboard, and go to **Settings ➞ Webhooks**.
 
 - ### Select the events to listen to
-  ![Image](`/docs-assets/static/docs/integrations/webhooks/webhooks-add-events-light.png`)
+  ![Select events for your webhooks to listen.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/webhooks/webhooks-add-events-light.png)
 
   The configured webhook listens to one or more events before it triggers the function request. Vercel supports event selections from the following categories:
   #### Deployment Events
@@ -87,20 +89,20 @@ Vercel allows you to add a [generic](# "What is a generic webhook?") endpoint fo
   The events you select should depend on your use case and the workflow you want to implement.
 
 - ### Choose your target projects
-  ![Image](https://vercel.com/docs-assets/static/docs/integrations/webhooks/project-scope.png)
+  ![Choose the scope of project(s) for webhooks.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/webhooks/project-scope.png)
 
   After selecting the event types, choose the scope of team projects for which webhooks will listen for events.
 
 - ### Enter your endpoint URL
-  The endpoint URL is the destination that triggers the events. All events are forwarded to this URL as a POST request. In case of an event, your webhook initiates an HTTP callback to this endpoint that you must configure to receive data. In order to be accessible, make sure these endpoint URLs are public.
+  The endpoint URL is the destination that triggers the events. All events are forwarded to this URL as a POST request. In case of an event, your webhook initiates an HTTP callback to this endpoint that you must configure to receive data. To be accessible, make sure these endpoint URLs are public.
 
-  ![Image](https://vercel.com/docs-assets/static/docs/integrations/webhooks/enter-endpoint-light.png)
+  ![Define the endpoint URL for the webhooks to listen.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/webhooks/enter-endpoint-light.png)
 
   Once you have configured your webhook, click the **Create Webhook** button.
 
   The **Webhook Created** dialog will display a secret key, which won't be shown again. You should secure your webhooks by comparing the [`x-vercel-signature`](/docs/headers/request-headers#x-vercel-signature) header of an incoming request with this secret. For integration webhooks, use your Integration Secret (also called Client Secret) from the [Integration Console](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fintegrations%2Fconsole\&title=Go+to+Integrations+Console) instead. See [Securing webhooks](/docs/webhooks/webhooks-api#securing-webhooks) to learn how to do this.
 
-  ![Image](https://vercel.com/docs-assets/static/docs/integrations/webhooks/webhook-created-light.png)
+  ![Confirmation to create the webhook.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/webhooks/webhook-created-light.png)
 
   Once complete, click **Done**.
 
@@ -110,7 +112,7 @@ Vercel allows you to add a [generic](# "What is a generic webhook?") endpoint fo
 
 Webhooks can also be created through [Integrations](/docs/integrations). When [creating a new integration](/docs/integrations/create-integration), you can add webhooks using the [Integration Console](/dashboard/integrations/create). Inside your Integration's settings page locate the text field for setting the webhook URL. This is where you should add the HTTP endpoint to listen for events. Next, you can select one or more of these checkboxes to specify which events to listen to.
 
-![Image](https://vercel.com/docs-assets/static/docs/integrations/webhooks/webhooks-url-integrations-light.png)
+![Specifying the webhook URL and events to listen to.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/webhooks/webhooks-url-integrations-light.png)
 
 For native integrations, you can also receive billing-related webhook events such as invoice creation, payment, and refunds. Learn more about [working with billing events through webhooks](/docs/integrations/create-integration/marketplace-api#working-with-billing-events-through-webhooks).
 
@@ -119,12 +121,16 @@ For native integrations, you can also receive billing-related webhook events suc
 The webhook URL receives an HTTP POST request with a JSON payload for each event. All the events have the following format:
 
 ```json filename="webhook-payload"
-  "id": <eventId>,
-  "type": <event-type>,
-  "createdAt": <javascript-timestamp>,
-  "payload": <payload for the event>,
-  "region": <RegionId>,
+{
+  "id": "<eventId>",
+  "type": "<event-type>",
+  "createdAt": 1700000000000,
+  "payload": {},
+  "region": "<RegionId>"
+}
 ```
+
+`createdAt` is a JavaScript timestamp (milliseconds since epoch), and `payload` is an object whose fields depend on the event type.
 
 Here's a [list of supported event types](/docs/webhooks/webhooks-api#supported-event-types) and their [`payload`](/docs/webhooks/webhooks-api#payload).
 

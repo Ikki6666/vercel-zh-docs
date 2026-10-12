@@ -1,10 +1,10 @@
 ---
-title: File Attachments
+title: OpenAI Responses Images and PDFs with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/responses/images
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/images"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/responses
   - /docs/ai-gateway/sdks-and-apis
@@ -15,7 +15,7 @@ summary: Send images and PDF documents for analysis using the OpenAI Responses A
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# File Attachments
+# OpenAI Responses Images and PDFs with AI Gateway
 
 Vision-capable models accept images and PDFs alongside your prompt. Replace the plain string in `input` with an array of content parts: `input_text` for the prompt, `input_image` for an image, `input_file` for a document.
 
@@ -25,40 +25,16 @@ Vision-capable models accept images and PDFs alongside your prompt. Replace the 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/images?from=related) — Send images and PDF documents for analysis using the OpenResponses API.
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images?from=related) — Send images and PDF documents to a model using the OpenAI Chat Completions API.
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/images?from=related) — Send images and PDF documents as part of your Anthropic API message requests.
-- [OpenResponses API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses?from=related) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
-- [AI SDK](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
+- [OpenResponses Images and PDFs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/images?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fimages&source_site=vercel-docs&relationship=related) — Send images and PDF documents for analysis using the OpenResponses API through AI Gateway.
+- [AI Gateway Vision and Image Input](https://vercel.com/docs/ai-gateway/inputs-and-tools/vision?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fimages&source_site=vercel-docs&relationship=related) — Analyze images with AI Gateway using AI SDK 7, the Python beta, Chat Completions, Messages, and Responses APIs.
+- [AI Gateway File and PDF Input](https://vercel.com/docs/ai-gateway/inputs-and-tools/file-input?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fimages&source_site=vercel-docs&relationship=related) — Send PDFs and documents to AI Gateway models with examples for each supported SDK and API format.
+- [OpenAI Chat Completions Images and PDFs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fimages&source_site=vercel-docs&relationship=related) — Send images and PDF documents to a model using the OpenAI Chat Completions API through AI Gateway.
+- [OpenResponses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fimages&source_site=vercel-docs&relationship=related) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
 
-Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/responses/images.graph.md](/docs/ai-gateway/sdks-and-apis/responses/images.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/responses/images.graph.md](/docs/ai-gateway/sdks-and-apis/responses/images.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fsdks-and-apis%2Fresponses%2Fimages&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
-#### \['cURL'
-
-```bash filename="image-input.sh"
-curl https://ai-gateway.vercel.sh/v1/responses \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "input": [
-      {
-        "role": "user",
-        "content": [
-          { "type": "input_text", "text": "Describe this image in one sentence." },
-          {
-            "type": "input_image",
-            "image_url": "https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_light_background.png",
-            "detail": "auto"
-          }
-        ]
-      }
-    ]
-  }'
-```
-
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="image-input.ts"
 import OpenAI from 'openai';
@@ -89,7 +65,7 @@ const response = await client.responses.create({
 console.log(response.output_text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="image_input.py"
 import os
@@ -118,6 +94,30 @@ response = client.responses.create(
 )
 
 print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="image-input.sh"
+curl https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          { "type": "input_text", "text": "Describe this image in one sentence." },
+          {
+            "type": "input_image",
+            "image_url": "https://assets.vercel.com/image/upload/v1662130559/nextjs/Icon_light_background.png",
+            "detail": "auto"
+          }
+        ]
+      }
+    ]
+  }'
 ```
 
 ## Base64-encoded images
@@ -151,6 +151,8 @@ const response = await client.responses.create({
     },
   ],
 });
+console.log(response.output_text);
+
 ```
 
 A URL source must be reachable without authentication. If the host blocks the request, the gateway returns a 400 naming the upstream status rather than falling back, so use base64 for anything behind a login or a signed URL.
@@ -159,33 +161,7 @@ A URL source must be reachable without authentication. If the host blocks the re
 
 Send a PDF with an `input_file` part. The model reads the document's text directly rather than working from a rasterized page:
 
-#### \['cURL'
-
-```bash filename="pdf-input.sh"
-PDF_B64=$(base64 -i report.pdf)
-
-curl https://ai-gateway.vercel.sh/v1/responses \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "input": [
-      {
-        "role": "user",
-        "content": [
-          { "type": "input_text", "text": "What total does this document state?" },
-          {
-            "type": "input_file",
-            "filename": "report.pdf",
-            "file_data": "data:application/pdf;base64,'"$PDF_B64"'"
-          }
-        ]
-      }
-    ]
-  }'
-```
-
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="pdf-input.ts"
 import fs from 'node:fs';
@@ -218,7 +194,7 @@ const response = await client.responses.create({
 console.log(response.output_text);
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="pdf_input.py"
 import base64
@@ -251,6 +227,32 @@ response = client.responses.create(
 )
 
 print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="pdf-input.sh"
+PDF_B64=$(base64 -i report.pdf)
+
+curl https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "input": [
+      {
+        "role": "user",
+        "content": [
+          { "type": "input_text", "text": "What total does this document state?" },
+          {
+            "type": "input_file",
+            "filename": "report.pdf",
+            "file_data": "data:application/pdf;base64,'"$PDF_B64"'"
+          }
+        ]
+      }
+    ]
+  }'
 ```
 
 ## Detail parameter

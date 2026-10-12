@@ -3,7 +3,7 @@ title: Billing & Invoices
 product: vercel
 url: /docs/pricing/understanding-my-invoice
 canonical_url: "https://vercel.com/docs/pricing/understanding-my-invoice"
-last_updated: 2026-06-26
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/pricing
@@ -26,14 +26,18 @@ You can view your current invoice from the **Settings** section in your dashboar
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Where can I get copies of my Vercel Invoices?](https://vercel.com/kb/guide/where-can-i-get-copies-of-my-vercel-invoices?from=related) — Learn about how you can get access to your Vercel invoices.
-- [Billing FAQ](https://vercel.com/docs/plans/enterprise/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Billing and Refunds](https://vercel.com/docs/integrations/create-integration/billing?from=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
-- [Plans](https://vercel.com/docs/plans?from=related) — Learn about the different plans available on Vercel.
-- [Spend Management](https://vercel.com/docs/spend-management?from=related) — Learn how to get notified about your account spend and configure a webhook.
+- [Threshold billing is now enabled for Pro teams](https://vercel.com/changelog/threshold-billing-is-now-enabled-for-pro-teams?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related)
+- [Updates to Legal Terms](https://vercel.com/changelog/updates-to-legal-terms-june-2026?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related)
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related)
+- [Where can I get copies of my Vercel Invoices?](https://vercel.com/kb/guide/where-can-i-get-copies-of-my-vercel-invoices?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related) — Learn about how you can get access to your Vercel invoices.
+- [Billing FAQ for Enterprise Plan](https://vercel.com/docs/plans/enterprise/billing?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
+- [Advanced Invoice Settings](https://vercel.com/blog/advanced-invoice-settings?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related)
+- [Billing FAQ for Pro Plan](https://vercel.com/docs/plans/pro-plan/billing?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
+- [Manage Billing and Refunds for Integrations](https://vercel.com/docs/integrations/create-integration/billing?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
+- [Account Plans on Vercel](https://vercel.com/docs/plans?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related) — Learn about the different plans available on Vercel.
+- [Calculating usage of resources](https://vercel.com/docs/pricing/how-does-vercel-calculate-usage-of-resources?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=related) — Understand how Vercel measures and calculates your resource usage based on a typical user journey.
 
-Full cross-link map for this page: [/docs/pricing/understanding-my-invoice.graph.md](/docs/pricing/understanding-my-invoice.graph.md)
+Full cross-link map for this page: [/docs/pricing/understanding-my-invoice.graph.md](/docs/pricing/understanding-my-invoice.graph.md?from=related&source_path=%2Fdocs%2Fpricing%2Funderstanding-my-invoice&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 - By navigating to the **Billing** section in the sidebar of the dashboard
@@ -46,7 +50,7 @@ Your invoice is a breakdown of the charges you have incurred for the current bil
 > **💡 Note:** In addition to your regular billing cycle invoice, you may receive [partial
 > invoices](#partial-invoices) before your cycle ends.
 
-![Image](https://vercel.com/front/docs/pricing/full-invoice-light.png)
+![Invoice overview](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/pricing/full-invoice-light.png)
 
 When you access your invoice through the **Invoice** tab:
 
@@ -68,7 +72,7 @@ When viewing an invoice, Pro plan users see a section called **[On-demand Charge
 
 For Pro plan users, on-demand charges incur in two ways: when usage under [Managed Infrastructure](/docs/pricing#managed-infrastructure-billable-resources) exceeds any applicable allowance or credit, or when you purchase a product from [Developer Experience Platform](/docs/pricing#dx-platform-billable-resources) during the period of the invoice.
 
-![Image](https://vercel.com/front/docs/pricing/pro-plan-invoice-light.jpg)
+![Pro plan invoice with on-demand charges](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/pricing/pro-plan-invoice-light.jpg)
 
 ### Enterprise plan invoices
 
@@ -78,13 +82,15 @@ The top of the invoice shows a summary of the commitment period, the total MIUs 
 
 #### Managed Infrastructure Units (MIU)
 
-MIUs are a measure of the infrastructure consumption of an Enterprise project. These consist of a variety of resources like [Fast Data Transfer, Edge Requests, and more](/docs/pricing#managed-infrastructure-billable-resources).
+MIUs are a measure of the infrastructure consumption of an Enterprise project. These consist of a variety of resources like [Fast Data Transfer, CDN Requests, and more](/docs/pricing#managed-infrastructure-billable-resources).
 
 #### Enterprise on-demand charges
 
 When Enterprise customers exceed their commitment for a period, they will see individual line items for the on-demand amount under the **On-demand Charges** section. This is the same as for Pro plan users.
 
-![Image](https://vercel.com/front/docs/pricing/ent-on-demand-light.jpg)
+![Enterprise plan invoice with Managed Infrastructure Units commitment and on-demand charges](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/pricing/ent-on-demand-light.jpg)
+
+**Interested in the Enterprise plan?**
 
 ## Partial invoices
 

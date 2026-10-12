@@ -3,7 +3,7 @@ title: Deploying Bitbucket Projects with Vercel
 product: vercel
 url: /docs/git/vercel-for-bitbucket
 canonical_url: "https://vercel.com/docs/git/vercel-for-bitbucket"
-last_updated: 2025-11-25
+last_updated: 2026-09-16
 type: conceptual
 prerequisites:
   - /docs/git
@@ -27,15 +27,19 @@ Vercel for Bitbucket automatically deploys your Bitbucket projects with [Vercel]
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I disable Git Notifications from Deployments?](https://vercel.com/kb/guide/how-do-i-disable-git-notifications-from-deployments?from=related) — If your project is connected via a Git account to your deployment, you will receive email notifications whenever the dep
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [How can I use GitLab Pipelines with Vercel?](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
-- [GitHub](https://vercel.com/docs/git/vercel-for-github?from=related) — Vercel for GitHub automatically deploys your GitHub projects with Vercel, providing Preview Deployment URLs, and automat
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [Vercel for Bitbucket](https://vercel.com/blog/bitbucket?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related)
+- [Can I use Bitbucket Data Center with Vercel?](https://vercel.com/kb/guide/can-i-use-bitbucket-data-center-with-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — You can use Bitbucket Data Center and Bitbucket Pipelines to deploy your application to Vercel.
+- [How can I use CircleCI with Vercel?](https://vercel.com/kb/guide/how-can-i-use-circleci-with-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Learn how to use CircleCI to deploy to Vercel with custom CI/CD.
+- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Learn how to deploy based on tags/releases on Vercel.
+- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
+- [Deploying GitLab Projects with Vercel](https://vercel.com/docs/git/vercel-for-gitlab?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
+- [Deploying to Vercel](https://vercel.com/docs/deployments?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Account Management](https://vercel.com/docs/accounts?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=related) — Learn how to manage your Vercel account and team members.
 
-Full cross-link map for this page: [/docs/git/vercel-for-bitbucket.graph.md](/docs/git/vercel-for-bitbucket.graph.md)
+Full cross-link map for this page: [/docs/git/vercel-for-bitbucket.graph.md](/docs/git/vercel-for-bitbucket.graph.md?from=related&source_path=%2Fdocs%2Fgit%2Fvercel-for-bitbucket&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Supported Bitbucket Products
@@ -72,169 +76,23 @@ If you decide to revert a commit that has already been deployed to production, t
 
 The latest push to any [pull request](https://www.atlassian.com/git/tutorials/making-a-pull-request) will automatically be made available at a unique preview URL based on the project name, branch, and team or username. These URLs will be given through a comment on each pull request.
 
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/git/bitbucket-comment.png)
+
 *A preview URL created from a pull request.*
 
 ### System environment variables
 
 You may want to use different workflows and APIs based on Git information. To support this, the following [System Environment Variables](/docs/environment-variables/system-environment-variables) are exposed to your Deployments:
 
-### `VERCEL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-An indicator to show that system environment variables have been exposed to your project's Deployments.
-
-```bash
-VERCEL=1
-```
-
-### `CI`
-
-**Available at:&#x20;**&#x42;uild time
-
-An indicator that the code is running in a Continuous Integration environment.
-
-```bash
-CI=1
-```
-
-### `VERCEL_ENV`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The environment that the app is deployed and running on. The value can be either production, preview, or development.
-
-```bash
-VERCEL_ENV=production
-```
-
-### `VERCEL_TARGET_ENV`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The system or custom environment that the app is deployed and running on. The value can be either production, preview, development, or the name of a custom environment.
-
-```bash
-VERCEL_TARGET_ENV=production
-```
-
-### `VERCEL_URL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The domain name of the generated deployment URL. Example: \*.vercel.app. The value does not include the protocol scheme https://.
-
-**Note:&#x20;**&#x54;his variable cannot be used in conjunction with Standard Deployment Protection. See Migrating to Standard Protection.
-
-```bash
-VERCEL_URL=my-site.vercel.app
-```
-
-### `VERCEL_BRANCH_URL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The domain name of the generated Git branch URL. Example: \*-git-\*.vercel.app. The value does not include the protocol scheme https://.
-
-```bash
-VERCEL_BRANCH_URL=my-site-git-improve-about-page.vercel.app
-```
-
-### `VERCEL_PROJECT_PRODUCTION_URL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-A production domain name of the project. We select the shortest production custom domain, or vercel.app domain if no custom domain is available. Note, that this is always set, even in preview deployments. This is useful to reliably generate links that point to production such as OG-image URLs. The value does not include the protocol scheme https://.
-
-```bash
-VERCEL_PROJECT_PRODUCTION_URL=my-site.com
-```
-
-### `VERCEL_REGION`
-
-**Available at:&#x20;**&#x52;untime
-
-The ID of the Region where the app is running.
-
-```bash
-VERCEL_REGION=cdg1
-```
-
-### `VERCEL_DEPLOYMENT_ID`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The unique identifier for the deployment, which can be used to implement Skew Protection.
-
-```bash
-VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
-```
-
-### `VERCEL_PROJECT_ID`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The unique identifier for the project.
-
-```bash
-VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
-```
-
-### `VERCEL_SKEW_PROTECTION_ENABLED`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-When Skew Protection is enabled in Project Settings, this value is set to 1.
-
-```bash
-VERCEL_SKEW_PROTECTION_ENABLED=1
-```
-
-### `VERCEL_AUTOMATION_BYPASS_SECRET`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The Protection Bypass for Automation value, if the secret has been generated in the project's Deployment Protection settings.
-
-```bash
-VERCEL_AUTOMATION_BYPASS_SECRET=secret
-```
-
-### `VERCEL_OIDC_TOKEN`
-
-**Available at:&#x20;**&#x42;uild time
-
-When Secure Backend Access with OpenID Connect (OIDC) Federation is enabled in Project Settings, this value is set to a Vercel-issued OIDC token. At runtime, the token is set to thex-vercel-oidc-token header on your functions' Request object. In local development, you can download the token using the CLI commandvercel env pull.
-
-```bash
-VERCEL_OIDC_TOKEN=secret
-```
-
-### `VERCEL_HASH_SALT`
-
-**Available at:&#x20;**&#x42;uild time
-
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
-
-```bash
-VERCEL_HASH_SALT=1783933175
-```
+<br />
 
 ### `VERCEL_GIT_PROVIDER`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The Git Provider the deployment is triggered from.
-
-```bash
-VERCEL_GIT_PROVIDER=github
-```
+The Git Provider the deployment is triggered from. In the case of Bitbucket, the value is always bitbucket.
 
 ### `VERCEL_GIT_REPO_SLUG`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The origin repository the deployment is triggered from.
+The slug of the Bitbucket repository that was deployed.
 
 ```bash
 VERCEL_GIT_REPO_SLUG=my-site
@@ -242,9 +100,7 @@ VERCEL_GIT_REPO_SLUG=my-site
 
 ### `VERCEL_GIT_REPO_OWNER`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The account that owns the repository the deployment is triggered from.
+The Bitbucket user or team that the project belongs to.
 
 ```bash
 VERCEL_GIT_REPO_OWNER=acme
@@ -252,19 +108,15 @@ VERCEL_GIT_REPO_OWNER=acme
 
 ### `VERCEL_GIT_REPO_ID`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The ID of the repository the deployment is triggered from.
+The ID of the Bitbucket repository the deployment is triggered from.
 
 ```bash
-VERCEL_GIT_REPO_ID=117716146
+VERCEL_GIT_REPO_ID=9e072df2-521e-4409-a01c-c984569fea20
 ```
 
 ### `VERCEL_GIT_COMMIT_REF`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The git branch of the commit the deployment was triggered by.
+The Bitbucket branch that the deployment was triggered by.
 
 ```bash
 VERCEL_GIT_COMMIT_REF=improve-about-page
@@ -272,9 +124,7 @@ VERCEL_GIT_COMMIT_REF=improve-about-page
 
 ### `VERCEL_GIT_COMMIT_SHA`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The git SHA of the commit the deployment was triggered by.
+The Bitbucket sha of the commit the deployment was triggered by.
 
 ```bash
 VERCEL_GIT_COMMIT_SHA=fa1eade47b73733d6312d5abfad33ce9e4068081
@@ -282,51 +132,31 @@ VERCEL_GIT_COMMIT_SHA=fa1eade47b73733d6312d5abfad33ce9e4068081
 
 ### `VERCEL_GIT_COMMIT_MESSAGE`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The message attached to the commit the deployment was triggered by. The message is truncated if it exceeds 2048 bytes.
+The message accompanying the Bitbucket commit that was deployed. The message is truncated if it exceeds 2048 bytes.
 
 ```bash
-VERCEL_GIT_COMMIT_MESSAGE=Update about page
+VERCEL_GIT_COMMIT_MESSAGE=Add Timmy Triangle to about page
 ```
 
 ### `VERCEL_GIT_COMMIT_AUTHOR_LOGIN`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The username attached to the author of the commit that the project was deployed by.
+The name of the commit author on Bitbucket.
 
 ```bash
-VERCEL_GIT_COMMIT_AUTHOR_LOGIN=timmytriangle
+VERCEL_GIT_COMMIT_AUTHOR_LOGIN=Timmy Triangle
 ```
 
 ### `VERCEL_GIT_COMMIT_AUTHOR_NAME`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The name attached to the author of the commit that the project was deployed by.
+Bitbucket profile URL of the commit author.
 
 ```bash
-VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
-```
-
-### `VERCEL_GIT_PREVIOUS_SHA`
-
-**Available at:&#x20;**&#x42;uild time
-
-The git SHA of the last successful deployment for the project and branch.
-
-**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
-
-```bash
-VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+VERCEL_GIT_COMMIT_AUTHOR_NAME=https://bitbucket.org/%7B45585b19-b616-401e-89d3-1a47fddb7033%7D/
 ```
 
 ### `VERCEL_GIT_PULL_REQUEST_ID`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The pull request id the deployment was triggered by. If a deployment is created on a branch before a pull request is made, this value will be an empty string.
+The Bitbucket pull request id the deployment was triggered by. If a deployment is created on a branch before a pull request is made, this value will be an empty string.
 
 ```bash
 VERCEL_GIT_PULL_REQUEST_ID=23
@@ -361,7 +191,7 @@ User permissions allow us to offer an enhanced experience through information ab
 | ---------- | ---- | ----- | --------------------------------------------------------- |
 | `Account`  | Y    | N     | Allows us to associate an email with a Bitbucket account. |
 
-> **💡 Note:** We use the permissions above in order to provide you with the best possible
+> **💡 Note:** We use the permissions above to provide you with the best possible
 > deployment experience. If you have any questions or concerns about any of the
 > permission scopes, please [contact Vercel Support](/help#issues).
 
@@ -369,7 +199,7 @@ To sign up on Vercel with a different Bitbucket account, sign out of your curren
 
 ## Missing Git repository
 
-When importing or connecting a Bitbucket repository, we require that you have  access to the corresponding repository, so that we can configure a webhook and automatically deploy pushed commits.
+When importing or connecting a Bitbucket repository, we require that you have **Admin** access to the corresponding repository, so that we can configure a webhook and automatically deploy pushed commits.
 
 If a repository is missing when you try to import or connect it, make sure that you have [Admin access configured for the repository](https://support.atlassian.com/bitbucket-cloud/docs/grant-repository-access-to-users-and-groups/).
 

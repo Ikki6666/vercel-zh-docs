@@ -3,7 +3,7 @@ title: Add a Native Integration
 product: vercel
 url: /docs/integrations/install-an-integration/product-integration
 canonical_url: "https://vercel.com/docs/integrations/install-an-integration/product-integration"
-last_updated: 2026-05-05
+last_updated: 2026-09-17
 type: how-to
 prerequisites:
   - /docs/integrations/install-an-integration
@@ -12,31 +12,15 @@ related:
   - /docs/cli/integration
   - /docs/integrations/install-an-integration/secure-your-resource
   - /docs/integrations/create-integration/billing
-  - /docs/rbac/access-roles
   - /docs/integrations/create-integration/deployment-integration-action
+  - /docs/rbac/access-roles
 summary: Learn how you can add a product to your Vercel project through a native integration.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Add a Native Integration
 
-> **🔒 Permissions Required**: Native Integrations
-
-
-<!-- docsgraph:related -->
-## Related pages
-
-> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
-
-- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
-- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
-- [Create a Native Integration](https://vercel.com/docs/integrations/create-integration/marketplace-product?from=related) — Learn how to create a product for your Vercel native integration
-- [Create an Integration](https://vercel.com/docs/integrations/create-integration?from=related) — Learn how to create and manage your own integration for internal or public use with Vercel.
-- [Marketplace](https://vercel.com/docs/marketplace-storage?from=related) — Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data,
-- [Permissions and Access](https://vercel.com/docs/integrations/install-an-integration/manage-integrations-reference?from=related) — Learn how to manage project access and added products for your integrations.
-
-Full cross-link map for this page: [/docs/integrations/install-an-integration/product-integration.graph.md](/docs/integrations/install-an-integration/product-integration.graph.md)
-<!-- /docsgraph:related -->
+> **Availability**: Native Integrations are available on all plans
 
 ## Add a product
 
@@ -50,6 +34,23 @@ Full cross-link map for this page: [/docs/integrations/install-an-integration/pr
 ### Using the CLI
 
 You can install integrations and provision resources directly from the command line using [`vercel integration add`](/docs/cli/integration#vercel-integration-add). In the example command below, you install a [Neon integration](/marketplace/neon):
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Native Marketplace integrations now support custom environments](https://vercel.com/changelog/custom-environments-support-for-marketplace-integrations?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=related)
+- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
+- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
+- [Create a Native Integration](https://vercel.com/docs/integrations/create-integration/marketplace-product?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=related) — Learn how to create a product for your Vercel native integration
+- [Storage on Vercel Marketplace](https://vercel.com/docs/marketplace-storage?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=related) — Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data,
+- [Create an Integration](https://vercel.com/docs/integrations/create-integration?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=related) — Learn how to create and manage your own integration for internal or public use with Vercel.
+- [Permissions and Access](https://vercel.com/docs/integrations/install-an-integration/manage-integrations-reference?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=related) — Learn how to manage project access and added products for your integrations.
+
+Full cross-link map for this page: [/docs/integrations/install-an-integration/product-integration.graph.md](/docs/integrations/install-an-integration/product-integration.graph.md?from=related&source_path=%2Fdocs%2Fintegrations%2Finstall-an-integration%2Fproduct-integration&source_site=vercel-docs&relationship=graph)
+<!-- /docsgraph:related -->
 
 ```bash filename="terminal"
 vercel integration add neon
@@ -89,6 +90,12 @@ By selecting the **Projects** link on the left navigation, you can:
 
 - Connect a project to the product
 - View a list of existing connections and manage them
+
+When you connect or edit a project, select the environments that can use the resource. You can select Production, Preview, Development, and individual Custom Environments. The resource’s environment variables in Project Settings apply to the selected environments. If the resource has no connection for a Custom Environment, a Preview Deployment Action can use the resource’s Preview connection to supply variables to that deployment. See [Environment targets](/docs/integrations/create-integration/deployment-integration-action#environment-targets).
+
+If you omit `--environment` in the CLI, Vercel connects Production, Preview, and Development. The default does not include Custom Environments. To select a Custom Environment from the CLI, pass its slug or stable ID to [`vercel integration add`](/docs/cli/integration#vercel-integration-add) or [`vercel integration resource connect`](/docs/cli/integration#vercel-integration-resource-connect).
+
+Existing deployments do not get new or changed variables. Create a new deployment after you change a resource connection.
 
 #### Settings
 

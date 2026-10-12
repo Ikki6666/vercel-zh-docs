@@ -3,7 +3,7 @@ title: Manage Billing and Refunds for Integrations
 product: vercel
 url: /docs/integrations/create-integration/billing
 canonical_url: "https://vercel.com/docs/integrations/create-integration/billing"
-last_updated: 2026-05-12
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/integrations/create-integration
@@ -28,13 +28,13 @@ When a Vercel user installs your native integration, you manage billing through 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice?from=related) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
-- [Submit Invoice](https://vercel.com/docs/rest-api/marketplace/submit-invoice?from=related)
-- [Billing FAQ](https://vercel.com/docs/plans/enterprise/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
+- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fbilling&source_site=vercel-docs&relationship=related) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
+- [Billing FAQ for Enterprise Plan](https://vercel.com/docs/plans/enterprise/billing?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fbilling&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
+- [Submit Invoice](https://vercel.com/docs/rest-api/marketplace/submit-invoice?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fbilling&source_site=vercel-docs&relationship=related) — POST /v1/installations/{integrationConfigurationId}/billing/invoices — This endpoint allows the partner to submit an inv
+- [Get Invoice](https://vercel.com/docs/rest-api/marketplace/get-invoice?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fbilling&source_site=vercel-docs&relationship=related) — GET /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId} — Get Invoice details and status for a g
+- [Billing FAQ for Pro Plan](https://vercel.com/docs/plans/pro-plan/billing?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fbilling&source_site=vercel-docs&relationship=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
 
-Full cross-link map for this page: [/docs/integrations/create-integration/billing.graph.md](/docs/integrations/create-integration/billing.graph.md)
+Full cross-link map for this page: [/docs/integrations/create-integration/billing.graph.md](/docs/integrations/create-integration/billing.graph.md?from=related&source_path=%2Fdocs%2Fintegrations%2Fcreate-integration%2Fbilling&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Billing API endpoints
@@ -80,6 +80,30 @@ Vercel users can configure a different payment method for each integration insta
 ## Invoice lifecycle
 
 Invoices move through several states as they're processed:
+
+```mermaid
+flowchart TD
+    pending["pending"]
+    scheduled["scheduled"]
+    invoiced["invoiced"]
+    paid["paid"]
+    notpaid["notpaid"]
+    overdue["overdue"]
+    refund_requested["refund_requested"]
+    refunded["refunded"]
+    pending -->|"Queued for<br>processing"| scheduled
+    scheduled -->|"Processing<br>complete"| invoiced
+    invoiced -->|"Payment<br>successful"| paid
+    invoiced -->|"Payment<br>failed"| notpaid
+    invoiced -->|"Payment<br>period<br>elapsed"| overdue
+    paid -->|"Refund<br>initiated"| refund_requested
+    notpaid -->|"Payment<br>successful"| paid
+    notpaid -->|"Payment<br>period<br>elapsed"| overdue
+    notpaid -->|"Refund<br>initiated"| refund_requested
+    overdue -->|"Payment<br>successful"| paid
+    overdue -->|"Refund<br>initiated"| refund_requested
+    refund_requested -->|"Refund<br>complete"| refunded
+```
 
 ### Invoice states
 

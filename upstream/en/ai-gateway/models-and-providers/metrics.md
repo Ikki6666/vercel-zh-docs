@@ -1,9 +1,9 @@
 ---
-title: Metrics
+title: AI Gateway Provider Latency and Throughput Metrics
 product: vercel
 url: /docs/ai-gateway/models-and-providers/metrics
 canonical_url: "https://vercel.com/docs/ai-gateway/models-and-providers/metrics"
-last_updated: 2026-07-28
+last_updated: 2026-09-08
 type: conceptual
 prerequisites:
   - /docs/ai-gateway/models-and-providers
@@ -16,7 +16,7 @@ summary: Understand how AI Gateway measures throughput and latency per provider.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Metrics
+# AI Gateway Provider Latency and Throughput Metrics
 
 AI Gateway tracks **throughput** and **latency** for each model and provider, measured from live AI Gateway traffic. For provider availability, see [uptime](/docs/ai-gateway/models-and-providers/uptime).
 
@@ -26,26 +26,28 @@ AI Gateway tracks **throughput** and **latency** for each model and provider, me
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Observability](https://vercel.com/docs/ai-gateway/observability-and-spend/observability?from=related) — Learn how to monitor and debug your AI Gateway requests.
-- [Leaderboards](https://vercel.com/docs/ai-gateway/leaderboards?from=related) — See which AI models, labs, apps, and providers are most used on AI Gateway, share a chart as an image, and download the
-- [Legacy Metrics](https://vercel.com/docs/pricing/legacy?from=related) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [Pricing](https://vercel.com/docs/ai-gateway/pricing?from=related) — Learn about pricing for AI Gateway.
+- [Live model performance metrics accessible via AI Gateway](https://vercel.com/changelog/live-model-performance-metrics-accessible-via-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=related)
+- [AI Gateway production index](https://vercel.com/blog/ai-gateway-production-index?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=related)
+- [Access and share AI Gateway leaderboard data](https://vercel.com/changelog/open-data-and-shareable-charts-for-ai-gateway-leaderboards?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=related)
+- [Sort providers by cost, latency, or throughput on AI Gateway](https://vercel.com/changelog/sort-providers-by-cost-latency-or-throughput-on-ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=related)
+- [Observability added to AI Gateway alpha](https://vercel.com/changelog/observability-added-to-ai-gateway-alpha?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=related)
+- [AI Gateway](https://vercel.com/docs/agent-resources/vercel-mcp/tools/ai-gateway?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=related) — Vercel MCP tools for ai gateway.
+- [AI Gateway Observability and Spend](https://vercel.com/docs/ai-gateway/observability-and-spend?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=related) — Monitor AI Gateway requests and control costs with logs, generation lookup, custom reporting, budgets, and OpenTelemetry
 
-Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/metrics.graph.md](/docs/ai-gateway/models-and-providers/metrics.graph.md)
+Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/metrics.graph.md](/docs/ai-gateway/models-and-providers/metrics.graph.md?from=related&source_path=%2Fdocs%2Fai-gateway%2Fmodels-and-providers%2Fmetrics&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Throughput
 
 Throughput is the rate at which a provider returns output tokens, measured in tokens per second. Higher throughput means a provider returns output tokens faster.
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-throughput)
+![1-day throughput for openai/gpt-oss-120b](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-throughput)
 
 ## Latency
 
 Latency is time to first token (TTFT), measured in milliseconds. It's the duration between the request reaching the provider and the first response token arriving. Lower latency means a faster perceived response.
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-latency)
+![1-day latency for openai/gpt-oss-120b](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-latency)
 
 ## Where to find metrics
 
@@ -60,9 +62,9 @@ To see metrics broken down by provider, click any model to open its detail page.
 
 Select **Share** in the top-right corner to export the current view as an image. The export captures the selected model, metric, and time range so you can share a snapshot in tickets, postmortems, or status updates.
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-throughput-1d.png)
+![Example share output for the Throughput view (1-day range)](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-throughput-1d.png)
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-latency-1d.png)
+![Example share output for the Latency view (1-day range)](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-latency-1d.png)
 
 ## Accessing metrics via the API
 

@@ -3,7 +3,7 @@ title: vercel global-config
 product: vercel
 url: /docs/cli/global-config
 canonical_url: "https://vercel.com/docs/cli/global-config"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/cli
@@ -27,13 +27,13 @@ The `vercel global-config` command manages [Global Config](/docs/global-config) 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using Global Config](https://vercel.com/docs/global-config/using-global-config?from=related) — Learn how to use Global Configs in your projects.
-- [Global Configs & REST API](https://vercel.com/docs/global-config/vercel-api?from=related) — Learn how to use the Vercel REST API to create and update Global Configs. You can also read data stored in Global Config
-- [Get Global Config items](https://vercel.com/docs/rest-api/global-config/get-global-config-items?from=related)
-- [Create a Global Config](https://vercel.com/docs/rest-api/global-config/create-a-global-config?from=related)
-- [Get Global Configs](https://vercel.com/docs/rest-api/global-config/get-global-configs?from=related)
+- [vercel blob](https://vercel.com/docs/cli/blob?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to interact with Vercel Blob storage using the vercel blob CLI command.
+- [Using Global Config](https://vercel.com/docs/global-config/using-global-config?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to use Global Configs in your projects.
+- [vercel env](https://vercel.com/docs/cli/env?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to manage your environment variables in your Vercel Projects using the vercel env CLI command.
+- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [Managing Global Configs with Vercel REST API](https://vercel.com/docs/global-config/vercel-api?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=related) — Learn how to use the Vercel REST API to create and update Global Configs. You can also read data stored in Global Config
 
-Full cross-link map for this page: [/docs/cli/global-config.graph.md](/docs/cli/global-config.graph.md)
+Full cross-link map for this page: [/docs/cli/global-config.graph.md](/docs/cli/global-config.graph.md?from=related&source_path=%2Fdocs%2Fcli%2Fglobal-config&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 > **💡 Note:** `vercel edge-config` continues to work as an alias for `vercel global-config`
@@ -68,13 +68,15 @@ vercel global-config list --format json
 | --- | --- | --- |
 | `-F, --format <FORMAT>` | String | Output format (`json`) |
 
-### add (create)
+### create
+
+`add` is a supported alias.
 
 Creates a new Global Config store with the given slug. Optionally seeds it with initial items.
 
 ```bash filename="terminal"
-vercel global-config add flags
-vercel global-config add flags --items '{"betaUiEnabled":true,"region":"sfo1"}'
+vercel global-config create flags
+vercel global-config create flags --items '{"betaUiEnabled":true,"region":"sfo1"}'
 ```
 
 *Create a store with slug \`flags\`, optionally with seed items.*
@@ -92,13 +94,15 @@ vercel global-config add flags --items '{"betaUiEnabled":true,"region":"sfo1"}'
 | `--items <JSON>` | String | Optional JSON object of initial items (`{ "key": <value>, ... }`) |
 | `-F, --format <FORMAT>` | String | Output format (`json`) |
 
-### get (inspect)
+### inspect
+
+`get` remains a supported alias, but prints a deprecation warning. Use `inspect` for new commands.
 
 Shows metadata for a Global Config store. Accepts either the store ID (starts with `ecfg_`) or the slug.
 
 ```bash filename="terminal"
-vercel global-config get flags
-vercel global-config get ecfg_abc123 --format json
+vercel global-config inspect flags
+vercel global-config inspect ecfg_abc123 --format json
 ```
 
 *Inspect a store by ID or slug.*
@@ -251,7 +255,7 @@ vercel global-config backups flags --restore backup_version_abc123 --yes
 ### Create a store and seed initial items
 
 ```bash filename="terminal"
-vercel global-config add flags --items '{"betaUiEnabled":false,"region":"sfo1"}'
+vercel global-config create flags --items '{"betaUiEnabled":false,"region":"sfo1"}'
 ```
 
 *Create a store with two initial items.*
@@ -291,12 +295,30 @@ The Global Config SDK reads from a `GLOBAL_CONFIG` environment variable (falling
 https://global-config.vercel.com/<globalConfigId>?token=<token>
 ```
 
-Use `vercel global-config get <id-or-slug>` to look up the Global Config ID, then combine it with the token. See [Global Config dashboard](/docs/global-config/global-config-dashboard) for details on the connection string format.
+Use `vercel global-config inspect <id-or-slug>` to look up the Global Config ID, then combine it with the token. See [Global Config dashboard](/docs/global-config/global-config-dashboard) for details on the connection string format.
 
 ## Related
 
 - [Global Config overview](/docs/global-config)
 - [Global Config REST API reference](/docs/rest-api/global-config)
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel global-config` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--team`](/docs/cli/global-options#team)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---

@@ -3,16 +3,16 @@ title: Manage and optimize usage for Observability
 product: vercel
 url: /docs/manage-and-optimize-observability
 canonical_url: "https://vercel.com/docs/manage-and-optimize-observability"
-last_updated: 2026-07-06
+last_updated: 2026-09-01
 type: reference
 prerequisites:
   []
 related:
+  - /docs/analytics/limits-and-pricing
   - /docs/speed-insights/limits-and-pricing
   - /docs/observability
-  - /docs/speed-insights/metrics
-  - /docs/manage-cdn-usage
   - /docs/analytics
+  - /docs/analytics/package
 summary: Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize your usage of Web Analytics...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,21 +27,23 @@ The Observability section covers usage for Observability, Monitoring, Web Analyt
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Pricing](https://vercel.com/docs/analytics/limits-and-pricing?from=related) — Learn about pricing for Vercel Web Analytics.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Vercel Observability is now generally available](https://vercel.com/changelog/vercel-observability-is-now-generally-available?from=related&source_path=%2Fdocs%2Fmanage-and-optimize-observability&source_site=vercel-docs&relationship=related)
+- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related&source_path=%2Fdocs%2Fmanage-and-optimize-observability&source_site=vercel-docs&relationship=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related&source_path=%2Fdocs%2Fmanage-and-optimize-observability&source_site=vercel-docs&relationship=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Limits and Pricing for Monitoring](https://vercel.com/docs/query/monitoring/limits-and-pricing?from=related&source_path=%2Fdocs%2Fmanage-and-optimize-observability&source_site=vercel-docs&relationship=related) — Learn about our limits and pricing when using Monitoring. Different limitations are applied depending on your plan.
+- [Pricing on Vercel](https://vercel.com/docs/pricing?from=related&source_path=%2Fdocs%2Fmanage-and-optimize-observability&source_site=vercel-docs&relationship=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Observability Insights](https://vercel.com/docs/observability/insights?from=related&source_path=%2Fdocs%2Fmanage-and-optimize-observability&source_site=vercel-docs&relationship=related) — List of available data sources that you can view and monitor with Observability on Vercel.
 
-Full cross-link map for this page: [/docs/manage-and-optimize-observability.graph.md](/docs/manage-and-optimize-observability.graph.md)
+Full cross-link map for this page: [/docs/manage-and-optimize-observability.graph.md](/docs/manage-and-optimize-observability.graph.md?from=related&source_path=%2Fdocs%2Fmanage-and-optimize-observability&source_site=vercel-docs&relationship=graph)
 <!-- /docsgraph:related -->
 
 ## Plan usage
 
-| Resource | Price |
-|----------|-------|
-| [Speed Insights Events](/docs/speed-insights/limits-and-pricing) | $0.65 |
-| [Observability Plus Events](/docs/observability#tracked-events) | $1.20 |
+| Resource | Price | Included (Pro) | Included (Hobby) |
+|----------|-------|----------------|-----------------|
+| [Web Analytics Events](/docs/analytics/limits-and-pricing#what-is-an-event-in-vercel-web-analytics) | $0.03 | Usage-based | 50,000 events / month included |
+| [Speed Insights Events](/docs/speed-insights/limits-and-pricing) | $0.65 | 10,000 events over the last 30 days, shared across the team | 10,000 events over the last 30 days, shared across the team |
+| [Observability Plus Events](/docs/observability#tracked-events) | $1.20 | N/A | N/A |
 
 
 ## Managing Web Analytics events
@@ -49,12 +51,6 @@ Full cross-link map for this page: [/docs/manage-and-optimize-observability.grap
 The **Events** chart shows the number of page views and custom events that were tracked across all of your projects. You can filter the data by **Count** or **Projects**.
 
 Hobby teams include 50,000 events per month. Vercel bills Pro, Pro with Web Analytics Plus, and Enterprise teams based on collected event usage. You can see the total number of events used by your team by selecting **Count** in the chart.
-
-> **💡 Note:** Speed Insights and Web Analytics require scripts to do collection of [data
-> points](/docs/speed-insights/metrics#understanding-data-points). These scripts
-> are loaded on the client-side and therefore may incur additional usage and
-> costs for [Data Transfer](/docs/manage-cdn-usage#fast-data-transfer) and [Edge
-> Requests](/docs/manage-cdn-usage#edge-requests).
 
 ### Optimizing Web Analytics events
 
@@ -64,21 +60,21 @@ Hobby teams include 50,000 events per month. Vercel bills Pro, Pro with Web Anal
 
 ## Managing Speed Insights events
 
-Vercel charges an initial set amount for each Pro project where you enable Speed Insights. Hobby teams include 10,000 events per month. Vercel bills Pro, Pro with Web Analytics Plus, and Enterprise teams based on collected event usage.
-
 Events are single units of information that represent a measurement of a specific Web Vital metric during a user's visit to your website. Vercel collects events on hard navigations.
 
-> **💡 Note:** Speed Insights and Web Analytics require scripts to do collection of [data
-> points](/docs/speed-insights/metrics#understanding-data-points). These scripts
-> are loaded on the client-side and therefore may incur additional usage and
-> costs for [Data Transfer](/docs/manage-cdn-usage#fast-data-transfer) and [Edge
-> Requests](/docs/manage-cdn-usage#edge-requests).
+Vercel bills event usage only for projects that are on Speed Insights Plus. See [limits and pricing](/docs/speed-insights/limits-and-pricing) for more information.
+
+> **💡 Note:** The usage chart counts every raw event collected across all Web Vitals
+> metrics (TTFB, FCP, LCP, CLS, INP, and FID), device types, and environments.
+> This count can be higher than the event counts shown on a project's [Speed
+> Insights dashboard](/docs/speed-insights/using-speed-insights), which are
+> scoped to one metric, device type, environment, and date range.
 
 ### Optimizing Speed Insights events
 
 - To reduce cost, change the sample rate at a project level by using the `@vercel/speed-insights` package as explained in [Sample rate](/docs/speed-insights/package#samplerate). You can also set a cost limit under your team's Billing settings page to stop event collection for the rest of the billing period after your team reaches the limit
 - Use [beforeSend](/docs/speed-insights/package#beforesend) to exclude page views and events that might not be relevant
-- [Disable Speed Insights](/docs/speed-insights/using-speed-insights#disabling-speed-insights) for projects that no longer need it. This stops Vercel from collecting events for a project
+- [Turn off Speed Insights Plus](/docs/speed-insights/using-speed-insights#downgrading-from-speed-insights-plus) if your project no longer needs detailed performance insights.
 
 ## Managing Monitoring events
 
@@ -111,7 +107,7 @@ Vercel creates one or many events each time a request is made to your website. T
 
 You pay for Observability Plus based on the **total** number of events generated by projects where Observability Plus is enabled.
 
-The Observability chart allows you to view by the total **Count**, **Event Type**, or **Projects** over the selected time period.
+On the [Observability Events usage page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fusage%2Fobservability-events\&title=Go+to+Observability+usage), you can view events by **Count**, **Event Type**, or **Projects** over the selected time period.
 
 ### Optimizing Observability events
 
