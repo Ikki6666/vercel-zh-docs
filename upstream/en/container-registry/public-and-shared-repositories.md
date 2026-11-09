@@ -3,14 +3,14 @@ title: Public and Shared Repositories
 product: vercel
 url: /docs/container-registry/public-and-shared-repositories
 canonical_url: "https://vercel.com/docs/container-registry/public-and-shared-repositories"
-last_updated: 2018-10-20
-type: conceptual
+last_updated: 2026-09-04
+type: how-to
 prerequisites:
   - /docs/container-registry
 related:
   - /docs/container-registry/cli-reference
   - /docs/sandbox/concepts/images
-summary: Learn about public and shared repositories on Vercel.
+summary: Share a Vercel Container Registry repository with specific Vercel teams or make it public for any Vercel team to access.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -24,12 +24,13 @@ Vercel Container Registry (VCR) repositories are private by default. Share a rep
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to use Vercel Container Registry](https://vercel.com/kb/guide/how-to-use-vercel-container-registry?from=related) — Push, store, and pull OCI container images with Vercel Container Registry, then deploy them to Vercel Functions and Verc
-- [vercel vcr](https://vercel.com/docs/cli/vcr?from=related) — Manage Vercel Container Registry from the Vercel CLI: list, inspect, create, and delete repositories, browse tags, and m
-- [List repositories](https://vercel.com/docs/rest-api/vcr/list-repositories?from=related)
-- [Create a repository](https://vercel.com/docs/rest-api/vcr/create-a-repository?from=related)
-- [Getting Started](https://vercel.com/docs/container-registry/getting-started?from=related) — Learn about getting started on Vercel.
-- [List repository images](https://vercel.com/docs/rest-api/vcr/list-repository-images?from=related)
+- [Share Vercel Container Registry repositories across teams](https://vercel.com/changelog/share-vercel-container-registry-repositories-across-teams)
+- [Vercel Container Registry repositories can now be made public](https://vercel.com/changelog/vercel-container-registry-repositories-can-now-be-made-public)
+- [vercel vcr](https://vercel.com/docs/cli/vcr) — Manage Vercel Container Registry from the Vercel CLI: build and push images, manage repositories, tags, and images, and
+- [List repositories](https://vercel.com/docs/rest-api/vcr/list-repositories) — GET /v1/vcr/repository — List container registry repositories for a project.
+- [Create a repository](https://vercel.com/docs/rest-api/vcr/create-a-repository) — POST /v1/vcr/repository — Create a container registry repository for a project.
+- [Getting Started](https://vercel.com/docs/container-registry/getting-started) — Authenticate your container tool with Vercel Container Registry, then push and pull your first image with the Vercel CLI
+- [Get a repository image](https://vercel.com/docs/rest-api/vcr/get-a-repository-image) — GET /v1/vcr/repository/{idOrName}/images/{imageIdOrDigest} — Fetch an individual image from a repository, including its
 
 Full cross-link map for this page: [/docs/container-registry/public-and-shared-repositories.graph.md](/docs/container-registry/public-and-shared-repositories.graph.md)
 <!-- /docsgraph:related -->
@@ -93,3 +94,6 @@ vercel vcr config my-repository --public false
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

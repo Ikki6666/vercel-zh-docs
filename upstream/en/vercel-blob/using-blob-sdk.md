@@ -1,25 +1,29 @@
 ---
-title: @vercel/blob
+title: JS SDK Reference
 product: vercel
 url: /docs/vercel-blob/using-blob-sdk
 canonical_url: "https://vercel.com/docs/vercel-blob/using-blob-sdk"
-last_updated: 2026-07-15
+last_updated: 2026-08-26
 type: reference
 prerequisites:
   - /docs/vercel-blob
 related:
+  - /docs/vercel-blob/python-sdk-reference
   - /docs/cli/blob
   - /docs/cli/env
   - /docs/oidc
-  - /docs/vercel-blob
-  - /docs/fluid-compute
-summary: Learn how to use the Vercel Blob SDK to access your blob store from your apps.
+  - /docs/vercel-blob/vercel-signed-urls
+summary: Reference for the Vercel Blob JavaScript SDK, @vercel/blob, which lets you access your blob store from your apps.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# @vercel/blob
+# JS SDK Reference
 
-> **🔒 Permissions Required**: Vercel Blob
+> Vercel Blob is available on all plans
+>
+> Those with the owner, member, developer role can access this feature
+
+Use the `@vercel/blob` package to upload, download, list, copy, and delete blobs from JavaScript and TypeScript applications, and to handle uploads directly from the browser.
 
 
 <!-- docsgraph:related -->
@@ -27,38 +31,72 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [Migrate an Astro app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-an-astro-app-from-webflow-cloud-to-vercel?from=related) — Move your Astro app from Webflow Cloud to Vercel: swap the @astrojs/cloudflare adapter for @astrojs/vercel, drop the bas
-- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob?from=related) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
-- [Vercel Signed URLs](https://vercel.com/docs/vercel-blob/vercel-signed-urls?from=related) — Grant time-limited access to Vercel Blob URLs with signed tokens, and authorize browser-to-blob presigned uploads.
-- [Public Storage](https://vercel.com/docs/vercel-blob/public-storage?from=related) — Learn how to use public Vercel Blob storage to serve files accessible to anyone with the URL
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Blob now supports OIDC authentication](https://vercel.com/changelog/vercel-blob-now-supports-oidc-authentication)
+- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
+- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
+- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
+- [Migrate an Astro app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-an-astro-app-from-webflow-cloud-to-vercel) — Move your Astro app from Webflow Cloud to Vercel: swap the @astrojs/cloudflare adapter for @astrojs/vercel, drop the bas
+- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
+- [Public Storage](https://vercel.com/docs/vercel-blob/public-storage) — Learn how to use public Vercel Blob storage to serve files accessible to anyone with the URL
+- [Flue with Vercel](https://vercel.com/docs/frameworks/agents/flue) — Create a Flue agent that uses Vercel AI Gateway for model requests, then add Vercel Sandbox for isolated code execution.
 
 Full cross-link map for this page: [/docs/vercel-blob/using-blob-sdk.graph.md](/docs/vercel-blob/using-blob-sdk.graph.md)
 <!-- /docsgraph:related -->
 
+For Python, see the [Python SDK Reference](/docs/vercel-blob/python-sdk-reference).
+
 ## Getting started
 
-To start using [Vercel Blob](/storage/blob) SDK, follow the steps below:
+To start using the [Vercel Blob](/storage/blob) SDK, follow the steps below:
 
 > **💡 Note:** You can also interact with Vercel Blob using the [Vercel CLI](/docs/cli/blob)
 > for command-line operations. For example, you might want to quickly upload
 > assets during local development without writing additional code.
 
-Vercel Blob works with any frontend framework. begin by installing the package:
+Vercel Blob works with any frontend framework. Begin by installing the package:
+
+**pnpm**
+
+```bash
+pnpm i @vercel/blob
+```
+
+**yarn**
+
+```bash
+yarn add @vercel/blob
+```
+
+**npm**
+
+```bash
+npm i @vercel/blob
+```
+
+**bun**
+
+```bash
+bun add @vercel/blob
+```
 
 - ### Create a Blob store
+  Create a Blob store from the dashboard or the Vercel CLI.
+  #### Dashboard
   1. Go to your project's [**Storage** tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fstores\&title=Go+to+Storage)
-  2. Select **Create Database**, then choose **Blob**
+  2. Select **Create Storage**, then choose **Blob**
   3. Select **Continue**, then set the access to **Private** or **Public**
-  4. Choose a name for your store and select **Create a new Blob store**
-  5. Select the environments where you would like the read-write token to be included. **Production** and **Preview** are preselected; include **Development** if you plan to work with the store locally. You can also update the prefix of the Environment Variable in Advanced Options
+  4. Choose a name for your store. To add `BLOB_READ_WRITE_TOKEN` to the project, select **Add a read-write token env var to this connection**. You can also set a **Custom Environment Variable Prefix**
+  5. Select **Create**. Vercel connects the store to the project's **Production** and **Preview** environments. To work with the store locally, add **Development** to the connection from the store's **Projects** tab
   Once created, you are taken to the Vercel Blob store page.
+  #### CLI
+  Run [`vercel blob create-store`](/docs/cli/blob#create-store) from your linked project directory. The `--access` flag is required and accepts `private` or `public`. The `--yes` flag connects the new store to the project in all environments, including **Development**, which `vercel env pull` reads from:
+  ```bash filename="terminal"
+  vercel blob create-store my-blob-store --access private --yes
+  ```
+  To connect only some environments, use `--environment` instead of `--yes`, once for each environment, for example `--environment production --environment development`.
 
 - ### Prepare your local project
-  When you create the Blob store, Vercel adds one environment variable to the projects you selected:
+  When you create the Blob store from a project, Vercel connects the store to that project. In the dashboard, the connection includes the following environment variable only when you select **Add a read-write token env var to this connection**. When you create the store with the CLI, the connection includes it:
   - `BLOB_READ_WRITE_TOKEN`: a long-lived static read-write token. Use it for code that runs outside Vercel or to generate client tokens for browser uploads.
   To use this environment variable locally, use the Vercel CLI to [pull the values into your local project](/docs/cli/env#exporting-development-environment-variables):
   ```bash
@@ -70,7 +108,7 @@ Vercel Blob works with any frontend framework. begin by installing the package:
 
   When you connect your Blob store to a project, Vercel adds three environment variables to that project:
   - `BLOB_STORE_ID`: the id of your Blob store. The SDK pairs this with `VERCEL_OIDC_TOKEN` to authenticate requests.
-  - `VERCEL_OIDC_TOKEN`: a short-lived OIDC token that Vercel populates and rotates on every deployment.
+  - `VERCEL_OIDC_TOKEN`: a short-lived OIDC token that Vercel issues and rotates automatically. The SDK reads it from the environment and refreshes it when it expires, so you never handle it directly.
   - `BLOB_WEBHOOK_PUBLIC_KEY`: the public key the SDK uses to verify webhook callbacks signed by Vercel Blob when uploads are done via presigned URLs (or via `handleUploadPresigned`).
   To connect a project:
   1. Go to your Blob store's **Projects** tab
@@ -86,14 +124,28 @@ Use OIDC when your code runs on Vercel. Use a static read-write token when your 
 
 ### OIDC tokens (recommended)
 
-When your application runs on Vercel, the platform populates the `VERCEL_OIDC_TOKEN` environment variable with a short-lived OpenID Connect token. The SDK reads this variable automatically and pairs it with your store id to authenticate requests. Because the token is short-lived and rotates automatically, it removes the risk that a long-lived secret leaks from your codebase or environment.
+When your application runs on Vercel, the OIDC token is always available. Vercel issues a short-lived OpenID Connect token, exposes it as the `VERCEL_OIDC_TOKEN` environment variable, and rotates it automatically. The SDK reads this variable and pairs it with your store id to authenticate requests. You never need to read, supply, or refresh the token yourself. Because the token is short-lived and rotates automatically, no long-lived secret can leak from your codebase or environment.
 
 To use OIDC, the following environment variables must be present:
 
-- `VERCEL_OIDC_TOKEN`: populated automatically on Vercel deployments. For local development, run `vercel env pull` to fetch a short-lived token.
+- `VERCEL_OIDC_TOKEN`: managed by Vercel. On deployments, Vercel issues and rotates it automatically. For local development, run `vercel env pull` once to fetch it. Development tokens expire after 12 hours, and the SDK refreshes an expired token automatically using your Vercel CLI credentials, so you don't need to run `vercel env pull` again.
 - `BLOB_STORE_ID`: the id of the store you want to read or write. Vercel creates this variable when you connect a store to your project. The SDK accepts the value in either `store_<id>` or `<id>` form.
 
-When both are present, the SDK uses OIDC by default.
+When both are present, the SDK uses OIDC by default:
+
+```ts
+import { put } from '@vercel/blob';
+
+// No token handling needed. The SDK reads VERCEL_OIDC_TOKEN and
+// BLOB_STORE_ID from the environment and refreshes the token when
+// it expires.
+await put('media/photo.png', file, { access: 'private' });
+```
+
+> **⚠️ Warning:** Don't read `VERCEL_OIDC_TOKEN` yourself and pass it to SDK calls or store it
+> somewhere else. A token you pass explicitly bypasses the SDK's automatic
+> refresh: it works until the token expires, then every call fails with a
+> `403` error. Let the SDK read the token from the environment.
 
 #### Passing OIDC credentials explicitly
 
@@ -116,15 +168,25 @@ You have two options:
 
 The `oidcToken` option mirrors `token` for read-write credentials, so OIDC credentials no longer have to come from the environment.
 
+> **⚠️ Warning:** A token passed through `oidcToken` is not refreshed automatically. Your code
+> becomes responsible for supplying a valid, unexpired token on every call, and
+> requests fail with a `403` error once the token expires. Prefer configuring
+> your framework to load `.env.local` into `process.env`, and use this option
+> only when that is not possible.
+
 > **💡 Note:** `handleUpload` always requires a read-write token to sign client tokens for
 > browser uploads. OIDC is not accepted for this method. See [Read-write
-> tokens](#read-write-tokens).
+> tokens](#read-write-tokens). To run client uploads with OIDC, use
+> [`handleUploadPresigned`](#handleuploadpresigned) instead: it hands out
+> presigned upload URLs through [Vercel Signed
+> URLs](/docs/vercel-blob/vercel-signed-urls), a flow that works with either
+> credential.
 
 ### Read-write tokens
 
 A read-write token is a long-lived static credential. Use one when your code runs outside Vercel, for example in a CI job or on another host.
 
-When you create a Blob store from the Vercel dashboard, an environment variable named `BLOB_READ_WRITE_TOKEN` is added to the projects you select. OIDC takes precedence when its environment variables are present; otherwise the SDK falls back to `BLOB_READ_WRITE_TOKEN`.
+To add the `BLOB_READ_WRITE_TOKEN` environment variable to a project, select **Add a read-write token env var to this connection** in the Vercel dashboard. The dashboard does not add the variable unless you select this checkbox. The checkbox appears when you create a Blob store from a project, and in the store's **Projects** tab when you select **Connect to Project** or **Update Project Connection**. OIDC takes precedence when its environment variables are present; otherwise the SDK falls back to `BLOB_READ_WRITE_TOKEN`.
 
 ### Resolution order
 
@@ -136,7 +198,7 @@ The SDK resolves credentials in this order, stopping at the first match:
    - The OIDC token comes from the `oidcToken` option if set, otherwise from `process.env.VERCEL_OIDC_TOKEN`.
    - The store id comes from the `storeId` option if set, otherwise from `process.env.BLOB_STORE_ID`.
 
-   Both an OIDC token and a store id must be available for this tier to match. The SDK accepts the store id in either `store_<id>` or `<id>` form.
+   Both an OIDC token and a store id must be available for this tier to match. If you pass the `oidcToken` option and no store id is available, the SDK throws an error instead of continuing to the next tier. The SDK accepts the store id in either `store_<id>` or `<id>` form.
 3. `process.env.BLOB_READ_WRITE_TOKEN`.
 4. If none of the above is available, the SDK throws an error.
 
@@ -152,9 +214,103 @@ In the examples below, we use [Fluid compute](/docs/fluid-compute) for optimal p
 
 This example creates a Function that accepts a file from a `multipart/form-data` form and uploads it to the Blob store. The function returns a unique URL for the blob.
 
+```ts filename="app/upload/route.ts" framework=nextjs-app
+import { put } from '@vercel/blob';
+
+export async function PUT(request: Request) {
+  const form = await request.formData();
+  const file = form.get('file') as File;
+  const blob = await put(file.name, file, {
+    access: 'private' /* or 'public' */,
+    addRandomSuffix: true,
+  });
+
+  return Response.json(blob);
+}
+```
+
+```js filename="app/upload/route.js" framework=nextjs-app
+import { put } from '@vercel/blob';
+
+export async function PUT(request) {
+  const form = await request.formData();
+  const file = form.get('file');
+  const blob = await put(file.name, file, {
+    access: 'private' /* or 'public' */,
+    addRandomSuffix: true,
+  });
+
+  return Response.json(blob);
+}
+```
+
+```ts filename="app/upload/route.ts" framework=nextjs
+import { put } from '@vercel/blob';
+
+export async function PUT(request: Request) {
+  const form = await request.formData();
+  const file = form.get('file') as File;
+  const blob = await put(file.name, file, {
+    access: 'private' /* or 'public' */,
+    addRandomSuffix: true,
+  });
+
+  return Response.json(blob);
+}
+```
+
+```js filename="app/upload/route.js" framework=nextjs
+import { put } from '@vercel/blob';
+
+export async function PUT(request) {
+  const form = await request.formData();
+  const file = form.get('file');
+  const blob = await put(file.name, file, {
+    access: 'private' /* or 'public' */,
+    addRandomSuffix: true,
+  });
+
+  return Response.json(blob);
+}
+```
+
+```ts filename="api/upload.ts" framework=other
+import { put } from '@vercel/blob';
+
+export async function PUT(request: Request) {
+  const form = await request.formData();
+  const file = form.get('file') as File;
+  const blob = await put(file.name, file, {
+    access: 'private' /* or 'public' */,
+    addRandomSuffix: true,
+  });
+
+  return Response.json(blob);
+}
+```
+
+```js filename="api/upload.js" framework=other
+import { put } from '@vercel/blob';
+
+export async function PUT(request) {
+  const form = await request.formData();
+  const file = form.get('file');
+  const blob = await put(file.name, file, {
+    access: 'private' /* or 'public' */,
+    addRandomSuffix: true,
+  });
+
+  return Response.json(blob);
+}
+```
+
 ### `put()`
 
 The `put` method uploads a blob object to the Blob store.
+
+```js
+put(pathname, body, options);
+```
 
 It accepts the following parameters:
 
@@ -170,7 +326,7 @@ It accepts the following parameters:
 | `cacheControlMaxAge` | No       | A number in seconds to configure how long Blobs are cached. Defaults to one month. Cannot be set to a value lower than 1 minute. See the [caching](/docs/vercel-blob#caching) documentation for more details.                                                                        |
 | `contentType`        | No       | A string indicating the [media type](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type). By default, it's extracted from the pathname's extension.                                                                                                                             |
 | `token`              | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. You can also pass a client token created with `generateClientTokenFromReadWriteToken`. See [Authentication](#authentication). |
-| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`            | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `multipart`          | No       | Pass `multipart: true` when uploading large files. It will split the file into multiple parts, upload them in parallel and retry failed parts. |
 | `abortSignal`        | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                                        |
@@ -180,6 +336,14 @@ It accepts the following parameters:
 #### Example code with folder output
 
 To upload your file to an existing [folder](#folders) inside your blob storage, pass the folder name in the `pathname` as shown below:
+
+```ts filename="app/upload/route.ts"
+const imageFile = formData.get('image') as File;
+const blob = await put(`existingBlobFolder/${imageFile.name}`, imageFile, {
+  access: 'private' /* or 'public' */,
+  addRandomSuffix: true,
+});
+```
 
 #### Example responses
 
@@ -202,7 +366,7 @@ An example blob (uploaded with `addRandomSuffix: true`) is:
 {
   "pathname": "profilesv1/user-12345-NoOVGDVcqSPc7VYCUAGnTzLTG2qEM2.txt",
   "contentType": "text/plain",
-  "contentDisposition": "attachment; filename=\"user-12345-NoOVGDVcqSPc7VYCUAGnTzLTG2qEM2.txt\"",
+  "contentDisposition": "inline; filename=\"user-12345-NoOVGDVcqSPc7VYCUAGnTzLTG2qEM2.txt\"",
   "url": "https://ce0rcu23vrrdzqap.private.blob.vercel-storage.com/profilesv1/user-12345-NoOVGDVcqSPc7VYCUAGnTzLTG2qEM2.txt",
   "downloadUrl": "https://ce0rcu23vrrdzqap.private.blob.vercel-storage.com/profilesv1/user-12345-NoOVGDVcqSPc7VYCUAGnTzLTG2qEM2.txt?download=1",
   "etag": "\"a1b2c3d4e5f6\""
@@ -211,14 +375,13 @@ An example blob (uploaded with `addRandomSuffix: true`) is:
 
 > **💡 Note:** If `access` is `'public'`, the URL domain will be `.public.blob.vercel-storage.com` instead of `.private.blob.vercel-storage.com`.
 
-An example blob uploaded without `addRandomSuffix: true` (default) is:
+An example blob uploaded without `addRandomSuffix: true` (default) is shown below. Its `pathname` and `url` don't include a random suffix:
 
 ```json
 {
   "pathname": "profilesv1/user-12345.txt",
   "contentType": "text/plain",
-  "contentDisposition": "attachment; filename=\"user-12345.txt\"",
-  // no automatic random suffix added 👇
+  "contentDisposition": "inline; filename=\"user-12345.txt\"",
   "url": "https://ce0rcu23vrrdzqap.private.blob.vercel-storage.com/profilesv1/user-12345.txt",
   "downloadUrl": "https://ce0rcu23vrrdzqap.private.blob.vercel-storage.com/profilesv1/user-12345.txt?download=1",
   "etag": "\"f6e5d4c3b2a1\""
@@ -251,7 +414,7 @@ It accepts the following parameters:
 | `allowOverwrite`     | No       | A boolean to allow overwriting blobs. By default an error will be thrown if you try to overwrite a blob by using the same `pathname` for multiple blobs.                                                                                                                                      |
 | `cacheControlMaxAge` | No       | A number in seconds to configure how long Blobs are cached. Defaults to one month. Cannot be set to a value lower than 1 minute. See the [caching](/docs/vercel-blob#caching) documentation for more details.                                                                                 |
 | `ifMatch`            | No       | An ETag value. The operation only succeeds if the blob's current ETag matches this value. Use this for [conditional writes](/docs/vercel-blob#conditional-writes) to prevent overwriting changes made by others. Throws `BlobPreconditionFailedError` if the ETag doesn't match.              |
-| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`            | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `abortSignal`        | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                                        |
 | `onUploadProgress`   | No       | Callback to track upload progress: `onUploadProgress({loaded: number, total: number, percentage: number})`                                                                                                                                                                                    |
@@ -310,7 +473,7 @@ export async function POST(request: Request) {
 {
   "pathname": "avatars/user-123.webp",
   "contentType": "image/webp",
-  "contentDisposition": "attachment; filename=\"user-123.webp\"",
+  "contentDisposition": "inline; filename=\"user-123.webp\"",
   "url": "https://ce0rcu23vrrdzqap.public.blob.vercel-storage.com/avatars/user-123.webp",
   "downloadUrl": "https://ce0rcu23vrrdzqap.public.blob.vercel-storage.com/avatars/user-123.webp?download=1",
   "etag": "\"a1b2c3d4e5f6\""
@@ -333,6 +496,10 @@ Retrieve blob content as a stream. For private blobs, this is how you deliver fi
 
 ### `get()`
 
+```js
+get(urlOrPathname, options);
+```
+
 It accepts the following parameters:
 
 - `urlOrPathname`: (Required) A string specifying the URL or pathname of the blob object to retrieve
@@ -342,20 +509,83 @@ It accepts the following parameters:
 | ------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `access`      | Yes      | [`'private'` or `'public'`](/docs/vercel-blob#private-and-public-storage). Determines the access level of the blob.                                                                                                                                                               |
 | `token`       | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. See [Authentication](#authentication). |
-| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`     | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `ifNoneMatch` | No       | An ETag value. When the blob's current ETag matches, returns `statusCode: 304` with `stream: null` instead of the full response. See [browser caching with conditional requests](/docs/vercel-blob/private-storage#browser-caching-with-conditional-requests) for a full example. |
-| `useCache`    | No       | Set to `false` to guarantee the read returns the latest version of the blob, at the cost of slower reads. Defaults to `true`. See [Consistent reads](/docs/vercel-blob/private-storage#consistent-reads).                                                     |
+| `useCache`    | No       | Set to `false` to guarantee the read returns the latest version of a private blob, at the cost of slower reads. The SDK ignores this option when `access` is `'public'`. Defaults to `true`. See [Consistent reads](/docs/vercel-blob/private-storage#consistent-reads).                                                     |
 | `headers`     | No       | Additional headers to include in the fetch request. The authorization header is set automatically.                                                                                                                                                                                |
 | `abortSignal` | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                            |
 
-`get()` returns `null` (`None` in Python) if the blob is not found, or an object with the following properties:
+`get()` returns `null` if the blob is not found, or an object with the following properties:
+
+```ts
+{
+  statusCode: number; // 200 or 304
+  stream: ReadableStream<Uint8Array> | null; // null on 304
+  headers: Headers;
+  blob: {
+    url: string;
+    downloadUrl: string;
+    pathname: string;
+    contentType: string | null; // null on 304
+    contentDisposition: string;
+    cacheControl: string;
+    etag: string;
+    size: number | null; // null on 304
+    uploadedAt: Date;
+  };
+}
+```
 
 #### Example
 
+```ts filename="app/api/documents/[...pathname]/route.ts"
+import { type NextRequest, NextResponse } from 'next/server';
+import { get } from '@vercel/blob';
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ pathname: string[] }> },
+) {
+  // Your auth goes here: await authRequest(request)
+
+  const { pathname } = await params;
+  const result = await get(pathname.join('/'), { access: 'private' });
+
+  if (result?.statusCode !== 200) {
+    return new NextResponse('Not found', { status: 404 });
+  }
+
+  return new NextResponse(result.stream, {
+    headers: {
+      'Content-Type': result.blob.contentType,
+    },
+  });
+}
+```
+
 #### Example response
 
-`get()` returns `null` (`None` in Python) if the blob is not found, or an object with the following properties:
+`get()` returns `null` if the blob is not found, or an object with the following properties:
+
+```ts
+{
+  statusCode: number; // 200 or 304
+  stream: ReadableStream<Uint8Array> | null; // null on 304
+  headers: Headers;
+  blob: {
+    url: string;
+    downloadUrl: string;
+    pathname: string;
+    contentType: string | null; // null on 304
+    contentDisposition: string;
+    cacheControl: string;
+    etag: string;
+    size: number | null; // null on 304
+    uploadedAt: Date;
+  };
+}
+```
 
 ## Deleting blobs
 
@@ -439,6 +669,12 @@ The `del` method deletes one or multiple blob objects from the Blob store.
 
 Since blobs are cached, it may take up to one minute for them to be fully removed from the Vercel CDN cache.
 
+```ts
+del(urlOrPathname, options);
+
+del([urlOrPathname], options); // You can pass an array to delete multiple blob objects
+```
+
 It accepts the following parameters:
 
 - `urlOrPathname`: (Required) A string or array of strings specifying the URL(s) or pathname(s) of the blob object(s) to delete.
@@ -447,7 +683,7 @@ It accepts the following parameters:
 | Parameter     | Required | Values                                                                                                                                                                                                                                                                                                                    |
 | ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `token`       | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. See [Authentication](#authentication). |
-| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`     | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `ifMatch`     | No       | An ETag value. The delete only succeeds if the blob's current ETag matches this value. Use this for [conditional writes](/docs/vercel-blob#conditional-writes) to ensure you're deleting the expected version. Throws `BlobPreconditionFailedError` if the ETag doesn't match. Only works with a single URL (not arrays). |
 | `abortSignal` | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                                                                    |
@@ -464,6 +700,14 @@ import { head } from '@vercel/blob';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const blobUrl = searchParams.get('url');
+
+  if (!blobUrl) {
+    return Response.json(
+      { error: 'Missing url query parameter' },
+      { status: 400 },
+    );
+  }
+
   const blobDetails = await head(blobUrl);
 
   return Response.json(blobDetails);
@@ -476,6 +720,14 @@ import { head } from '@vercel/blob';
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const blobUrl = searchParams.get('url');
+
+  if (!blobUrl) {
+    return Response.json(
+      { error: 'Missing url query parameter' },
+      { status: 400 },
+    );
+  }
+
   const blobDetails = await head(blobUrl);
 
   return Response.json(blobDetails);
@@ -488,6 +740,14 @@ import { head } from '@vercel/blob';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const blobUrl = searchParams.get('url');
+
+  if (!blobUrl) {
+    return Response.json(
+      { error: 'Missing url query parameter' },
+      { status: 400 },
+    );
+  }
+
   const blobDetails = await head(blobUrl);
 
   return Response.json(blobDetails);
@@ -500,6 +760,14 @@ import { head } from '@vercel/blob';
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const blobUrl = searchParams.get('url');
+
+  if (!blobUrl) {
+    return Response.json(
+      { error: 'Missing url query parameter' },
+      { status: 400 },
+    );
+  }
+
   const blobDetails = await head(blobUrl);
 
   return Response.json(blobDetails);
@@ -512,6 +780,14 @@ import { head } from '@vercel/blob';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const blobUrl = searchParams.get('url');
+
+  if (!blobUrl) {
+    return Response.json(
+      { error: 'Missing url query parameter' },
+      { status: 400 },
+    );
+  }
+
   const blobDetails = await head(blobUrl);
 
   return Response.json(blobDetails);
@@ -524,6 +800,14 @@ import { head } from '@vercel/blob';
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const blobUrl = searchParams.get('url');
+
+  if (!blobUrl) {
+    return Response.json(
+      { error: 'Missing url query parameter' },
+      { status: 400 },
+    );
+  }
+
   const blobDetails = await head(blobUrl);
 
   return Response.json(blobDetails);
@@ -534,6 +818,10 @@ export async function GET(request) {
 
 The `head` method returns a blob object's metadata.
 
+```js
+head(urlOrPathname, options);
+```
+
 It accepts the following parameters:
 
 - `urlOrPathname`: (Required) A string specifying the URL or pathname of the blob object to read.
@@ -542,7 +830,7 @@ It accepts the following parameters:
 | Parameter     | Required | Values                                                                                                                                                                                                 |
 | ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `token`       | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. See [Authentication](#authentication). |
-| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`     | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `abortSignal` | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation |
 
@@ -550,6 +838,20 @@ It accepts the following parameters:
 
 - a `JSON` object with the requested blob object's metadata
 - throws a `BlobNotFoundError` if the blob object was not found
+
+```ts
+{
+  size: number;
+  uploadedAt: Date;
+  pathname: string;
+  contentType: string;
+  contentDisposition: string;
+  url: string;
+  downloadUrl: string;
+  cacheControl: string;
+  etag: string;
+}
+```
 
 ## List blobs
 
@@ -613,6 +915,10 @@ export async function GET(request) {
 
 The `list` method returns a list of blob objects in a Blob store.
 
+```js
+list(options);
+```
+
 It accepts the following parameters:
 
 - `options`: (Optional) A `JSON` object with the following optional parameters:
@@ -620,7 +926,7 @@ It accepts the following parameters:
 | Parameter     | Required | Values                                                                                                                                                                                                 |
 | ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `token`       | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. See [Authentication](#authentication). |
-| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`     | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `limit`       | No       | A number specifying the maximum number of blob objects to return. It defaults to 1000 |
 | `prefix`      | No       | A string used to filter for blob objects contained in a specific folder assuming that the folder name was used in the `pathname` when the blob object was uploaded                                     |
@@ -630,9 +936,39 @@ It accepts the following parameters:
 
 `list()` returns a `JSON` object in the following format:
 
+```ts
+{
+  blobs: {
+    size: number;
+    uploadedAt: Date;
+    pathname: string;
+    url: string;
+    downloadUrl: string;
+    etag: string;
+  }[];
+  cursor?: string;
+  hasMore: boolean;
+  folders?: string[];
+}
+```
+
 ### Pagination
 
 For a long list of blob objects (the default list `limit` is 1000), you can use the `cursor` and `hasMore` parameters to paginate through the results as shown in the example below:
+
+```js
+let hasMore = true;
+let cursor;
+
+while (hasMore) {
+  const listResult = await list({
+    cursor,
+  });
+
+  hasMore = listResult.hasMore;
+  cursor = listResult.cursor;
+}
+```
 
 ### Folders
 
@@ -644,6 +980,15 @@ These entries will be included in the response as `folders`. Blobs that are not 
 
 By using the `folded` mode, you can efficiently retrieve folders and subsequently list the blobs inside them by using the returned `folders` as a `prefix` for further requests.
 Omitting the `prefix` parameter entirely, will return all folders in the root of your store. Be aware that the blobs pathnames and the folder names will always be fully quantified and never relative to the prefix you passed.
+
+```js
+const {
+  folders: [firstFolder],
+  blobs: rootBlobs,
+} = await list({ mode: 'folded' });
+
+const { folders, blobs } = await list({ mode: 'folded', prefix: firstFolder });
+```
 
 ## Copy a blob
 
@@ -745,7 +1090,11 @@ The `copy` method copies an existing blob object to a new path inside the blob s
 
 The `contentType` and `cacheControlMaxAge` will not be copied from the source blob. If the values should be carried over to the copy, they need to be defined again in the options object.
 
-Contrary to `put()`, `addRandomSuffix` is false by default. This means no automatic random id suffix is added to your blob url, unless you pass `addRandomSuffix: true`.
+Like `put()`, `addRandomSuffix` is false by default. This means no automatic random id suffix is added to your blob url, unless you pass `addRandomSuffix: true`.
+
+```js
+copy(fromUrlOrPathname, toPathname, options);
+```
 
 It accepts the following parameters:
 
@@ -758,7 +1107,7 @@ It accepts the following parameters:
 | `access`             | Yes      | [`'private'` or `'public'`](/docs/vercel-blob#private-and-public-storage). Determines the access level of the blob.                                                                                                                                                                                          |
 | `contentType`        | No       | A string indicating the [media type](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type). By default, it's extracted from the toPathname's extension.                                                                                                                                          |
 | `token`              | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. See [Authentication](#authentication). |
-| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`            | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `false`. |
 | `allowOverwrite`     | No       | A boolean to allow overwriting blobs. By default an error will be thrown if you try to overwrite a blob by using the same `pathname` for multiple blobs.                                                                                                                                                     |
@@ -768,13 +1117,24 @@ It accepts the following parameters:
 
 `copy()` returns a `JSON` object with the following data for the copied blob object:
 
+```ts
+{
+  pathname: string;
+  contentType: string;
+  contentDisposition: string;
+  url: string;
+  downloadUrl: string;
+  etag: string;
+}
+```
+
 An example blob is:
 
 ```json
 {
   "pathname": "profilesv1/user-12345-copy.txt",
   "contentType": "text/plain",
-  "contentDisposition": "attachment; filename=\"user-12345-copy.txt\"",
+  "contentDisposition": "inline; filename=\"user-12345-copy.txt\"",
   "url": "https://ce0rcu23vrrdzqap.public.blob.vercel-storage.com/profilesv1/user-12345-copy.txt",
   "downloadUrl": "https://ce0rcu23vrrdzqap.public.blob.vercel-storage.com/profilesv1/user-12345-copy.txt?download=1",
   "etag": "\"a1b2c3d4e5f6\""
@@ -820,7 +1180,7 @@ It accepts the following parameters:
 | `access`             | Yes      | [`'private'` or `'public'`](/docs/vercel-blob#private-and-public-storage). Determines the access level of the blob.                                                                                                                                                                                               |
 | `contentType`        | No       | A string indicating the [media type](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type). By default, it's extracted from the toPathname's extension.                                                                                                                                               |
 | `token`              | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. See [Authentication](#authentication). |
-| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`            | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `false`. |
 | `allowOverwrite`     | No       | A boolean to allow overwriting blobs. By default an error will be thrown if a blob already exists at `toPathname`.                                                                                                                                                                                                |
@@ -847,7 +1207,7 @@ An example blob is:
 {
   "pathname": "profilesv1/user-12345-renamed.txt",
   "contentType": "text/plain",
-  "contentDisposition": "attachment; filename=\"user-12345-renamed.txt\"",
+  "contentDisposition": "inline; filename=\"user-12345-renamed.txt\"",
   "url": "https://ce0rcu23vrrdzqap.public.blob.vercel-storage.com/profilesv1/user-12345-renamed.txt",
   "downloadUrl": "https://ce0rcu23vrrdzqap.public.blob.vercel-storage.com/profilesv1/user-12345-renamed.txt?download=1",
   "etag": "\"a1b2c3d4e5f6\""
@@ -863,11 +1223,22 @@ This process consists of three phases: creating a multipart upload, uploading th
 
 This method has everything baked in and is easiest to use. It's part of the `put` and `upload` API's. Under the hood it will start the upload, split your file into multiple parts with the same size, upload them in parallel and complete the upload.
 
+```js
+const blob = await put('large-movie.mp4', file, {
+  access: 'private' /* or 'public' */,
+  multipart: true,
+});
+```
+
 ### Manual
 
 This method gives you full control over the multipart upload process. It consists of three phases:
 
 **Phase 1: Create a multipart upload**
+
+```js
+const multipartUpload = await createMultipartUpload(pathname, options);
+```
 
 `createMultipartUpload` accepts the following parameters:
 
@@ -879,9 +1250,9 @@ This method gives you full control over the multipart upload process. It consist
 | `access`             | Yes      | [`'private'` or `'public'`](/docs/vercel-blob#private-and-public-storage). Determines the access level of the blob.                                                                                                                                                                           |
 | `contentType`        | No       | The [media type](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type) for the file. If not specified, it's derived from the file extension. Falls back to `application/octet-stream` when no extension exists or can't be matched.                                               |
 | `token`              | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. You can also pass a client token created with `generateClientTokenFromReadWriteToken`. See [Authentication](#authentication). |
-| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`            | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
-| `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `true`.                                                                                                                                                                                                   |
+| `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `false`.                                                                                                                                                                                                   |
 | `cacheControlMaxAge` | No       | A number in seconds to configure the edge and browser cache. Defaults to one month. See the [caching](/docs/vercel-blob#caching) documentation for more details.                                                                                                                     |
 | `abortSignal`        | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                                        |
 
@@ -901,6 +1272,10 @@ This method gives you full control over the multipart upload process. It consist
 > minimum of 5MB, except the last one which can be smaller, and all parts should
 > be of equal size.
 
+```js
+const part = await uploadPart(pathname, chunkBody, options);
+```
+
 `uploadPart` accepts the following parameters:
 
 - `pathname`: (Required) Same value as the `pathname` parameter passed to `createMultipartUpload`
@@ -914,7 +1289,7 @@ This method gives you full control over the multipart upload process. It consist
 | `key`         | Yes      | A string returned from `createMultipartUpload` which identifies the blob object                                                                                                                                                                                                               |
 | `uploadId`    | Yes      | A string returned from `createMultipartUpload` which identifies the multipart upload                                                                                                                                                                                                          |
 | `token`       | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. You can also pass a client token created with `generateClientTokenFromReadWriteToken`. See [Authentication](#authentication). |
-| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`     | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `abortSignal` | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                                        |
 
@@ -929,6 +1304,10 @@ This method gives you full control over the multipart upload process. It consist
 
 **Phase 3: Complete the multipart upload**
 
+```js
+const blob = await completeMultipartUpload(pathname, parts, options);
+```
+
 `completeMultipartUpload` accepts the following parameters:
 
 - `pathname`: (Required) Same value as the `pathname` parameter passed to `createMultipartUpload`
@@ -942,11 +1321,12 @@ This method gives you full control over the multipart upload process. It consist
 | `uploadId`           | Yes      | A string returned from `createMultipartUpload` which identifies the multipart upload                                                                                                                                                                                                          |
 | `contentType`        | No       | The [media type](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type) for the file. If not specified, it's derived from the file extension. Falls back to `application/octet-stream` when no extension exists or can't be matched.                                               |
 | `token`              | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. You can also pass a client token created with `generateClientTokenFromReadWriteToken`. See [Authentication](#authentication). |
-| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`            | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
-| `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `true`.                                                                                                                                                                                                   |
+| `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `false`.                                                                                                                                                                                                   |
 | `cacheControlMaxAge` | No       | A number in seconds to configure the edge and browser cache. Defaults to one month. See the [caching](/docs/vercel-blob#caching) documentation for more details.                                                                                                                     |
 | `abortSignal`        | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                                        |
+| `allowOverwrite`     | No       | A boolean to allow overwriting blobs. By default an error will be thrown if you try to overwrite a blob by using the same `pathname` for multiple blobs.                                                                                                                                      |
 
 `completeMultipartUpload()` returns a `JSON` object with the following data for the created blob object:
 
@@ -968,6 +1348,10 @@ This results in a simpler API, but still requires you to handle memory usage and
 
 **Phase 1: Create the multipart uploader**
 
+```js
+const uploader = await createMultipartUploader(pathname, options);
+```
+
 `createMultipartUploader` accepts the following parameters:
 
 - `pathname`: (Required) A string specifying the path inside the blob store. This will be the base value of the return URL and includes the filename and extension.
@@ -978,13 +1362,23 @@ This results in a simpler API, but still requires you to handle memory usage and
 | `access`             | Yes      | [`'private'` or `'public'`](/docs/vercel-blob#private-and-public-storage). Determines the access level of the blob.                                                                                                                                                                           |
 | `contentType`        | No       | The [media type](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type) for the file. If not specified, it's derived from the file extension. Falls back to `application/octet-stream` when no extension exists or can't be matched.                                               |
 | `token`              | No       | A static read-write token. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. Its default value is not used when OIDC credentials are present, but an explicitly passed token always takes priority. You can also pass a client token created with `generateClientTokenFromReadWriteToken`. See [Authentication](#authentication). |
-| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
+| `oidcToken`          | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. An explicitly passed token is not refreshed automatically. See [Authentication](#authentication). |
 | `storeId`            | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
-| `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `true`.                                                                                                                                                                                                   |
+| `addRandomSuffix`    | No       | A boolean specifying whether to add a random suffix to the pathname. It defaults to `false`.                                                                                                                                                                                                   |
 | `cacheControlMaxAge` | No       | A number in seconds to configure the edge and browser cache. Defaults to one month. See the [caching](/docs/vercel-blob#caching) documentation for more details.                                                                                                                     |
 | `abortSignal`        | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                                        |
+| `allowOverwrite`     | No       | A boolean to allow overwriting blobs. By default an error will be thrown if you try to overwrite a blob by using the same `pathname` for multiple blobs.                                                                                                                                      |
 
 `createMultipartUploader()` returns an `Uploader` object with the following attributes and methods:
+
+```ts
+{
+  key: string;
+  uploadId: string;
+  uploadPart: (partNumber: number, body: BodyInit) => Promise<Part>;
+  complete: (parts: Part[]) => Promise<PutBlobResult>;
+}
+```
 
 **Phase 2: Upload all the parts**
 
@@ -993,6 +1387,12 @@ This results in a simpler API, but still requires you to handle memory usage and
 > minimum of 5MB, except the last one which can be smaller, and all parts should
 > be of equal size.
 
+```js
+const part1 = await uploader.uploadPart(1, chunkBody1);
+const part2 = await uploader.uploadPart(2, chunkBody2);
+const part3 = await uploader.uploadPart(3, chunkBody3);
+```
+
 `uploader.uploadPart` accepts the following parameters:
 
 - `partNumber`: (Required) A number identifying which part is uploaded
@@ -1000,13 +1400,59 @@ This results in a simpler API, but still requires you to handle memory usage and
 
 `uploader.uploadPart()` returns an object with the following data for the uploaded part:
 
+```ts
+{
+  etag: string;
+  partNumber: number;
+}
+```
+
 **Phase 3: Complete the multipart upload**
+
+```js
+const blob = await uploader.complete([part1, part2, part3]);
+```
 
 `uploader.complete` accepts the following parameters:
 
 - `parts`: (Required) An array containing all the uploaded parts
 
 `uploader.complete()` returns an object with the following data for the created blob object:
+
+```ts
+{
+  pathname: string;
+  contentType: string;
+  contentDisposition: string;
+  url: string;
+  downloadUrl: string;
+  etag: string;
+}
+```
+
+## Signed URLs
+
+Vercel Signed URLs grant time-limited access to a blob URL without exposing a read-write token: your server issues a short-lived signed token, then any environment signs URLs for individual operations. Both methods are available under `@vercel/blob`. This section is a summary; the full parameter reference and examples live in [Vercel Signed URLs](/docs/vercel-blob/vercel-signed-urls).
+
+### `issueSignedToken()`
+
+The `issueSignedToken` method runs on your server and asks the Blob API for short-lived signing material. It uses the same [authentication](#authentication) as the rest of the SDK, so it works with OIDC or a read-write token.
+
+```js
+issueSignedToken(options);
+```
+
+You can scope the token with `pathname`, `operations` (`'get'`, `'head'`, `'put'`, or `'delete'`), `validUntil`, `allowedContentTypes`, and `maximumSizeInBytes`. It returns `{ delegationToken, clientSigningToken, validUntil }`. Treat the `clientSigningToken` as a secret: anyone who holds it can sign URLs within the delegation's scope. See the [full parameter reference](/docs/vercel-blob/vercel-signed-urls#issuesignedtoken).
+
+### `presignUrl()`
+
+The `presignUrl` method takes the material returned by `issueSignedToken` and produces a ready-to-fetch URL for a specific pathname and operation. It signs locally with no network call, so it runs anywhere: server, edge, or browser.
+
+```js
+presignUrl(signedToken, options);
+```
+
+See the [full parameter reference and an example for each operation](/docs/vercel-blob/vercel-signed-urls#presignurl).
 
 ## Client uploads
 
@@ -1034,6 +1480,7 @@ It accepts the following parameters:
 | `contentType`      | No       | A string indicating the [media type](https://developer.mozilla.org/docs/Web/HTTP/Headers/Content-Type). By default, it's extracted from the pathname's extension. |
 | `handleUploadUrl`  | Yes\*    | A string specifying the route to call for generating client tokens for [client uploads](/docs/vercel-blob/client-upload).                                 |
 | `clientPayload`    | No       | A string to be sent to your `handleUpload` server code. Example use-case: attaching the post id an image relates to. So you can use it to update your database.   |
+| `headers`          | No       | An object with additional headers to send with the request to your `handleUploadUrl` route, for example an authorization header.                                  |
 | `multipart`        | No       | Pass `multipart: true` when uploading large files. It will split the file into multiple parts, upload them in parallel and retry failed parts.                    |
 | `abortSignal`      | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                            |
 | `onUploadProgress` | No       | Callback to track upload progress: `onUploadProgress({loaded: number, total: number, percentage: number})`                                                        |
@@ -1057,6 +1504,16 @@ An example `url` is:
 https://ce0rcu23vrrdzqap.public.blob.vercel-storage.com/profilesv1/user-12345-NoOVGDVcqSPc7VYCUAGnTzLTG2qEM2.txt
 ```
 
+### `uploadPresigned()`
+
+The `uploadPresigned` method is the presigned counterpart of [`upload`](#upload). Instead of fetching a client token, it asks your server for a presigned `PUT` URL and uploads the file directly to Blob storage, with no bearer token in flight.
+
+```js
+uploadPresigned(pathname, body, options);
+```
+
+It accepts the same parameters as `upload` and returns the same blob object, with one difference: point `handleUploadUrl` at a route that implements [`handleUploadPresigned`](#handleuploadpresigned) instead of `handleUpload`. See [Presigned uploads](/docs/vercel-blob/vercel-signed-urls#presigned-uploads) for the full flow.
+
 ### `handleUpload()`
 
 A server-side route helper to manage client uploads, it has two responsibilities:
@@ -1074,10 +1531,10 @@ It accepts the following parameters:
 
 | Parameter                                         | Required | Values                                                                                                                                                                                                 |
 | ------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `token`                                           | No       | A static read-write token used to verify and sign client uploads. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. OIDC tokens are not sufficient for `handleUpload`. |
+| `token`                                           | No       | A static read-write token used to verify and sign client uploads. Defaults to `process.env.BLOB_READ_WRITE_TOKEN`. OIDC tokens are not sufficient for `handleUpload`; use [`handleUploadPresigned`](#handleuploadpresigned) for an OIDC-compatible flow. |
 | `request`                                         | Yes      | An `IncomingMessage` or `Request` object to be used to determine the action to take                                                                                                                    |
 | [`onBeforeGenerateToken`](#onbeforegeneratetoken) | Yes      | A function to be called right before generating client tokens for client uploads. See below for usage                                                                                                  |
-| [`onUploadCompleted`](#onuploadcompleted)         | Yes      | A function to be called by Vercel Blob when the client upload finishes. This is useful to update your database with the blob url that was uploaded                                                     |
+| [`onUploadCompleted`](#onuploadcompleted)         | No       | A function to be called by Vercel Blob when the client upload finishes. This is useful to update your database with the blob url that was uploaded                                                     |
 | `body`                                            | Yes      | The request body                                                                                                                                                                                       |
 
 `handleUpload()` returns:
@@ -1110,6 +1567,7 @@ The function must return an object with the following properties:
 | `allowOverwrite`      | No       | A boolean to allow overwriting blobs. By default an error will be thrown if you try to overwrite a blob by using the same `pathname` for multiple blobs.                                                                  |
 | `cacheControlMaxAge`  | No       | A number in seconds to configure how long Blobs are cached. Defaults to one month. Cannot be set to a value lower than 1 minute. See the [caching](/docs/vercel-blob#caching) documentation for more details.    |
 | `callbackUrl`         | No       | A string specifying the URL that Vercel Blob will call when the upload completes. See [client uploads](/docs/vercel-blob/client-upload) for examples.                                                             |
+| `ifMatch`             | No       | An ETag value. The upload only succeeds if the blob's current ETag matches this value. Use this for [conditional writes](/docs/vercel-blob#conditional-writes).                                                           |
 | `tokenPayload`        | No       | A string specifying a payload to be sent to your server on upload completion.                                                                                                                                             |
 
 #### `onUploadCompleted()`
@@ -1118,6 +1576,22 @@ The `onUploadCompleted` function receives the following arguments:
 
 - `blob`: The blob that was uploaded. See the return type of [`put()`](#put) for more details.
 - `tokenPayload`: The payload that was defined in the [`onBeforeGenerateToken()`](#onbeforegeneratetoken) function.
+
+### `handleUploadPresigned()`
+
+The `handleUploadPresigned` server-side route helper is the presigned counterpart of [`handleUpload`](#handleupload). Instead of signing client tokens with a read-write token, it returns presigned `PUT` URLs backed by [`issueSignedToken`](#issuesignedtoken), so the route works with OIDC as well as a read-write token.
+
+```js
+handleUploadPresigned(options);
+```
+
+Key differences from `handleUpload`:
+
+- You mint the signed token inside a `getSignedToken` callback, typically with `issueSignedToken({ pathname, operations: ['put'] })`. **You must authenticate and authorize the user inside this function**, just like in `onBeforeGenerateToken`.
+- Upload constraints such as `allowedContentTypes` and `maximumSizeInBytes` move into the `urlOptions` object returned by `getSignedToken`.
+- The `onUploadCompleted` callback keeps the same shape, but its signature is verified with a webhook public key (the `webhookPublicKey` parameter, which defaults to `process.env.BLOB_WEBHOOK_PUBLIC_KEY`) instead of the read-write token.
+
+See the [full parameter reference, an example route handler, and migration steps](/docs/vercel-blob/vercel-signed-urls#handleuploadpresigned).
 
 ### Client uploads routes
 
@@ -1194,7 +1668,26 @@ When you make a request to the SDK using any of the above methods, they will ret
 
 To catch these errors, wrap your requests with a `try/catch` statement as shown below:
 
+```js
+import { put, BlobAccessError } from '@vercel/blob';
+
+try {
+  await put(...);
+} catch (error) {
+  if (error instanceof BlobAccessError) {
+    // handle a recognized error
+  } else {
+    // throw the error again if it's unknown
+  throw error;
+  }
+}
+
+```
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

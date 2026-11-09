@@ -3,7 +3,7 @@ title: DNS Table
 product: vercel
 url: /docs/platforms/platform-elements/blocks/dns-table
 canonical_url: "https://vercel.com/docs/platforms/platform-elements/blocks/dns-table"
-last_updated: 2026-06-26
+last_updated: 2026-09-03
 type: reference
 prerequisites:
   - /docs/platforms/platform-elements/blocks
@@ -20,27 +20,37 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Overview
 
+The DNS Table block provides a clean, user-friendly interface for displaying DNS records that users need to configure. It's designed for platforms that guide users through domain configuration, offering one-click copying of values and clear visual organization. This component is essential for domain management interfaces in platforms like Mintlify and Hashnode.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How can I manage my Vercel DNS records?](https://vercel.com/kb/guide/how-to-manage-vercel-dns-records?from=related) — Add, edit, and delete Vercel DNS records from the dashboard, CLI, or REST API, and fix the Invalid Configuration error o
-- [Working with DNS](https://vercel.com/docs/domains/working-with-dns?from=related) — Learn how DNS works in order to properly configure your domain.
-- [vercel dns](https://vercel.com/docs/cli/dns?from=related) — Learn how to manage your DNS records for your domains using the vercel dns CLI command.
-- [Managing DNS Records](https://vercel.com/docs/domains/managing-dns-records?from=related) — Learn how to add, verify, and remove DNS records for your domains on Vercel with this guide.
-- [Create a DNS record](https://vercel.com/docs/rest-api/dns/create-a-dns-record?from=related)
-- [Domains](https://vercel.com/docs/domains?from=related) — Learn the fundamentals of how domains, DNS, and nameservers work on Vercel.
+- [DNS Records UI](https://vercel.com/blog/dns-records-ui)
+- [Working with DNS](https://vercel.com/docs/domains/working-with-dns) — Learn how DNS works to properly configure your domain.
+- [vercel dns](https://vercel.com/docs/cli/dns) — Learn how to manage your DNS records for your domains using the vercel dns CLI command.
+- [Managing DNS Records](https://vercel.com/docs/domains/managing-dns-records) — Learn how to add, verify, and remove DNS records for your domains on Vercel with this guide.
+- [Create a DNS record](https://vercel.com/docs/rest-api/dns/create-a-dns-record) — POST /v2/domains/{domain}/records — Creates a DNS record for a domain.
+- [Domains Overview](https://vercel.com/docs/domains) — Learn the fundamentals of how domains, DNS, and nameservers work on Vercel.
 
 Full cross-link map for this page: [/docs/platforms/platform-elements/blocks/dns-table.graph.md](/docs/platforms/platform-elements/blocks/dns-table.graph.md)
 <!-- /docsgraph:related -->
 
-The DNS Table block provides a clean, user-friendly interface for displaying DNS records that users need to configure. It's designed for platforms that guide users through domain configuration, offering one-click copying of values and clear visual organization. This component is essential for domain management interfaces in platforms like Mintlify and Hashnode.
-
 ## Installation
 
-Install the `dns-table` block into your project using the Platform Elements installer.
+Install the `dns-table` block with the Vercel Platforms CLI:
+
+```bash
+npx @vercel/platforms@latest add dns-table
+```
+
+You can also install it with the shadcn CLI:
+
+```bash
+npx shadcn@latest add https://registry.platforms.guide/dns-table.json
+```
 
 ## Features
 
@@ -142,11 +152,13 @@ type DNSRecord = {
 import { DNSTable } from '@/components/blocks/dns-table';
 import { useState } from 'react';
 
-export function DomainVerification({ domain }) {
+// `challenge` is one entry of the `verification` array that Vercel
+// returns when you add a domain to a project
+export function DomainVerification({ challenge }) {
   const [verificationRecord] = useState({
     type: 'TXT',
-    name: `_vercel.${domain}`,
-    value: `vc-domain-verify=${generateVerificationCode()}`,
+    name: challenge.domain,
+    value: challenge.value,
   });
 
   return (
@@ -285,3 +297,6 @@ const DNSInstructions = ({ provider, records }) => {
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

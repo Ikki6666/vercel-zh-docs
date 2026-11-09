@@ -3,7 +3,7 @@ title: Vite + Nitro on Vercel
 product: vercel
 url: /docs/frameworks/full-stack/vite-with-nitro
 canonical_url: "https://vercel.com/docs/frameworks/full-stack/vite-with-nitro"
-last_updated: 2026-03-09
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/frameworks/full-stack
@@ -20,7 +20,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Vite + Nitro on Vercel
 
-[Nitro](https://nitro.build) is a universal server toolkit that adds server-side rendering (SSR), API routes, server middleware and other backend capabiltiies to any Vite application. It powers frameworks like [Nuxt](/docs/frameworks/full-stack/nuxt) and deploys to Vercel with zero configuration.
+[Nitro](https://nitro.build) is a universal server toolkit that adds server-side rendering (SSR), API routes, server middleware and other backend capabilities to any Vite application. It powers frameworks like [Nuxt](/docs/frameworks/full-stack/nuxt) and deploys to Vercel with zero configuration.
 
 
 <!-- docsgraph:related -->
@@ -28,18 +28,13 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [What is the Nitro Vite plugin?](https://vercel.com/kb/guide/nitro-vite-plugin?from=related) — The Nitro Vite plugin \\(nitro/vite\\) adds SSR, API routes, and deploy-anywhere server builds to any Vite app. Learn what
-- [How to ship a Nitro app on Vercel](https://vercel.com/kb/guide/ship-a-nitro-app-on-vercel?from=related) — Deploy a Nitro app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [Vite](https://nextjs.org/docs/app/guides/migrating/from-vite?from=related) — Learn how to migrate your existing React application from Vite to Next.js.
-- [Build with a Nitro starter template](https://vercel.com/kb/guide/build-with-a-nitro-starter-template?from=related) — Deploy a Nitro app to Vercel from a starter template. Compare the Nitro Starter, route rules, cached HTTP handler, plugi
-- [Vite](https://nextjs.org/docs/pages/guides/migrating/from-vite?from=related) — Learn how to migrate your existing React application from Vite to Next.js.
-- [Vite](https://vercel.com/docs/frameworks/frontend/vite?from=related) — Learn how to use Vercel's features with Vite.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
-- [SvelteKit](https://vercel.com/docs/frameworks/full-stack/sveltekit?from=related) — Learn how to use Vercel's features with SvelteKit
-- [Remix](https://vercel.com/docs/frameworks/full-stack/remix?from=related) — Learn how to use Vercel's features with Remix.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [What is the Nitro Vite plugin?](https://vercel.com/kb/guide/nitro-vite-plugin) — The Nitro Vite plugin \\(nitro/vite\\) adds SSR, API routes, and deploy-anywhere server builds to any Vite app. Learn what
+- [How to ship a Nitro app on Vercel](https://vercel.com/kb/guide/ship-a-nitro-app-on-vercel) — Deploy a Nitro app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
+- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
+- [Build with a Nitro starter template](https://vercel.com/kb/guide/build-with-a-nitro-starter-template) — Deploy a Nitro app to Vercel from a starter template. Compare the Nitro Starter, route rules, cached HTTP handler, plugi
+- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
+- [Improved support for Nuxt on Vercel](https://vercel.com/blog/nuxt-on-vercel)
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
 
 Full cross-link map for this page: [/docs/frameworks/full-stack/vite-with-nitro.graph.md](/docs/frameworks/full-stack/vite-with-nitro.graph.md)
 <!-- /docsgraph:related -->
@@ -54,28 +49,29 @@ By adding Nitro to your existing Vite project, you get:
 
 To add server capabilities to an existing Vite project, install the `nitro` package:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i nitro
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i nitro
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i nitro
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i nitro
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i nitro
+```
+
+**yarn**
+
+```bash
+yarn add nitro
+```
+
+**npm**
+
+```bash
+npm i nitro
+```
+
+**bun**
+
+```bash
+bun add nitro
+```
 
 Then add the Nitro Vite plugin to your configuration:
 
@@ -148,32 +144,33 @@ With Nitro on Vercel, you get:
 
 Nitro enables SSR for any Vite app with minimal configuration. The setup varies by UI framework.
 
-#### \['React'
+#### React
 
 1. Install the required dependencies:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i nitro react react-dom @vitejs/plugin-react
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i nitro react react-dom @vitejs/plugin-react
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i nitro react react-dom @vitejs/plugin-react
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i nitro react react-dom @vitejs/plugin-react
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i nitro react react-dom @vitejs/plugin-react
+```
+
+**yarn**
+
+```bash
+yarn add nitro react react-dom @vitejs/plugin-react
+```
+
+**npm**
+
+```bash
+npm i nitro react react-dom @vitejs/plugin-react
+```
+
+**bun**
+
+```bash
+bun add nitro react react-dom @vitejs/plugin-react
+```
 
 2. Update your Vite config to add the Nitro and React plugins:
 
@@ -265,32 +262,33 @@ export default {
 }
 ```
 
-#### 'Vue'
+#### Vue
 
 1. Install the required dependencies:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i nitro vue vue-router @vitejs/plugin-vue
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i nitro vue vue-router @vitejs/plugin-vue
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i nitro vue vue-router @vitejs/plugin-vue
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i nitro vue vue-router @vitejs/plugin-vue
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i nitro vue vue-router @vitejs/plugin-vue
+```
+
+**yarn**
+
+```bash
+yarn add nitro vue vue-router @vitejs/plugin-vue
+```
+
+**npm**
+
+```bash
+npm i nitro vue vue-router @vitejs/plugin-vue
+```
+
+**bun**
+
+```bash
+bun add nitro vue vue-router @vitejs/plugin-vue
+```
 
 2. Update your Vite config to add the Nitro and Vue plugins:
 
@@ -384,32 +382,33 @@ export default {
 }
 ```
 
-#### 'Preact'
+#### Preact
 
 1. Install the required dependencies:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i nitro preact preact-render-to-string @preact/preset-vite
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i nitro preact preact-render-to-string @preact/preset-vite
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i nitro preact preact-render-to-string @preact/preset-vite
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i nitro preact preact-render-to-string @preact/preset-vite
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i nitro preact preact-render-to-string @preact/preset-vite
+```
+
+**yarn**
+
+```bash
+yarn add nitro preact preact-render-to-string @preact/preset-vite
+```
+
+**npm**
+
+```bash
+npm i nitro preact preact-render-to-string @preact/preset-vite
+```
+
+**bun**
+
+```bash
+bun add nitro preact preact-render-to-string @preact/preset-vite
+```
 
 2. Update your Vite config to add the Nitro and Preact plugins:
 
@@ -499,32 +498,33 @@ export default {
 }
 ```
 
-#### 'Solid'
+#### Solid
 
 1. Install the required dependencies:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i nitro solid-js vite-plugin-solid
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i nitro solid-js vite-plugin-solid
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i nitro solid-js vite-plugin-solid
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i nitro solid-js vite-plugin-solid
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i nitro solid-js vite-plugin-solid
+```
+
+**yarn**
+
+```bash
+yarn add nitro solid-js vite-plugin-solid
+```
+
+**npm**
+
+```bash
+npm i nitro solid-js vite-plugin-solid
+```
+
+**bun**
+
+```bash
+bun add nitro solid-js vite-plugin-solid
+```
 
 2. Update your Vite config to add the Nitro and Solid plugins, and configure JSX for Solid:
 
@@ -621,7 +621,7 @@ function Root(props: { appHTML?: string }) {
 }
 ```
 
-#### 'HTML']
+#### HTML
 
 ### HTML SSR setup
 
@@ -629,28 +629,29 @@ For SSR without a UI framework, use an `index.html` file with an SSR outlet plac
 
 1. Install Nitro:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i nitro
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i nitro
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i nitro
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i nitro
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i nitro
+```
+
+**yarn**
+
+```bash
+yarn add nitro
+```
+
+**npm**
+
+```bash
+npm i nitro
+```
+
+**bun**
+
+```bash
+bun add nitro
+```
 
 2. Update your Vite config:
 
@@ -824,3 +825,6 @@ Learn more about deploying Vite + Nitro projects on Vercel:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

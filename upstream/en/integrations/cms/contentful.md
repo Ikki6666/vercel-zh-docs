@@ -3,7 +3,7 @@ title: Vercel and Contentful Integration
 product: vercel
 url: /docs/integrations/cms/contentful
 canonical_url: "https://vercel.com/docs/integrations/cms/contentful"
-last_updated: 2026-07-15
+last_updated: 2026-08-28
 type: tutorial
 prerequisites:
   - /docs/integrations/cms
@@ -24,16 +24,17 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Integrating Next.js and Contentful for your Headless CMS](https://vercel.com/kb/guide/integrating-next-js-and-contentful-for-your-headless-cms?from=related) — Next.js with Contentful gives you the power to quickly build scalable dynamic static websites with improved search engin
-- [Integrate Vercel and Contentstack for your Headless CMS](https://vercel.com/kb/guide/integrate-vercel-and-contentstack?from=related) — Integrate Vercel with Contentstack, a headless CMS, to build and deploy dynamic, high-performance websites.
-- [Deploy a headless BigCommerce storefront with Vercel](https://vercel.com/kb/guide/deploy-headless-bigcommerce-storefront-with-vercel?from=related) — Deploy a headless BigCommerce storefront using Catalyst and Next.js on Vercel
-- [How to use Deploy Hooks with Vercel and a Headless CMS](https://vercel.com/kb/guide/set-up-and-use-deploy-hooks-with-vercel-and-headless-cms?from=related) — Create your own Deploy Hooks to trigger automatic deployments on Vercel when using a Headless CMS.
-- [How to Deploy a Vue.js Site with Vercel](https://vercel.com/kb/guide/deploying-vuejs-to-vercel?from=related) — Create your Vue.js app and deploy it with Vercel.
-- [Sitecore](https://vercel.com/docs/integrations/cms/sitecore?from=related) — Integrate Vercel with Sitecore XM Cloud to deploy your content.
-- [Sanity](https://vercel.com/docs/integrations/cms/sanity?from=related) — Learn how to integrate Sanity with Vercel. Follow our tutorial to deploy the Sanity template or install the integration
-- [DatoCMS](https://vercel.com/docs/integrations/cms/dato-cms?from=related) — Learn how to integrate DatoCMS with Vercel. Follow our step-by-step tutorial to set up and manage your digital content s
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Edit Mode](https://vercel.com/docs/edit-mode?from=related) — Discover how Vercel's Edit Mode enhances content management for headless CMSs, enabling real-time editing, and seamless
+- [Content Link can now be used with Contentful ](https://vercel.com/changelog/content-link-can-now-be-used-with-contentful)
+- [Integrating Next.js and Contentful for your Headless CMS](https://vercel.com/kb/guide/integrating-next-js-and-contentful-for-your-headless-cms) — Next.js with Contentful gives you the power to quickly build scalable dynamic static websites with improved search engin
+- [Integrate Vercel and Contentstack for your Headless CMS](https://vercel.com/kb/guide/integrate-vercel-and-contentstack) — Integrate Vercel with Contentstack, a headless CMS, to build and deploy dynamic, high-performance websites.
+- [How to use Deploy Hooks with Vercel and a Headless CMS](https://vercel.com/kb/guide/set-up-and-use-deploy-hooks-with-vercel-and-headless-cms) — Create your own Deploy Hooks to trigger automatic deployments on Vercel when using a Headless CMS.
+- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify) — Migrate your website's configuration from Netlify to Vercel
+- [Build an integrations hub with Nuxt and Vercel Connect](https://vercel.com/kb/guide/nuxt-and-vercel-connect) — Build an Integrations Hub with Nuxt and Vercel Connect. Connect GitHub and Linear over OAuth and mint short-lived tokens
+- [Vercel and Sitecore XM Cloud Integration](https://vercel.com/docs/integrations/cms/sitecore) — Integrate Vercel with Sitecore XM Cloud to deploy your content.
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel) — Install the Vercel CLI, add the Vercel Plugin or agent skills, connect Vercel MCP, and deploy your first project.
+- [Vercel Sanity Integration](https://vercel.com/docs/integrations/cms/sanity) — Learn how to integrate Sanity with Vercel. Follow our tutorial to deploy the Sanity template or install the integration
+- [Getting Started with Chat SDK](https://vercel.com/docs/chat-sdk/quickstart) — Create a Slack bot with the Chat SDK CLI, connect it to Slack through Vercel Connect, and deploy it on Vercel.
+- [Platform Template](https://vercel.com/docs/platforms/examples/platform-template) — Build an AI app builder on Vercel with sandboxes, AI Gateway, deployments, and project transfers.
 
 Full cross-link map for this page: [/docs/integrations/cms/contentful.graph.md](/docs/integrations/cms/contentful.graph.md)
 <!-- /docsgraph:related -->
@@ -54,28 +55,23 @@ You can either deploy the template above to Vercel with one click, or use the st
 
 - ### Clone the repository
   You can clone the repo using the following command:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm create next-app --example cms-contentful
+  ```
+  **yarn**
+  ```bash
+  yarn create next-app --example cms-contentful
+  ```
+  **npm**
+  ```bash
+  npx create-next-app --example cms-contentful
+  ```
+  **bun**
+  ```bash
+  bunx create-next-app --example cms-contentful
+  ```
 
 - ### Create a Contentful Account
   Next, create a new account on [Contentful](https://contentful.com/) and make an empty "space". This is where your content lives. We also created a sample content model to help you get started quickly.
@@ -85,12 +81,12 @@ You can either deploy the template above to Vercel with one click, or use the st
 - ### Retrieve your Contentful Space ID
   The Vercel integration uses your Contentful Space ID to communicate with Contentful. To find this, navigate to your Contentful dashboard and select **Settings** > **API Keys**. Click on **Add API key** and you will see your Space ID in the next screen.
 
-  ![Image](`/docs-assets/static/docs/integrations/contentful/api-section.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/contentful/api-section.png)
 
 - ### Create a Content Management API token
   You will also need to create a Content Management API token for Vercel to communicate back and forth with the Contentful API. You can get that by going to **Settings** > **API Keys** > **Content management tokens**.
 
-  ![Image](`/docs-assets/static/docs/integrations/contentful/content-management-tokens.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/contentful/content-management-tokens.png)
 
   Click on **Generate personal token** and a modal will pop up. Give your token a name and click on **Generate**.
   > **💡 Note:** Avoid sharing this token because it allows both read and write access to your
@@ -99,28 +95,23 @@ You can either deploy the template above to Vercel with one click, or use the st
 
 - ### Import the Content Model
   Use your Space ID and Content Management Token in the command below to import the pre-made content model into your space using our setup Node.js script. You can do that by running the following command:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  npx cross-env CONTENTFUL_SPACE_ID=YOUR_SPACE_ID CONTENTFUL_MANAGEMENT_TOKEN=XXX pnpm run setup
+  ```
+  **yarn**
+  ```bash
+  npx cross-env CONTENTFUL_SPACE_ID=YOUR_SPACE_ID CONTENTFUL_MANAGEMENT_TOKEN=XXX yarn setup
+  ```
+  **npm**
+  ```bash
+  npx cross-env CONTENTFUL_SPACE_ID=YOUR_SPACE_ID CONTENTFUL_MANAGEMENT_TOKEN=XXX npm run setup
+  ```
+  **bun**
+  ```bash
+  npx cross-env CONTENTFUL_SPACE_ID=YOUR_SPACE_ID CONTENTFUL_MANAGEMENT_TOKEN=XXX bun run setup
+  ```
 
 ## Adding Content in Contentful
 
@@ -138,28 +129,23 @@ Now that you've created your space in Contentful, add some content!
 
 - ### Start your application
   You can now start your application with the following command:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm install && pnpm run dev
+  ```
+  **yarn**
+  ```bash
+  yarn && yarn dev
+  ```
+  **npm**
+  ```bash
+  npm install && npm run dev
+  ```
+  **bun**
+  ```bash
+  bun install && bun run dev
+  ```
   Your project should now be running on `http://localhost:3000`.
 
 ## How it works
@@ -196,14 +182,14 @@ Now that you have your application wired up to Contentful, you can deploy it to 
   git init
   git add .
   git commit -m "Initial commit"
-  git remote add origin
+  git remote add origin [repository url]
   git push -u origin master
   ```
 
 - ### Import your project into Vercel
   Log in to your Vercel account (or create one) and import your project into Vercel using the [import flow](https://vercel.com/new).
 
-  ![Image](`/docs-assets/static/docs/integrations/contentful/import-to-vercel.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/contentful/import-to-vercel.png)
 
   Vercel will detect that you are using Next.js and will enable the correct settings for your deployment.
 
@@ -213,15 +199,15 @@ Now that you have your application wired up to Contentful, you can deploy it to 
   CONTENTFUL_SPACE_ID='your-space-id'
   CONTENTFUL_ACCESS_TOKEN='your-content-api-token'
   ```
-  ![Image](`/docs-assets/static/docs/integrations/contentful/add-env-vars.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/contentful/add-env-vars.png)
 
   Click "Deploy" and your application will be live on Vercel!
 
-  ![Image](`/docs-assets/static/docs/integrations/contentful/deployed.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/contentful/deployed.png)
 
 ### Content Link
 
-> **🔒 Permissions Required**: Content Link
+> Content Link is available on Enterprise and Pro plans
 
 Content Link enables you to edit content on websites using headless CMSs by providing links on elements that match a content model in the CMS. This real-time content visualization allows collaborators to make changes without needing a developer's assistance.
 
@@ -233,7 +219,18 @@ You don't need any additional configuration or code changes on the page to use t
 
 To implement Content Link in your project, follow the steps in [Contentful's documentation](https://www.contentful.com/developers/docs/tools/vercel/content-source-maps-with-vercel/).
 
+## Manage Contentful content from Slack
+
+Deploy the [eve Contentful Agent template](/templates/eve/eve-contentful-agent) to search, draft, and edit Contentful entries from Slack. By default, the agent saves entry edits without publishing them and asks for approval in Slack before publication.
+
+During setup, connect a Slack app through Vercel Connect and configure a private Vercel Blob store for users' writing preferences. Provide your Contentful Management API token as `CONTENTFUL_MANAGEMENT_TOKEN` and your space IDs as `CONTENTFUL_SPACE_IDS`. After deployment, add the agent to a Slack channel and mention it to start a conversation.
+
+See the [template repository](https://github.com/vercel-labs/eve-contentful-agent-template) for setup instructions and options for customizing writing guidelines and publication approval.
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

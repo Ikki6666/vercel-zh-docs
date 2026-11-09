@@ -3,7 +3,7 @@ title: Log Drains Reference
 product: vercel
 url: /docs/drains/reference/logs
 canonical_url: "https://vercel.com/docs/drains/reference/logs"
-last_updated: 2026-07-01
+last_updated: 2026-09-11
 type: reference
 prerequisites:
   - /docs/drains
@@ -27,14 +27,16 @@ Log Drains forward logs from your deployments to external endpoints for storage 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
-- [How do I store logs on Vercel?](https://vercel.com/kb/guide/how-do-i-store-logs-on-vercel?from=related) — Learn how to store logs on Vercel.
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Audit Logs](https://vercel.com/docs/drains/reference/audit-logs?from=related) — Learn about Audit Log Drains - data formats, fields, and team activity events.
-- [Web Analytics](https://vercel.com/docs/drains/reference/analytics?from=related) — Learn about Web Analytics Drains - data formats and custom events configuration.
-- [Traces](https://vercel.com/docs/drains/reference/traces?from=related) — Learn about Trace Drains - OpenTelemetry-compliant distributed tracing data formats and configuration.
-- [Speed Insights](https://vercel.com/docs/drains/reference/speed-insights?from=related) — Learn about Speed Insights Drains - data formats and performance metrics configuration.
-- [Creates a new Integration Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-new-integration-log-drain-deprecated?from=related)
+- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
+- [Log drains now support log source selection](https://vercel.com/changelog/log-drains-now-support-log-source-selection)
+- [Log Drains are now generally available](https://vercel.com/changelog/log-drains-are-now-generally-available)
+- [Log Drains](https://vercel.com/blog/log-drains)
+- [Introducing Vercel Drains: Complete observability data, anywhere](https://vercel.com/blog/introducing-vercel-drains)
+- [Drains](https://vercel.com/docs/agent-resources/vercel-mcp/tools/drains) — Vercel MCP tools for drains.
+- [Audit Log Drains Reference](https://vercel.com/docs/drains/reference/audit-logs) — Learn about Audit Log Drains - data formats, fields, and team activity events.
+- [Trace Drains Reference](https://vercel.com/docs/drains/reference/traces) — Learn about Trace Drains - OpenTelemetry-compliant distributed tracing data formats and configuration.
+- [Web Analytics Drains Reference](https://vercel.com/docs/drains/reference/analytics) — Learn about Web Analytics Drains - data formats and custom events configuration.
+- [Drain Audit Logs to Datadog](https://vercel.com/docs/drains/audit-logs-to-datadog) — Learn how to forward Vercel Audit Log Drain events to Datadog using the Datadog Logs API.
 
 Full cross-link map for this page: [/docs/drains/reference/logs.graph.md](/docs/drains/reference/logs.graph.md)
 <!-- /docsgraph:related -->
@@ -62,30 +64,30 @@ The following table describes the possible fields that are sent via Log Drains:
 | `entrypoint`             | string | No       | Entrypoint for the request                                             | `api/index.js`                                                                                                                                                         |
 | `destination`            | string | No       | Origin of the external content                                         | `https://vitals.vercel-insights.com/v1` (only on `external` and `redirect` logs)                                                                                       |
 | `path`                   | string | No       | Function or dynamic path of the request                                | `/dynamic/[route].json`                                                                                                                                                |
-| `type`                   | string | No       | Log output type                                                        | `command`, `stdout`, `stderr`, `exit`, `deployment-state`, `delimiter`, `middleware`, `middleware-invocation`, `edge-function-invocation`, `metric`, `report`, `fatal` |
+| `type`                   | string | No       | Log output type                                                        | `command`, `stdout`, `stderr`, `exit`, `middleware`, `middleware-invocation`, `edge-function-invocation`, `report`, `fatal`                                            |
 | `statusCode`             | number | No       | HTTP status code of the request                                        | 200 (`-1` means no response returned and the lambda crashed)                                                                                                           |
 | `requestId`              | string | No       | Identifier of the request                                              | `643af4e3-975a-4cc7-9e7a-1eda11539d90`                                                                                                                                 |
 | `environment`            | enum   | No       | Deployment environment                                                 | `production` or `preview`                                                                                                                                              |
+| `customEnvironment`      | string | No       | Slug of the Custom Environment associated with the deployment         | `staging`                                                                                                                                                              |
 | `branch`                 | string | No       | Git branch name                                                        | `main`                                                                                                                                                                 |
 | `ja3Digest`              | string | No       | JA3 fingerprint digest                                                 | `769c83e5b...`                                                                                                                                                         |
 | `ja4Digest`              | string | No       | JA4 fingerprint digest                                                 | `t13d1516h2...`                                                                                                                                                        |
 | `edgeType`               | enum   | No       | Type of edge runtime                                                   | `edge-function` or `middleware`                                                                                                                                        |
 | `projectName`            | string | No       | Name of the Vercel project                                             | `my-app`                                                                                                                                                               |
+| `invocationId`           | string | No       | Unique identifier for the function invocation                          | `01JZ5PJM3Z4QXSFZJAR83CPZ0R`                                                                                                                                           |
 | `executionRegion`        | string | No       | Region where the request is executed                                   | `sfo1`                                                                                                                                                                 |
 | `traceId`                | string | No       | Trace identifier for distributed tracing                               | `1b02cd14bb8642fd092bc23f54c7ffcd`                                                                                                                                     |
 | `spanId`                 | string | No       | Span identifier for distributed tracing                                | `f24e8631bd11faa7`                                                                                                                                                     |
-| `trace.id`               | string | No       | Trace                                                                  | `1b02cd14bb8642fd092bc23f54c7ffcd`                                                                                                                                     |
-| `span.id`                | string | No       | Span                                                                   | `f24e8631bd11faa7`                                                                                                                                                     |
 | `proxy`                  | object | No       | Contains information about proxy requests                              | See proxy fields below                                                                                                                                                 |
 | `proxy.timestamp`        | number | Yes\*    | Unix timestamp when the proxy request was made                         | 1573817250172                                                                                                                                                          |
 | `proxy.method`           | string | Yes\*    | HTTP method of the request                                             | `GET`                                                                                                                                                                  |
 | `proxy.host`             | string | Yes\*    | Hostname of the request                                                | `test.vercel.app`                                                                                                                                                      |
-| `proxy.path`             | string | Yes\*    | Request path with query parameters                                     | `/dynamic/some-value.json?route=some-value`                                                                                                                            |
-| `proxy.userAgent`        | array  | Yes\*    | User agent strings of the request                                      | `["Mozilla/5.0..."]`                                                                                                                                                   |
-| `proxy.region`           | string | Yes\*    | Region where the request is processed                                  | `sfo1`                                                                                                                                                                 |
-| `proxy.referer`          | string | No       | Referer of the request                                                 | `*.vercel.app`                                                                                                                                                         |
+| `proxy.path`             | string | No       | Request path with query parameters                                     | `/dynamic/some-value.json?route=some-value`                                                                                                                            |
+| `proxy.userAgent`        | array  | No       | User agent strings of the request                                      | `["Mozilla/5.0..."]`                                                                                                                                                   |
+| `proxy.region`           | string | No       | Region where the request is processed                                  | `sfo1`                                                                                                                                                                 |
+| `proxy.referer`          | string | No       | Referer of the request                                                 | `*.vercel.app`                                                                                                                                                        |
 | `proxy.statusCode`       | number | No       | HTTP status code of the proxy request                                  | 200 (`-1` means revalidation occurred in the background)                                                                                                               |
-| `proxy.clientIp`         | string | No       | Client IP address                                                      | `120.75.16.101`                                                                                                                                                        |
+| `proxy.clientIp`         | string | No       | Client IP address                                                      | `120.75.16.101`                                                                                                                                                       |
 | `proxy.scheme`           | string | No       | Protocol of the request                                                | `https`                                                                                                                                                                |
 | `proxy.responseByteSize` | number | No       | Size of the response in bytes                                          | 1024                                                                                                                                                                   |
 | `proxy.cacheId`          | string | No       | Original request ID when request is served from cache                  | `pdx1::v8g4b-1744143786684-93dafbc0f70d`                                                                                                                               |
@@ -99,6 +101,8 @@ The following table describes the possible fields that are sent via Log Drains:
 
 \*Required when `proxy` object is present
 
+Some older Log Drains that send logs to New Relic also include `trace.id` and `span.id` on logs that have a `traceId`. These fields have the same values as `traceId` and `spanId`.
+
 ## Format
 
 Vercel supports the following formats for Log Drains. You can configure the format when [configuring the Drain destination](/docs/drains/using-drains#configure-destination):
@@ -108,8 +112,10 @@ Vercel supports the following formats for Log Drains. You can configure the form
 Vercel sends logs as JSON arrays containing log objects:
 
 ```json
-{ "id": "1573817187330377061717300000", "deploymentId": "dpl_233NRGRjVZX1caZrXWtz5g1TAksD", "source": "build", "host": "my-app-abc123.vercel.app", "timestamp": 1573817187330, "projectId": "gdufoJxB6b9b1fEqr1jUtFkyavUU", "level": "info", "message": "Build completed successfully", "buildId": "bld_cotnkcr76", "type": "stdout", "projectName": "my-app" }
-{ "id": "1573817250283254651097202070", "deploymentId": "dpl_233NRGRjVZX1caZrXWtz5g1TAksD", "source": "lambda", "host": "my-app-abc123.vercel.app", "timestamp": 1573817250283, "projectId": "gdufoJxB6b9b1fEqr1jUtFkyavUU", "level": "info", "message": "API request processed", "entrypoint": "api/index.js", "requestId": "643af4e3-975a-4cc7-9e7a-1eda11539d90", "statusCode": 200, "path": "/api/users", "executionRegion": "sfo1", "environment": "production", "traceId": "1b02cd14bb8642fd092bc23f54c7ffcd", "spanId": "f24e8631bd11faa7", "trace.id": "1b02cd14bb8642fd092bc23f54c7ffcd", "span.id": "f24e8631bd11faa7", "proxy": { "timestamp": 1573817250172, "method": "GET", "host": "my-app.vercel.app", "path": "/api/users?page=1", "userAgent": ["Mozilla/5.0..."], "referer": "https://my-app.vercel.app", "region": "sfo1", "statusCode": 200, "clientIp": "120.75.16.101", "scheme": "https", "vercelCache": "MISS" } }
+[
+  { "id": "1573817187330377061717300000", "deploymentId": "dpl_233NRGRjVZX1caZrXWtz5g1TAksD", "source": "build", "host": "my-app-abc123.vercel.app", "timestamp": 1573817187330, "projectId": "gdufoJxB6b9b1fEqr1jUtFkyavUU", "level": "info", "message": "Build completed successfully", "buildId": "bld_cotnkcr76", "type": "stdout", "projectName": "my-app" },
+  { "id": "1573817250283254651097202070", "deploymentId": "dpl_233NRGRjVZX1caZrXWtz5g1TAksD", "source": "lambda", "host": "my-app-abc123.vercel.app", "timestamp": 1573817250283, "projectId": "gdufoJxB6b9b1fEqr1jUtFkyavUU", "level": "info", "message": "API request processed", "entrypoint": "api/index.js", "requestId": "643af4e3-975a-4cc7-9e7a-1eda11539d90", "statusCode": 200, "path": "/api/users", "executionRegion": "sfo1", "environment": "production", "traceId": "1b02cd14bb8642fd092bc23f54c7ffcd", "spanId": "f24e8631bd11faa7", "proxy": { "timestamp": 1573817250172, "method": "GET", "host": "my-app.vercel.app", "path": "/api/users?page=1", "userAgent": ["Mozilla/5.0..."], "referer": "https://my-app.vercel.app", "region": "sfo1", "statusCode": 200, "clientIp": "120.75.16.101", "scheme": "https", "vercelCache": "MISS" } }
+]
 ```
 
 ### NDJSON
@@ -118,7 +124,7 @@ Vercel sends logs as newline-delimited JSON objects:
 
 ```json
 {"id": "1573817187330377061717300000","deploymentId": "dpl_233NRGRjVZX1caZrXWtz5g1TAksD","source": "build","host": "my-app-abc123.vercel.app","timestamp": 1573817187330,"projectId": "gdufoJxB6b9b1fEqr1jUtFkyavUU","level": "info","message": "Build completed successfully","buildId": "bld_cotnkcr76","type": "stdout","projectName": "my-app"}
-{"id": "1573817250283254651097202070","deploymentId": "dpl_233NRGRjVZX1caZrXWtz5g1TAksD","source": "lambda","host": "my-app-abc123.vercel.app","timestamp": 1573817250283,"projectId": "gdufoJxB6b9b1fEqr1jUtFkyavUU","level": "info","message": "API request processed","entrypoint": "api/index.js","requestId": "643af4e3-975a-4cc7-9e7a-1eda11539d90","statusCode": 200,"path": "/api/users","executionRegion": "sfo1","environment": "production","traceId": "1b02cd14bb8642fd092bc23f54c7ffcd","spanId": "f24e8631bd11faa7","trace.id": "1b02cd14bb8642fd092bc23f54c7ffcd","span.id": "f24e8631bd11faa7","proxy": {"timestamp": 1573817250172,"method": "GET","host": "my-app.vercel.app","path": "/api/users?page=1","userAgent": ["Mozilla/5.0..."],"referer": "https://my-app.vercel.app","region": "sfo1","statusCode": 200,"clientIp": "120.75.16.101","scheme": "https","vercelCache": "MISS"}}
+{"id": "1573817250283254651097202070","deploymentId": "dpl_233NRGRjVZX1caZrXWtz5g1TAksD","source": "lambda","host": "my-app-abc123.vercel.app","timestamp": 1573817250283,"projectId": "gdufoJxB6b9b1fEqr1jUtFkyavUU","level": "info","message": "API request processed","entrypoint": "api/index.js","requestId": "643af4e3-975a-4cc7-9e7a-1eda11539d90","statusCode": 200,"path": "/api/users","executionRegion": "sfo1","environment": "production","traceId": "1b02cd14bb8642fd092bc23f54c7ffcd","spanId": "f24e8631bd11faa7","proxy": {"timestamp": 1573817250172,"method": "GET","host": "my-app.vercel.app","path": "/api/users?page=1","userAgent": ["Mozilla/5.0..."],"referer": "https://my-app.vercel.app","region": "sfo1","statusCode": 200,"clientIp": "120.75.16.101","scheme": "https","vercelCache": "MISS"}}
 ```
 
 ## Log Sources
@@ -131,7 +137,7 @@ When you configure a Log Drain, select which sources to collect in **Additional 
 | `lambda`   | Output from Vercel Functions like [API Routes](/docs/functions)                                                                                                |
 | `edge`     | Output from Vercel Functions using Edge runtime                                                                                                                |
 | `build`    | Output from the [Build Step](/docs/builds/configure-a-build)                                                                                              |
-| `external` | External [rewrites](/docs/project-configuration/vercel-json#rewrites) to a different domain. Includes [cached external rewrites](/docs/routing/rewrites#caching-external-rewrites) |
+| `external` | External [rewrites](/docs/project-configuration/vercel-json#rewrites) to a different domain. Includes [cached external rewrites](/docs/routing/rewrites#caching-rewrites-to-external-origins) |
 | `firewall` | Outputs log data from requests denied by [Vercel Firewall](/docs/vercel-firewall) rules                                                                        |
 | `redirect` | Requests that are redirected by [redirect rules](/docs/project-configuration/vercel-json#redirects)                                                                        |
 
@@ -160,6 +166,41 @@ Example workflows:
 
 Rules run from top to bottom. Requests that match a rule use that rule’s sampling rate, and any other requests are dropped. If you do not add rules, the drain forwards **100%** of data to the destination.
 
+## OData filter fields
+
+Log drain filters use an [OData](https://www.odata.org/) filter expression to select which logs reach your drain. Filters support the fields below. The **Maps to** column shows which part of the [Logs Schema](#logs-schema) each field reads.
+
+| Field                    | Type    | Maps to                  | Notes                                     |
+| ------------------------ | ------- | ------------------------ | ----------------------------------------- |
+| `schema`                 | string  | Record type              | `log` for log drains.                     |
+| `project/id`             | string  | `projectId`              |                                           |
+| `deployment/environment` | string  | `environment`            |                                           |
+| `log/source`             | string  | `source`                 |                                           |
+| `log/host`               | string  | `host`                   |                                           |
+| `log/timestamp`          | number  | `timestamp`              |                                           |
+| `log/method`             | string  | `proxy.method`           |                                           |
+| `log/path`               | string  | `proxy.path`             | Includes the query string.                |
+| `log/statusCode`         | number  | `proxy.statusCode`       |                                           |
+| `log/clientIp`           | string  | `proxy.clientIp`         |                                           |
+| `log/responseSize`       | number  | `proxy.responseByteSize` |                                           |
+| `log/userAgent`          | string  | `proxy.userAgent[0]`     | The first user agent value.               |
+
+> **💡 Note:** Fields that map to the `proxy` object are undefined on logs without one, such as build logs. An undefined field evaluates as `null`: `eq`, `gt`, `ge`, `lt`, and `le` comparisons against a value do not match, but `ne` comparisons against a value and `eq null` do. Streaming function runtime logs include a `proxy` object without `statusCode` or `responseByteSize`, and edge logs have no status code. Logs from background ISR regeneration have a `proxy.statusCode` of `-1`.
+
+### Example filters
+
+```text
+log/source eq 'edge'
+log/statusCode ge 400
+contains(log/userAgent, 'Googlebot')
+endswith(log/path, '.xml')
+startswith(log/clientIp, '66.249.')
+```
+
+`log/path` includes the query string, so `endswith(log/path, '.xml')` does not match `/sitemap.xml?v=2`.
+
+Patterns passed to the `matchesPattern` function must be valid RE2-compatible regular expressions: lookarounds such as `(?=...)` are not supported, and patterns prone to catastrophic backtracking, such as nested quantifiers like `(a+){10}`, make the filter invalid.
+
 ## More resources
 
 For more information on Log Drains and how to use them, check out the following resources:
@@ -171,3 +212,6 @@ For more information on Log Drains and how to use them, check out the following 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

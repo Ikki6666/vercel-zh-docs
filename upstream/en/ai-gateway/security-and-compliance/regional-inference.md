@@ -1,31 +1,29 @@
 ---
-title: Regional Inference
+title: AI Gateway Regional Inference
 product: vercel
 url: /docs/ai-gateway/security-and-compliance/regional-inference
 canonical_url: "https://vercel.com/docs/ai-gateway/security-and-compliance/regional-inference"
-last_updated: 2026-07-25
+last_updated: 2026-09-10
 type: conceptual
 prerequisites:
   - /docs/ai-gateway/security-and-compliance
   - /docs/ai-gateway
 related:
-  - /docs/ai-gateway/security-and-compliance/zdr
   - /docs/ai-gateway/authentication-and-byok/byok
-  - /docs/ai-gateway/security-and-compliance/disallow-prompt-training
-  - /docs/ai-gateway/models-and-providers
-summary: Route AI Gateway inference to the region you choose and control where providers store data, for data residency and compliance requirements.
+  - /docs/ai-gateway/security-and-compliance/zdr
+  - /docs/rbac/access-roles/team-level-roles
+  - /docs/ai-gateway/sdks-and-apis/rest-api
+  - /docs/ai-gateway/sdks-and-apis
+summary: Route AI Gateway inference to the region you choose, team-wide or per request, and control where providers store data, for data residency and...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Regional Inference
+# AI Gateway Regional Inference
 
-AI Gateway lets you pick which region to route each request to your model's
-provider, where available. This may help with your data residency, compliance,
-and latency requirements. You choose the region per request.
-AI Gateway routes your data to the provider in a data center in that region, and
-to the extent the provider stores data, it's configured to store it there. If AI
-Gateway can't honor the chosen region, the request fails instead of silently
-running somewhere else.
+AI Gateway lets you choose the region where your model's provider runs
+inference, where the provider supports it. This may help with your data
+residency, compliance, and latency requirements. You can pin one of these
+regions, or leave inference on the default:
 
 
 <!-- docsgraph:related -->
@@ -33,22 +31,68 @@ running somewhere else.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router?from=related) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
-- [Cost-aware model routing through AI Gateway](https://vercel.com/kb/guide/cost-aware-model-routing-with-ai-gateway?from=related) — Route easy requests to a cheap model and escalate only hard ones to a frontier model through one AI Gateway endpoint, wi
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [Pricing](https://vercel.com/docs/ai-gateway/pricing?from=related) — Learn about pricing for AI Gateway.
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/advanced?from=related) — Configure provider routing, fallbacks, and restrictions using the OpenResponses API.
-- [Filtering, Ordering & Sorting](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering?from=related) — Control which providers handle your requests, in what order, and how they are ranked using order, only, and sort options
-- [vercel ai-gateway](https://vercel.com/docs/cli/ai-gateway?from=related) — Manage AI Gateway resources from the Vercel CLI: API keys, routing rules, models, and coding agent setup.
+- [Claude Opus 5.5 now available on AI Gateway](https://vercel.com/changelog/claude-opus-5-5-now-available-on-ai-gateway)
+- [Regional inference now available on AI Gateway](https://vercel.com/changelog/regional-inference-now-available-on-ai-gateway)
+- [How to control AI provider data handling with AI Gateway](https://vercel.com/kb/guide/control-ai-provider-data) — Prevent AI providers from training on your prompts, enforce zero data retention, and restrict providers and models with
+- [Vercel for Enterprise](https://vercel.com/blog/vercel-for-enterprise)
+- [AI Gateway production index](https://vercel.com/blog/ai-gateway-production-index)
+- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
 
 Full cross-link map for this page: [/docs/ai-gateway/security-and-compliance/regional-inference.graph.md](/docs/ai-gateway/security-and-compliance/regional-inference.graph.md)
 <!-- /docsgraph:related -->
+
+- 🇺🇸 **United States** (`us`): [available models](/ai-gateway/models?inferenceRegionUs=true)
+- 🇪🇺 **European Union** (`eu`): [available models](/ai-gateway/models?inferenceRegionEu=true)
+- 🇦🇺 **Australia** (`au`): [available models](/ai-gateway/models?inferenceRegionAu=true)
+- 🇯🇵 **Japan** (`jp`): [available models](/ai-gateway/models?inferenceRegionJp=true)
+- 🌐 **Any region** (`global`, the default): AI Gateway picks whichever region can serve the model
+
+AI Gateway routes your data to the provider in a data center in the region you
+choose, and to the extent the provider stores data, it's configured to store it
+there. If AI Gateway can't honor the chosen region, the request fails instead of
+silently running somewhere else. Tools that AI Gateway runs for you, such as web
+search, are an exception (see [where your data goes](#where-your-data-goes)).
+
+There are two ways to pin a region:
+
+- **Team-wide**: Pin one or more regions for the whole team from the [AI Gateway Dashboard Settings tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fsettings\&title=AI+Gateway+Settings). AI Gateway then restricts the team's requests to providers that can serve a selected region. See [team-wide region pinning](#team-wide-region-pinning).
+- **Per-request**: Set [`inferenceRegion`](#choosing-a-region-per-request) in `providerOptions` for individual requests. This gives you fine-grained control over which requests you pin and where.
+
+A per-request `inferenceRegion` takes precedence over the team-wide pin, and it
+must stay inside it: a request that asks for a region the team hasn't pinned
+fails with HTTP 400 instead of routing outside the pin. See
+[how team-wide and per-request pinning interact](#how-team-wide-and-per-request-pinning-interact).
 
 > **💡 Note:** `inferenceRegion` pins where the provider runs inference and stores your data.
 > It doesn't pin where your request reaches AI Gateway: your request can
 > terminate and be processed in any Vercel region before AI Gateway forwards it
 > to the provider. Region-pinned gateway hosts that terminate TLS and run gateway
 > processing in a single region are coming.
+
+## Pricing
+
+| Option                     | Cost                     | Availability       |
+| -------------------------- | ------------------------ | ------------------ |
+| Per-request region pinning | No additional cost       | All plans          |
+| Team-wide region pinning   | $0.10 per 1,000 requests | Pro and Enterprise |
+
+While your team has a team-wide pin, AI Gateway charges the team-wide pinning
+surcharge on every successful request from the team, including:
+
+- Requests that set their own `inferenceRegion`, because the team-wide pin still
+  checks that the region is inside it
+- Requests that use your [BYOK](/docs/ai-gateway/authentication-and-byok/byok)
+  keys
+
+AI Gateway doesn't charge it on failed requests, including a request that fails
+because it asked for a region outside the pin. On WebSocket connections, AI
+Gateway charges the surcharge once per session instead of once per response. You
+also pay the provider's rate for the region that serves the request (see
+[regional pricing](#regional-pricing)).
+
+To stop the surcharge, remove the team-wide pin: uncheck every region under
+**Region Pinning** in the [AI Gateway Dashboard Settings tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fsettings\&title=AI+Gateway+Settings),
+then click **Save**.
 
 ## What regional routing controls
 
@@ -67,7 +111,75 @@ providers store nothing for inference, and
 provider delete prompts and responses after the request (see
 [where your data goes](#where-your-data-goes)).
 
-## Choosing a region
+## Team-wide region pinning
+
+On Pro and Enterprise plans, a team can pin regions for every request it sends,
+so callers don't have to set `inferenceRegion` themselves. This is useful when
+residency is a team-level policy instead of a per-call decision. Only team
+[**Owners**](/docs/rbac/access-roles/team-level-roles) can change the pin, and
+teams on a Pro trial can't turn it on.
+
+To pin regions team-wide:
+
+1. Go to the [AI Gateway Dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=AI+Gateway).
+2. Open the [**Settings** tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fsettings\&title=AI+Gateway+Settings).
+3. Under **Region Pinning**, check the regions you want to allow.
+4. Drag the selected regions into your preference order, then click **Save**.
+5. If the team had no regions pinned before, review the surcharge in the
+   **Enable Region Pinning** dialog and click **Enable Region Pinning**.
+
+To remove the pin, uncheck every region and click **Save**. With no regions
+selected, the team is unpinned, which is the default: requests may use providers
+in any region.
+
+The order of the selected regions is the fallback priority. A provider that can
+serve more than one of your regions gets an attempt in each, in the order listed.
+By default, AI Gateway tries your
+[BYOK](/docs/ai-gateway/authentication-and-byok/byok) keys before system
+credentials, and applies the region order within each group. With `us` then `eu`
+selected, that means your keys in `us`, then your keys in `eu`, then system
+credentials in `us`, then system credentials in `eu`. Without BYOK keys, AI
+Gateway tries every provider in `us` before any provider in `eu`. Either way, if
+your first region fails, the request falls back to the next selected region
+instead of failing.
+
+Once you pin regions:
+
+- AI Gateway drops providers that can't serve any selected region from routing.
+  If no provider remains for the requested model, the request fails instead of
+  routing out of region.
+- Only models with regional endpoints work while the pin is on (see
+  [keeping a request in-region](#keeping-a-request-in-region) to find them). AI
+  Gateway doesn't have regional endpoints for image, video, speech,
+  transcription, or realtime models yet, so requests and sessions for those
+  models fail.
+- An authenticated request to
+  [`/v1/models`](https://ai-gateway.vercel.sh/v1/models) with
+  `include_availability` sets `model_eligibility.reason` to
+  `inference_region_unavailable` on models that no provider serves in a pinned
+  region, so you can check the pin's effect before sending a request. See
+  [team availability annotations](/docs/ai-gateway/sdks-and-apis/rest-api#team-availability-annotations).
+- Responses still report the region that served the request, so you can verify
+  residency the same way (see [confirming where a request ran](#confirming-where-a-request-ran)).
+
+Team-wide pinning carries a surcharge. See [pricing](#pricing).
+
+## How team-wide and per-request pinning interact
+
+A per-request `inferenceRegion` wins over the team-wide pin, within the bounds of
+the pin:
+
+| Team-wide pin | Request sets `inferenceRegion` | Result | [Surcharge](#pricing) |
+|---------------|--------------------------------|--------|-----------------------|
+| None | No | Routes globally, the default | No |
+| None | Yes | Routes to the requested region | No |
+| `us` | No | Routes to `us` | Yes |
+| `us`, `eu` | No | Tries `us`, then falls back to `eu` (see [team-wide region pinning](#team-wide-region-pinning)) | Yes |
+| `us` | `us` | Routes to `us` | Yes |
+| `us` | `eu` | Fails with HTTP 400, `eu` is outside the pin | No, the request failed |
+| `us` | `global` | Fails with HTTP 400, `global` isn't inside the pin | No, the request failed |
+
+## Choosing a region per request
 
 Set `providerOptions.gateway.inferenceRegion` on the request, and AI Gateway
 routes inference to that region:
@@ -76,6 +188,8 @@ routes inference to that region:
 |-------|-----------------------------------|
 | `{ scope: 'zone', geoRegion: 'us' }` | A US data center |
 | `{ scope: 'zone', geoRegion: 'eu' }` | An EU data center |
+| `{ scope: 'zone', geoRegion: 'au' }` | An Australian data center |
+| `{ scope: 'zone', geoRegion: 'jp' }` | A Japanese data center |
 | `{ scope: 'global' }` (or omitted) | Any region |
 
 - The default (no `inferenceRegion`) is `global`, which means AI Gateway picks
@@ -83,86 +197,26 @@ routes inference to that region:
   resolve to a different region on each request, and that region may be outside
   your users' jurisdiction. Residency is opt-in: pin a region if where inference
   runs matters to you.
-- `zone` requires `geoRegion` (`us` or `eu`). If you omit it, the request fails.
+- `zone` requires `geoRegion` (`us`, `eu`, `au`, or `jp`). If you omit it, the
+  request fails.
+- If your team has a [team-wide pin](#team-wide-region-pinning),
+  `{ scope: 'global' }` fails with HTTP 400 because it asks to route outside the
+  pin. Leave `inferenceRegion` out to route within the pin.
 - You set the region in the request body or config only. There's no HTTP header
   for it.
 
-### Using AI SDK
+These examples use AI SDK 7 and the AI SDK for Python beta. Set `AI_GATEWAY_API_KEY` before running them. See [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for setup, request fields, and response handling.
 
-Set `inferenceRegion` in `providerOptions`:
-
-#### streamText
-
-```typescript filename="inference-region.ts" {10-13}
-import type { GatewayProviderOptions } from '@ai-sdk/gateway';
-import { streamText } from 'ai';
-
-export async function POST(request: Request) {
-  const result = streamText({
-    model: 'openai/gpt-5.6-sol',
-    prompt: 'Summarize this contract clause.',
-    providerOptions: {
-      gateway: {
-        inferenceRegion: {
-          scope: 'zone',
-          geoRegion: 'us',
-        },
-      } satisfies GatewayProviderOptions,
-    },
-  });
-
-  return result.toDataStreamResponse();
-}
-```
-
-#### generateText
-
-```typescript filename="inference-region.ts" {10-13}
-import type { GatewayProviderOptions } from '@ai-sdk/gateway';
-import { generateText } from 'ai';
-
-export async function POST(request: Request) {
-  const { text } = await generateText({
-    model: 'openai/gpt-5.6-sol',
-    prompt: 'Summarize this contract clause.',
-    providerOptions: {
-      gateway: {
-        inferenceRegion: {
-          scope: 'zone',
-          geoRegion: 'us',
-        },
-      } satisfies GatewayProviderOptions,
-    },
-  });
-
-  return Response.json({ text });
-}
-```
-
-### Using the Chat Completions API
-
-Set `inferenceRegion` in `providerOptions`:
+#### AI SDK
 
 #### TypeScript
 
-```typescript filename="inference-region.ts" {20-23}
-import OpenAI from 'openai';
+```typescript filename="regional-inference.ts" {8-11}
+import { generateText } from 'ai';
 
-const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
-
-const openai = new OpenAI({
-  apiKey,
-  baseURL: 'https://ai-gateway.vercel.sh/v1',
-});
-
-const completion = await openai.chat.completions.create({
-  model: 'openai/gpt-5.6-sol',
-  messages: [
-    {
-      role: 'user',
-      content: 'Summarize this contract clause.',
-    },
-  ],
+const { text } = await generateText({
+  model: 'openai/gpt-6-astra',
+  prompt: 'Explain quantum computing in two sentences.',
   providerOptions: {
     gateway: {
       inferenceRegion: {
@@ -172,61 +226,53 @@ const completion = await openai.chat.completions.create({
     },
   },
 });
+
+console.log(text);
 ```
 
-#### Python
+#### Python (beta)
 
-```python filename="inference-region.py" {20}
-import os
-from openai import OpenAI
+```python filename="regional-inference_ai.py" {8}
+import asyncio
+import ai
 
-client = OpenAI(
-    api_key=os.getenv("AI_GATEWAY_API_KEY"),
-    base_url="https://ai-gateway.vercel.sh/v1",
-)
+async def main():
+    model = ai.get_model("openai/gpt-6-astra")
+    messages = [ai.user_message("Explain quantum computing in two sentences.")]
+    params = ai.InferenceRequestParams(
+        extra_body={"providerOptions": {"gateway": {"inferenceRegion": {"scope": "zone", "geoRegion": "us"}}}}
+    )
+    async with ai.stream(model, messages, params=params) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
 
-completion = client.chat.completions.create(
-    model="openai/gpt-5.6-sol",
-    messages=[
-        {
-            "role": "user",
-            "content": "Summarize this contract clause.",
-        }
-    ],
-    extra_body={
-        "providerOptions": {
-            "gateway": {
-                "inferenceRegion": {"scope": "zone", "geoRegion": "us"}
-            }
-        }
-    },
-)
+asyncio.run(main())
 ```
 
-### Using the Responses API
-
-Set `inferenceRegion` in `providerOptions`:
+#### Chat Completions
 
 #### TypeScript
 
-```typescript filename="inference-region.ts" {20-23}
-const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
+```typescript filename="regional-inference-chat.ts" {20-23}
+import OpenAI from 'openai';
 
-const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${apiKey}`,
-  },
-  body: JSON.stringify({
-    model: 'openai/gpt-5.6-sol',
-    input: [
-      {
-        type: 'message',
-        role: 'user',
-        content: 'Summarize this contract clause.',
-      },
-    ],
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.chat.completions.create({
+  model: 'openai/gpt-6-astra',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  // AI Gateway extension fields are not included in the upstream SDK types.
+  ...{
     providerOptions: {
       gateway: {
         inferenceRegion: {
@@ -235,104 +281,213 @@ const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
         },
       },
     },
-  }),
+  },
 });
+
+console.log(response.choices[0]?.message.content);
 ```
 
 #### Python
 
-```python filename="inference-region.py" {20}
+```python filename="regional-inference_chat.py" {12}
 import os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key=os.getenv("AI_GATEWAY_API_KEY"),
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.chat.completions.create(
+    model="openai/gpt-6-astra",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    extra_body={"providerOptions": {"gateway": {"inferenceRegion": {"scope": "zone", "geoRegion": "us"}}}},
+)
+
+print(response.choices[0].message.content)
+```
+
+#### cURL
+
+```bash filename="regional-inference-chat.sh" {14-17}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "openai/gpt-6-astra",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "providerOptions": {
+    "gateway": {
+      "inferenceRegion": {
+        "scope": "zone",
+        "geoRegion": "us"
+      }
+    }
+  }
+}'
+```
+
+#### Messages API
+
+#### TypeScript
+
+```typescript filename="regional-inference-messages.ts" {20-23}
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh',
+});
+
+const response = await client.messages.create({
+  model: 'openai/gpt-6-astra',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  max_tokens: 1024,
+  ...{
+    providerOptions: {
+      gateway: {
+        inferenceRegion: {
+          scope: 'zone',
+          geoRegion: 'us',
+        },
+      },
+    },
+  },
+});
+
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
+}
+```
+
+#### Python
+
+```python filename="regional-inference_messages.py" {13}
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh",
+)
+
+response = client.messages.create(
+    model="openai/gpt-6-astra",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    max_tokens=1024,
+    extra_body={"providerOptions": {"gateway": {"inferenceRegion": {"scope": "zone", "geoRegion": "us"}}}},
+)
+
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="regional-inference-messages.sh" {16-19}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+  "model": "openai/gpt-6-astra",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "max_tokens": 1024,
+  "providerOptions": {
+    "gateway": {
+      "inferenceRegion": {
+        "scope": "zone",
+        "geoRegion": "us"
+      }
+    }
+  }
+}'
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="regional-inference-responses.ts" {14-17}
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.responses.create({
+  model: 'openai/gpt-6-astra',
+  input: 'Explain quantum computing in two sentences.',
+  ...{
+    providerOptions: {
+      gateway: {
+        inferenceRegion: {
+          scope: 'zone',
+          geoRegion: 'us',
+        },
+      },
+    },
+  },
+});
+
+console.log(response.output_text);
+```
+
+#### Python
+
+```python filename="regional-inference_responses.py" {12}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
     base_url="https://ai-gateway.vercel.sh/v1",
 )
 
 response = client.responses.create(
-    model="openai/gpt-5.6-sol",
-    input=[
-        {
-            "role": "user",
-            "content": "Summarize this contract clause.",
-        }
-    ],
-    extra_body={
-        "providerOptions": {
-            "gateway": {
-                "inferenceRegion": {"scope": "zone", "geoRegion": "us"}
-            }
-        }
-    },
+    model="openai/gpt-6-astra",
+    input="Explain quantum computing in two sentences.",
+    extra_body={"providerOptions": {"gateway": {"inferenceRegion": {"scope": "zone", "geoRegion": "us"}}}},
 )
+
+print(response.output_text)
 ```
 
-### Using the Anthropic Messages API
+#### cURL
 
-Set `inferenceRegion` in `providerOptions`:
-
-#### TypeScript
-
-```typescript filename="inference-region.ts" {22-25}
-import Anthropic from '@anthropic-ai/sdk';
-
-const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
-
-const anthropic = new Anthropic({
-  apiKey,
-  baseURL: 'https://ai-gateway.vercel.sh',
-});
-
-const message = await anthropic.messages.create({
-  model: 'anthropic/claude-opus-5',
-  max_tokens: 1024,
-  messages: [
-    {
-      role: 'user',
-      content: 'Summarize this contract clause.',
-    },
-  ],
-  // @ts-expect-error -- providerOptions is not in the Anthropic SDK types
-  providerOptions: {
-    gateway: {
-      inferenceRegion: {
-        scope: 'zone',
-        geoRegion: 'us',
-      },
-    },
-  },
-});
-```
-
-#### Python
-
-```python filename="inference-region.py" {21}
-import os
-import anthropic
-
-client = anthropic.Anthropic(
-    api_key=os.getenv("AI_GATEWAY_API_KEY"),
-    base_url="https://ai-gateway.vercel.sh",
-)
-
-message = client.messages.create(
-    model="anthropic/claude-opus-5",
-    max_tokens=1024,
-    messages=[
-        {
-            "role": "user",
-            "content": "Summarize this contract clause.",
-        }
-    ],
-    extra_body={
-        "providerOptions": {
-            "gateway": {
-                "inferenceRegion": {"scope": "zone", "geoRegion": "us"}
-            }
-        }
-    },
-)
+```bash filename="regional-inference-responses.sh" {9-12}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "openai/gpt-6-astra",
+  "input": "Explain quantum computing in two sentences.",
+  "providerOptions": {
+    "gateway": {
+      "inferenceRegion": {
+        "scope": "zone",
+        "geoRegion": "us"
+      }
+    }
+  }
+}'
 ```
 
 ### Per-provider overrides (advanced)
@@ -341,7 +496,7 @@ Most callers set one region and stop. If more than one provider can serve a sing
 request, you can set a default plus per-provider overrides. The top-level value
 applies to every provider unless you list that provider under `providers`:
 
-```jsonc {6-7}
+```jsonc {2-9}
 {
   "inferenceRegion": {
     "scope": "zone",
@@ -364,6 +519,13 @@ AI Gateway routes your data to the provider in the region you pin. To the extent
 that provider stores your request data at rest, it's configured to store it in
 that region. Each provider's own terms set what it keeps and for how long, so
 check the provider's documentation for the specifics.
+
+Tools that AI Gateway runs for you aren't pinned. When a model calls
+[web search](/docs/ai-gateway/models-and-providers/web-search) tools such as
+Perplexity Search, Exa Search, or Parallel Search, AI Gateway calls the tool
+vendor's API wherever the vendor runs it, whether the region comes from the
+request or a team-wide pin, so search queries built from your prompt can leave
+the region.
 
 Abuse and safety monitoring is separate. Regardless of your pinned region or
 retention settings, a provider handles and retains requests it flags for abuse
@@ -388,9 +550,12 @@ Pinning a region can raise what a request costs. Providers often price regional
 inference above their default routing, and one region can cost more than another
 for the same model. The provider sets that price.
 
-AI Gateway passes the provider's regional price straight through. Choosing a
-region adds no AI Gateway markup on top of it: you pay the provider's rate for
-the region you picked.
+AI Gateway passes the provider's regional price straight through. Setting
+`inferenceRegion` on a request adds no AI Gateway markup on top of it: you pay
+the provider's rate for the region you picked.
+
+AI Gateway bills team-wide pinning separately from the provider's rate. See
+[pricing](#pricing).
 
 To see what a model charges per region, open it from the
 [model list](/ai-gateway/models) and hover the price in the **Providers** table.
@@ -416,8 +581,9 @@ absolute per-token numbers, under `pricing.regional`:
 To see what a specific request cost, check the cost reported in the response
 metadata.
 
-You only take on a region's rate when you set `inferenceRegion`. Leave it unset
-(the `global` default) to route at the provider's standard rate.
+You pay a region's rate only when the request's `inferenceRegion` or your
+team-wide pin selects that region. With neither (the `global` default), you pay
+the provider's standard rate.
 
 ## BYOK and data residency
 
@@ -460,6 +626,8 @@ Region coverage varies by model. To find models that support a region, filter th
 
 - [Models available in the US](/ai-gateway/models?inferenceRegionUs=true)
 - [Models available in the EU](/ai-gateway/models?inferenceRegionEu=true)
+- [Models available in Australia](/ai-gateway/models?inferenceRegionAu=true)
+- [Models available in Japan](/ai-gateway/models?inferenceRegionJp=true)
 
 The [`/v1/models`](https://ai-gateway.vercel.sh/v1/models) endpoint returns the
 same coverage as a `regions` array per model (for example, `["eu", "us"]`); a
@@ -479,8 +647,8 @@ network path your request takes to reach the provider.
 
 ## Confirming where a request ran
 
-Every response reports where AI Gateway actually ran inference, so you can verify
-residency instead of assuming it. The resolved region is in the gateway routing
+When you pin a region, every response reports where AI Gateway actually ran
+inference, so you can verify residency instead of assuming it. The resolved region is in the gateway routing
 metadata, on the provider attempt that served the request.
 
 With the AI SDK, read it from `providerMetadata.gateway`. On the OpenAI-compatible
@@ -513,7 +681,7 @@ endpoints, the same object sits on each choice's message as
 
 Read `inferenceEndpoint.geoRegion` (here `us`) and compare it against the region
 you asked for; `finalProvider` names the provider that served the request. When
-you don't pin a region, `inferenceEndpoint` is `null`, matching the `global`
+you don't pin a region, the attempt has no `inferenceEndpoint` field, or the field reports an endpoint with the `global` scope, matching the `global`
 default, which doesn't pin a region.
 
 ## GDPR and regional routing
@@ -524,14 +692,27 @@ the location question; it doesn't by itself make a workload GDPR-compliant.
 
 ## Current limits
 
-- The regions available today are `us` and `eu`, and not every model supports
-  both. Check a model's `regions` in the [model list](/docs/ai-gateway/models-and-providers)
+- The regions available today are `us`, `eu`, `au`, and `jp`, and not every
+  model supports all of them. Check a model's `regions` in the [model list](/docs/ai-gateway/models-and-providers)
   or from `https://ai-gateway.vercel.sh/v1/models`.
-- Region selection is opt-in; the default is `global`.
+- Region selection is opt-in; the default is `global`, both per request and
+  team-wide.
 - There's no cross-region fallback: a region that AI Gateway can't honor fails the
-  request.
+  request. Team-wide pinning falls back across the regions you selected, in order,
+  but never outside them.
+- Regional routing doesn't apply to web search tools that AI Gateway runs for
+  you (see [where your data goes](#where-your-data-goes)).
+- Image, video, speech, transcription, and realtime models don't have regional
+  endpoints yet, so they don't work with a region pinned.
+
+## Regions in virtual models
+
+Pin an inference region on a [virtual model](/docs/ai-gateway/models-and-providers/virtual-models) to route all of its system-credential traffic to that region. The virtual model's region wins over the request's. If your team has a [team-wide pin](#team-wide-region-pinning), the virtual model's region must be inside it, or requests to the virtual model fail with HTTP 400.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

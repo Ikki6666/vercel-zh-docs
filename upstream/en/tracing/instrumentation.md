@@ -3,11 +3,13 @@ title: Instrumentation
 product: vercel
 url: /docs/tracing/instrumentation
 canonical_url: "https://vercel.com/docs/tracing/instrumentation"
-last_updated: 2026-02-17
+last_updated: 2026-11-03
 type: how-to
 prerequisites:
   - /docs/tracing
 related:
+  - /docs/tracing/configure-tracing
+  - /docs/environment-variables/system-environment-variables
   - /docs/functions/runtimes/edge
   - /docs/tracing/session-tracing
   - /docs/drains/reference/traces
@@ -25,48 +27,57 @@ Observability is crucial for understanding and optimizing the behavior and perfo
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [MLflow](https://ai-sdk.dev/providers/observability/mlflow?from=related)
-- [Instrumentation](https://nextjs.org/docs/app/guides/instrumentation?from=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
-- [Instrumentation](https://nextjs.org/docs/pages/guides/instrumentation?from=related) — Learn how to use instrumentation to run code at server startup in your Next.js app
-- [OpenTelemetry](https://nextjs.org/docs/pages/guides/open-telemetry?from=related) — Learn how to instrument your Next.js app with OpenTelemetry.
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [SigNoz](https://ai-sdk.dev/providers/observability/signoz?from=related)
-- [Observability](https://eve.dev/docs/guides/instrumentation?from=related) — Trace an agent with OpenTelemetry in instrumentation.ts, read the workflow run tags eve emits, and debug discovery with
-- [instrumentation.js](https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation?from=related) — API reference for the instrumentation.js file.
-- [Langfuse](https://ai-sdk.dev/providers/observability/langfuse?from=related)
-- [Laminar](https://ai-sdk.dev/providers/observability/laminar?from=related)
-- [Always-on Tracing](https://vercel.com/docs/tracing/always-on-tracing?from=related) — Learn about always-on tracing on Vercel.
+- [MLflow](https://ai-sdk.dev/providers/observability/mlflow) — Track, visualize, and debug Vercel AI SDK traces with MLflow Tracing
+- [How to set up instrumentation](https://nextjs.org/docs/app/guides/instrumentation) — Learn how to use instrumentation to run code at server startup in your Next.js app
+- [How to set up instrumentation](https://nextjs.org/docs/pages/guides/instrumentation) — Learn how to use instrumentation to run code at server startup in your Next.js app
+- [How to instrument your Next.js app with OpenTelemetry](https://nextjs.org/docs/pages/guides/open-telemetry) — Learn how to instrument your Next.js app with OpenTelemetry.
+- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
+- [Tracing](https://workflow-sdk.dev/docs/observability/tracing) — Trace workflow execution end to end with OpenTelemetry.
+- [Instrument and trace applications with the OpenTelemetry collector](https://vercel.com/changelog/instrument-and-trace-applications-with-the-opentelemetry-collector)
+- [OpenTelemetry](https://eve.dev/docs/observability/otel) — Configure OpenTelemetry destinations, content capture, and third-party exports.
+- [@vercel/otel 1.3.0](https://vercel.com/changelog/vercel-otel-1-3-0)
+- [Native support for SvelteKit's new OpenTelemetry spans](https://vercel.com/changelog/native-support-for-sveltekits-new-opentelemetry-spans)
+- [Always-on tracing for production and preview traffic](https://vercel.com/changelog/always-on-tracing-for-production-and-preview-traffic)
+- [Instrumentation](https://eve.dev/docs/observability/instrumentation) — Configure lifecycle instrumentation, handle runtime events, and control the content each destination receives.
 
 Full cross-link map for this page: [/docs/tracing/instrumentation.graph.md](/docs/tracing/instrumentation.graph.md)
 <!-- /docsgraph:related -->
+
+## Using default tracing
+
+If your project is eligible for [default tracing](/docs/tracing/configure-tracing#default-tracing-for-new-next.js-projects), Vercel adds `@vercel/otel` at build time, so you get framework spans without following [Getting started](#getting-started).
+
+To add [custom spans](#adding-custom-spans), set up `@vercel/otel` yourself as described in [Getting started](#getting-started). Once your project has its own `instrumentation.ts` file, Vercel stops adding `@vercel/otel` and your setup takes over.
+
+Default tracing uses your project name as the service name. To keep your traces under the same service, set `serviceName` in `registerOTel` to `process.env.VERCEL_PROJECT_NAME`, the same [system environment variable](/docs/environment-variables/system-environment-variables) default tracing uses.
 
 ## Getting started
 
 To get started, install the following packages:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i @opentelemetry/api @vercel/otel
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i @opentelemetry/api @vercel/otel
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i @opentelemetry/api @vercel/otel
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i @opentelemetry/api @vercel/otel
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i @opentelemetry/api @vercel/otel
+```
+
+**yarn**
+
+```bash
+yarn add @opentelemetry/api @vercel/otel
+```
+
+**npm**
+
+```bash
+npm i @opentelemetry/api @vercel/otel
+```
+
+**bun**
+
+```bash
+bun add @opentelemetry/api @vercel/otel
+```
 
 Next, create a `instrumentation.ts` (or `.js`) file in the root directory of the project, or, on Next.js [it must be placed](https://nextjs.org/docs/app/guides/open-telemetry#using-vercelotel) in the `src` directory if you are using one. Add the following code to initialize and configure OTel using `@vercel/otel`:
 
@@ -120,17 +131,31 @@ registerOTel({ serviceName: 'your-project-name' });
 // NOTE: You can replace `your-project-name` with the actual name of your project
 ```
 
+## How OpenTelemetry affects fetch spans
+
+Vercel records fetch spans for outbound HTTP requests by default. When your `package.json` lists any of these packages, Vercel stops recording them, and your OpenTelemetry setup records them instead:
+
+- `@opentelemetry/api` 1.7 or later
+- `@vercel/otel` 1.11 or later
+- `@opentelemetry/sdk-trace-node` 1.19 or later
+
+With default tracing, the `@vercel/otel` that Vercel adds records your fetch spans.
+
+If your project lists one of these packages but never registers an OpenTelemetry SDK, such as `@vercel/otel`, your traces have no fetch spans.
+
 ## Configuring context propagation
 
 Context propagation connects operations across service boundaries so you can trace a request through your entire system. When your app calls another service, context propagation passes trace metadata (for example,trace IDs, span IDs) along with the request, typically through HTTP headers like `traceparent`. This lets OpenTelemetry link all the spans together into a single, complete trace.
 
-Without context propagation, each service generates isolated spans you can't connect. With it, you see exactly how a request flows through your infrastructure—from the initial API call through databases, queues, and external services.
+Without context propagation, each service generates isolated spans you can't connect. With it, you see exactly how a request flows through your infrastructure, from the initial API call through databases, queues, and external services.
 
 For more details on how context propagation works, see the [OpenTelemetry context propagation documentation](https://opentelemetry.io/docs/concepts/context-propagation/).
 
 ### For outgoing requests
 
 You can configure context propagation by configuring the `fetch` option in the `instrumentationConfig` option.
+
+Each entry in `propagateContextUrls`, `dontPropagateContextUrls`, and `ignoreUrls` is either a string or a regular expression. A string matches when the full request URL starts with it, so include the protocol, as in `'https://api.example.com/'`. A bare hostname such as `'api.example.com'` never matches. Use a regular expression, such as `/^https:\/\/[a-z0-9-]+\.example\.com\//`, to match several subdomains.
 
 ```ts filename="instrumentation.ts" framework=nextjs-app
 import { registerOTel } from '@vercel/otel';
@@ -140,17 +165,17 @@ export function register() {
     serviceName: `your-project-name`,
     instrumentationConfig: {
       fetch: {
-        // This URLs will have the tracing context propagated to them.
+        // These URLs will have the tracing context propagated to them.
         propagateContextUrls: [
-          'your-service-domain.com',
-          'your-database-domain.com',
+          'https://your-service-domain.com/',
+          'https://your-database-domain.com/',
         ],
-        // This URLs will not have the tracing context propagated to them.
+        // These URLs will not have the tracing context propagated to them.
         dontPropagateContextUrls: [
-          'some-third-party-service-domain.com',
+          'https://some-third-party-service-domain.com/',
         ],
-        // This URLs will be ignored and will not be traced.
-        ignoreUrls: ['my-internal-private-tool.com'],
+        // These URLs will be ignored and will not be traced.
+        ignoreUrls: ['https://my-internal-private-tool.com/'],
       },
     },
   });
@@ -166,17 +191,17 @@ export function register() {
     serviceName: `your-project-name`,
     instrumentationConfig: {
       fetch: {
-        // This URLs will have the tracing context propagated to them.
+        // These URLs will have the tracing context propagated to them.
         propagateContextUrls: [
-          'your-service-domain.com',
-          'your-database-domain.com',
+          'https://your-service-domain.com/',
+          'https://your-database-domain.com/',
         ],
-        // This URLs will not have the tracing context propagated to them.
+        // These URLs will not have the tracing context propagated to them.
         dontPropagateContextUrls: [
-          'some-third-party-service-domain.com',
+          'https://some-third-party-service-domain.com/',
         ],
-        // This URLs will be ignored and will not be traced.
-        ignoreUrls: ['my-internal-private-tool.com'],
+        // These URLs will be ignored and will not be traced.
+        ignoreUrls: ['https://my-internal-private-tool.com/'],
       },
     },
   });
@@ -192,17 +217,17 @@ export function register() {
     serviceName: `your-project-name`,
     instrumentationConfig: {
       fetch: {
-        // This URLs will have the tracing context propagated to them.
+        // These URLs will have the tracing context propagated to them.
         propagateContextUrls: [
-          'your-service-domain.com',
-          'your-database-domain.com',
+          'https://your-service-domain.com/',
+          'https://your-database-domain.com/',
         ],
-        // This URLs will not have the tracing context propagated to them.
+        // These URLs will not have the tracing context propagated to them.
         dontPropagateContextUrls: [
-          'some-third-party-service-domain.com',
+          'https://some-third-party-service-domain.com/',
         ],
-        // This URLs will be ignored and will not be traced.
-        ignoreUrls: ['my-internal-private-tool.com'],
+        // These URLs will be ignored and will not be traced.
+        ignoreUrls: ['https://my-internal-private-tool.com/'],
       },
     },
   });
@@ -218,17 +243,17 @@ export function register() {
     serviceName: `your-project-name`,
     instrumentationConfig: {
       fetch: {
-        // This URLs will have the tracing context propagated to them.
+        // These URLs will have the tracing context propagated to them.
         propagateContextUrls: [
-          'your-service-domain.com',
-          'your-database-domain.com',
+          'https://your-service-domain.com/',
+          'https://your-database-domain.com/',
         ],
-        // This URLs will not have the tracing context propagated to them.
+        // These URLs will not have the tracing context propagated to them.
         dontPropagateContextUrls: [
-          'some-third-party-service-domain.com',
+          'https://some-third-party-service-domain.com/',
         ],
-        // This URLs will be ignored and will not be traced.
-        ignoreUrls: ['my-internal-private-tool.com'],
+        // These URLs will be ignored and will not be traced.
+        ignoreUrls: ['https://my-internal-private-tool.com/'],
       },
     },
   });
@@ -243,17 +268,17 @@ registerOTel({
   serviceName: `your-project-name`,
   instrumentationConfig: {
     fetch: {
-      // This URLs will have the tracing context propagated to them.
+      // These URLs will have the tracing context propagated to them.
       propagateContextUrls: [
-        'your-service-domain.com',
-        'your-database-domain.com',
+        'https://your-service-domain.com/',
+        'https://your-database-domain.com/',
       ],
-      // This URLs will not have the tracing context propagated to them.
+      // These URLs will not have the tracing context propagated to them.
       dontPropagateContextUrls: [
-        'some-third-party-service-domain.com',
+        'https://some-third-party-service-domain.com/',
       ],
-      // This URLs will be ignored and will not be traced.
-      ignoreUrls: ['my-internal-private-tool.com'],
+      // These URLs will be ignored and will not be traced.
+      ignoreUrls: ['https://my-internal-private-tool.com/'],
     },
   },
 });
@@ -267,17 +292,17 @@ registerOTel({
   serviceName: `your-project-name`,
   instrumentationConfig: {
     fetch: {
-      // This URLs will have the tracing context propagated to them.
+      // These URLs will have the tracing context propagated to them.
       propagateContextUrls: [
-        'your-service-domain.com',
-        'your-database-domain.com',
+        'https://your-service-domain.com/',
+        'https://your-database-domain.com/',
       ],
-      // This URLs will not have the tracing context propagated to them.
+      // These URLs will not have the tracing context propagated to them.
       dontPropagateContextUrls: [
-        'some-third-party-service-domain.com',
+        'https://some-third-party-service-domain.com/',
       ],
-      // This URLs will be ignored and will not be traced.
-      ignoreUrls: ['my-internal-private-tool.com'],
+      // These URLs will be ignored and will not be traced.
+      ignoreUrls: ['https://my-internal-private-tool.com/'],
     },
   },
 });
@@ -336,9 +361,9 @@ This ensures consistency in distributed systems: if an upstream service marks a 
 
 ## Adding custom spans
 
-After installing `@vercel/otel`, you can add custom spans to your traces to capture additional visibility into your application. Custom spans let you track specific operations that matter to your business logic, such as processing payments, generating reports, or transforming data, so you can measure their performance and debug issues more effectively.
+Custom spans track operations that matter to your business logic, such as processing payments, generating reports, or transforming data. To add them, first set up `@vercel/otel` as described in [Getting started](#getting-started), even if your project uses [default tracing](#using-default-tracing).
 
-Use the `@opentelemetry/api` package to instrument specific operations:
+Then use the `@opentelemetry/api` package to start a span and end it when the operation finishes:
 
 ```ts filename="custom-span.ts" {3, 6, 9-11, 13}
 import { trace } from '@opentelemetry/api';
@@ -372,3 +397,6 @@ For the full list of configuration options, see the [@vercel/otel documentation]
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

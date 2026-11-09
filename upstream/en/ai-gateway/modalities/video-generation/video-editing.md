@@ -1,10 +1,10 @@
 ---
-title: Video Editing
+title: AI Gateway Video Editing
 product: vercel
 url: /docs/ai-gateway/modalities/video-generation/video-editing
 canonical_url: "https://vercel.com/docs/ai-gateway/modalities/video-generation/video-editing"
-last_updated: 2026-07-24
-type: conceptual
+last_updated: 2026-09-08
+type: how-to
 prerequisites:
   - /docs/ai-gateway/modalities/video-generation
   - /docs/ai-gateway/modalities
@@ -14,7 +14,7 @@ summary: Edit existing videos using text prompts with Grok Imagine Video through
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Video Editing
+# AI Gateway Video Editing
 
 Edit existing videos using text prompts. Describe the changes you want and the model modifies the video accordingly.
 
@@ -24,13 +24,13 @@ Edit existing videos using text prompts. Describe the changes you want and the m
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation?from=related) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
-- [Video Generation](https://ai-sdk.dev/docs/ai-sdk-core/video-generation?from=related)
-- [Video Extension](https://vercel.com/docs/ai-gateway/modalities/video-generation/video-extension?from=related) — Extend existing videos from their last frame with Grok Imagine Video through AI Gateway.
-- [Video / Async Video](https://vercel.com/docs/ai-gateway/getting-started/video?from=related) — Generate videos from text prompts, images, or video input using AI Gateway, either over a single request or as a backgro
-- [Motion Control](https://vercel.com/docs/ai-gateway/modalities/video-generation/motion-control?from=related) — Transfer motion from a reference video to a character image using KlingAI through AI Gateway.
-- [Text-to-Video](https://vercel.com/docs/ai-gateway/modalities/video-generation/text-to-video?from=related) — Generate videos from text prompts using Google Veo, KlingAI, Wan, Grok Imagine Video, or ByteDance Seedance through AI G
-- [Reference-to-Video](https://vercel.com/docs/ai-gateway/modalities/video-generation/reference-to-video?from=related) — Generate videos featuring characters from reference images or videos using Google Veo, KlingAI, Wan, Seedance, or Grok I
+- [Grok Imagine Video on AI Gateway](https://vercel.com/changelog/grok-imagine-video-on-ai-gateway)
+- [Grok Imagine Video 1.5 Lite on AI Gateway](https://vercel.com/changelog/grok-imagine-video-1-5-lite-on-ai-gateway)
+- [Video Generation with AI Gateway](https://vercel.com/blog/video-generation-with-ai-gateway)
+- [Grok Imagine Video 1.5 on AI Gateway](https://vercel.com/changelog/grok-imagine-video-1-5-on-ai-gateway)
+- [AI Gateway now supports asynchronous video generation](https://vercel.com/changelog/ai-gateway-now-supports-asynchronous-video-generation)
+- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
+- [Veo video models on AI Gateway](https://vercel.com/changelog/veo-video-models-on-ai-gateway)
 
 Full cross-link map for this page: [/docs/ai-gateway/modalities/video-generation/video-editing.graph.md](/docs/ai-gateway/modalities/video-generation/video-editing.graph.md)
 <!-- /docsgraph:related -->
@@ -41,7 +41,7 @@ Every model here also runs as a background job instead of one long-lived request
 
 Grok Imagine Video (by SpaceXAI) can edit existing videos using text prompts. Provide a source video URL and describe the desired edits.
 
-[Browse the latest Grok video models](/ai-gateway/models?capabilities=video-generation\&providers=xai) on the AI Gateway Models page.
+[Browse the latest Grok video models](/ai-gateway/models?capabilities=video-generation\&providers=spacexai) on the AI Gateway Models page.
 
 > **💡 Note:** Video editing output matches the input video's aspect ratio and resolution,
 > capped at 720p. A 1080p input will be downsized to 720p. The `duration`,
@@ -49,12 +49,12 @@ Grok Imagine Video (by SpaceXAI) can edit existing videos using text prompts. Pr
 
 ### Grok parameters
 
-| Parameter                            | Type     | Required | Description                                          |
-| ------------------------------------ | -------- | -------- | ---------------------------------------------------- |
-| `prompt`                             | `string` | Yes      | Description of the edits to apply to the video       |
-| `providerOptions.xai.videoUrl`       | `string` | Yes      | URL of the source video to edit                      |
-| `providerOptions.xai.pollIntervalMs` | `number` | No       | How often to check task status. Defaults to `5000`   |
-| `providerOptions.xai.pollTimeoutMs`  | `number` | No       | Maximum wait time. Defaults to `600000` (10 minutes) |
+| Parameter                                 | Type     | Required | Description                                          |
+| ----------------------------------------- | -------- | -------- | ---------------------------------------------------- |
+| `prompt`                                  | `string` | Yes      | Description of the edits to apply to the video       |
+| `providerOptions.xai.videoUrl`            | `string` | Yes      | URL of the source video to edit                      |
+| `providerOptions.xai.pollIntervalMs`      | `number` | No       | How often to check task status. Defaults to `5000`   |
+| `providerOptions.xai.pollTimeoutMs`       | `number` | No       | Maximum wait time. Defaults to `600000` (10 minutes) |
 
 ### Grok example
 
@@ -63,7 +63,7 @@ import { experimental_generateVideo as generateVideo } from 'ai';
 import fs from 'node:fs';
 
 const result = await generateVideo({
-  model: 'xai/grok-imagine-video',
+  model: 'spacexai/grok-imagine-video',
   prompt: 'Give the person sunglasses and a hat',
   providerOptions: {
     xai: {
@@ -86,7 +86,7 @@ Pass a `webhook` factory and the SDK registers your URL with the job instead of 
 
 ```typescript filename="async-video-editing.ts"
 const result = await generateVideo({
-  model: gateway.videoModel('xai/grok-imagine-video'),
+  model: 'spacexai/grok-imagine-video',
   prompt: 'Give the person sunglasses and a hat',
   providerOptions: {
     xai: {
@@ -112,3 +112,6 @@ The start request AI Gateway persists is capped at 300 KiB, so pass your source 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

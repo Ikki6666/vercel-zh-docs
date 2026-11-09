@@ -1,0 +1,99 @@
+---
+title: OpenCode
+product: vercel
+url: /docs/sandbox/ecosystem/opencode
+canonical_url: "https://vercel.com/docs/sandbox/ecosystem/opencode"
+last_updated: 2018-10-20
+type: conceptual
+prerequisites:
+  - /docs/sandbox/ecosystem
+  - /docs/sandbox
+related:
+  - /docs/sandbox/cli-reference
+  - /docs/ai-gateway
+  - /docs/sandbox/concepts/firewall
+summary: Run OpenCode in Vercel Sandbox from your terminal, or use the plugin for sandbox-backed tools and remote workspaces.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+---
+
+# OpenCode
+
+Use [OpenCode](https://opencode.ai) with Vercel Sandbox through the
+[Sandbox CLI](/docs/sandbox/cli-reference#run-a-coding-agent) or the
+[OpenCode plugin](https://github.com/vercel-labs/opencode-vercel-sandbox).
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Running OpenCode securely with the Vercel Sandbox](https://vercel.com/kb/guide/running-opencode-securely-with-the-vercel-sandbox) — Run OpenCode in an isolated Vercel Sandbox MicroVM with controlled egress, using the SDK to restrict network access so t
+- [Vercel Sandbox vs CodeSandbox](https://vercel.com/kb/guide/vercel-sandbox-vs-codesandbox) — A detailed guide to Vercel Sandbox vs CodeSandbox: compute isolation, credential brokering, Active CPU billing, Docker s
+- [Run untrusted code with Vercel Sandbox, now generally available](https://vercel.com/blog/vercel-sandbox-is-now-generally-available)
+- [Safely running AI generated code in your Next.js application](https://vercel.com/kb/guide/running-ai-generated-code-sandbox) — How to execute untrusted, AI‑generated code from a Next.js app using Vercel Sandbox, an isolated, ephemeral environment.
+- [OpenCode with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/opencode) — Connect OpenCode to AI Gateway with one CLI command, or configure it in-app.
+- [OpenAI SDK](https://vercel.com/docs/sandbox/ecosystem/openai-sdk) — Use OpenAI function calling with AI Gateway to execute model-generated code in an isolated Vercel Sandbox.
+- [vercel sandbox](https://vercel.com/docs/cli/sandbox) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
+
+Full cross-link map for this page: [/docs/sandbox/ecosystem/opencode.graph.md](/docs/sandbox/ecosystem/opencode.graph.md)
+<!-- /docsgraph:related -->
+
+## Choose how to run OpenCode
+
+| Option | What runs in the sandbox | How you start |
+| --- | --- | --- |
+| Sandbox CLI | The whole OpenCode session | Run `sandbox create opencode` in your terminal, before entering OpenCode |
+| Plugin: automatic tools | Supported shell and file tools; OpenCode and model authentication stay local | Configure automatic mode, then use OpenCode normally. The first supported tool call creates the sandbox automatically |
+| Plugin: remote workspace | The OpenCode server and agent tools | Inside OpenCode, enter `/warp` and select **Vercel Sandbox** |
+
+### Start from your terminal
+
+Use the CLI shortcut to run the whole OpenCode session remotely without
+installing the plugin. Your local project files aren't uploaded automatically.
+See [Run a coding agent](/docs/sandbox/cli-reference#run-a-coding-agent)
+for CLI installation, authentication, and reconnecting or stopping the sandbox.
+
+### Use the plugin
+
+Follow the
+[plugin setup guide](https://github.com/vercel-labs/opencode-vercel-sandbox#readme)
+for installation and supported OpenCode versions. Choose one mode per OpenCode instance.
+
+#### Automatic tools
+
+Use OpenCode normally, with supported shell and file tools running in the sandbox.
+
+- **Review changes:** Ask the agent to run `gitSync`. It waits for changes to return and shows a separate local Git branch to review. Your current branch and working files stay unchanged.
+- **Stop:** Ask the agent to run `sandboxStop` to sync changes and stop compute.
+
+#### Remote workspace
+
+Remote workspaces require an [AI Gateway](/docs/ai-gateway) API key.
+OAuth and subscription logins aren't supported. Follow the
+[workspace guide](https://github.com/vercel-labs/opencode-vercel-sandbox/blob/main/docs/workspace.md)
+to connect the key locally and set `remoteConfig.model` to one
+`vercel/<provider>/<model>` model.
+
+Inside OpenCode, enter `/warp` and select **Vercel Sandbox**. Changes don't
+automatically sync back to your laptop. Use the workspace guide to export
+changes and stop the sandbox.
+
+> **💡 Note:** The plugin keeps your AI Gateway key outside the sandbox. Sandbox
+> [credential brokering](/docs/sandbox/concepts/firewall#credentials-brokering)
+> adds it to requests for your configured model. Code in the sandbox can still
+> make billable model requests.
+
+#### Files and cleanup
+
+- Both modes upload committed files and Git history. Uncommitted changes and untracked files stay local. Check your Git history for secrets before starting.
+- Exiting OpenCode doesn't stop the sandbox. Stop it explicitly when finished. Retained storage remains billable after compute stops.
+- When upgrading from a version that copied credentials, create a fresh workspace. Upgrading doesn't remove credentials from existing sandboxes or snapshots.
+
+
+---
+
+[View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

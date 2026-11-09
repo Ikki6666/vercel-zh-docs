@@ -1,21 +1,24 @@
 ---
-title: Model Fallbacks
+title: AI Gateway Model Fallbacks
 product: vercel
 url: /docs/ai-gateway/models-and-providers/model-fallbacks
 canonical_url: "https://vercel.com/docs/ai-gateway/models-and-providers/model-fallbacks"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-10-02
+type: reference
 prerequisites:
   - /docs/ai-gateway/models-and-providers
   - /docs/ai-gateway
 related:
-  - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced
+  - /docs/ai-gateway/models-and-providers/decision-fallbacks
+  - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway/models-and-providers/provider-options
-summary: Configure model-level failover to try backup models when the primary model is unavailable
+  - /docs/ai-gateway/observability-and-spend/logs
+  - /docs/ai-gateway/models-and-providers/provider-filtering-and-ordering
+summary: Configure AI Gateway model fallbacks to try backup models when the primary model is unavailable. Set fallback order and combine it with provider...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Model Fallbacks
+# AI Gateway Model Fallbacks
 
 You can configure model failover to specify backups that are tried in order if the primary model fails or is unavailable.
 
@@ -25,17 +28,15 @@ You can configure model failover to specify backups that are tried in order if t
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel?from=related) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
-- [Cost-aware model routing through AI Gateway](https://vercel.com/kb/guide/cost-aware-model-routing-with-ai-gateway?from=related) — Route easy requests to a cheap model and escalate only hard ones to a frontier model through one AI Gateway endpoint, wi
-- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router?from=related) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
-- [Provider & Model Management](https://ai-sdk.dev/docs/ai-sdk-core/provider-management?from=related)
-- [Cloudflare AI Gateway](https://ai-sdk.dev/providers/community-providers/cloudflare-ai-gateway?from=related)
-- [Provider Options](https://ai-sdk.dev/docs/foundations/provider-options?from=related)
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/advanced?from=related) — Configure provider routing, fallbacks, and restrictions using the OpenResponses API.
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced?from=related) — Configure provider options, model fallbacks, BYOK credentials, and prompt caching.
-- [Provider Timeouts](https://vercel.com/docs/ai-gateway/models-and-providers/provider-timeouts?from=related) — Configure per-provider timeouts for fast failover when a provider is slow to respond.
-- [Filtering, Ordering & Sorting](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering?from=related) — Control which providers handle your requests, in what order, and how they are ranked using order, only, and sort options
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced?from=related) — Advanced Anthropic API features including web search, provider timeouts, and automatic caching.
+- [Model fallbacks now available in Vercel AI Gateway](https://vercel.com/changelog/model-fallbacks-now-available-in-vercel-ai-gateway)
+- [ Routing rules now available on AI Gateway](https://vercel.com/changelog/ai-gateway-routing-rules)
+- [Claude Fable 5.1 now available on AI Gateway](https://vercel.com/changelog/claude-fable-5-1-now-available-on-ai-gateway)
+- [Claude Fable 5 access restored on AI Gateway](https://vercel.com/changelog/claude-fable-5-access-restored-on-ai-gateway)
+- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
+- [How to build a Shopify MCP agent on Vercel](https://vercel.com/kb/guide/build-a-shopify-mcp-agent-on-vercel) — Build a Shopify MCP agent on Vercel with AI SDK 7. Connect to Shopify's UCP MCP servers, update carts safely, and hand t
+- [AI Gateway adds confidence-based decision fallbacks](https://vercel.com/changelog/confidence-based-decision-fallbacks)
+- [AI SDK for Python with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 400+ models.
+- [Chat SDK with AI Gateway](https://vercel.com/docs/chat-sdk/integrations/ai-gateway) — Stream AI Gateway model responses into Chat SDK conversations with AI SDK and message history.
 
 Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/model-fallbacks.graph.md](/docs/ai-gateway/models-and-providers/model-fallbacks.graph.md)
 <!-- /docsgraph:related -->
@@ -44,80 +45,221 @@ Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/model-
 
 Add a `models` array to `providerOptions.gateway` to list fallback models. The same option works across every AI Gateway API format. Select your API below:
 
+String entries on this page react to execution failure. On a decision request, a string entry can also name a language model, which answers through structured output. Decision requests can also add one conditional object that reacts to a successful but uncertain result. AI Gateway rejects a conditional object with a `400` error on any other request type, and when the conditional object names the primary model itself. See [Decision Fallbacks](/docs/ai-gateway/models-and-providers/decision-fallbacks) for confidence, Boolean probability, compound conditions, and full-request reruns.
+
+These examples use AI SDK 7 and the AI SDK for Python beta. Set `AI_GATEWAY_API_KEY` before running them. See [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for setup, request fields, and response handling.
+
 #### AI SDK
 
-```typescript filename="app/api/chat/route.ts" {11}
-import { streamText } from 'ai';
+#### TypeScript
 
-export async function POST(request: Request) {
-  const { prompt } = await request.json();
+See the [AI SDK model-fallback reference](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway#model-fallbacks-example) for SDK configuration and usage.
 
-  const result = streamText({
-    model: 'anthropic/claude-fable-5', // Primary model
-    prompt,
-    providerOptions: {
-      gateway: {
-        models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'], // Fallback models
-      },
+```typescript filename="model-fallbacks.ts" {8}
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: 'anthropic/claude-fable-5',
+  prompt: 'Write a haiku about TypeScript.',
+  providerOptions: {
+    gateway: {
+      models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'],
     },
-  });
+  },
+});
 
-  return result.toUIMessageStreamResponse();
-}
+console.log(text);
+```
+
+#### Python (beta)
+
+```python filename="model-fallbacks_ai.py" {8}
+import asyncio
+import ai
+
+async def main():
+    model = ai.get_model("anthropic/claude-fable-5")
+    messages = [ai.user_message("Write a haiku about TypeScript.")]
+    params = ai.InferenceRequestParams(
+        extra_body={"providerOptions": {"gateway": {"models": ["anthropic/claude-opus-5", "google/gemini-3.1-pro-preview"]}}}
+    )
+    async with ai.stream(model, messages, params=params) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
+
+asyncio.run(main())
 ```
 
 #### Chat Completions
 
-```typescript filename="chat-completions.ts" {14}
+#### TypeScript
+
+```typescript filename="model-fallbacks-chat.ts" {20}
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
+const client = new OpenAI({
   apiKey: process.env.AI_GATEWAY_API_KEY,
   baseURL: 'https://ai-gateway.vercel.sh/v1',
 });
 
-const completion = await openai.chat.completions.create({
-  model: 'anthropic/claude-fable-5', // Primary model
-  messages: [{ role: 'user', content: 'Write a haiku about TypeScript.' }],
-  // @ts-expect-error - providerOptions is a gateway extension
-  providerOptions: {
-    gateway: {
-      models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'], // Fallback models
+const response = await client.chat.completions.create({
+  model: 'anthropic/claude-fable-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Write a haiku about TypeScript.',
+    },
+  ],
+  // AI Gateway extension fields are not included in the upstream SDK types.
+  ...{
+    providerOptions: {
+      gateway: {
+        models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'],
+      },
     },
   },
 });
 
-console.log('Model used:', completion.model);
+console.log(response.choices[0]?.message.content);
+```
+
+#### Python
+
+```python filename="model-fallbacks_chat.py" {12}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.chat.completions.create(
+    model="anthropic/claude-fable-5",
+    messages=[{"role": "user", "content": "Write a haiku about TypeScript."}],
+    extra_body={"providerOptions": {"gateway": {"models": ["anthropic/claude-opus-5", "google/gemini-3.1-pro-preview"]}}},
+)
+
+print(response.choices[0].message.content)
+```
+
+#### cURL
+
+```bash filename="model-fallbacks-chat.sh" {14-17}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-fable-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Write a haiku about TypeScript."
+    }
+  ],
+  "providerOptions": {
+    "gateway": {
+      "models": [
+        "anthropic/claude-opus-5",
+        "google/gemini-3.1-pro-preview"
+      ]
+    }
+  }
+}'
 ```
 
 #### Messages API
 
-```typescript filename="messages.ts" {15}
+#### TypeScript
+
+```typescript filename="model-fallbacks-messages.ts" {20}
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic({
+const client = new Anthropic({
   apiKey: process.env.AI_GATEWAY_API_KEY,
   baseURL: 'https://ai-gateway.vercel.sh',
 });
 
-const message = await anthropic.messages.create({
-  model: 'anthropic/claude-fable-5', // Primary model
+const response = await client.messages.create({
+  model: 'anthropic/claude-fable-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Write a haiku about TypeScript.',
+    },
+  ],
   max_tokens: 1024,
-  messages: [{ role: 'user', content: 'Write a haiku about TypeScript.' }],
-  // @ts-expect-error - providerOptions is a gateway extension
-  providerOptions: {
-    gateway: {
-      models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'], // Fallback models
+  ...{
+    providerOptions: {
+      gateway: {
+        models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'],
+      },
     },
   },
 });
 
-console.log('Model used:', message.model);
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
+}
 ```
 
-#### OpenAI Responses
+#### Python
 
-```typescript filename="responses.ts" {14}
+```python filename="model-fallbacks_messages.py" {13}
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh",
+)
+
+response = client.messages.create(
+    model="anthropic/claude-fable-5",
+    messages=[{"role": "user", "content": "Write a haiku about TypeScript."}],
+    max_tokens=1024,
+    extra_body={"providerOptions": {"gateway": {"models": ["anthropic/claude-opus-5", "google/gemini-3.1-pro-preview"]}}},
+)
+
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="model-fallbacks-messages.sh" {16-19}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+  "model": "anthropic/claude-fable-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Write a haiku about TypeScript."
+    }
+  ],
+  "max_tokens": 1024,
+  "providerOptions": {
+    "gateway": {
+      "models": [
+        "anthropic/claude-opus-5",
+        "google/gemini-3.1-pro-preview"
+      ]
+    }
+  }
+}'
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="model-fallbacks-responses.ts" {14}
 import OpenAI from 'openai';
 
 const client = new OpenAI({
@@ -126,73 +268,72 @@ const client = new OpenAI({
 });
 
 const response = await client.responses.create({
-  model: 'anthropic/claude-fable-5', // Primary model
+  model: 'anthropic/claude-fable-5',
   input: 'Write a haiku about TypeScript.',
-  // @ts-expect-error - providerOptions is a gateway extension
-  providerOptions: {
-    gateway: {
-      models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'], // Fallback models
-    },
-  },
-});
-
-console.log('Model used:', response.model);
-```
-
-#### OpenResponses
-
-```typescript filename="openresponses.ts" {18}
-const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${process.env.AI_GATEWAY_API_KEY}`,
-  },
-  body: JSON.stringify({
-    model: 'anthropic/claude-fable-5', // Primary model
-    input: [
-      {
-        type: 'message',
-        role: 'user',
-        content: 'Write a haiku about TypeScript.',
-      },
-    ],
+  ...{
     providerOptions: {
       gateway: {
-        models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'], // Fallback models
+        models: ['anthropic/claude-opus-5', 'google/gemini-3.1-pro-preview'],
       },
     },
-  }),
+  },
 });
+
+console.log(response.output_text);
 ```
 
-In each example:
+#### Python
 
-- The gateway first attempts the primary model (`anthropic/claude-fable-5`)
-- If that fails, it tries `anthropic/claude-opus-5`
-- If that also fails, it tries `google/gemini-3.1-pro-preview`
-- The response comes from the first model that succeeds
+```python filename="model-fallbacks_responses.py" {12}
+import os
+from openai import OpenAI
 
-> **💡 Note:** Because the `providerOptions.gateway` fields aren't part of the OpenAI or
-> Anthropic SDK types, TypeScript needs a `// @ts-expect-error` comment above the
-> option. In Python, pass the same object through the SDK's `extra_body`
-> parameter. The Chat Completions API also accepts a top-level `models` shorthand.
-> See [Chat Completions advanced
-> configuration](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced#model-fallbacks)
-> for Python examples and both approaches.
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.responses.create(
+    model="anthropic/claude-fable-5",
+    input="Write a haiku about TypeScript.",
+    extra_body={"providerOptions": {"gateway": {"models": ["anthropic/claude-opus-5", "google/gemini-3.1-pro-preview"]}}},
+)
+
+print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="model-fallbacks-responses.sh" {9-12}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-fable-5",
+  "input": "Write a haiku about TypeScript.",
+  "providerOptions": {
+    "gateway": {
+      "models": [
+        "anthropic/claude-opus-5",
+        "google/gemini-3.1-pro-preview"
+      ]
+    }
+  }
+}'
+```
 
 ## Combining with provider routing
 
 You can use `models` together with `order` to control both model failover and provider preference:
 
-```typescript filename="app/api/chat/route.ts" {12}
+```typescript filename="app/api/chat/route.ts" {11-12}
 import { streamText } from 'ai';
 
 export async function POST(request: Request) {
   const { prompt } = await request.json();
 
   const result = streamText({
-    model: 'openai/gpt-5.6-sol',
+    model: 'openai/gpt-6-astra',
     prompt,
     providerOptions: {
       gateway: {
@@ -208,7 +349,7 @@ export async function POST(request: Request) {
 
 This configuration:
 
-1. Tries `openai/gpt-5.6-sol` via Azure, then OpenAI
+1. Tries `openai/gpt-6-astra` via Azure, then OpenAI
 2. If both fail, tries `openai/gpt-5.4-nano` via Azure first, then OpenAI
 3. If those fail, it tries `anthropic/claude-opus-5` via available providers
 
@@ -225,52 +366,49 @@ When processing a request with model fallbacks:
 
 ### Example provider metadata with model fallbacks
 
-When model fallbacks occur, the `modelAttempts` array in the provider metadata shows each model that was tried. Each attempt carries two identifiers: `canonicalSlug` is AI Gateway's normalized model name (always `creator/model-name`), while `modelId` is the provider's own internal ID for that model on that provider (`provider:model`). These look similar but are not the same — the same `canonicalSlug` can be tried via several providers, each reporting its own `modelId`. Failed models include error details in their `providerAttempts`, while the successful model includes its provider attempt details:
+The Python beta can omit routing details from its normalized message metadata. To confirm which model served a request, inspect the raw AI Gateway response or the [request logs](/docs/ai-gateway/observability-and-spend/logs).
+
+When model fallbacks occur, the `modelAttempts` array in the provider metadata shows each model that was tried. Each attempt identifies its model by `canonicalSlug`, which is AI Gateway's normalized model name (always `creator/model-name`). AI Gateway can try the same `canonicalSlug` through several providers, and each entry in `providerAttempts` names its provider in the `provider` field. Failed models include error details in their `providerAttempts`, while the successful model includes its provider attempt details:
 
 ```json
 "modelAttempts": [
   {
-    "modelId": "vertex:gemini-3.1-pro-preview",
     "canonicalSlug": "google/gemini-3.1-pro-preview",
     "success": false,
     "providerAttemptCount": 2,
     "providerAttempts": [
       {
-        "attemptNumber": 1,
         "provider": "vertex",
-        "modelId": "vertex:gemini-3.1-pro-preview",
-        "success": false,
         "credentialType": "system",
-        "responseTimeMs": 15679.64,
-        "error": "Internal error encountered.",
-        "statusCode": 500
+        "success": false,
+        "error": "Service temporarily unavailable",
+        "startTime": 1754639042520,
+        "endTime": 1754639058200,
+        "statusCode": 503
       },
       {
-        "attemptNumber": 2,
         "provider": "google",
-        "modelId": "google:gemini-3.1-pro-preview",
-        "success": false,
         "credentialType": "system",
-        "responseTimeMs": 284.30,
-        "error": "Internal error encountered.",
-        "statusCode": 500
+        "success": false,
+        "error": "Service temporarily unavailable",
+        "startTime": 1754639058200,
+        "endTime": 1754639058484,
+        "statusCode": 503
       }
     ]
   },
   {
-    "modelId": "anthropic:claude-opus-4-8",
     "canonicalSlug": "anthropic/claude-opus-5",
     "success": true,
     "providerAttemptCount": 1,
     "providerAttempts": [
       {
-        "attemptNumber": 1,
         "provider": "anthropic",
-        "modelId": "anthropic:claude-opus-4-8",
-        "success": true,
         "credentialType": "system",
+        "success": true,
+        "startTime": 1754639058484,
+        "endTime": 1754639063006,
         "statusCode": 200,
-        "responseTimeMs": 4521.78,
         "providerResponseId": "msg_01ABCDEFGhJKLmnOpQrStUv"
       }
     ]
@@ -280,9 +418,16 @@ When model fallbacks occur, the `modelAttempts` array in the provider metadata s
 
 > **💡 Note:** Failover happens automatically. To see which model and provider served your
 > request, check the [provider
-> metadata](/docs/ai-gateway/models-and-providers/provider-options#example-provider-metadata-output).
+> metadata](/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering#provider-metadata-output).
+
+## Fallbacks in virtual models
+
+A [virtual model](/docs/ai-gateway/models-and-providers/virtual-models) carries its own fallback chain, which replaces the request's `models` list when set. A decision virtual model can store one [conditional decision fallback](/docs/ai-gateway/models-and-providers/decision-fallbacks#store-the-fallback-policy-in-a-virtual-model). A `vmc/<slug>` can also be a string or conditional destination in a request's fallback list, and each entry resolves independently.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

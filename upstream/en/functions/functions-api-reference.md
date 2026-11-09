@@ -3,7 +3,7 @@ title: Functions API Reference
 product: vercel
 url: /docs/functions/functions-api-reference
 canonical_url: "https://vercel.com/docs/functions/functions-api-reference"
-last_updated: 2026-08-03
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/functions
@@ -21,36 +21,36 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > For \["nextjs-app"]:
 
+Functions are defined similar to a [Route Handler](https://nextjs.org/docs/app/api-reference/file-conventions/route) in Next.js. When using Next.js App Router, you can define a function in a file under `app/api/my-route/route.ts` in your project. Vercel will deploy any file under `app/api/` as a function.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Stopping Streams](https://ai-sdk.dev/docs/advanced/stopping-streams?from=related)
-- [Vercel Deployment Guide](https://ai-sdk.dev/docs/advanced/vercel-deployment-guide?from=related)
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [How can I use geolocation IP headers?](https://vercel.com/kb/guide/geo-ip-headers-geolocation-vercel-functions?from=related) — Learn how to read geolocation headers on Vercel with Next.js or any frontend framework.
-- [Can I use SMTP with Vercel?](https://vercel.com/kb/guide/serverless-functions-and-smtp?from=related) — Vercel Functions can open SMTP connections on the Node.js runtime. Learn which ports are open, why you must await the se
-- [Streaming](https://workflow-sdk.dev/docs/foundations/streaming?from=related) — Stream real-time data to clients without waiting for workflow completion.
-- [Hosting your API on Vercel](https://vercel.com/kb/guide/hosting-backend-apis?from=related) — Learn how to build and scale performant APIs on Vercel.
-- [AWS](https://vercel.com/docs/oidc/aws?from=related) — Learn how to configure your AWS account to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\).
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
-- [Advanced Configuration](https://vercel.com/docs/functions/configuring-functions/advanced-configuration?from=related) — Learn how to add utility files to the /api directory, and bundle Vercel Functions.
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
-- [API](https://vercel.com/docs/routing-middleware/api?from=related) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
+- [Stopping Streams](https://ai-sdk.dev/docs/advanced/stopping-streams) — Learn how to cancel streams with the AI SDK
+- [Vercel Deployment Guide](https://ai-sdk.dev/docs/advanced/vercel-deployment-guide) — Learn how to deploy an AI application to production on Vercel
+- [Node.js Vercel Functions now support fetch web handlers](https://vercel.com/changelog/node-js-vercel-functions-now-support-fetch-web-handlers)
+- [Node.js Vercel Functions now support per-path request cancellation ](https://vercel.com/changelog/node-js-vercel-functions-now-support-per-path-request-cancellation)
+- [Node.js Vercel Functions now support request cancellation](https://vercel.com/changelog/node-js-vercel-functions-now-support-request-cancellation)
+- [Vercel Functions now support graceful shutdown](https://vercel.com/changelog/vercel-functions-now-support-graceful-shutdown)
+- [waitUntil is now available for Vercel Functions](https://vercel.com/changelog/waituntil-is-now-available-for-vercel-functions)
+- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
+- [Streaming](https://workflow-sdk.dev/docs/foundations/streaming) — Stream data to clients in real time without waiting for workflow completion.
+- [Enhancing security of backend connectivity with OpenID Connect](https://vercel.com/blog/enhancing-security-of-backend-connectivity-with-openid-connect)
+- [Death to long-lived static credentials](https://vercel.com/blog/death-to-long-lived-static-credentials)
+- [Connect to Amazon Web Services \\(AWS\\)](https://vercel.com/docs/oidc/aws) — Learn how to configure your AWS account to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\).
 
 Full cross-link map for this page: [/docs/functions/functions-api-reference.graph.md](/docs/functions/functions-api-reference.graph.md)
 <!-- /docsgraph:related -->
-
-Functions are defined similar to a [Route Handler](https://nextjs.org/docs/app/api-reference/file-conventions/route) in Next.js. When using Next.js App Router, you can define a function in a file under  in your project. Vercel will deploy any file under `app/api/` as a function.
 
 > For \["nextjs"]:
 
 While you can define a function with a traditional [Next.js API Route](https://nextjs.org/docs/pages/building-your-application/routing/api-routes), they do not support streaming responses. To stream responses in Next.js, you must use [Route Handlers in the App Router](https://nextjs.org/docs/app/api-reference/file-conventions/route "Route Handlers"), even if the rest of your app uses the Pages Router. This will not alter the behavior of your application.
 
 You can create an `app` directory at the same level as your `pages` directory.
-Then, define your function in .
+Then, define your function in `app/api/{example}/route.ts`.
 
 > For \["other"]:
 
@@ -66,6 +66,9 @@ Vercel Functions use a Web Handler, which consists of the `request` parameter th
 | `context` |  Deprecated, use [`@vercel/functions`](/docs/functions/functions-api-reference/vercel-functions-package#waituntil) instead | N/A                                                                            | [`{ waitUntil }`](/docs/functions/functions-api-reference/vercel-functions-package#waituntil) |
 
 > For \['nextjs']:
+
+> **💡 Note:** To stream responses you must use Route Handlers in the App Router, even if the
+> rest of your app uses the Pages Router.
 
 ```ts v0="build" filename="app/api/hello/route.ts" framework=nextjs
 export function GET(request: Request) {
@@ -108,6 +111,12 @@ export function GET(request) {
 The above shows how you can use a [Route Handlers in the App Router](https://nextjs.org/docs/app/api-reference/file-conventions/route "Route Handlers") in your Pages app and is advantageous because it allows you to use a common signature, web standards, and stream responses.
 
 > For \["other"]:
+
+> **💡 Note:** If you're not using a framework, you must either add
+> `"type": "module"` to your
+> `package.json` or change your JavaScript Functions'
+> file extensions from `.js` to
+> `.mjs`
 
 ### `fetch` Web Standard
 
@@ -242,6 +251,61 @@ async function abortPendingTask() {
 
 ## `config` object
 
+> **💡 Note:** When you are creating a function with Next.js Pages, you use a `config` object
+> to set certain configurations. However, if you're using functions with the App
+> Router as we recommend (i.e. it's located in
+> `app/api/[function-name]/route.ts` ), you must make configurations with a
+> Route Segment Config. An example of each is shown below.
+
+> For \["nextjs"]:
+
+```ts filename="pages/api/hello.ts" framework=all
+// config object
+
+export const config = {
+  runtime: 'nodejs',
+  maxDuration: 15,
+};
+```
+
+```js filename="pages/api/hello.js" framework=all
+// config object
+
+export const config = {
+  runtime: 'nodejs',
+  maxDuration: 15,
+};
+```
+
+```ts filename="app/api/example/route.ts" framework=all
+// segment options
+
+export const runtime = 'nodejs';
+export const maxDuration = 15;
+```
+
+```js filename="app/api/example/route.js" framework=all
+// segment options
+
+export const maxDuration = 15;
+```
+
+> For \["other"]:
+
+```ts filename="api/config-object.ts" framework=all
+export const config = {
+  runtime: 'nodejs',
+  maxDuration: 15,
+};
+```
+
+```js filename="api/config-object.js" framework=all
+export const config = {
+  runtime: 'nodejs',
+  maxDuration: 15,
+};
+```
+
 ### `config` properties
 
 The table below shows a highlight of the valid config options. For detailed information on all the config options, see the [Configuring Functions](/docs/functions/configuring-functions) docs.
@@ -249,7 +313,7 @@ The table below shows a highlight of the valid config options. For detailed info
 | Property                                                        | Type     | Description                                                                                                                                                                                                                          |
 | --------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [`runtime`](/docs/functions/configuring-functions/runtime)      | `string` | This optional property defines the runtime to use, and if not set the runtime will default to `nodejs`. Starting in Next.js 16.3, setting `runtime` to `edge` is no longer supported.                                                |
-| [`regions`](/docs/functions/configuring-functions/region)       | `string` | This optional property can be used to specify the [region](/docs/regions#region-list) in which your function should execute.                                                                                                         |
+| [`regions`](/docs/functions/configuring-functions/region)       | `string[]` | This optional property can be used to specify the [region](/docs/regions#region-list) in which your function should execute.                                                                                                         |
 | [`maxDuration`](/docs/functions/configuring-functions/duration) | `int`    | This optional property can be used to specify the maximum duration in seconds that your function can run for.                                                                                                                        |
 
 > For \["nextjs-app"]:
@@ -263,7 +327,7 @@ export const runtime = 'nodejs';
 export const maxDuration = 15;
 ```
 
-```js filename="app/api/example/route.ts" framework=all
+```js filename="app/api/example/route.js" framework=all
 export const maxDuration = 15;
 ```
 
@@ -349,3 +413,6 @@ See the [`@vercel/oidc-aws-credentials-provider`](/docs/functions/functions-api-
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

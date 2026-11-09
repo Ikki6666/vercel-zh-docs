@@ -3,23 +3,23 @@ title: Vercel Container Registry
 product: vercel
 url: /docs/container-registry
 canonical_url: "https://vercel.com/docs/container-registry"
-last_updated: 2026-08-03
+last_updated: 2026-09-04
 type: how-to
 prerequisites:
   []
 related:
   - /docs/functions/container-images
   - /docs/sandbox/concepts/images
+  - /docs/daemons
   - /docs/cli
   - /docs/container-registry/public-and-shared-repositories
-  - /docs/container-registry/cli-reference
-summary: Store and manage Docker container images on Vercel. Push images built from a Dockerfile, then run them on Vercel Functions or in Vercel Sandbox.
+summary: Store and manage Docker container images on Vercel. Build and push images with the Vercel CLI, then run them on Vercel Functions or in Vercel Sandbox.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Vercel Container Registry
 
-Vercel Container Registry (VCR) is a Docker-compatible container registry built into Vercel. Store the images you build from a Dockerfile or Containerfile, then run them on [Vercel Functions](/docs/functions/container-images) or use them as custom [Vercel Sandbox](/docs/sandbox/concepts/images) images.
+Vercel Container Registry (VCR) is a Docker-compatible container registry built into Vercel. Store the images you build from a Dockerfile or Containerfile, then run them on [Vercel Functions](/docs/functions/container-images) or use them as custom [Vercel Sandbox](/docs/sandbox/concepts/images) images. When you deploy [Daemons](/docs/daemons), Vercel pushes each daemon's image to a repository named `daemon.<name>`.
 
 
 <!-- docsgraph:related -->
@@ -27,16 +27,18 @@ Vercel Container Registry (VCR) is a Docker-compatible container registry built 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to use Vercel Container Registry](https://vercel.com/kb/guide/how-to-use-vercel-container-registry?from=related) — Push, store, and pull OCI container images with Vercel Container Registry, then deploy them to Vercel Functions and Verc
-- [Deploy Go apps on Vercel using Docker](https://vercel.com/kb/guide/deploy-go-using-docker-vercel?from=related) — Deploy an existing Dockerized Go app to Vercel using Memos as a real-world example, with Neon Postgres for durable data.
-- [Deploy a Node.js Fastify app on Vercel with Docker](https://vercel.com/kb/guide/deploy-nodejs-on-vercel-with-docker?from=related) — Build a Node.js application with Fastify and Docker, then deploy it to Vercel Functions. Learn how to configure environm
-- [Deploy PHP on Vercel with Docker](https://vercel.com/kb/guide/deploy-php-on-vercel-with-docker?from=related) — Build a PHP application with FrankenPHP and Docker, then deploy it to Vercel Functions with managed configuration, stora
-- [Deploy Rust on Vercel with Docker](https://vercel.com/kb/guide/deploy-rust-on-vercel-with-docker?from=related) — Build a Rust application with Axum and Docker, then deploy it to Vercel Functions. Learn how to configure environment va
-- [vercel vcr](https://vercel.com/docs/cli/vcr?from=related) — Manage Vercel Container Registry from the Vercel CLI: list, inspect, create, and delete repositories, browse tags, and m
-- [Create a repository](https://vercel.com/docs/rest-api/vcr/create-a-repository?from=related)
-- [List repository images](https://vercel.com/docs/rest-api/vcr/list-repository-images?from=related)
-- [Products](https://vercel.com/docs/products?from=related) — Explore all Vercel products and capabilities.
-- [Sandbox](https://vercel.com/docs/sandbox?from=related) — Vercel Sandbox allows you to run arbitrary code in isolated, ephemeral Linux VMs.
+- [How to migrate from GHCR to Vercel Container Registry](https://vercel.com/kb/guide/migrate-ghcr-to-vcr) — Migrate container images from GitHub Container Registry \\(GHCR\\) to Vercel Container Registry \\(VCR\\), including authent
+- [Manage Vercel Container Registry with Vercel CLI](https://vercel.com/changelog/manage-vercel-container-registry-with-vercel-cli)
+- [Introducing VCR: Vercel Container Registry](https://vercel.com/changelog/introducing-vcr-vercel-container-registry)
+- [Bring your Dockerfile to Vercel Functions](https://vercel.com/changelog/bring-your-dockerfile-to-vercel-functions)
+- [Share Vercel Container Registry repositories across teams](https://vercel.com/changelog/share-vercel-container-registry-repositories-across-teams)
+- [Push images to Vercel Container Registry from GitHub Actions](https://vercel.com/changelog/vcr-login-github-action)
+- [Deploy Go apps on Vercel using Docker](https://vercel.com/kb/guide/deploy-go-using-docker-vercel) — Deploy an existing Dockerized Go app to Vercel using Memos as a real-world example, with Neon Postgres for durable data.
+- [Deploy a Node.js Fastify app on Vercel with Docker](https://vercel.com/kb/guide/deploy-nodejs-on-vercel-with-docker) — Build a Node.js application with Fastify and Docker, then deploy it to Vercel Functions. Learn how to configure environm
+- [Running Docker on Vercel](https://vercel.com/kb/guide/docker) — Run Docker on Vercel for HTTP apps and background workers, store images in Vercel Container Registry, and test container
+- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
+- [Backends on Vercel: Python, containers, and Daemons](https://vercel.com/blog/backends-on-vercel-python-containers-and-daemons)
+- [vercel vcr](https://vercel.com/docs/cli/vcr) — Manage Vercel Container Registry from the Vercel CLI: build and push images, manage repositories, tags, and images, and
 
 Full cross-link map for this page: [/docs/container-registry.graph.md](/docs/container-registry.graph.md)
 <!-- /docsgraph:related -->
@@ -135,11 +137,13 @@ Pushing creates a repository automatically. To create an empty one from your pro
 2. Click **Create Repository**.
 3. Enter a repository name, such as `my-repository`.
 
-You can also run `vercel vcr add my-repository`.
+You can also run `vercel vcr create my-repository`.
 
 ## Use your container tool directly
 
 If you'd rather not use `vercel vcr build` and `vercel vcr push`, authenticate and push with your container tool yourself. You still need the team slug and project name for the image reference, and the account you authenticate with still needs access to that project.
+
+To push from a GitHub Actions workflow, use the prebuilt Vercel login action instead. It authenticates with OIDC, so there are no long-lived tokens to manage. See [Push Images from GitHub Actions](/docs/container-registry/github-actions).
 
 ### Authenticate with a Vercel token
 
@@ -178,6 +182,53 @@ docker build \
 docker push vcr.vercel.com/team-slug/project-name/my-repository:latest
 ```
 
+## Verify an image before you use it
+
+After you push, confirm that VCR has the image you expect before you deploy it or start sandboxes from it.
+
+1. Pull the image back with the same platform you built for, and compare the digest Docker prints with the digest from your push:
+
+   ```bash filename="terminal"
+   docker pull --platform linux/amd64 \
+     vcr.vercel.com/team-slug/project-name/my-repository:latest
+   ```
+
+   You can also compare tags and digests in your project's **Images** tab.
+
+2. If you'll use the image in [Vercel Sandbox](/docs/sandbox/concepts/images), wait until the repository details page shows **Ready**. VCR prepares an optimized `linux/amd64` build after each push, and Sandbox can't use the image until that finishes. An **Unoptimized** status means the image isn't `linux/amd64`, so rebuild it with `--platform linux/amd64`.
+
+3. Start a short-lived sandbox from the image and run a command that the image includes. This example uses the [Sandbox SDK](/docs/sandbox/sdk-reference) with credentials from `vercel env pull`:
+
+   ```js filename="sandbox-check.mjs"
+   import { Sandbox } from '@vercel/sandbox';
+
+   const sandbox = await Sandbox.create({
+     image: 'my-repository:latest',
+     persistent: false,
+   });
+
+   try {
+     const result = await sandbox.runCommand('pwd');
+     console.log(await result.stdout());
+   } finally {
+     await sandbox.stop();
+   }
+   ```
+
+   Run it with `node --env-file=.env.local sandbox-check.mjs`. The command prints the image's working directory, which is the Dockerfile's `WORKDIR` or `/`. Sandbox doesn't run the image's `ENTRYPOINT` or `CMD`, so start processes with `sandbox.runCommand()`. If `Sandbox.create()` returns `image_not_ready`, wait for **Ready** and try again.
+
+## Tag and pin images
+
+Give each production build a unique tag, such as its commit SHA, and don't reuse that tag for a different build. A tag such as `latest` can point to a new image after any push, so use it only for local iteration.
+
+When you need the exact image contents, reference the image by digest instead of by tag. A digest identifies one specific image and never changes:
+
+```txt
+vcr.vercel.com/team-slug/project-name/my-repository@sha256:<digest>
+```
+
+Sandbox accepts the same [digest references](/docs/sandbox/concepts/images#image-references), such as `my-repository@sha256:<digest>`.
+
 ## Manage repositories from the CLI
 
 Use the `vercel vcr` command group in the [Vercel CLI](/docs/cli) to list, inspect, create, and delete repositories, to manage their tags and images, and to manage repository sharing. For all commands, subcommands, and options, see the [Container Registry CLI Reference](/docs/container-registry/cli-reference).
@@ -200,3 +251,6 @@ Use the `vercel vcr` command group in the [Vercel CLI](/docs/cli) to list, inspe
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

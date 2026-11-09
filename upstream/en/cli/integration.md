@@ -3,13 +3,15 @@ title: vercel integration
 product: vercel
 url: /docs/cli/integration
 canonical_url: "https://vercel.com/docs/cli/integration"
-last_updated: 2026-06-12
+last_updated: 2026-09-17
 type: reference
 prerequisites:
   - /docs/cli
 related:
   - /docs/integrations
+  - /docs/integrations/create-integration/submit-integration
   - /docs/cli/project
+  - /docs/cli/global-options
 summary: Learn how to manage marketplace native integrations, provision resources, manage individual resources, and discover available products using the...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -24,13 +26,18 @@ The `vercel integration` command manages [marketplace integrations](/docs/integr
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to deploy a Shopify App to Vercel](https://vercel.com/kb/guide/deploy-shopify-app-to-vercel?from=related) — Deploy the official Shopify CLI React Router app template to Vercel with the @vercel/react-router preset and Postgres se
-- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
-- [vercel install](https://vercel.com/docs/cli/install?from=related) — Learn how to install marketplace native integrations and provision resources with the vercel install CLI command.
-- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related) — Learn how you can add a product to your Vercel project through a native integration.
-- [Requirements for listing an Integration](https://vercel.com/docs/integrations/create-integration/submit-integration?from=related) — Learn about all the requirements and guidelines needed when creating your Integration.
-- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
-- [Marketplace Partner API](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/partner?from=related) — Learn about marketplace partner api on Vercel.
+- [Build and deploy Shopify storefronts on Vercel](https://vercel.com/changelog/build-and-deploy-shopify-storefronts-on-vercel)
+- [Native Marketplace integrations now support custom environments](https://vercel.com/changelog/custom-environments-support-for-marketplace-integrations)
+- [Mem0 joins the Vercel Marketplace](https://vercel.com/changelog/mem0-joins-the-vercel-marketplace)
+- [Vercel CLI for Marketplace integrations optimized for agents](https://vercel.com/changelog/vercel-cli-for-marketplace-integrations-optimized-for-agents)
+- [Marketplace integrations now install provider skills](https://vercel.com/changelog/vercel-marketplace-agent-skills)
+- [Building Ecommerce Sites with Next.js and Shopify](https://vercel.com/kb/guide/building-ecommerce-sites-with-next-js-and-shopify) — Learn how to integrate Next.js and Shopify together for the fastest storefronts using the Storefront GraphQL API.
+- [How to deploy a Shopify App to Vercel](https://vercel.com/kb/guide/deploy-shopify-app-to-vercel) — Deploy the official Shopify CLI React Router app template to Vercel with the @vercel/react-router preset and Postgres se
+- [Migrate a Python API from Heroku to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-heroku-to-vercel) — Move a FastAPI, Flask, or Django API from Heroku to Vercel Functions. Replace your Procfile, worker dynos, Heroku Schedu
+- [Migrate a Python API from Render to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-render-to-vercel) — Move a FastAPI, Flask, or Django API from Render to Vercel Functions. Translate render.yaml and replace persistent disks
+- [How to deploy a Python backend with Vercel Services ](https://vercel.com/kb/guide/python-backend-on-vercel) — Deploy a Python backend with a Next.js frontend on Vercel. Learn how to configure both apps with Vercel Services, use a
+- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration) — Learn how you can add a product to your Vercel project through a native integration.
+- [Storage on Vercel Marketplace](https://vercel.com/docs/marketplace-storage) — Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data,
 
 Full cross-link map for this page: [/docs/cli/integration.graph.md](/docs/cli/integration.graph.md)
 <!-- /docsgraph:related -->
@@ -48,15 +55,17 @@ It supports the following subcommands:
 - [`open`](#vercel-integration-open): Open a provider's dashboard via SSO
 - [`update`](#vercel-integration-update): Update a marketplace integration installation
 - [`remove`](#vercel-integration-remove): Uninstall an integration
-- [`resource`](#vercel-integration-resource): Manage individual resources (connect, disconnect, remove, create-threshold, claim)
+- [`resource`](#vercel-integration-resource): Manage individual resources (connect, disconnect, delete, create-threshold, claim, inspect)
+
+For the `<integration-name>` in commands below, use the integration's [URL slug](/docs/integrations/create-integration/submit-integration#url-slug). You can find the slug in the Marketplace URL. For example, for `https://vercel.com/marketplace/neon`, the slug is `neon`. You can also browse available integrations with the [`integration discover`](/docs/cli/integration#vercel-integration-discover) command.
 
 ## vercel integration add
 
 This command provisions a new resource from a marketplace integration. If the integration isn't installed on your team yet, it installs it first.
 
-Also available as `vercel install` (alias: `vercel i`).
+Also available as `vercel install`.
 
-In a terminal, this command prompts for choices like billing plan and metadata. You can provide options as flags to reduce prompts. In non-interactive environments (CI pipelines, scripted usage), provide required options via flags. The command detects non-interactive terminals and skips interactive prompts.
+In a terminal, this command prompts for choices like which product to provision and whether to accept the integration's terms. You can provide options as flags to reduce prompts. In non-interactive environments (CI pipelines, scripted usage), provide required options via flags. The command detects non-interactive terminals and skips interactive prompts.
 
 ```bash filename="terminal"
 vercel integration add <integration-name>
@@ -77,24 +86,29 @@ vercel integration add <integration>/<product>
 
 ### Options
 
-| Option              | Shorthand | Description                                                                                                                                                                                                                                                   |
-| ------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--name`            | `-n`      | Custom name for the resource. Auto-generated if not provided.                                                                                                                                                                                                 |
-| `--metadata`        | `-m`      | Metadata as `KEY=VALUE`. Can be repeated for multiple keys.                                                                                                                                                                                                   |
-| `--plan`            | `-p`      | Billing plan ID to use for the resource.                                                                                                                                                                                                                      |
-| `--environment`     | `-e`      | Environments to connect: `production`, `preview`, `development`. Can be repeated. Defaults to all three.                                                                                                                                                      |
-| `--prefix`          |           | Prefix for environment variable names. The prefix is used as-is, so include a trailing underscore if you want a separator (e.g., `--prefix NEON2_` creates `NEON2_DATABASE_URL`). Must start with a letter and contain only letters, digits, and underscores. |
-| `--format`          | `-F`      | Output format. Use `json` for machine-readable output.                                                                                                                                                                                                        |
-| `--no-connect`      |           | Skip connecting the resource to the current project. Also skips env pull.                                                                                                                                                                                     |
-| `--no-env-pull`     |           | Skip running `vercel env pull` after provisioning.                                                                                                                                                                                                            |
-| `--installation-id` |           | Installation ID to use when multiple installations exist for the same integration.                                                                                                                                                                            |
-| `--claim`           |           | If the new resource is a sandbox, claim it immediately after provisioning without prompting. Mutually exclusive with `--no-claim`.                                                                                                                          |
-| `--no-claim`        |           | If the new resource is a sandbox, skip the offer to claim it and instead print a hint about how to claim it later. Mutually exclusive with `--claim`.                                                                                                       |
+| Option                  | Shorthand | Description                                                                                                                                                                                                                                                                                               |
+| ----------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--name`                |           | Custom name for the resource. Auto-generated if not provided.                                                                                                                                                                                                                                             |
+| `--meta`                |           | Metadata as `KEY=VALUE`. Can be repeated for multiple keys.                                                                                                                                                                                                                                               |
+| `--billing-plan`        |           | Billing plan ID to use for the resource.                                                                                                                                                                                                                                                                  |
+| `--environment`         | `-e`      | Environments to connect. Accepts `production`, `preview`, `development`, or a Custom Environment slug or ID from the linked project. Can be repeated. Defaults to all three built-in environments.                                                                                                        |
+| `--prefix`              |           | Prefix for environment variable names. The prefix is used as-is, so include a trailing underscore if you want a separator (e.g., `--prefix NEON2_` creates `NEON2_DATABASE_URL`). Must start with a letter and contain only letters, digits, and underscores.                                             |
+| `--json`                |           | Output as JSON.                                                                                                                                                                                                                                                                                           |
+| `--no-connect`          |           | Skip connecting the resource to the current project. Also skips env pull.                                                                                                                                                                                                                                 |
+| `--no-env-pull`         |           | Skip running `vercel env pull` after provisioning.                                                                                                                                                                                                                                                        |
+| `--installation`        |           | Installation ID to use when multiple installations exist for the same integration.                                                                                                                                                                                                                        |
+| `--claim`, `--no-claim` |           | Whether to claim the new resource when it is a sandbox. `--claim` claims it immediately after provisioning without prompting. `--no-claim` skips the offer to claim it and prints a hint about how to claim it later. If you pass neither and run the command in a terminal without `--json`, it asks whether to claim it. |
 
-> **💡 Note:** Passing both `--claim` and `--no-claim` exits with code 1 and the error
+> **💡 Note:** Passing both `--claim` and `--no-claim` exits with code 2 and the error
 > `Cannot use both --claim and --no-claim.`. In non-interactive environments,
 > if you provision a sandbox resource without `--claim` or `--no-claim`, the
 > command prints a hint pointing to [`claim`](#vercel-integration-resource-claim) instead of prompting.
+
+> **💡 Note:** Custom Environment slugs and IDs must belong to the linked project. If you
+> pass a slug, the CLI resolves the slug to the environment's stable ID before
+> sending the connection request. If you omit `--environment`, the command connects
+> `production`, `preview`, and `development`. The default does not include
+> Custom Environments.
 
 ### Post-provisioning behavior
 
@@ -117,15 +131,18 @@ vercel integration add acme/acme-redis
 vercel integration add neon --name my-database
 
 # Provision with metadata options
-vercel integration add neon --metadata region=us-east-1
-vercel integration add neon -m region=us-east-1 -m version=16
+vercel integration add neon --meta region=us-east-1
+vercel integration add neon --meta region=us-east-1 --meta version=16
 
 # Provision with a specific billing plan
-vercel integration add neon --plan pro
+vercel integration add neon --billing-plan pro
 
 # Connect to specific environments only
 vercel integration add neon --environment production
 vercel integration add neon -e production -e preview
+
+# Connect to a Custom Environment in the linked project
+vercel integration add neon --environment staging
 
 # Provision without connecting to the current project
 vercel integration add neon --no-connect
@@ -147,7 +164,7 @@ vercel integration add neon --help
 
 This command accepts a marketplace integration's legal terms and installs the integration on the current team without provisioning a product resource. Use this when you only need the team-level installation; `add` installs the integration and provisions a resource in one step.
 
-This command requires an interactive terminal and human confirmation. It does not replace integrations that require a browser flow or device attestation.
+This command requires an interactive terminal and human confirmation. For the `neon` integration only, you can pass `--yes` to accept the terms without the confirmation prompt. This command does not replace integrations that require a browser flow or device attestation.
 
 ```bash filename="terminal"
 vercel integration accept-terms <integration>
@@ -163,9 +180,10 @@ vercel integration accept-terms <integration>
 
 ### Options
 
-| Option     | Shorthand | Description                                            |
-| ---------- | --------- | ------------------------------------------------------ |
-| `--format` | `-F`      | Output format. Use `json` for machine-readable output. |
+| Option   | Shorthand | Description                                                                                |
+| -------- | --------- | ------------------------------------------------------------------------------------------ |
+| `--yes`  | `-y`      | Accept the terms without a confirmation prompt. Only supported for the `neon` integration. |
+| `--json` |           | Output as JSON.                                                                            |
 
 ### Examples
 
@@ -173,8 +191,11 @@ vercel integration accept-terms <integration>
 # Accept terms interactively and install on the team
 vercel integration accept-terms neon
 
+# Accept terms without a prompt (neon only)
+vercel integration accept-terms neon --yes
+
 # Output result as JSON
-vercel integration accept-terms neon --format=json
+vercel integration accept-terms neon --json
 ```
 
 ## vercel integration list
@@ -191,21 +212,21 @@ vercel integration list [project]
 
 The output includes the name, status, product, integration, and connected projects for each resource. Unclaimed sandbox marketplace resources are marked with a yellow `[SANDBOX]` tag in the **Status** column. When the listing contains one or more sandbox resources, a hint below the table shows how many can be claimed and points to [`claim`](#vercel-integration-resource-claim).
 
-When you pass `--format=json`, each sandbox resource includes a `claim_status: "sandbox"` field. The field is omitted for non-sandbox resources.
+When you pass `--json`, each sandbox resource includes a `claim_status: "sandbox"` field. The field is omitted for non-sandbox resources.
 
 ### Arguments
 
-| Argument  | Required | Description                                                                                                                                              |
-| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `project` | No       | Project name to filter resources by, for example `my-app` (the name shown in the dashboard and `vercel project ls`). Uses the linked project if omitted. |
+| Argument  | Required | Description                                                                                                                                                |
+| --------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project` | No       | Project name to filter resources by, for example `my-app` (the name shown in the dashboard and `vercel project list`). Uses the linked project if omitted. |
 
 ### Options
 
-| Option          | Shorthand | Description                                                                     |
-| --------------- | --------- | ------------------------------------------------------------------------------- |
-| `--integration` | `-i`      | Filter resources to a specific integration.                                     |
-| `--all`         | `-a`      | List all resources regardless of project. Cannot be used with `[project]`.      |
-| `--format`      | `-F`      | Output format. Use `json` for machine-readable output.                          |
+| Option          | Shorthand | Description                                                                |
+| --------------- | --------- | -------------------------------------------------------------------------- |
+| `--integration` |           | Filter resources to a specific integration.                                |
+| `--all`         | `-a`      | List all resources regardless of project. Cannot be used with `[project]`. |
+| `--json`        |           | Output as JSON.                                                            |
 
 ### Examples
 
@@ -218,13 +239,12 @@ vercel integration list my-app
 
 # Filter to a specific integration
 vercel integration list --integration neon
-vercel integration list -i upstash
 
 # List all resources across the team
 vercel integration list --all
 
 # Output as JSON
-vercel integration list --format=json
+vercel integration list --json
 ```
 
 ## vercel integration installations
@@ -243,8 +263,8 @@ Alias: `vercel integration installation`.
 
 | Option          | Shorthand | Description                                                       |
 | --------------- | --------- | ----------------------------------------------------------------- |
-| `--integration` | `-i`      | Limit to installations of this integration. Accepts a slug or ID. |
-| `--format`      | `-F`      | Output format. Use `json` for machine-readable output.            |
+| `--integration` |           | Limit to installations of this integration. Accepts a slug or ID. |
+| `--json`        |           | Output as JSON.                                                   |
 
 ### Examples
 
@@ -256,7 +276,7 @@ vercel integration installations
 vercel integration installations --integration neon
 
 # JSON output
-vercel integration installations --format json
+vercel integration installations --json
 ```
 
 ## vercel integration discover
@@ -279,10 +299,10 @@ For multi-product integrations, each product appears separately with a compound 
 
 ### Options
 
-| Option       | Shorthand | Description                                                                                                            |
-| ------------ | --------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `--category` | `-c`      | Filter integrations by category. Can be repeated to match any value from a list (e.g., `-c storage -c ai`).       |
-| `--format`   | `-F`      | Output format. Use `json` for machine-readable output.                                                                 |
+| Option       | Shorthand | Description                                                                                                                 |
+| ------------ | --------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `--category` |           | Filter integrations by category. Can be repeated to match any value from a list (e.g., `--category storage --category ai`). |
+| `--json`     |           | Output as JSON.                                                                                                             |
 
 > **💡 Note:** Run [`vercel integration categories`](#vercel-integration-categories) to see
 > the available category values.
@@ -302,10 +322,10 @@ vercel integration discover --category storage
 
 # Match any of multiple categories (repeat the flag)
 vercel integration discover --category storage --category ai
-vercel integration discover -c commerce -c payments -c authentication
+vercel integration discover --category commerce --category payments --category authentication
 
 # Output as JSON
-vercel integration discover --format=json
+vercel integration discover --json
 ```
 
 ## vercel integration categories
@@ -318,13 +338,13 @@ vercel integration categories
 
 *List the categories available for filtering marketplace integrations.*
 
-The output includes the category slug (the value you pass to `--category`) and a short description.
+The output includes the category slug (the value you pass to `--category`) and the category title.
 
 ### Options
 
-| Option     | Shorthand | Description                                            |
-| ---------- | --------- | ------------------------------------------------------ |
-| `--format` | `-F`      | Output format. Use `json` for machine-readable output. |
+| Option   | Shorthand | Description     |
+| -------- | --------- | --------------- |
+| `--json` |           | Output as JSON. |
 
 ### Examples
 
@@ -333,7 +353,7 @@ The output includes the category slug (the value you pass to `--category`) and a
 vercel integration categories
 
 # Output as JSON
-vercel integration categories --format=json
+vercel integration categories --json
 ```
 
 ## vercel integration guide
@@ -356,7 +376,7 @@ vercel integration guide <integration>/<product>
 
 | Option        | Shorthand | Description                                                                                         |
 | ------------- | --------- | --------------------------------------------------------------------------------------------------- |
-| `--framework` | `-f`      | Select a framework guide without prompts (e.g., `nextjs`, `remix`, `astro`, `nuxtjs`, `sveltekit`). |
+| `--framework` |           | Select a framework guide without prompts (e.g., `nextjs`, `remix`, `astro`, `nuxtjs`, `sveltekit`). |
 
 ### Examples
 
@@ -387,9 +407,9 @@ integration.*
 
 ### Options
 
-| Option     | Shorthand | Description                                            |
-| ---------- | --------- | ------------------------------------------------------ |
-| `--format` | `-F`      | Output format. Use `json` for machine-readable output. |
+| Option   | Shorthand | Description     |
+| -------- | --------- | --------------- |
+| `--json` |           | Output as JSON. |
 
 ### Examples
 
@@ -398,7 +418,7 @@ integration.*
 vercel integration balance neon
 
 # Output as JSON
-vercel integration balance neon --format=json
+vercel integration balance neon --json
 ```
 
 ## vercel integration open
@@ -415,9 +435,9 @@ When called without a resource name, it opens the integration's dashboard. When 
 
 ### Options
 
-| Option     | Shorthand | Description                                            |
-| ---------- | --------- | ------------------------------------------------------ |
-| `--format` | `-F`      | Output format. Use `json` to get the SSO link as JSON. |
+| Option   | Shorthand | Description                  |
+| -------- | --------- | ---------------------------- |
+| `--json` |           | Output the SSO link as JSON. |
 
 ### Examples
 
@@ -429,14 +449,14 @@ vercel integration open neon
 vercel integration open neon my-neon-database
 
 # Get the SSO link as JSON (useful in scripts)
-vercel integration open neon --format=json
+vercel integration open neon --json
 ```
 
 ## vercel integration update
 
 This command updates an existing marketplace integration installation. Use it to change the billing plan or the set of projects that can access the integration.
 
-`update` does not handle install, remove, or connect flows. Use `integration add` to install, `integration remove` to uninstall, and `integration-resource`, `env pull`, or related commands to manage resources. UI-only flows (browser OAuth, consent screens, marketplace purchase) may not map one-to-one to a single CLI flag; pass `--plan` and `--authorization-id` when the product requires them for billing changes.
+`update` does not handle install, remove, or connect flows. Use `integration add` to install, `integration remove` to uninstall, and `integration resource`, `env pull`, or related commands to manage resources. UI-only flows (browser OAuth, consent screens, marketplace purchase) may not map one-to-one to a single CLI flag; pass `--billing-plan` and `--authorization` when the product requires them for billing changes.
 
 ```bash filename="terminal"
 vercel integration update <integration> [options]
@@ -452,13 +472,13 @@ vercel integration update <integration> [options]
 
 ### Options
 
-| Option               | Shorthand | Description                                                                                                       |
-| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| `--plan`             | `-p`      | Billing plan ID for integrations that support installation-level billing plans.                                   |
-| `--authorization-id` | -         | Billing authorization ID when the platform requires it for plan changes.                                          |
-| `--projects`         | -         | Project ID allowed to use this installation. Pass `all` for all projects. Repeatable.                             |
-| `--installation-id`  | -         | Configuration ID when multiple marketplace installations exist for this integration.                              |
-| `--format`           | `-F`      | Output format. Use `json` for machine-readable output.                                                            |
+| Option            | Shorthand | Description                                                                           |
+| ----------------- | --------- | ------------------------------------------------------------------------------------- |
+| `--billing-plan`  | -         | Billing plan ID for integrations that support installation-level billing plans.       |
+| `--authorization` | -         | Billing authorization ID when the platform requires it for plan changes.              |
+| `--projects`      | -         | Project ID allowed to use this installation. Pass `all` for all projects. Repeatable. |
+| `--installation`  | -         | Configuration ID when multiple marketplace installations exist for this integration.  |
+| `--json`          | -         | Output as JSON.                                                                       |
 
 ### Examples
 
@@ -470,13 +490,13 @@ vercel integration update neon --projects all
 vercel integration update neon --projects prj_abc --projects prj_def
 
 # Change installation billing plan
-vercel integration update acme --plan pro
+vercel integration update acme --billing-plan pro
 
 # Select installation when several exist
-vercel integration update neon --installation-id icfg_xxx --projects all
+vercel integration update neon --installation icfg_xxx --projects all
 
 # Output result as JSON
-vercel integration update neon --projects all --format=json
+vercel integration update neon --projects all --json
 
 # Non-interactive (JSON success and errors on stdout)
 vercel integration update neon --projects all --non-interactive
@@ -484,7 +504,7 @@ vercel integration update neon --projects all --non-interactive
 
 ## vercel integration remove
 
-Uninstalls a marketplace integration from your team. You must [remove all resources](#vercel-integration-resource-remove) from the integration before running this command.
+Uninstalls a marketplace integration from your team. You must [delete all resources](#vercel-integration-resource-delete) from the integration before running this command.
 
 ```bash filename="terminal"
 vercel integration remove <integration-name>
@@ -494,10 +514,10 @@ vercel integration remove <integration-name>
 
 ### Options
 
-| Option     | Shorthand | Description                                            |
-| ---------- | --------- | ------------------------------------------------------ |
-| `--yes`    | `-y`      | Skip the confirmation prompt.                          |
-| `--format` | `-F`      | Output format. Use `json` for machine-readable output. |
+| Option   | Shorthand | Description                   |
+| -------- | --------- | ----------------------------- |
+| `--yes`  | `-y`      | Skip the confirmation prompt. |
+| `--json` |           | Output as JSON.               |
 
 > **💡 Note:** Non-interactive environments and JSON output mode require the `--yes` flag.
 
@@ -511,24 +531,23 @@ vercel integration remove neon
 vercel integration remove neon --yes
 
 # Output as JSON
-vercel integration remove neon --format=json --yes
+vercel integration remove neon --json --yes
 ```
 
 ## vercel integration resource
 
-The `vercel integration resource` command manages individual resources provisioned from marketplace integrations: connect resources to projects, disconnect them, remove them, configure auto-recharge thresholds, and claim sandbox resources.
-
-`vercel integration-resource <subcommand>` and `vc ir <subcommand>` are backward-compatible aliases that route to the same handlers as the canonical nested form.
+The `vercel integration resource` command manages individual resources provisioned from marketplace integrations: connect resources to projects, disconnect them, delete them, configure auto-recharge thresholds, claim sandbox resources, and show a resource's details and live status.
 
 It supports the following subcommands:
 
 - [`connect`](#vercel-integration-resource-connect): Connect a resource to a project
 - [`disconnect`](#vercel-integration-resource-disconnect): Disconnect a resource from a project
-- [`remove`](#vercel-integration-resource-remove): Delete a resource
+- [`delete`](#vercel-integration-resource-delete): Delete a resource
 - [`create-threshold`](#vercel-integration-resource-create-threshold): Set up auto-recharge for prepaid resources
 - [`claim`](#vercel-integration-resource-claim): Claim a sandbox marketplace resource
+- [`inspect`](#vercel-integration-resource-inspect): Show a resource's details and live status
 
-In the examples below, `<resource-name>` (for example, `my-database`) is the name of a marketplace resource you've already provisioned — run [`vercel integration list`](#vercel-integration-list) to see the names of your resources. `<project>` (for example, `my-project`) is a project's name or ID — run [`vercel project ls`](/docs/cli/project) to list them, or find a project's ID in the [Vercel dashboard](/dashboard) under **Settings → General**.
+In the examples below, `<resource-name>` (for example, `my-database`) is the name of a marketplace resource you've already provisioned. Run [`vercel integration list`](#vercel-integration-list) to see the names of your resources. `<project>` (for example, `my-project`) is a project's name or ID. Run [`vercel project list`](/docs/cli/project) to list them, or find a project's ID in the [Vercel dashboard](/dashboard) under **Settings → General**.
 
 ### vercel integration resource connect
 
@@ -549,26 +568,34 @@ vercel integration resource connect <resource-name> [project]
 
 #### Options
 
-| Option          | Shorthand | Description                                                                                                                                                                                                                                                  |
-| --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `--environment` | `-e`      | Environments to connect: `production`, `preview`, `development`. Can be repeated. Defaults to all three.                                                                                                                                                     |
+| Option          | Shorthand | Description                                                                                                                                                                                                                                                   |
+| --------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--environment` | `-e`      | Environments to connect. Accepts `production`, `preview`, `development`, or a Custom Environment slug or ID from the target project. Can be repeated. Defaults to all three built-in environments.                                                            |
 | `--prefix`      |           | Prefix for environment variable names. The prefix is used as-is, so include a trailing underscore if you want a separator (e.g., `--prefix NEON2_` creates `NEON2_DATABASE_URL`). Must start with a letter and contain only letters, digits, and underscores. |
-| `--yes`         | `-y`      | Skip the confirmation prompt.                                                                                                                                                                                                                                |
-| `--format`      | `-F`      | Output format. Use `json` for machine-readable output. Requires `--yes`.                                                                                                                                                                                     |
+| `--yes`         | `-y`      | Skip the confirmation prompt.                                                                                                                                                                                                                                 |
+| `--json`        |           | Output as JSON. Requires `--yes`.                                                                                                                                                                                                                             |
 
 > **💡 Note:** Non-interactive environments and JSON output mode require the `--yes` flag.
-> When `--yes` is missing in a non-interactive environment, the command emits a
-> structured `outputAgentError` payload with `reason: "confirmation_required"`
-> and a `next` array containing the suggested command, then exits with code 1.
+> When `--yes` is missing in
+> [non-interactive mode](/docs/cli/global-options#non-interactive), the command
+> prints a JSON error with `reason: "confirmation_required"` and a `next` array
+> containing the suggested command, then exits with code 1.
+
+> **💡 Note:** Custom Environment slugs and IDs must belong to the target project. If you
+> pass a slug, the CLI resolves the slug to the environment's stable ID before
+> sending the connection request. If you omit the project argument, the command uses
+> the linked project. If you omit `--environment`, the command connects
+> `production`, `preview`, and `development`. The default does not include
+> Custom Environments.
 
 #### Environment variable collisions
 
-If connecting would create an environment variable name that already exists on the project, the command exits with an error that names the conflicting variable, the project, and the affected environments. The follow-up message suggests either passing a `--prefix` to namespace the new variables, or removing the existing variable with `vercel env rm`.
+If connecting would create an environment variable name that already exists on the project, the command exits with an error that names the conflicting variable, the project, and the affected environments. The follow-up message suggests either passing a `--prefix` to namespace the new variables, or removing the existing variable with `vercel env remove`.
 
 #### Examples
 
 ```bash filename="terminal"
-# Connect to the currently linked project across all environments
+# Connect to the currently linked project across all three built-in environments
 vercel integration resource connect my-database
 
 # Connect to a specific project
@@ -578,11 +605,14 @@ vercel integration resource connect my-database my-project
 vercel integration resource connect my-database --environment production
 vercel integration resource connect my-database -e production -e preview
 
+# Connect to a Custom Environment by slug
+vercel integration resource connect my-database --environment staging
+
 # Use a prefix to avoid environment variable collisions
 vercel integration resource connect my-database --prefix NEON2_
 
 # Output as JSON (requires --yes)
-vercel integration resource connect my-database --yes --format=json
+vercel integration resource connect my-database --yes --json
 ```
 
 ### vercel integration resource disconnect
@@ -606,25 +636,23 @@ If the specified project is not currently connected to the resource, the command
 
 #### Options
 
-| Option     | Shorthand | Description                                            |
-| ---------- | --------- | ------------------------------------------------------ |
-| `--all`    | `-a`      | Disconnect all projects from the resource.             |
-| `--yes`    | `-y`      | Skip the confirmation prompt.                          |
-| `--format` | `-F`      | Output format. Use `json` for machine-readable output. |
+| Option   | Shorthand | Description                                |
+| -------- | --------- | ------------------------------------------ |
+| `--all`  |           | Disconnect all projects from the resource. |
+| `--yes`  | `-y`      | Skip the confirmation prompt.              |
+| `--json` |           | Output as JSON.                            |
 
 > **💡 Note:** Non-interactive environments and JSON output mode require the `--yes` flag.
-> When `--yes` is missing in a non-interactive environment, the command emits a
-> structured `outputAgentError` payload with `reason: "confirmation_required"`
-> and a `next` array containing the suggested command, then exits with code 1.
+> When `--yes` is missing in
+> [non-interactive mode](/docs/cli/global-options#non-interactive), the command
+> prints a JSON error with `reason: "confirmation_required"` and a `next` array
+> containing the suggested command, then exits with code 1.
 
 #### Examples
 
 ```bash filename="terminal"
 # Disconnect from the currently linked project
 vercel integration resource disconnect my-database
-
-# Using the short alias
-vc ir disconnect my-redis-cache
 
 # Disconnect from a specific project
 vercel integration resource disconnect my-database my-project
@@ -633,20 +661,20 @@ vercel integration resource disconnect my-database my-project
 vercel integration resource disconnect my-database --all
 
 # Disconnect all without confirmation
-vercel integration resource disconnect my-database -a -y
+vercel integration resource disconnect my-database --all --yes
 
 # Output as JSON
-vercel integration resource disconnect my-database -a -y --format=json
+vercel integration resource disconnect my-database --all --yes --json
 ```
 
-### vercel integration resource remove
+### vercel integration resource delete
 
 This command deletes an integration resource permanently.
 
 Alias: `vercel integration resource rm`
 
 ```bash filename="terminal"
-vercel integration resource remove <resource-name>
+vercel integration resource delete <resource-name>
 ```
 
 *Delete an integration resource.*
@@ -657,29 +685,26 @@ If the resource has connected projects, you must disconnect them first or use th
 
 | Option             | Shorthand | Description                                                |
 | ------------------ | --------- | ---------------------------------------------------------- |
-| `--disconnect-all` | `-a`      | Disconnect all projects from the resource before deletion. |
+| `--disconnect-all` |           | Disconnect all projects from the resource before deletion. |
 | `--yes`            | `-y`      | Skip the confirmation prompt.                              |
-| `--format`         | `-F`      | Output format. Use `json` for machine-readable output.     |
+| `--json`           |           | Output as JSON.                                            |
 
 > **💡 Note:** Non-interactive environments and JSON output mode require the `--yes` flag.
 
 #### Examples
 
 ```bash filename="terminal"
-# Remove a resource
-vercel integration resource remove my-database
+# Delete a resource
+vercel integration resource delete my-database
 
-# Remove with the short alias
-vc ir rm my-cache
+# Disconnect all projects and delete in one step
+vercel integration resource delete my-database --disconnect-all
 
-# Disconnect all projects and remove in one step
-vercel integration resource remove my-database --disconnect-all
-
-# Remove without confirmation
-vc ir rm my-cache --disconnect-all --yes
+# Delete without confirmation
+vercel integration resource delete my-cache --disconnect-all --yes
 
 # Output as JSON
-vc ir rm my-cache -a -y --format=json
+vercel integration resource delete my-cache --disconnect-all --yes --json
 ```
 
 ### vercel integration resource create-threshold
@@ -726,7 +751,7 @@ vercel integration resource create-threshold <resource-name> <minimum> <spend> <
 vercel integration resource create-threshold my-database 50 100 2000
 
 # Skip confirmation
-vc ir create-threshold my-database 50 100 2000 --yes
+vercel integration resource create-threshold my-database 50 100 2000 --yes
 ```
 
 ### vercel integration resource claim
@@ -757,14 +782,14 @@ After the browser opens, the command polls for up to five minutes for ownership 
 
 #### Options
 
-| Option      | Shorthand | Description                                                                                                                                              |
-| ----------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Option      | Shorthand | Description                                                                                                                                               |
+| ----------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--yes`     | `-y`      | When exactly one sandbox resource exists and no name was passed, skip the single-resource confirmation prompt. Does not affect the multi-resource picker. |
-| `--no-wait` |           | Print the claim URL and exit immediately without opening the browser or polling for completion.                                                          |
-| `--format`  | `-F`      | Output format. Use `json` for machine-readable output.                                                                                                   |
+| `--no-wait` |           | Print the claim URL and exit immediately without opening the browser or polling for completion.                                                           |
+| `--json`    |           | Output as JSON.                                                                                                                                           |
 
-> **💡 Note:** In non-interactive environments, the command emits a structured
-> `outputActionRequired` payload with
+> **💡 Note:** In [non-interactive mode](/docs/cli/global-options#non-interactive), the
+> command prints a JSON payload with
 > `reason: "integration_sandbox_claim_required"` and `verification_uri` set to
 > the claim URL, then exits with code 1.
 
@@ -783,10 +808,64 @@ vercel integration resource claim my-stripe-sandbox
 vercel integration resource claim my-stripe-sandbox --no-wait
 
 # Output the URL as JSON
-vercel integration resource claim my-stripe-sandbox --no-wait --format=json
+vercel integration resource claim my-stripe-sandbox --no-wait --json
 ```
+
+### vercel integration resource inspect
+
+This command shows a resource's details and its live status. Vercel fetches the status from the provider when you run the command:
+
+```bash filename="terminal"
+vercel integration resource inspect <resource-name>
+```
+
+*Show a resource's details and live status.*
+
+The output shows the resource's status, ownership, product, integration, billing plan, and ID. It also shows a link to the resource in the Vercel dashboard and the projects that the resource is connected to, with their environments. For a sandbox resource, the output also tells you how to [claim](#vercel-integration-resource-claim) it.
+
+#### Arguments
+
+| Argument        | Required | Description                                                   |
+| --------------- | -------- | ------------------------------------------------------------- |
+| `resource-name` | Yes      | Name of the resource to inspect (for example, `my-database`). |
+
+#### Options
+
+| Option   | Shorthand | Description     |
+| -------- | --------- | --------------- |
+| `--json` |           | Output as JSON. |
+
+#### Examples
+
+```bash filename="terminal"
+# Show a resource's details and live status
+vercel integration resource inspect my-database
+
+# Output as JSON
+vercel integration resource inspect my-database --json
+```
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel integration` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

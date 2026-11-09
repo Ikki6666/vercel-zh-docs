@@ -1,23 +1,24 @@
 ---
-title: OpenAI Codex
+title: OpenAI Codex with AI Gateway
 product: vercel
 url: /docs/ai-gateway/coding-agents/openai-codex
 canonical_url: "https://vercel.com/docs/ai-gateway/coding-agents/openai-codex"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-13
+type: how-to
 prerequisites:
   - /docs/ai-gateway/coding-agents
   - /docs/ai-gateway
 related:
   - /docs/cli/ai-gateway
-  - /docs/ai-gateway/sdks-and-apis/responses
   - /docs/ai-gateway/authentication-and-byok
   - /docs/ai-gateway/sdks-and-apis/responses/websockets
-summary: Use OpenAI Codex CLI with the AI Gateway.
+  - /docs/ai-gateway/models-and-providers/virtual-models
+  - /docs/agent-harnesses/codex
+summary: Connect OpenAI Codex to AI Gateway with one CLI command, or configure it manually.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# OpenAI Codex
+# OpenAI Codex with AI Gateway
 
 [OpenAI Codex](https://github.com/openai/codex) is OpenAI's agentic coding tool. You can configure it to use Vercel AI Gateway, enabling you to:
 
@@ -27,15 +28,15 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Codex CLI](https://ai-sdk.dev/providers/community-providers/codex-cli?from=related)
-- [Codex CLI (App Server)](https://ai-sdk.dev/providers/community-providers/codex-app-server?from=related)
-- [Codex](https://ai-sdk.dev/providers/ai-sdk-harnesses/codex?from=related)
-- [How I use OpenCode with Vercel AI Gateway to build features fast](https://vercel.com/kb/guide/how-i-use-opencode-with-vercel-ai-gateway-to-build-features-fast?from=related) — How to route different AI models to different coding tasks automatically, cutting token costs by ~70% without losing qua
-- [OpenCode](https://vercel.com/docs/ai-gateway/coding-agents/opencode?from=related) — Use OpenCode with the AI Gateway.
-- [Claude Code](https://vercel.com/docs/ai-gateway/coding-agents/claude-code?from=related) — Use Claude Code and the Claude Agent SDK with AI Gateway.
-- [Kilo Code](https://vercel.com/docs/ai-gateway/coding-agents/kilo-code?from=related) — Learn about kilo code on Vercel.
-- [OpenClaw](https://vercel.com/docs/ai-gateway/coding-agents/openclaw?from=related) — Learn about openclaw on Vercel.
-- [Superset](https://vercel.com/docs/ai-gateway/coding-agents/superset?from=related) — Use Superset with the AI Gateway.
+- [GPT 6 Astra now available on Vercel AI Gateway](https://vercel.com/changelog/gpt-6-astra-now-available-on-vercel-ai-gateway)
+- [Introducing Virtual Models on AI Gateway](https://vercel.com/blog/ai-gateway-virtual-models)
+- [GPT 5.2 Codex now available on Vercel AI Gateway](https://vercel.com/changelog/gpt-5-2-codex-now-available-on-vercel-ai-gateway)
+- [GPT 5.1 Codex Max now available on Vercel AI Gateway](https://vercel.com/changelog/gpt-5-1-codex-max-now-available-on-vercel-ai-gateway)
+- [GPT 5.1 Codex models now available in Vercel AI Gateway](https://vercel.com/changelog/gpt-5-1-codex-models-now-available-in-vercel-ai-gateway)
+- [Set up coding agents in one command with AI Gateway](https://vercel.com/changelog/set-up-coding-agents-in-one-command-with-ai-gateway)
+- [Codex CLI](https://ai-sdk.dev/providers/community-providers/codex-cli) — Learn how to use the Codex CLI provider to access OpenAI GPT-5 models through the Codex CLI.
+- [OpenCode with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/opencode) — Connect OpenCode to AI Gateway with one CLI command, or configure it in-app.
+- [ZCode with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/zcode) — Connect ZCode to AI Gateway with the Vercel CLI or an OpenAI-compatible custom provider.
 
 Full cross-link map for this page: [/docs/ai-gateway/coding-agents/openai-codex.graph.md](/docs/ai-gateway/coding-agents/openai-codex.graph.md)
 <!-- /docsgraph:related -->
@@ -43,32 +44,48 @@ Full cross-link map for this page: [/docs/ai-gateway/coding-agents/openai-codex.
 - Route requests through multiple AI providers
 - Monitor traffic and spend in your AI Gateway Overview
 - View detailed traces in Vercel Observability under AI
-- Use any model available through the gateway
+- Use models from other providers, not only OpenAI ones
 
-> **💡 Note:** The Vercel CLI is the recommended way to set this up. [`vercel ai-gateway
->   coding-agents setup --agent codex`](/docs/cli/ai-gateway#setup) provisions a
-> key, writes `~/.codex/config.toml` with the [Codex compatibility
-> endpoint](#codex-compatibility-endpoint), exports `AI_GATEWAY_API_KEY` from a
-> managed block in your shell startup file, and copies your existing Codex
-> Desktop sessions across. The manual steps below are for machines where you'd
-> rather configure it yourself.
+## ChatGPT API credit eligibility
 
-## Codex compatibility endpoint
+OpenAI excludes Codex usage through API keys from the API credits included with eligible ChatGPT subscriptions. Connecting Codex to AI Gateway with BYOK doesn't change that exclusion, so fund coding requests separately. The grant also doesn't increase signed-in Codex usage limits.
 
-Point Codex at its own compatibility endpoint:
+For eligible application requests, follow [Use ChatGPT API credits with Vercel AI Gateway](/i/chatgpt-api-credits-ai-gateway).
 
-```toml filename="~/.codex/config.toml"
-[model_providers.vercel]
-base_url = "https://ai-gateway.vercel.sh/codex/v1"
+## Set up with the Vercel CLI
+
+Run the [Vercel CLI setup command](/docs/cli/ai-gateway#setup) for Codex:
+
+```bash filename="terminal"
+npx vercel@latest ai-gateway setup --agent codex
 ```
 
-Use it everywhere on this page. It serves `/codex/v1/models` in the proprietary `ModelsResponse` shape Codex decodes at startup, so the CLI attaches its shell tool and sees the full gateway catalog. Every other path falls through to the standard handlers, so routing, billing, and errors are unchanged. To call the gateway from your own code rather than through Codex, see the [Responses API](/docs/ai-gateway/sdks-and-apis/responses) instead.
+The command configures everything Codex needs to route through the gateway:
 
-`wire_api` must be `responses`. Codex removed Chat Completions support, and the gateway serves the Responses API at `/v1/responses`.
+- Provisions an AI Gateway API key, or reuses one you pass with `--key`
+- Writes `~/.codex/config.toml` with a `vercel` model provider pointed at the [Codex compatibility endpoint](#codex-compatibility-endpoint) (`wire_api = "responses"`)
+- Exports `AI_GATEWAY_API_KEY` from a managed block in your shell startup file, backed by the macOS Keychain when available so the key stays out of plaintext config
+- Copies your existing Codex Desktop sessions across (see [session migration](/docs/cli/ai-gateway#desktop-session-migration))
 
-## Configure OpenAI Codex
+Every file the command changes is backed up alongside as a `.bak` file. Pass `--dry-run` to preview the changes without writing them. For the full command reference, see [`vercel ai-gateway setup`](/docs/cli/ai-gateway#setup).
 
-Configure Codex to use AI Gateway through its configuration file for persistent settings.
+To configure every installed supported agent at once, run the command without `--agent`. It detects and configures each supported agent it finds:
+
+```bash filename="terminal"
+npx vercel@latest ai-gateway setup
+```
+
+To verify the setup, run Codex:
+
+```bash filename="terminal"
+codex
+```
+
+The gateway routes your requests. Confirm they appear in your [AI Gateway Overview](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) in the Vercel dashboard.
+
+## Manual setup
+
+Only needed on machines where you can't use the Vercel CLI. When you use the CLI, it handles key storage for you, exporting `AI_GATEWAY_API_KEY` from a managed block in your shell startup file that is backed by the macOS Keychain when available. The steps below do the same configuration by hand.
 
 - ### Install OpenAI Codex CLI
   Follow the [installation instructions on the OpenAI Codex repository](https://github.com/openai/codex) to install the Codex CLI tool.
@@ -87,7 +104,7 @@ Configure Codex to use AI Gateway through its configuration file for persistent 
   Open `~/.codex/config.toml` and add the following:
   ```toml filename="~/.codex/config.toml"
   model_provider = "vercel"
-  model = "openai/gpt-5.6-sol"
+  model = "openai/gpt-6-astra"
 
   [model_providers.vercel]
   name = "Vercel AI Gateway"
@@ -100,7 +117,7 @@ Configure Codex to use AI Gateway through its configuration file for persistent 
   - References your `AI_GATEWAY_API_KEY` environment variable
   - Sets the `vercel` provider as the default for all sessions
   - Uses the Responses API, which is the only wire protocol current Codex versions support
-  - Specifies `openai/gpt-5.6-sol` as the default model
+  - Specifies `openai/gpt-6-astra` as the default model
 
 - ### Run Codex
   Start Codex:
@@ -109,72 +126,113 @@ Configure Codex to use AI Gateway through its configuration file for persistent 
   ```
   Vercel AI Gateway routes your requests. To confirm, check your [AI Gateway Overview](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) in the Vercel dashboard.
 
-- ### (Optional) Enable WebSocket streaming
-  Codex can stream Responses API traffic over a persistent WebSocket connection, reducing per-turn latency. This uses AI Gateway's [Responses API WebSocket mode](/docs/ai-gateway/sdks-and-apis/responses/websockets). Enable it in your config:
-  ```toml filename="~/.codex/config.toml"
-  [features]
-  responses_websockets_v2 = true
+## Enable WebSocket streaming
 
-  [model_providers.vercel]
-  name = "Vercel AI Gateway"
-  base_url = "https://ai-gateway.vercel.sh/codex/v1"
-  env_key = "AI_GATEWAY_API_KEY"
-  wire_api = "responses"
-  supports_websockets = true
-  ```
-  > **💡 Note:** WebSocket streaming is available for OpenAI models such as `openai/gpt-5.6-sol`.
-  > Other models return a `Model <name> is not available over WebSocket` error,
-  > so remove `supports_websockets = true` when switching to a non-OpenAI model.
+Codex can stream Responses API traffic over a persistent WebSocket connection, reducing per-turn latency. This uses AI Gateway's [Responses API WebSocket mode](/docs/ai-gateway/sdks-and-apis/responses/websockets). Enable it in your config:
 
-- ### (Optional) Use a different model
-  Run `/model` inside Codex to switch models without leaving your session. The picker lists the full gateway catalog and sets reasoning effort at the same time, because the Codex compatibility endpoint serves `/codex/v1/models` when the CLI starts.
+```toml filename="~/.codex/config.toml"
+[features]
+responses_websockets_v2 = true
 
-  To start a session on a specific model, pass `--model` (or `-m`):
-  ```bash
-  codex --model openai/gpt-5.5-pro
-  ```
-  To change the model for every session, update the `model` field in your config:
-  ```toml filename="~/.codex/config.toml"
-  model = "openai/gpt-5.5-pro"
-  # Or try other models:
-  # model = "openai/gpt-5.4-mini"
-  # model = "openai/gpt-5.4-nano"
-  ```
-  Every model in the gateway catalog works here, not only OpenAI ones. The examples stay on OpenAI models because Codex reads their metadata natively.
-  > **💡 Note:** When using non-OpenAI models through the gateway, you may see warnings about
-  > model metadata not being found. These warnings are safe to ignore since the
-  > gateway handles model routing.
+[model_providers.vercel]
+name = "Vercel AI Gateway"
+base_url = "https://ai-gateway.vercel.sh/codex/v1"
+env_key = "AI_GATEWAY_API_KEY"
+wire_api = "responses"
+supports_websockets = true
+```
 
-- ### (Optional) Define multiple profiles
-  Profiles let you switch models from the CLI. Create a file named `~/.codex/<profile-name>.config.toml` for each profile, using top-level keys for the values that differ from your base config:
-  ```toml filename="~/.codex/fast.config.toml"
-  model = "openai/gpt-5.4-nano"
-  ```
-  ```toml filename="~/.codex/pro.config.toml"
-  model = "openai/gpt-5.5-pro"
-  ```
-  Codex loads `~/.codex/config.toml` first, then overlays the profile file, so `model_provider = "vercel"` is inherited from your base config.
+> **💡 Note:** WebSocket streaming is available for OpenAI models such as `openai/gpt-6-astra`.
+> Other models return a `Model <name> is not available over WebSocket` error,
+> so remove `supports_websockets = true` when switching to a non-OpenAI model.
 
-  Switch between profiles using the `--profile` flag:
-  ```bash
-  codex --profile fast
-  codex --profile pro
-  ```
-  > **💡 Note:** Codex 0.134.0 and later no longer reads `[profiles.<name>]` tables or the
-  > `profile` selector from `config.toml`. If you have legacy profile tables,
-  > move each one into its own `~/.codex/<profile-name>.config.toml` file.
+## Choose a different model
+
+Run `/model` inside Codex to switch models without leaving your session. The picker lists the gateway models that Codex can use and sets reasoning effort at the same time, because the Codex compatibility endpoint serves `/codex/v1/models` when the CLI starts.
+
+To start a session on a specific model, pass `--model` (or `-m`):
+
+```bash
+codex --model openai/gpt-5.5-pro
+```
+
+To change the model for every session, update the `model` field in your config:
+
+```toml filename="~/.codex/config.toml"
+model = "openai/gpt-5.5-pro"
+# Or try other models:
+# model = "openai/gpt-5.4-mini"
+# model = "openai/gpt-5.4-nano"
+```
+
+Any model in the `/model` list works here, not only OpenAI ones. The examples stay on OpenAI models because Codex reads their metadata natively.
+
+To apply AI Gateway settings such as provider order, model fallbacks, regional inference, or zero data retention to Codex requests, create a [virtual model](/docs/ai-gateway/models-and-providers/virtual-models#using-a-virtual-model-with-claude-code-codex-and-other-coding-agents) and use its slug as the model. Codex lists your team's virtual models in `/model`, and the slug also works with `--model` and in `config.toml`:
+
+```bash
+codex --model vmc/coding-agent
+```
+
+> **💡 Note:** When using non-OpenAI models through the gateway, you may see warnings about
+> model metadata not being found. These warnings are safe to ignore since the
+> gateway handles model routing.
+
+## Define multiple profiles
+
+Profiles let you switch models from the CLI. Create a file named `~/.codex/<profile-name>.config.toml` for each profile, using top-level keys for the values that differ from your base config:
+
+```toml filename="~/.codex/fast.config.toml"
+model = "openai/gpt-5.4-nano"
+```
+
+```toml filename="~/.codex/pro.config.toml"
+model = "openai/gpt-5.5-pro"
+```
+
+Codex loads `~/.codex/config.toml` first, then overlays the profile file, so `model_provider = "vercel"` is inherited from your base config.
+
+Switch between profiles using the `--profile` flag:
+
+```bash
+codex --profile fast
+codex --profile pro
+```
+
+> **💡 Note:** Codex 0.134.0 and later no longer reads `[profiles.<name>]` tables or the
+> `profile` selector from `config.toml`. If you have legacy profile tables,
+> move each one into its own `~/.codex/<profile-name>.config.toml` file.
 
 ## Keeping your Codex Desktop sessions
 
-Codex records each session against the provider that served it, so switching to the gateway hides the sessions you created before the switch. To bring them across, run:
+Codex records each session against the provider that served it, so switching to the gateway hides the sessions you created before the switch. To bring them across, re-run the Vercel CLI setup command:
 
 ```bash filename="terminal"
-vercel ai-gateway coding-agents setup --agent codex
+npx vercel@latest ai-gateway setup --agent codex
 ```
 
-The command copies each rollout file under `sessions` and `archived_sessions` to a new deterministic session ID with `model_provider` set to `vercel`. Originals are never moved, edited, or deleted, and re-running never duplicates a session it already copied. Pass `--no-session-migration` to skip the step, and decompress any `.jsonl.zst` sessions first, since compressed rollouts can't be rewritten. See [session migration](/docs/cli/ai-gateway#desktop-session-migration) for details.
+The command copies each Codex Desktop rollout file under `sessions` and `archived_sessions` to a new deterministic session ID with `model_provider` set to `vercel`. Originals are never moved, edited, or deleted, and re-running never duplicates a session it already copied. Pass `--no-session-migration` to skip the step, and decompress any `.jsonl.zst` sessions first, since compressed rollouts can't be rewritten. See [session migration](/docs/cli/ai-gateway#desktop-session-migration) for details.
+
+## Run Codex durably
+
+To deploy Codex as a service that resumes after crashes, function timeouts, and deployments, use `durable-harness`. Codex runs in a Vercel Sandbox, while your function routes model calls through AI Gateway and persists the session's progress. Follow the [durable Codex guide](/docs/agent-harnesses/codex) for agent, chat route, and queue setup.
+
+## Codex compatibility endpoint
+
+Point Codex at its own compatibility endpoint:
+
+```toml filename="~/.codex/config.toml"
+[model_providers.vercel]
+base_url = "https://ai-gateway.vercel.sh/codex/v1"
+```
+
+Use it everywhere on this page. It serves `/codex/v1/models` in the proprietary `ModelsResponse` shape Codex decodes at startup, so the CLI attaches its shell tool and sees the gateway models that it can use. The list omits models that a coding agent can't use for text responses, such as embedding, image, and video models. Every other path falls through to the standard handlers, so routing, billing, and errors are unchanged. To call the gateway from your own code rather than through Codex, see the [Responses API](/docs/ai-gateway/sdks-and-apis/responses) instead.
+
+`wire_api` must be `responses`. Codex removed Chat Completions support, and the gateway serves the Responses API at `/v1/responses`.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

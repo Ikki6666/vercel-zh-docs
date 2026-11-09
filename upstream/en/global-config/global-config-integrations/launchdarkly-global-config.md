@@ -3,7 +3,7 @@ title: Using Global Config with LaunchDarkly
 product: vercel
 url: /docs/global-config/global-config-integrations/launchdarkly-global-config
 canonical_url: "https://vercel.com/docs/global-config/global-config-integrations/launchdarkly-global-config"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: tutorial
 prerequisites:
   - /docs/global-config/global-config-integrations
@@ -11,7 +11,7 @@ prerequisites:
 related:
   - /docs/plans/enterprise
   - /docs/cli
-  - /docs/projects
+  - /docs/projects/managing-projects
   - /docs/global-config/get-started
   - /docs/environment-variables
 summary: "Learn how to use Global Config with Vercel's LaunchDarkly integration."
@@ -28,12 +28,13 @@ This guide will help you get started with using Vercel's LaunchDarkly integratio
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Global Config](https://flags-sdk.dev/docs/providers/global-config?from=related)
-- [DevCycle](https://vercel.com/docs/global-config/global-config-integrations/devcycle-global-config?from=related) — Learn how to use Global Config with Vercel's DevCycle integration.
-- [Statsig](https://vercel.com/docs/global-config/global-config-integrations/statsig-global-config?from=related) — Learn how to use Global Config with Vercel's Statsig integration.
-- [Using Global Config](https://vercel.com/docs/global-config/using-global-config?from=related) — Learn how to use Global Configs in your projects.
-- [Global Configuration](https://vercel.com/docs/project-configuration/global-configuration?from=related) — Learn how to configure Vercel CLI under your system user.
-- [Global Configs & REST API](https://vercel.com/docs/global-config/vercel-api?from=related) — Learn how to use the Vercel REST API to create and update Global Configs. You can also read data stored in Global Config
+- [Expanding the experimentation ecosystem with Edge Config and LaunchDarkly](https://vercel.com/blog/edge-config-and-launch-darkly)
+- [LaunchDarkly is now available on the Vercel Marketplace](https://vercel.com/changelog/launchdarkly-is-now-available-on-the-vercel-marketplace)
+- [Using Global Config with DevCycle](https://vercel.com/docs/global-config/global-config-integrations/devcycle-global-config) — Learn how to use Global Config with Vercel's DevCycle integration.
+- [Using Global Config with Statsig](https://vercel.com/docs/global-config/global-config-integrations/statsig-global-config) — Learn how to use Global Config with Vercel's Statsig integration.
+- [Using Global Config](https://vercel.com/docs/global-config/using-global-config) — Learn how to use Global Configs in your projects.
+- [Global Config](https://vercel.com/docs/agent-resources/vercel-mcp/tools/global-config) — Vercel MCP tools for Global Config.
+- [Managing Global Configs with Vercel REST API](https://vercel.com/docs/global-config/vercel-api) — Learn how to use the Vercel REST API to create and update Global Configs. You can also read data stored in Global Config
 
 Full cross-link map for this page: [/docs/global-config/global-config-integrations/launchdarkly-global-config.graph.md](/docs/global-config/global-config-integrations/launchdarkly-global-config.graph.md)
 <!-- /docsgraph:related -->
@@ -49,78 +50,69 @@ Full cross-link map for this page: [/docs/global-config/global-config-integratio
 Before using this integration, you should have:
 
 1. The latest version of Vercel CLI. To check your version, use `vercel --version`. To [install](/docs/cli#installing-vercel-cli) or update Vercel CLI, use:
-   <CodeBlock>
-     <Code tab="pnpm">
-       ```bash
-       pnpm i vercel
-       ```
-     </Code>
-     <Code tab="yarn">
-       ```bash
-       yarn i vercel
-       ```
-     </Code>
-     <Code tab="npm">
-       ```bash
-       npm i vercel
-       ```
-     </Code>
-     <Code tab="bun">
-       ```bash
-       bun i vercel
-       ```
-     </Code>
-   </CodeBlock>
+
+   **pnpm**
+   ```bash
+   pnpm i -g vercel@latest
+   ```
+   **yarn**
+   ```bash
+   yarn global add vercel@latest
+   ```
+   **npm**
+   ```bash
+   npm i -g vercel@latest
+   ```
+   **bun**
+   ```bash
+   bun add -g vercel@latest
+   ```
 2. A project. If you don't have one, you can run the following terminal commands to create a Next project:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i 
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i 
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i 
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i 
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
 
-1. A Vercel project. If you don't have one, see [Creating a Project](/docs/projects#creating-a-project)
+```bash
+pnpm create next-app@latest
+```
+
+**yarn**
+
+```bash
+yarn create next-app@latest
+```
+
+**npm**
+
+```bash
+npx create-next-app@latest
+```
+
+**bun**
+
+```bash
+bunx create-next-app@latest
+```
+
+1. A Vercel project. If you don't have one, see [Creating a Project](/docs/projects/managing-projects#creating-a-project)
 2. A Global Config. If you don't have one, follow [the Global Config quickstart](/docs/global-config/get-started)
 3. The Global Config SDK:
-   <CodeBlock>
-     <Code tab="pnpm">
-       ```bash
-       pnpm i @vercel/global-config
-       ```
-     </Code>
-     <Code tab="yarn">
-       ```bash
-       yarn i @vercel/global-config
-       ```
-     </Code>
-     <Code tab="npm">
-       ```bash
-       npm i @vercel/global-config
-       ```
-     </Code>
-     <Code tab="bun">
-       ```bash
-       bun i @vercel/global-config
-       ```
-     </Code>
-   </CodeBlock>
+
+   **pnpm**
+   ```bash
+   pnpm i @vercel/global-config
+   ```
+   **yarn**
+   ```bash
+   yarn add @vercel/global-config
+   ```
+   **npm**
+   ```bash
+   npm i @vercel/global-config
+   ```
+   **bun**
+   ```bash
+   bun add @vercel/global-config
+   ```
 
 - ### Set up the LaunchDarkly integration
   Visit [the LaunchDarkly page in the Integration Marketplace](/marketplace/launchdarkly) and select the **Add Integration** button. From the Integration dialog:
@@ -142,49 +134,48 @@ Before using this integration, you should have:
 - ### Use the LaunchDarkly integration in your code
   Open your project's code on your local machine and do the following:
   1. Install LaunchDarkly's Vercel Server SDK:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i @launchdarkly/vercel-server-sdk
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i @launchdarkly/vercel-server-sdk
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i @launchdarkly/vercel-server-sdk
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i @launchdarkly/vercel-server-sdk
-      ```
-    </Code>
-  </CodeBlock>
+  **pnpm**
+  ```bash
+  pnpm i @launchdarkly/vercel-server-sdk
+  ```
+  **yarn**
+  ```bash
+  yarn add @launchdarkly/vercel-server-sdk
+  ```
+  **npm**
+  ```bash
+  npm i @launchdarkly/vercel-server-sdk
+  ```
+  **bun**
+  ```bash
+  bun add @launchdarkly/vercel-server-sdk
+  ```
   2. Use [Vercel CLI](/docs/cli#installing-vercel-cli) to pull your Vercel project's environment variables:
 
      ```bash
      vercel env pull
      ```
 
-  3. Finally, create a  file at the root of your project. This file will configure a Middleware that redirects your site visitors from `/homepage` to `/new-homepage` based on a feature flag fetched from LaunchDarkly:
+  3. Finally, create a `middleware.ts` file at the root of your project. This file will configure a Middleware that redirects your site visitors from `/homepage` to `/new-homepage` based on a feature flag fetched from LaunchDarkly:
 
      ```ts filename="middleware.ts" framework=all
      import { init } from '@launchdarkly/vercel-server-sdk';
      import { createClient } from '@vercel/global-config';
 
      const globalConfigClient = createClient(process.env.GLOBAL_CONFIG!);
-     const launchDarklyClient = init('YOUR CLIENT-SIDE ID', globalConfigClient);
+     const launchDarklyClient = init(
+       process.env.LD_CLIENT_SIDE_ID!,
+       globalConfigClient,
+     );
 
      export const config = {
-       // Only run the middleware on the dashboard route
+       // Only run the middleware on the /homepage route
        matcher: '/homepage',
      };
 
-     export default function middleware(request: Request): Response {
+     export default async function middleware(
+       request: Request,
+     ): Promise<Response | undefined> {
        await launchDarklyClient.initFromServerIfNeeded();
        const launchDarklyContext = { kind: 'org', key: 'my-org-key' };
        const showExperimentalHomepage = await launchDarklyClient.variation(
@@ -206,14 +197,17 @@ Before using this integration, you should have:
      import { createClient } from '@vercel/global-config'
 
      const globalConfigClient = createClient(process.env.GLOBAL_CONFIG);
-     const launchDarklyClient = init("YOUR CLIENT-SIDE ID", globalConfigClient);
+     const launchDarklyClient = init(
+       process.env.LD_CLIENT_SIDE_ID,
+       globalConfigClient,
+     );
 
      export const config = {
-       // Only run the middleware on the dashboard route
+       // Only run the middleware on the /homepage route
        matcher: '/homepage',
      };
 
-     export default function middleware(request) {
+     export default async function middleware(request) {
        await launchDarklyClient.initFromServerIfNeeded();
        const launchDarklyContext = { kind: 'org', key: 'my-org-key' };
        const showExperimentalHomepage = await launchDarklyClient.variation(
@@ -243,3 +237,6 @@ Now that you have set up the LaunchDarkly Global Config integration, you can exp
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,23 +3,25 @@ title: Using Drains
 product: vercel
 url: /docs/drains/using-drains
 canonical_url: "https://vercel.com/docs/drains/using-drains"
-last_updated: 2026-07-22
+last_updated: 2026-09-17
 type: how-to
 prerequisites:
   - /docs/drains
 related:
   - /docs/plans/pro-plan
   - /docs/plans/enterprise
+  - /docs/speed-insights/limits-and-pricing
   - /docs/integrations
   - /docs/drains/reference/logs
-  - /docs/drains/reference/traces
 summary: Learn how to configure drains to forward observability data to custom HTTP endpoints, dedicated Audit Log destinations, and integrations.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Using Drains
 
-> **🔒 Permissions Required**: Drains
+> Drains are available on Enterprise and Pro plans
+
+You can add drains to your project by following the configuration steps below. When you configure the destination, choose whether to send data to a [custom HTTP endpoint](#custom-endpoint), write Audit Log data to an [S3 bucket](#s3-bucket), or use a [native integration](#native-integrations) or [external integration](#external-integrations) to send your data to popular services.
 
 
 <!-- docsgraph:related -->
@@ -27,16 +29,17 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Migrating from SIEM](https://vercel.com/docs/audit-log/migrating-to-drains?from=related) — Move your SIEM integration from Custom SIEM Log Streaming to Audit Log Drains, with wider event coverage and a new event
-- [Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains?from=related) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
-- [Creates a new Integration Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-new-integration-log-drain-deprecated?from=related)
-- [Create a new Drain](https://vercel.com/docs/rest-api/drains/create-a-new-drain?from=related)
-- [Creates a Configurable Log Drain \\(deprecated\\)](https://vercel.com/docs/rest-api/logdrains/creates-a-configurable-log-drain-deprecated?from=related)
+- [Introducing Vercel Drains: Complete observability data, anywhere](https://vercel.com/blog/introducing-vercel-drains)
+- [Correlate logs and traces with OpenTelemetry in Vercel Log Drains](https://vercel.com/changelog/correlate-logs-and-traces-with-opentelemetry-in-vercel-log-drains)
+- [Audit Log Drains now support Datadog, Splunk, and Panther](https://vercel.com/changelog/audit-log-drains-now-support-datadog-splunk-and-panther)
+- [Migrating from Custom SIEM Log Streaming to Audit Log Drains](https://vercel.com/docs/audit-log/migrating-to-drains) — Move your SIEM integration from Custom SIEM Log Streaming to Audit Log Drains, with wider event coverage and a new event
+- [Drains](https://vercel.com/docs/agent-resources/vercel-mcp/tools/drains) — Vercel MCP tools for drains.
+- [vercel drains](https://vercel.com/docs/cli/drains) — List, inspect, create, update, pause, resume, and delete Vercel Drains from your terminal.
+- [AI Gateway Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
+- [Vercel Hobby Plan](https://vercel.com/docs/plans/hobby) — Learn about the Hobby plan and how it compares to the Pro plan.
 
 Full cross-link map for this page: [/docs/drains/using-drains.graph.md](/docs/drains/using-drains.graph.md)
 <!-- /docsgraph:related -->
-
-You can add drains to your project by following the configuration steps below. When you configure the destination, choose whether to send data to a [custom HTTP endpoint](#custom-endpoint), write Audit Log data to an [S3 bucket](#s3-bucket), or use a [native integration](#native-integrations) or [external integration](#external-integrations) to send your data to popular services.
 
 ## Configuring Drains
 
@@ -49,7 +52,7 @@ Teams on [Pro](/docs/plans/pro-plan) and [Enterprise](/docs/plans/enterprise) pl
   Select the type of observability data you want to drain:
   - **Logs**: Runtime, build and static logs from your deployments
   - **Traces**: Distributed tracing data using [OTLP/HTTP](https://opentelemetry.io/docs/specs/otlp/#otlphttp) (OTLP/gRPC is not supported)
-  - **Speed Insights**: Performance metrics and web vitals
+  - **Speed Insights**: Performance metrics and web vitals. Requires [Speed Insights Plus](/docs/speed-insights/limits-and-pricing)
   - **Web Analytics**: Page views and custom events
   - **Audit Log**: Team activity events
   At any time, you can also add an [external integration](#external-integrations) to available [connectable account](/docs/integrations#connectable-accounts) log drain integrations by clicking the **External Integrations** link on the top right of the **Add Drain** side bar.
@@ -84,6 +87,10 @@ Teams on [Pro](/docs/plans/pro-plan) and [Enterprise](/docs/plans/enterprise) pl
   **Endpoint URL**
 
   This is the URL of the endpoint we will send your data to. The request will be sent over HTTPS using the POST method. Make sure your endpoint responds with a 200 OK status code.
+
+  **Payload Size**
+
+  Vercel batches drained data into payloads of up to 1 MB.
 
   **Format**
 
@@ -161,7 +168,7 @@ This correlation happens automatically without code changes. For example, this l
 console.log('User logged in', { userId: 123 });
 ```
 
-Will be automatically enriched with [trace and span identifiers](/docs/drains/reference/logs#json-format-fields).
+Will be automatically enriched with [trace and span identifiers](/docs/drains/reference/logs#logs-schema).
 
 **Limitations**: Only applies to user code logs during traced requests, not build-time logs.
 
@@ -184,7 +191,7 @@ Learn more about [native integrations](/docs/integrations#native-integrations) a
 
 Occasionally your drain endpoints can return an error. If more than 80% of drain deliveries fail or the number of failures exceed 50 for the past hour, we will send a notification email and indicate the error status on your Drains page.
 
-![Image](https://vercel.com/front/docs/logs/drain-error-light.png)
+![Errored drain will show a warning status.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/logs/drain-error-light.png)
 
 ## Managing your active Drains
 
@@ -207,3 +214,6 @@ For more information on Drains and how to use them, check out the following reso
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

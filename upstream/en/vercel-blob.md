@@ -3,23 +3,27 @@ title: Vercel Blob
 product: vercel
 url: /docs/vercel-blob
 canonical_url: "https://vercel.com/docs/vercel-blob"
-last_updated: 2026-07-15
+last_updated: 2026-08-26
 type: conceptual
 prerequisites:
   []
 related:
+  - /docs/cdn
   - /docs/functions
-  - /docs/vercel-blob/using-blob-sdk
   - /docs/vercel-blob/private-storage
   - /docs/vercel-blob/public-storage
   - /docs/cli/blob
-summary: Vercel Blob is a scalable, cost-effective object storage service with private and public access modes for files of any size.
+summary: Vercel Blob is a scalable, cost-effective object storage service with private and public access modes for files up to 5 TB.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Vercel Blob
 
-> **🔒 Permissions Required**: Vercel Blob
+> Vercel Blob is available on all plans
+>
+> Those with the owner, member, developer role can access this feature
+
+[Vercel Blob](/storage/blob) is Vercel's object storage for files. Use it to store images, videos, documents, and other files your app uploads or serves. Each store lives in [one region that you choose](#choosing-your-blob-store-region), and Vercel's [CDN](/docs/cdn) [caches your files](#caching) close to your users, leveraging Vercel CDN network infrastructure. Stores are private or public, and you can store files up to 5 TB.
 
 
 <!-- docsgraph:related -->
@@ -27,28 +31,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Videos](https://nextjs.org/docs/app/guides/videos?from=related) — Recommendations and best practices for optimizing videos in your Next.js application.
-- [Databases](https://v0.app/docs/databases?from=related) — Build full-stack applications with v0's database integrations.
-- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide?from=related) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
-- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel?from=related) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
-- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud?from=related) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
-- [What are the best practices for hosting videos on Vercel?](https://vercel.com/kb/guide/best-practices-for-hosting-videos-on-vercel-nextjs-mp4-gif?from=related) — Learn the ideal solutions for using video files like .mp4 and .gif on Vercel to prevent excess bandwidth consumption.
-- [Deploy a Node.js Fastify app on Vercel with Docker](https://vercel.com/kb/guide/deploy-nodejs-on-vercel-with-docker?from=related) — Build a Node.js application with Fastify and Docker, then deploy it to Vercel Functions. Learn how to configure environm
-- [Image-to-Video](https://vercel.com/docs/ai-gateway/modalities/video-generation/image-to-video?from=related) — Animate static images into videos using Google Veo, KlingAI, Wan, Grok Imagine Video, or ByteDance Seedance through AI G
-- [Motion Control](https://vercel.com/docs/ai-gateway/modalities/video-generation/motion-control?from=related) — Transfer motion from a reference video to a character image using KlingAI through AI Gateway.
-- [Reference-to-Video](https://vercel.com/docs/ai-gateway/modalities/video-generation/reference-to-video?from=related) — Generate videos featuring characters from reference images or videos using Google Veo, KlingAI, Wan, Seedance, or Grok I
-- [Optimize Deployment Storage](https://vercel.com/docs/deployment-storage/optimize?from=related) — Learn about optimize deployment storage on Vercel.
-- [Image Optimization](https://vercel.com/docs/image-optimization?from=related) — Transform and optimize images to improve page load performance.
+- [How to upload and store files with Vercel](https://vercel.com/kb/guide/how-to-upload-and-store-files-with-vercel) — Vercel file uploads done right cover Server Actions, client-direct upload, and multipart for 5 TB files, with auth and c
+- [How to use and optimize videos](https://nextjs.org/docs/app/guides/videos) — Recommendations and best practices for optimizing videos in your Next.js application.
+- [Databases](https://v0.app/docs/databases) — Build full-stack applications with v0's database integrations.
+- [Amazon S3 joins the Vercel Marketplace](https://vercel.com/changelog/amazon-s3-joins-the-vercel-marketplace)
+- [Create private blob stores with a single click in v0](https://vercel.com/changelog/create-private-blob-stores-with-a-single-click-in-v0)
+- [Persistent memory for eve agents](https://vercel.com/changelog/persistent-memory-for-eve-agents)
+- [Signed URLs are now available for Vercel Blob](https://vercel.com/changelog/signed-urls-are-now-available-for-vercel-blob)
+- [Unlimited Vercel Blob stores on every plan](https://vercel.com/changelog/unlimited-vercel-blob-stores-on-every-plan)
+- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
+- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
+- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
+- [What are the best practices for hosting videos on Vercel?](https://vercel.com/kb/guide/best-practices-for-hosting-videos-on-vercel-nextjs-mp4-gif) — Learn the ideal solutions for using video files like .mp4 and .gif on Vercel to prevent excess bandwidth consumption.
 
 Full cross-link map for this page: [/docs/vercel-blob.graph.md](/docs/vercel-blob.graph.md)
 <!-- /docsgraph:related -->
 
 ## Use cases
 
-[Vercel Blob](/storage/blob) is an object storage service for uploading files at build time or at runtime (for example, when users submit files). Common use cases include:
+You can upload files to Vercel Blob at build time or at runtime (for example, when users submit files). Common use cases include:
 
 - Files for display and download such as avatars, screenshots, cover images, and videos
 - Large files such as video and audio to take advantage of the global network
+- Persistent preferences and context for [eve agents](#store-eve-agent-memory)
 - Files that you would normally store in an external file storage solution like Amazon S3. With your project hosted on Vercel, you can readily access and manage these files with Vercel Blob
 
 > **💡 Note:** Stored files are referred to as "blobs" once they're in the storage system,
@@ -58,12 +63,12 @@ Full cross-link map for this page: [/docs/vercel-blob.graph.md](/docs/vercel-blo
 
 Files are private or public depending on the store you create. The access mode defines how files are accessed and delivered. Use the following table to understand the differences between the two modes:
 
-|              | Private storage                                                                               | Public storage                             |
-| ------------ | --------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| Write access | Authenticated                                                                                 | Authenticated                              |
-| Read access  | Authenticated (token required)                                                                | Anyone with the URL                        |
-| Delivery     | Through your [Functions](/docs/functions) via [`get()`](/docs/vercel-blob/using-blob-sdk#get) | Direct blob URL                            |
-| Best for     | Sensitive documents, user content, custom auth                                                | Large media, images, videos, public assets |
+|              | Private storage                                                              | Public storage                             |
+| ------------ | ---------------------------------------------------------------------------- | ------------------------------------------ |
+| Write access | Authenticated                                                                | Authenticated                              |
+| Read access  | Authenticated (token required)                                               | Anyone with the URL                        |
+| Delivery     | Through your [Functions](/docs/functions), which fetch the blob with the SDK | Direct blob URL                            |
+| Best for     | Sensitive documents, user content, custom auth                               | Large media, images, videos, public assets |
 
 > **💡 Note:** It's important to choose the correct access mode for your use case since you cannot change it after the creation of a blob store.
 
@@ -71,17 +76,51 @@ Learn more about [private storage](/docs/vercel-blob/private-storage) and [publi
 
 ## Getting started
 
-```js
+Upload a file with the Vercel Blob SDK:
+
+**index.ts**
+
+```ts filename="index.ts"
 import { put } from '@vercel/blob';
 
 const blob = await put('avatar.jpg', imageFile, {
-  access: 'private' /* or 'public' */
+  access: 'private' /* or 'public' */,
 });
 ```
 
-You can create and manage your Vercel Blob stores from your [account dashboard](/dashboard) or the [Vercel CLI](/docs/cli/blob). You can create blob stores in any of the 20 [regions](/docs/regions#region-list) to optimize performance and meet data residency requirements. You can scope your Vercel Blob stores to your Hobby team or [team](/docs/accounts#creating-a-team), and [connect them to as many projects as you want](#connecting-a-store-to-your-projects).
+**main.py**
 
-To get started, see the [server-side](/docs/vercel-blob/server-upload), or [client-side](/docs/vercel-blob/client-upload) quickstart guides. Or visit the full API reference for the [Vercel Blob SDK](/docs/vercel-blob/using-blob-sdk).
+```py filename="main.py"
+from vercel import blob
+
+uploaded = await blob.put_blob(
+    "avatar.jpg",
+    image_bytes,
+    access="private",  # or "public"
+)
+```
+
+You can create and manage your Vercel Blob stores from your [account dashboard](/dashboard) or the [Vercel CLI](/docs/cli/blob). You can create blob stores in any of the 19 [regions](/docs/regions#region-list) to optimize performance and meet data residency requirements. You can scope your Vercel Blob stores to your Hobby team or [team](/docs/accounts#creating-a-team), and [connect them to as many projects as you want](#connecting-a-store-to-your-projects).
+
+To get started, see the [server-side](/docs/vercel-blob/server-upload), or [client-side](/docs/vercel-blob/client-upload) quickstart guides. Or visit the full API reference for the [JS SDK](/docs/vercel-blob/using-blob-sdk) or the [Python SDK](/docs/vercel-blob/python-sdk-reference).
+
+Follow [Store and serve files from Python with Vercel Blob](/kb/guide/python-and-vercel-blob) to build a FastAPI app that uploads and serves private receipts with per-user access checks.
+
+## Store eve agent memory
+
+Use [eve](/docs/frameworks/agents/eve)'s built-in `fileMemory()` provider to persist short user preferences and stable facts across conversations in a [private Vercel Blob store](/docs/vercel-blob/private-storage). Each memory scope has its own document, which eve recalls before each turn. The model updates memory with `save_memory` and `remove_memory` tools.
+
+To add file memory to an existing eve project, run:
+
+```bash filename="terminal"
+eve add memory/file
+```
+
+Choose **Install and set up** to create the memory definition in `agent/memory/file.ts` and create or reuse a private Blob store connected to your linked project through OIDC. When you run `eve dev` locally, memory stays in the development process and clears when you restart it.
+
+For a working example, deploy the [eve Memory Agent template](/templates/eve/eve-memory-agent). The Slack assistant keeps personal preferences separate from shared channel conventions, using authenticated user and channel identities to determine who shares each memory. See the [template repository](https://github.com/vercel-labs/eve-memory-agent-template) for setup and customization.
+
+Read [Choose an eve memory provider](/kb/guide/choose-an-eve-memory-provider) for file memory configuration and a comparison with providers that support semantic retrieval or automatic capture.
 
 ## Connecting a store to your projects
 
@@ -97,22 +136,22 @@ One store can serve multiple projects, and one project can use multiple stores.
 
 Connected projects authenticate with OpenID Connect (OIDC) by default. When you connect a store, Vercel adds these environment variables to your project:
 
-| Environment variable      | What it is                                                                                                             |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Environment variable      | What it is                                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | `BLOB_STORE_ID`           | The id of your Blob store. The SDK pairs it with the OIDC token to authenticate requests. It's an identifier, not a secret. |
-| `VERCEL_OIDC_TOKEN`       | A short-lived OIDC token that Vercel populates and rotates automatically on every deployment.                            |
-| `BLOB_WEBHOOK_PUBLIC_KEY` | The public key the SDK uses to verify webhook callbacks signed by Vercel Blob. It's a public value, not a secret.        |
+| `VERCEL_OIDC_TOKEN`       | A short-lived OIDC token that Vercel issues and rotates automatically. You never handle it directly.                        |
+| `BLOB_WEBHOOK_PUBLIC_KEY` | The public key the SDK uses to verify webhook callbacks signed by Vercel Blob. It's a public value, not a secret.           |
 
-The SDK reads these variables automatically. Code running in [Vercel Functions](/docs/functions) and builds works out of the box, and local development works after you run `vercel env pull`. Because OIDC tokens rotate automatically, no long-lived secret can leak from your codebase or environment. Learn more about [how OIDC token federation works](/docs/oidc#how-oidc-token-federation-works).
+The SDK reads these variables automatically, and you never need to read or pass the OIDC token yourself. Code running in [Vercel Functions](/docs/functions) and builds works out of the box. Local development works after you run `vercel env pull` once: when the token expires, the SDK refreshes it automatically using your Vercel CLI credentials. Because OIDC tokens rotate automatically, no long-lived secret can leak from your codebase or environment. Learn more about [how OIDC token federation works](/docs/oidc#how-oidc-token-federation-works).
 
 ### When to use a read-write token
 
-`BLOB_READ_WRITE_TOKEN` is a long-lived static token added to your project when you create a store. OIDC takes precedence when its environment variables are present. Use the read-write token only when:
+`BLOB_READ_WRITE_TOKEN` is a long-lived static token. The dashboard adds it to a connected project only when you select **Add a read-write token env var to this connection**. OIDC takes precedence when its environment variables are present. Use the read-write token only when:
 
 - Your code runs outside Vercel, such as in a CI job or on another host
-- You generate client tokens for [browser uploads](/docs/vercel-blob/client-upload) with `handleUpload`
+- You generate client tokens for [browser uploads](/docs/vercel-blob/client-upload)
 
-See [Authentication](/docs/vercel-blob/using-blob-sdk#authentication) for the full credential resolution order.
+See Authentication in the [JS SDK](/docs/vercel-blob/using-blob-sdk#authentication) or [Python SDK](/docs/vercel-blob/python-sdk-reference#authentication) reference for the full credential resolution order.
 
 ## Using Vercel Blob in your workflow
 
@@ -124,7 +163,7 @@ If you'd like to know whether or not Vercel Blob can be integrated into your wor
 - Read access:
   - With private Blob stores: all read access requires authentication
   - With public Blob stores: blob URLs are accessible to anyone with the link
-- Write access: all writes require authentication, through [OIDC](#oidc-access-by-default) by default on Vercel, or a [read-write token](/docs/vercel-blob/using-blob-sdk#read-write-tokens) elsewhere
+- Write access: all writes require authentication, through [OIDC](#oidc-access-by-default) by default on Vercel, or a [read-write token](#when-to-use-a-read-write-token) elsewhere
 
 ### Transferring to another project
 
@@ -132,7 +171,7 @@ If you need to transfer your blob store from one project to another project in t
 
 ## Caching
 
-Vercel's [CDN cache](/docs/caching/cdn-cache) caches all blobs (private and public) for up to 1 month by default. You can customize this duration with the `cacheControlMaxAge` option when uploading.
+Vercel's [CDN cache](/docs/caching/cdn-cache) caches all blobs (private and public) for up to 1 month by default. You can customize this duration by setting a cache max age when you upload a blob.
 
 The difference is in how the cache is reached:
 
@@ -152,7 +191,7 @@ When you delete or update (overwrite) a blob, the changes may take up to 60 seco
 />
 ```
 
-For private blobs served through your [Functions](/docs/functions), your server code can skip the propagation delay entirely and read the latest version with [`useCache: false`](/docs/vercel-blob/private-storage#consistent-reads).
+For private blobs served through your [Functions](/docs/functions), your server code can skip the propagation delay entirely and read the latest version with a [consistent read](/docs/vercel-blob/private-storage#consistent-reads).
 
 For more information about updating existing blobs, see the [overwriting blobs](#overwriting-blobs) section.
 
@@ -160,30 +199,40 @@ For more information about updating existing blobs, see the [overwriting blobs](
 
 For optimal performance and to avoid caching issues, consider treating blobs as immutable objects:
 
-- Instead of updating existing blobs, create new ones with different pathnames (or use `addRandomSuffix: true` option)
+- Instead of updating existing blobs, create new ones with different pathnames, or add a [random suffix](#alternatives-to-overwriting) when you upload
 - This approach avoids unexpected behaviors like outdated content appearing in your application
 
-There are still valid use cases for mutable blobs with shorter cache durations, such as a single JSON file that's updated every 5 minutes with a top list of sales or other regularly refreshed data. For these scenarios, set an appropriate `cacheControlMaxAge` value and be mindful of caching behaviors.
+There are still valid use cases for mutable blobs with shorter cache durations, such as a single JSON file that's updated every 5 minutes with a top list of sales or other regularly refreshed data. For these scenarios, set an appropriate cache max age when you upload and be mindful of caching behaviors.
 
 ## Overwriting blobs
 
-By default, Vercel Blob prevents you from accidentally overwriting existing blobs by using the same pathname twice. When you attempt to upload a blob with a pathname that already exists, the operation will throw an error.
+By default, Vercel Blob prevents you from accidentally overwriting existing blobs by using the same pathname twice. When you attempt to upload a blob with a pathname that already exists, the upload fails with an error.
 
-### Using `allowOverwrite`
+### Allowing overwrites
 
-To explicitly allow overwriting existing blobs, you can use the `allowOverwrite` option:
+To explicitly allow overwriting an existing blob, enable overwriting when you upload:
 
-```js
+**index.ts**
+
+```ts filename="index.ts"
 const blob = await put('user-profile.jpg', imageFile, {
   access: 'private' /* or 'public' */,
   allowOverwrite: true, // Enable overwriting an existing blob with the same pathname
 });
 ```
 
-This option is available in these methods:
+**main.py**
 
-- `put()`
-- In client uploads via the `onBeforeGenerateToken()` function
+```py filename="main.py"
+uploaded = await blob.put_blob(
+    "user-profile.jpg",
+    image_bytes,
+    access="private",  # or "public"
+    allow_overwrite=True,  # Enable overwriting an existing blob with the same pathname
+)
+```
+
+You can allow overwrites for server uploads, and for [client uploads](/docs/vercel-blob/client-upload) when your server generates the client token.
 
 ### When to use overwriting
 
@@ -192,35 +241,63 @@ Overwriting blobs can be appropriate for certain use cases:
 1. **Regularly updated files**: For files that need to maintain the same URL but contain updated content (like JSON data files or configuration files)
 2. **Content with predictable update patterns**: For data that changes on a schedule and where consumers expect updates at the same URL
 
-When overwriting blobs, be aware that due to [caching](#caching), changes won't be immediately visible. Changes may take up to 60 seconds to propagate, and browser caches may need to be explicitly refreshed. For private blobs, you can read the latest version immediately by passing [`useCache: false`](/docs/vercel-blob/private-storage#consistent-reads) to `get()`.
+When overwriting blobs, be aware that due to [caching](#caching), changes won't be immediately visible. Changes may take up to 60 seconds to propagate, and browser caches may need to be explicitly refreshed. For private blobs, you can read the latest version immediately with a [consistent read](/docs/vercel-blob/private-storage#consistent-reads).
 
 ### Alternatives to overwriting
 
 If you want to avoid overwriting existing content (recommended for most use cases), you have two options:
 
-1. **Use `addRandomSuffix: true`**: This automatically adds a unique random suffix to your pathnames:
+1. **Add a random suffix**: The SDK adds a unique random suffix to your pathname:
 
-```js
+**index.ts**
+
+```ts filename="index.ts"
 const blob = await put('avatar.jpg', imageFile, {
   access: 'private' /* or 'public' */,
   addRandomSuffix: true, // Creates a pathname like 'avatar-oYnXSVczoLa9yBYMFJOSNdaiiervF5.jpg'
 });
 ```
 
+**main.py**
+
+```py filename="main.py"
+uploaded = await blob.put_blob(
+    "avatar.jpg",
+    image_bytes,
+    access="private",  # or "public"
+    add_random_suffix=True,  # Creates a pathname like 'avatar-oYnXSVczoLa9yBYMFJOSNdaiiervF5.jpg'
+)
+```
+
 2. **Generate unique pathnames programmatically**: Create unique pathnames by adding timestamps, UUIDs, or other identifiers:
 
-```js
+**index.ts**
+
+```ts filename="index.ts"
 const timestamp = Date.now();
 const blob = await put(`user-profile-${timestamp}.jpg`, imageFile, {
-  access: 'private' /* or 'public' */
+  access: 'private' /* or 'public' */,
 });
+```
+
+**main.py**
+
+```py filename="main.py"
+import time
+
+timestamp = time.time_ns() // 1_000_000
+uploaded = await blob.put_blob(
+    f"user-profile-{timestamp}.jpg",
+    image_bytes,
+    access="private",  # or "public"
+)
 ```
 
 ## Conditional writes
 
-Conditional writes use the `ifMatch` option to implement optimistic concurrency control. When writing, pass a known ETag from a previous upload, [`get()`](/docs/vercel-blob/using-blob-sdk#get), or [`head()`](/docs/vercel-blob/using-blob-sdk#head) call. The operation only succeeds if the blob hasn't changed since that ETag was issued. If another process modified the blob in between, the ETag won't match and the SDK throws a `BlobPreconditionFailedError`.
+Conditional writes implement optimistic concurrency control. When writing, pass a known ETag from a previous upload, download, or metadata request. The operation only succeeds if the blob hasn't changed since that ETag was issued. If another process modified the blob in between, the ETag won't match and the SDK raises a precondition failed error.
 
-This works the same way for both private and public storage, and is available on [`put()`](/docs/vercel-blob/using-blob-sdk#put), [`copy()`](/docs/vercel-blob/using-blob-sdk#copy), and [`del()`](/docs/vercel-blob/using-blob-sdk#del):
+This works the same way for both private and public storage, and applies to uploads, copies, and deletes. See the [JS SDK](/docs/vercel-blob/using-blob-sdk#put) and [Python SDK](/docs/vercel-blob/python-sdk-reference#copy_blob) references for the conditional operations each SDK supports:
 
 ```js
 import { head, put, BlobPreconditionFailedError } from '@vercel/blob';
@@ -247,11 +324,11 @@ Use conditional writes when multiple processes or users may update the same blob
 
 ## Conditional reads
 
-Conditional reads use the `ifNoneMatch` option on [`get()`](/docs/vercel-blob/using-blob-sdk#get) to avoid re-downloading blobs that haven't changed. Pass the ETag you received from a previous response, and if the blob is unchanged, `get()` returns `statusCode: 304` with `stream: null` instead of the full file content.
+Conditional reads avoid re-downloading blobs that haven't changed. Pass the ETag you received from a previous response, and if the blob is unchanged, the read returns a `304 Not Modified` status without the file content. Pass the ETag with the [`ifNoneMatch`](/docs/vercel-blob/using-blob-sdk#get) option.
 
 How conditional reads work depends on how blobs are delivered:
 
-- **Private blobs**: Your [Function](/docs/functions) fetches the blob using `get()` with `ifNoneMatch`, then forwards the `304` or `200` response to the browser. See [browser caching with conditional requests](/docs/vercel-blob/private-storage#browser-caching-with-conditional-requests) for a full example.
+- **Private blobs**: Your [Function](/docs/functions) fetches the blob with a conditional read, then forwards the `304` or `200` response to the browser. See [browser caching with conditional requests](/docs/vercel-blob/private-storage#browser-caching-with-conditional-requests) for a full example.
 - **Public blobs**: The CDN handles conditional requests automatically. When a browser requests a public blob URL, the CDN includes an ETag in the response. On repeat requests, the browser sends `If-None-Match` and the CDN returns `304 Not Modified` when the blob hasn't changed. See [browser caching](/docs/vercel-blob/public-storage#browser-caching-with-conditional-requests) for details.
 
 ## Blob Data Transfer
@@ -260,7 +337,7 @@ Understanding Blob Data Transfer helps you manage your [usage and pricing](/docs
 
 Vercel Blob delivers content through a specialized network optimized for static assets:
 
-- **Region-based distribution**: Content is served from 20 regional hubs strategically located around the world
+- **Region-based distribution**: Content is served from 19 regional hubs strategically located around the world
 - **Optimized for non-critical assets**: Well-suited for content "below the fold" that isn't essential for initial page rendering metrics like First Contentful Paint (FCP) or Largest Contentful Paint (LCP)
 - **Cost-optimized for large assets**: 3x more cost-efficient than [Fast Data Transfer](/docs/cdn) on average
 - **Great for media delivery**: Ideal for large media files like images, videos, and documents
@@ -275,7 +352,7 @@ Client uploads have no data transfer charges. Server uploads incur [Fast Data Tr
 
 ## Choosing your Blob store region
 
-You can create Blob stores in any of the 20 [regions](/docs/regions#region-list). Use the region selector in the dashboard at blob store creation time, or use the [CLI](/docs/cli/blob) with the `--region` option.
+You can create Blob stores in any of the 19 [regions](/docs/regions#region-list). Use the region selector in the dashboard at blob store creation time, or use the [CLI](/docs/cli/blob) with the `--region` option.
 
 Select a region close to your customers and functions to minimize upload time. Region selection also helps meet data regulatory requirements. Vercel Blob [pricing](/docs/vercel-blob/usage-and-pricing) is regionalized, so check the pricing for your selected region.
 
@@ -285,7 +362,7 @@ You cannot change the region once the store is created.
 
 Simple operations in Vercel Blob are specific read actions counted for billing purposes:
 
-- When the [`head()`](/docs/vercel-blob/using-blob-sdk#head) method is called to retrieve blob metadata
+- When you retrieve blob metadata without downloading the blob
 - When a blob is accessed by its URL and it's a cache MISS
 
 A cache MISS occurs when the blob is accessed for the first time or when its previously cached version has expired. Note that blob URL access resulting in a cache HIT does not count as a Simple Operation.
@@ -294,10 +371,10 @@ A cache MISS occurs when the blob is accessed for the first time or when its pre
 
 Advanced operations in Vercel Blob are write, copy, and listing actions counted for billing purposes:
 
-- When the [`put()`](/docs/vercel-blob/using-blob-sdk#put) method is called to upload a blob
-- When the [`upload()`](/docs/vercel-blob/using-blob-sdk#upload) method is used for client-side uploads
-- When the [`copy()`](/docs/vercel-blob/using-blob-sdk#copy) method is called to copy an existing blob
-- When the [`list()`](/docs/vercel-blob/using-blob-sdk#list) method is called to list blobs in your store
+- When you upload a blob from your server
+- When you upload a blob from the browser with a [client upload](/docs/vercel-blob/client-upload)
+- When you copy an existing blob
+- When you list blobs in your store
 
 ### Dashboard usage counts as operations
 
@@ -305,10 +382,10 @@ Using the Vercel Blob file browser in your dashboard will count as operations. E
 
 Common dashboard actions that count as operations:
 
-- **Refreshing the file browser**: Uses `list()` to display your blobs
-- **Uploading files via dashboard**: Uses `put()` for each file uploaded
+- **Refreshing the file browser**: Lists your blobs
+- **Uploading files via dashboard**: Uploads each file
 - **Viewing blob details**: May trigger additional API calls
-- **Navigating folders**: Uses `list()` with different prefixes
+- **Navigating folders**: Lists blobs with different prefixes
 
 If you notice unexpected increases in your operations count, check whether team members are browsing your blob store through the Vercel dashboard.
 
@@ -318,7 +395,7 @@ For [multipart uploads](#multipart-uploads), multiple advanced operations are co
 - One operation for each part uploaded
 - One operation for completing the upload
 
-Delete operations using the [`del()`](/docs/vercel-blob/using-blob-sdk#del) are free of charge. They are considered advanced operations for [operation rate limits](/docs/vercel-blob/usage-and-pricing#operation-rate-limits) but not for billing.
+Delete operations are free of charge. They are considered advanced operations for [operation rate limits](/docs/vercel-blob/usage-and-pricing#operation-rate-limits) but not for billing.
 
 ## Storage calculation
 
@@ -344,7 +421,7 @@ If no changes occur in the following month (no new uploads or deletions), each 1
 
 ## Multipart uploads
 
-Vercel Blob supports [multipart uploads](/docs/vercel-blob/using-blob-sdk#multipart-uploads) for large files, which provides significant advantages when transferring substantial amounts of data.
+Vercel Blob supports multipart uploads for large files, which provides significant advantages when transferring substantial amounts of data.
 
 Multipart uploads work by splitting large files into smaller chunks (parts) that are uploaded independently and then reassembled on the server. This approach offers several key benefits:
 
@@ -352,7 +429,7 @@ Multipart uploads work by splitting large files into smaller chunks (parts) that
 - **Better performance**: Multiple parts can be uploaded in parallel, significantly increasing transfer speed
 - **Progress tracking**: More granular upload progress reporting as each part completes
 
-We recommend using multipart uploads for files larger than 100 MB. Both the [`put()`](/docs/vercel-blob/using-blob-sdk#put) and [`upload()`](/docs/vercel-blob/using-blob-sdk#upload) methods handle all the complexity of splitting, uploading, and reassembling the file for you.
+We recommend using multipart uploads for files larger than 100 MB. See multipart uploads in the [JS SDK](/docs/vercel-blob/using-blob-sdk#multipart-uploads) and [Python SDK](/docs/vercel-blob/python-sdk-reference#upload-a-blob-in-parts) references for how each SDK splits and uploads parts.
 
 For billing purposes, multipart uploads count as multiple advanced operations:
 
@@ -375,13 +452,29 @@ These guarantees are backed by [S3's robust architecture](https://docs.aws.amazo
 
 Vercel Blob has folders support to organize your blobs:
 
-```js
-const blob = await put('folder/file.txt', 'Hello World!', { access: 'private' /* or 'public' */ });
+**index.ts**
+
+```ts filename="index.ts"
+const blob = await put('folder/file.txt', 'Hello World!', {
+  access: 'private' /* or 'public' */,
+});
 ```
 
-The path `folder/file.txt` creates a folder named `folder` and a blob named `file.txt`. To list all blobs within a folder, use the [`list`](/docs/vercel-blob/using-blob-sdk#list-blobs) function:
+**main.py**
 
-```js
+```py filename="main.py"
+uploaded = await blob.put_blob(
+    "folder/file.txt",
+    b"Hello World!",
+    access="private",  # or "public"
+)
+```
+
+The path `folder/file.txt` creates a folder named `folder` and a blob named `file.txt`. To list all blobs within a folder, list blobs with the folder as a prefix:
+
+**index.ts**
+
+```ts filename="index.ts"
 const listOfBlobs = await list({
   cursor,
   limit: 1000,
@@ -389,31 +482,74 @@ const listOfBlobs = await list({
 });
 ```
 
+**main.py**
+
+```py filename="main.py"
+async for item in blob.query_blobs(prefix="folder/"):
+    print(item.pathname)
+```
+
+To browse one folder level at a time, list only the blobs directly inside the folder along with the names of its subfolders. See browsing folders in the [JS SDK](/docs/vercel-blob/using-blob-sdk#folders) and [Python SDK](/docs/vercel-blob/python-sdk-reference#query_blob_entries) references.
+
 You don't need to create folders. Upload a file with a path containing a slash `/`, and Vercel Blob will interpret the slashes as folder delimiters.
 
 In the Vercel Blob file browser on the Vercel dashboard, any pathname with a slash `/` is treated as a folder. However, these are not actual folders like in a traditional file system; they are used for organizing blobs in listings and the file browser.
 
+## Pathname characters
+
+Control characters in a pathname are not supported. If you upload a blob with one, the pathname and URLs returned when you list blobs may not match the blob you stored, and operations that take them may not find it.
+
 ## Blob sorting and organization
 
-Blobs are returned in **lexicographical order** by pathname (not creation date) when using [`list()`](/docs/vercel-blob/using-blob-sdk#list). Numbers are treated as characters, so `file10.txt` comes before `file2.txt`.
+When you list blobs, they're returned in **lexicographical order** by pathname (not creation date). Numbers are treated as characters, so `file10.txt` comes before `file2.txt`.
 
 **Sort by creation date:** Include timestamps in pathnames:
 
-```js
+**index.ts**
+
+```ts filename="index.ts"
 const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 await put(`reports/${timestamp}-quarterly-report.pdf`, file, {
-  access: 'private' /* or 'public' */
+  access: 'private' /* or 'public' */,
 });
+```
+
+**main.py**
+
+```py filename="main.py"
+from datetime import date
+
+timestamp = date.today().isoformat()  # YYYY-MM-DD
+await blob.put_blob(
+    f"reports/{timestamp}-quarterly-report.pdf",
+    file_bytes,
+    access="private",  # or "public"
+)
 ```
 
 **Use prefixes for search:** Consider lowercase pathnames for consistent matching:
 
-```js
-await put('user-uploads/avatar.jpg', file, { access: 'private' /* or 'public' */ });
+**index.ts**
+
+```ts filename="index.ts"
+await put('user-uploads/avatar.jpg', file, {
+  access: 'private' /* or 'public' */,
+});
 const userUploads = await list({ prefix: 'user-uploads/' });
 ```
 
-For complex sorting, sort results client-side using `uploadedAt` or other properties.
+**main.py**
+
+```py filename="main.py"
+await blob.put_blob(
+    "user-uploads/avatar.jpg",
+    file_bytes,
+    access="private",  # or "public"
+)
+user_uploads = [item async for item in blob.query_blobs(prefix="user-uploads/")]
+```
+
+For complex sorting, sort results client-side using the upload time or other properties.
 
 ## More resources
 
@@ -421,7 +557,8 @@ For complex sorting, sort results client-side using `uploadedAt` or other proper
 - [Public Storage](/docs/vercel-blob/public-storage)
 - [Client Upload Quickstart](/docs/vercel-blob/client-upload)
 - [Server Upload Quickstart](/docs/vercel-blob/server-upload)
-- [Vercel Blob SDK](/docs/vercel-blob/using-blob-sdk)
+- [Vercel Blob JS SDK Reference](/docs/vercel-blob/using-blob-sdk)
+- [Vercel Blob Python SDK Reference](/docs/vercel-blob/python-sdk-reference)
 - [Vercel Blob CLI](/docs/cli/blob)
 - [Vercel Blob Pricing](/docs/vercel-blob/usage-and-pricing)
 - [Vercel Blob Security](/docs/vercel-blob/security)
@@ -432,3 +569,6 @@ For complex sorting, sort results client-side using `uploadedAt` or other proper
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

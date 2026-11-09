@@ -3,13 +3,13 @@ title: Managing the visibility of the Vercel Toolbar
 product: vercel
 url: /docs/vercel-toolbar/managing-toolbar
 canonical_url: "https://vercel.com/docs/vercel-toolbar/managing-toolbar"
-last_updated: 2025-07-18
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/vercel-toolbar
 related:
   - /docs/vercel-toolbar/browser-extension
-  - /docs/deployments/environments
+  - /docs/deployments/generated-urls
   - /docs/environment-variables
   - /docs/domains/working-with-domains/add-a-domain
   - /docs/caching/cache-control-headers
@@ -19,7 +19,11 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Managing the visibility of the Vercel Toolbar
 
-> **🔒 Permissions Required**: Vercel Toolbar
+> Vercel Toolbar is available on all plans
+
+## Viewing the toolbar
+
+When the toolbar is enabled, you'll be able to view it on any preview or enabled environment. By default, the toolbar will appear as a circle with a menu icon. Clicking activates it, at which point you will see any comments on the page and notifications for issues detected by tools running in the background. When the toolbar has not been activated it will show a small Vercel icon over the menu icon.
 
 
 <!-- docsgraph:related -->
@@ -27,18 +31,18 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Add to Production](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-production?from=related) — Learn how to add the Vercel Toolbar to your production environment and how your team members can use tooling to access t
-- [Using Vercel Toolbar](https://vercel.com/docs/microfrontends/managing-microfrontends/vercel-toolbar?from=related) — Learn about using vercel toolbar on Vercel.
-- [Add to Environments](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost?from=related) — Learn how to use the Vercel Toolbar in production and local environments.
-- [Enabling Comments](https://vercel.com/docs/comments/how-comments-work?from=related) — Learn when and where Comments are available, and how to enable and disable Comments at the account, project, and session
-- [Add to Localhost](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-localhost?from=related) — Learn how to use the Vercel Toolbar in your local environment.
+- [@vercel/toolbar available to use collaboration features in production](https://vercel.com/changelog/vercel-toolbar-now-available-to-use-collaboration-features-in-production)
+- [Introducing new developer tools in the Vercel Toolbar](https://vercel.com/blog/introducing-new-developer-tools-in-the-vercel-toolbar)
+- [Use the Vercel Toolbar in Production with the Chrome Extension or the toolbar menu](https://vercel.com/changelog/use-the-vercel-toolbar-in-production)
+- [Improvements to Vercel Toolbar: Shrinking when inactive, removal of avatars, and more](https://vercel.com/changelog/improvements-to-vercel-toolbar)
+- [Easier toolbar setup for SvelteKit and other Vite-based frameworks](https://vercel.com/changelog/easier-toolbar-setup-for-sveltekit-and-other-vite-based-frameworks)
+- [The Vercel Toolbar is now more compact and dynamic](https://vercel.com/changelog/the-vercel-toolbar-is-now-more-compact-and-dynamic)
+- [Enabling and Disabling Comments](https://vercel.com/docs/comments/how-comments-work) — Learn when and where Comments are available, and how to enable and disable Comments at the account, project, and session
+- [Toolbar](https://vercel.com/docs/agent-resources/vercel-mcp/tools/toolbar) — Vercel MCP tools for toolbar.
+- [Accessibility Audit Tool](https://vercel.com/docs/vercel-toolbar/accessibility-audit-tool) — Learn how to use the Accessibility Audit Tool to automatically check the Web Content Accessibility Guidelines 2.0 level
 
 Full cross-link map for this page: [/docs/vercel-toolbar/managing-toolbar.graph.md](/docs/vercel-toolbar/managing-toolbar.graph.md)
 <!-- /docsgraph:related -->
-
-## Viewing the toolbar
-
-When the toolbar is enabled, you'll be able to view it on any preview or enabled environment. By default, the toolbar will appear as a circle with a menu icon. Clicking activates it, at which point you will see any comments on the page and notifications for issues detected by tools running in the background. When the toolbar has not been activated it will show a small Vercel icon over the menu icon.
 
 Once a tool is used, the toolbar will show a second icon next to the menu, so you can access your most recently used tool.
 
@@ -49,10 +53,13 @@ To disable the toolbar by default for all projects in your team:
 1. Navigate to [your Vercel dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard) and make sure that you have selected your team from the team switcher.
 2. From your [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard), open **Settings** in the sidebar.
 3. In the **General** section, find **Vercel Toolbar**.
-4. Under each environment (**Preview** and **Production**), select either **On** or **Off** from the dropdown to determine the visibility of the Vercel Toolbar for that environment.
+4. Under **Pre-Production Deployments** and **Production Deployments**, select an option from the dropdown to determine the visibility of the Vercel Toolbar for those deployments. The options are:
+   - **Default (on)**: Keep the Vercel default, which enables the toolbar.
+   - **On**: Enable the toolbar.
+   - **Off**: Disable the toolbar.
 5. You can optionally choose to allow the setting to be overridden at the project level.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/team-level-toolbar-management-light.png`)
+![The dashboard setting to enable or disable the toolbar at the team level.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/team-level-toolbar-management-light.png)
 
 ## Enable or disable the toolbar project-wide
 
@@ -61,12 +68,12 @@ To disable the toolbar project-wide:
 1. From your [dashboard](/dashboard), select the project you want to enable or disable Vercel Toolbar for.
 2. Navigate to [**General**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fgeneral\&title=Go+to+General+settings) in **Settings**.
 3. Find **Vercel Toolbar**.
-4. Under each environment (**Preview** and **Production**), select either an option from the dropdown to determine the visibility of Vercel Toolbar for that environment. The options are:
+4. Under **Pre-Production Deployments** and **Production Deployments**, select an option from the dropdown to determine the visibility of Vercel Toolbar for those deployments. The options are:
    - **Default**: Respect team-level visibility settings.
    - **On**: Enable the toolbar for the environment.
    - **Off**: Disable the toolbar for the environment.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/project-level-toolbar-management-light.png`)
+![The dashboard setting to enable or disable the toolbar in a project.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/project-level-toolbar-management-light.png)
 
 ## Disable toolbar for session
 
@@ -81,7 +88,7 @@ Alternatively, you can also hide the toolbar in any of the following ways:
 
 - Select the toolbar icon and drag it to the X that appears at the bottom of the screen.
 - Click the [browser extension](/docs/vercel-toolbar/browser-extension) icon if you have it pinned to your browser bar.
-- Use .
+- Use `.`.
 
 To show the toolbar when it is hidden you can use that same key command or click the browser extension.
 
@@ -91,7 +98,7 @@ Users with the browser extension can set the toolbar to start hidden by toggling
 
 You can use the `x-vercel-skip-toolbar` header to prevent interference with automated end-to-end tests:
 
-1. Add the `x-vercel-skip-toolbar` header to the request sent to [the preview deployment URL](/docs/deployments/environments#preview-environment-pre-production#preview-urls)
+1. Add the `x-vercel-skip-toolbar` header to the request sent to [the preview deployment URL](/docs/deployments/generated-urls#viewing-generated-urls)
 2. Optionally, you can assign the value `1` to the header. However, presence of the header itself triggers Vercel to disable the toolbar
 
 ## Enable or disable the toolbar for a specific branch
@@ -149,3 +156,6 @@ You can make the following adjustments to the `Content-Security-Policy` [respons
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

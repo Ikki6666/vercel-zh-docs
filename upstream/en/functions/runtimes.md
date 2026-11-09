@@ -3,7 +3,7 @@ title: Runtimes
 product: vercel
 url: /docs/functions/runtimes
 canonical_url: "https://vercel.com/docs/functions/runtimes"
-last_updated: 2026-07-29
+last_updated: 2026-08-12
 type: reference
 prerequisites:
   - /docs/functions
@@ -27,17 +27,18 @@ Vercel supports multiple runtimes for your functions. Each runtime has its own s
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Vercel Deployment Guide](https://ai-sdk.dev/docs/advanced/vercel-deployment-guide?from=related)
-- [How can I reduce my Vercel Functions usage on Vercel?](https://vercel.com/kb/guide/how-can-i-reduce-my-serverless-execution-usage-on-vercel?from=related) — Reduce Vercel Functions usage and cost under Fluid compute pricing with caching, rendering strategies, and function conf
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
-- [Vercel vs Render](https://vercel.com/kb/guide/vercel-vs-render?from=related) — A detailed guide to Vercel vs Render: compute models, AI infrastructure, Docker support, background workers, and when to
-- [Hosting your API on Vercel](https://vercel.com/kb/guide/hosting-backend-apis?from=related) — Learn how to build and scale performant APIs on Vercel.
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
-- [Vercel Primitives](https://vercel.com/docs/build-output-api/primitives?from=related) — Learn about the Vercel platform primitives and how they work together to create a Vercel Deployment.
-- [Build Image](https://vercel.com/docs/builds/build-image?from=related) — Learn about the container image used for Vercel builds.
-- [Managing Cron Jobs](https://vercel.com/docs/cron-jobs/manage-cron-jobs?from=related) — Learn how to manage Cron Jobs effectively in Vercel. Explore cron job duration, error handling, deployments, concurrency
-- [Troubleshoot Build Errors](https://vercel.com/docs/deployments/troubleshoot-a-build?from=related) — Learn how to resolve common scenarios you may encounter during the Build step, including build errors that cancel a depl
+- [Vercel Deployment Guide](https://ai-sdk.dev/docs/advanced/vercel-deployment-guide) — Learn how to deploy an AI application to production on Vercel
+- [waitUntil is now available for Vercel Functions](https://vercel.com/changelog/waituntil-is-now-available-for-vercel-functions)
+- [Migrate a Python API from Heroku to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-heroku-to-vercel) — Move a FastAPI, Flask, or Django API from Heroku to Vercel Functions. Replace your Procfile, worker dynos, Heroku Schedu
+- [Migrate a Python API from Railway to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-railway-to-vercel) — Move a FastAPI, Flask, or Django API from Railway to Vercel Functions. Replace railway.json start commands, volumes, Cel
+- [Migrate a Python API from Render to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-render-to-vercel) — Move a FastAPI, Flask, or Django API from Render to Vercel Functions. Translate render.yaml and replace persistent disks
+- [How to choose between Functions, containers, and Daemons on Vercel](https://vercel.com/kb/guide/vercel-functions-containers-daemons) — Choose Vercel Functions for HTTP requests, container images for custom runtimes, and Daemons for continuous background w
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure)
+- [Billions of dollars, billions of requests: Black Friday-Cyber Monday 2024](https://vercel.com/blog/black-friday-cyber-monday-2024-recap)
+- [Vercel Primitives](https://vercel.com/docs/build-output-api/primitives) — Learn about the Vercel platform primitives and how they work together to create a Vercel Deployment.
+- [Build image overview](https://vercel.com/docs/builds/build-image) — Learn about the container image used for Vercel builds.
+- [Fluid compute](https://vercel.com/docs/fluid-compute) — Learn about fluid compute, an execution model for Vercel Functions that provides a more flexible and efficient way to ru
 
 Full cross-link map for this page: [/docs/functions/runtimes.graph.md](/docs/functions/runtimes.graph.md)
 <!-- /docsgraph:related -->
@@ -48,34 +49,17 @@ Runtimes transform your source code into [Functions](/docs/functions), which are
 
 Vercel Functions support the following official runtimes:
 
-| Runtime                                     | Description                                                                                                                                                 |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Node.js](/docs/functions/runtimes/node-js) | The Node.js runtime takes an entrypoint of a Node.js function, builds its dependencies (if any) and bundles them into a Vercel Function.                    |
-| [Bun](/docs/functions/runtimes/bun)         | The Bun runtime takes an entrypoint of a Bun function, builds its dependencies (if any) and bundles them into a Vercel Function.                            |
-| [Python](/docs/functions/runtimes/python)   | The Python runtime runs ASGI and WSGI applications, such as FastAPI, Flask, and Django, as Vercel Functions.                                         |
-| [Rust](/docs/functions/runtimes/rust)       | The Rust runtime takes an entrypoint of a Rust function using the `vercel_runtime` crate and compiles it into a Vercel Function.                            |
-|                            | The Go runtime takes in a Go program that defines a singular HTTP handler and outputs it as a Vercel Function.                                              |
-| [Ruby](/docs/functions/runtimes/ruby)       | The Ruby runtime takes in a Ruby program that defines a singular HTTP handler and outputs it as a Vercel Function.                                          |
-| [Wasm](/docs/functions/runtimes/wasm)       | The Wasm runtime takes in a pre-compiled WebAssembly program and outputs it as a Vercel Function.                                                           |
-| [Edge](/docs/functions/runtimes/edge)       | The Edge runtime is built on top of the V8 engine, allowing it to run in isolated execution environments that don't require a container or virtual machine. |
-
-## Community runtimes
-
-If you would like to use a language that Vercel does not support by default, you can use a community runtime by setting the [`functions` property](/docs/project-configuration/vercel-json#functions) in `vercel.json`. For more information on configuring other runtimes, see [Configuring your function runtime](/docs/functions/configuring-functions/runtime#other-runtimes).
-
-The following community runtimes are recommended by Vercel:
-
-| Runtime | Runtime Module | Docs                                     |
-| ------- | -------------- | ---------------------------------------- |
-| Bash    | `vercel-bash`  | https://github.com/importpw/vercel-bash  |
-| Deno    | `vercel-deno`  | https://github.com/vercel-community/deno |
-| PHP     | `vercel-php`   | https://github.com/vercel-community/php  |
-
-You can create a community runtime by using the [Runtime API](https://github.com/vercel/vercel/blob/main/DEVELOPING_A_RUNTIME.md). Alternatively, you can use the [Build Output API](/docs/build-output-api).
-
-## Container Images
-
-Vercel Functions support deploying custom OCI container images stored in the [Vercel Container Registry (VCR)](/docs/container-registry). Learn more about [deploying container images](/docs/functions/container-images).
+| Runtime                                         | Description                                                                                                                                                 |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Node.js](/docs/functions/runtimes/node-js)     | The Node.js runtime takes an entrypoint of a Node.js function, builds its dependencies (if any) and bundles them into a Vercel Function.                    |
+| [Bun](/docs/functions/runtimes/bun)             | The Bun runtime takes an entrypoint of a Bun function, builds its dependencies (if any) and bundles them into a Vercel Function.                            |
+| [Python](/docs/functions/runtimes/python)       | The Python runtime runs ASGI and WSGI applications, such as FastAPI, Flask, and Django, as Vercel Functions.                                                |
+| [Rust](/docs/functions/runtimes/rust)           | The Rust runtime takes an entrypoint of a Rust function using the `vercel_runtime` crate and compiles it into a Vercel Function.                            |
+| [Go](/docs/functions/runtimes/go)                               | The Go runtime takes in a Go program that defines a singular HTTP handler and outputs it as a Vercel Function.                                              |
+| [Ruby](/docs/functions/runtimes/ruby)           | The Ruby runtime takes in a Ruby program that defines a singular HTTP handler and outputs it as a Vercel Function.                                          |
+| [Wasm](/docs/functions/runtimes/wasm)           | The Wasm runtime takes in a pre-compiled WebAssembly program and outputs it as a Vercel Function.                                                           |
+| [Edge](/docs/functions/runtimes/edge)           | The Edge runtime is built on top of the V8 engine, allowing it to run in isolated execution environments that don't require a container or virtual machine. |
+| [Container](/docs/functions/runtimes/container) | The Container runtime runs any code and library from an OCI container image built from a `Dockerfile` or `Containerfile`. A root `Dockerfile` is enough when no other framework is detected. |
 
 ## Features
 
@@ -112,7 +96,7 @@ Filesystem support refers to a function's ability to read and write to the files
 Vercel Functions are archived when they are not invoked:
 
 - **Within 2 weeks** for [Production Deployments](/docs/deployments)
-- **Within 48 hours** for [Preview Deployments](/docs/deployments/environments#preview-environment-pre-production)
+- **Within 3 days** for [Preview Deployments](/docs/deployments/environments#preview-environment-pre-production)
 
 Archived functions will be unarchived when they're invoked, which can make the initial [cold start](/docs/fundamentals/what-is-compute#cold-and-hot-boots "Cold start") time at least 1 second longer than usual.
 
@@ -124,14 +108,7 @@ When using other [frameworks](/docs/frameworks), or Vercel Functions [directly w
 
 ## Caching data
 
-A runtime can retain an archive of up to **100 MB** of the filesystem at build time. The cache key is generated as a combination of:
-
-- Project name
-- [Team ID](/docs/accounts#find-your-team-id) or User ID
-- Entrypoint path (e.g., `api/users/index.go`)
-- Runtime identifier including version (e.g.: `@vercel/go@0.0.1`)
-
-The cache will be invalidated if any of those items changes. You can bypass the cache by running `vercel -f`.
+A runtime can keep files from a build in the Build cache. To learn which data makes up the Build cache key, see [Caching process](/docs/deployments/troubleshoot-a-build#caching-process). To learn the maximum size of the Build cache, see [Build cache maximum size](/docs/limits#build-cache-maximum-size). You can bypass the cache by running `vercel --force`.
 
 ## Environment variables
 
@@ -177,3 +154,6 @@ Vercel supports [Tracing](/docs/tracing) that allows you to send OpenTelemetry t
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

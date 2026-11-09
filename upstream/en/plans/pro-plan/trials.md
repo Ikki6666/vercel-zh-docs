@@ -1,9 +1,9 @@
 ---
-title: "Understanding Vercel's Pro Plan Trial"
+title: Understanding Vercel
 product: vercel
 url: /docs/plans/pro-plan/trials
 canonical_url: "https://vercel.com/docs/plans/pro-plan/trials"
-last_updated: 2026-06-16
+last_updated: 2026-09-14
 type: reference
 prerequisites:
   - /docs/plans/pro-plan
@@ -11,9 +11,9 @@ prerequisites:
 related:
   - /docs/plans/pro-plan
   - /docs/limits
+  - /docs/limits/fair-use-guidelines
   - /docs/functions/usage-and-pricing
   - /docs/image-optimization/limits-and-pricing
-  - /docs/pricing/manage-and-optimize-usage
 summary: "Learn all about Vercel's Pro Plan free trial, including features, usage limits, and options post-trial. Learn how to manage your team's projects with..."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -28,12 +28,13 @@ Vercel offers three plan tiers: **Hobby**, **Pro**, and **Enterprise**.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
-- [Hobby Plan](https://vercel.com/docs/plans/hobby?from=related) — Learn about the Hobby plan and how it compares to the Pro plan.
-- [Free Domain with Pro](https://vercel.com/docs/domains/free-domain-with-pro?from=related) — Learn about free domain with pro on Vercel.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Pricing](https://vercel.com/docs/analytics/limits-and-pricing?from=related) — Learn about pricing for Vercel Web Analytics.
-- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
+- [A more flexible Pro plan for modern teams](https://vercel.com/blog/new-pro-pricing-plan)
+- [Vercel Hobby Plan](https://vercel.com/docs/plans/hobby) — Learn about the Hobby plan and how it compares to the Pro plan.
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing)
+- [Pricing on Vercel](https://vercel.com/docs/pricing) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Pricing for Web Analytics](https://vercel.com/docs/analytics/limits-and-pricing) — Learn about pricing for Vercel Web Analytics.
+- [Account Management](https://vercel.com/docs/accounts) — Learn how to manage your Vercel account and team members.
+- [Free Domain with Pro](https://vercel.com/docs/domains/free-domain-with-pro) — Every paid Pro team gets one free first-year custom domain on an eligible TLD. Claim yours at checkout or from domain se
 
 Full cross-link map for this page: [/docs/plans/pro-plan/trials.graph.md](/docs/plans/pro-plan/trials.graph.md)
 <!-- /docsgraph:related -->
@@ -48,11 +49,11 @@ The Pro trial offers an opportunity to explore [Pro features](/docs/plans/pro-pl
 2. Name your team
 3. Select the **Pro Trial** option from the dialog. If this option does not appear, it means you have already reached your limit of one trial:
 
-![Image](https://vercel.com/docs-assets/static/docs/concepts/teams/new-team-light.png)
+![Selecting a team plan.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/teams/new-team-light.png)
 
 ## Trial Limitations
 
-The trial plan includes a $20 credit and follows the same [general limits](/docs/limits#general-limits) as a regular plan but with specified usage restrictions. See how these compare to the [non-trial usage limits](/docs/limits#usage-summary):
+The trial plan includes a $20 credit and follows the same [general limits](/docs/limits#general-limits) as a regular plan but with specified usage restrictions. See how these compare to the [non-trial usage limits](/docs/limits/fair-use-guidelines#typical-monthly-usage-guidelines):
 
 |                                                                                            | Pro Trial Limits     |
 | ------------------------------------------------------------------------------------------ | -------------------- |
@@ -69,11 +70,11 @@ The trial plan includes a $20 credit and follows the same [general limits](/docs
 
 To monitor the current usage of your Team's projects, see the [Usage](/docs/pricing/manage-and-optimize-usage) guide.
 
+[Observability Plus](/docs/observability/observability-plus) is enabled by default during the Pro trial. On-demand Observability Plus event usage counts against the $20 Pro trial credit. After the trial, standard Pro billing applies if you continue with a Pro plan.
+
 The following Pro features are **not available** on the trial:
 
-- [Observability Plus](/docs/observability/observability-plus) (available on Paid Pro only)
-
-- [Log drains](/docs/drains)
+- [Drains](/docs/drains)
 - [Account webhooks](/docs/webhooks#account-webhooks)
 - [Free first-year domain with Pro](/docs/plans/pro-plan#free-first-year-domain-with-pro)
 - [Sandbox failover regions](/docs/sandbox/concepts/regions#failover-regions)
@@ -106,7 +107,7 @@ Billing begins immediately after your trial ends if you have added a payment met
 Without a payment method, your account reverts to a Hobby plan when the trial ends. Alternatively, you can use the **Downgrade** button located in the **Pro Plan** section of your [team's Billing page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fbilling\&title=Go+to+Billing) to immediately end your trial and return to a Hobby plan. All team members will be removed from your team, and all Hobby limits will apply to your team.
 
 > **💡 Note:** Charges apply only if you have a payment method. If a trial finishes and you
-> haven't set payment method, you will  get charged.
+> haven't set payment method, you will **not** get charged.
 
 You can upgrade to a Pro plan anytime later by visiting **Settings > Billing** and adding a payment method.
 
@@ -127,3 +128,6 @@ No charges apply for the months of inactivity. Billing will only cover the curre
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

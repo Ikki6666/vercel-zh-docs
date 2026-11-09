@@ -3,7 +3,7 @@ title: Legacy Pricing for Image Optimization
 product: vercel
 url: /docs/image-optimization/legacy-pricing
 canonical_url: "https://vercel.com/docs/image-optimization/legacy-pricing"
-last_updated: 2026-02-25
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/image-optimization
@@ -12,7 +12,7 @@ related:
   - /docs/manage-cdn-usage
   - /docs/cdn
   - /docs/limits/fair-use-guidelines
-  - /docs/errors
+  - /docs/errors/deployment_disabled
 summary: This page outlines information on the pricing and limits for the source images-based legacy option.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -20,22 +20,6 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 # Legacy Pricing for Image Optimization
 
 ## Pricing
-
-
-<!-- docsgraph:related -->
-## Related pages
-
-> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
-
-- [Limits and Pricing](https://vercel.com/docs/image-optimization/limits-and-pricing?from=related) — This page outlines information on the limits that are applicable when using Image Optimization, and the costs they can i
-- [How can I reduce my Vercel Functions usage on Vercel?](https://vercel.com/kb/guide/how-can-i-reduce-my-serverless-execution-usage-on-vercel?from=related) — Reduce Vercel Functions usage and cost under Fluid compute pricing with caching, rendering strategies, and function conf
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Getting Started](https://vercel.com/docs/image-optimization/quickstart?from=related) — Learn how you can leverage Vercel Image Optimization in your projects.
-- [Pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing?from=related) — Learn about the pricing for Vercel Blob.
-
-Full cross-link map for this page: [/docs/image-optimization/legacy-pricing.graph.md](/docs/image-optimization/legacy-pricing.graph.md)
-<!-- /docsgraph:related -->
 
 > **💡 Note:** This legacy pricing option is only available to Enterprise teams
 > created before February 18th, 2025, who are given the choice to
@@ -45,6 +29,25 @@ Full cross-link map for this page: [/docs/image-optimization/legacy-pricing.grap
 > source images-based pricing plan until the contract expires.
 
 Image Optimization pricing is dependent on your plan and how many unique [source images](#source-images) you have across your projects during your billing period.
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Changes to Vercel Image Optimization](https://vercel.com/changelog/changes-to-vercel-image-optimizations)
+- [Limits and Pricing for Image Optimization](https://vercel.com/docs/image-optimization/limits-and-pricing) — This page outlines information on the limits that are applicable when using Image Optimization, and the costs they can i
+- [How to reduce Vercel Image Optimization costs](https://vercel.com/kb/guide/reduce-image-optimization-costs-on-vercel) — Learn how to reduce Vercel Image Optimization costs in Next.js by tuning cache TTLs, image sizes, formats, and quality.
+- [Faster transformations and reduced pricing for Image Optimization](https://vercel.com/changelog/faster-transformations-and-reduced-pricing-for-image-optimization)
+- [Increased Hobby usage limits for Image Optimization](https://vercel.com/changelog/increased-hobby-usage-limits-for-image-optimization)
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Pricing on Vercel](https://vercel.com/docs/pricing) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Legacy Usage & Pricing for Functions](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing) — Learn about legacy usage and pricing for Vercel Functions.
+- [Vercel Blob Pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing) — Learn about the pricing for Vercel Blob.
+
+Full cross-link map for this page: [/docs/image-optimization/legacy-pricing.graph.md](/docs/image-optimization/legacy-pricing.graph.md)
+<!-- /docsgraph:related -->
 
 | Resource | Pro Price |
 | --- | --- |
@@ -69,7 +72,7 @@ A source image is the value that is passed to the `src` prop. A single source im
 - Optimized image: `/_next/image?url=%2Fhero.png&w=828&q=75`
 - Optimized image: `/_next/image?url=%2Fhero.png&w=1080&q=75`
 
-For example, if you have passed 6000 source images to the `src` prop within the last billing cycle, your bill will be $5000000.00 for image optimization.
+For example, if you have passed 6000 source images to the `src` prop within the last billing cycle, your bill will be $5 for image optimization.
 
 ## Billing
 
@@ -85,7 +88,7 @@ Vercel will send you emails as you are nearing your [usage](#pricing) limits, bu
 
 Once you exceed the limits:
 
-- New [source images](#source-images) will fail to optimize and instead return a runtime error response with [402 status code](/docs/errors#402:-deployment_disabled). This will trigger the [`onError`](https://nextjs.org/docs/app/api-reference/components/image#onerror) callback and show the [`alt`](https://nextjs.org/docs/app/api-reference/components/image#alt) text instead of the image
+- New [source images](#source-images) will fail to optimize and instead return a runtime error response with [402 status code](/docs/errors/deployment_disabled). This will trigger the [`onError`](https://nextjs.org/docs/app/api-reference/components/image#onerror) callback and show the [`alt`](https://nextjs.org/docs/app/api-reference/components/image#alt) text instead of the image
 - Previously optimized images have already been cached and will continue to work as expected, without error
 
 You will **not** be charged for exceeding the usage limits, but this usually means your application is ready to upgrade to a [Pro plan](/docs/plans/pro-plan).
@@ -96,7 +99,7 @@ If you want to continue using Hobby, read more about [Managing Usage & Costs](/d
 
 For Teams on Pro trials, the [trial will end](/docs/plans/pro-plan/trials#post-trial-decision) if your Team uses over 2500 source images. For more information, see the [trial limits](/docs/plans/pro-plan/trials#trial-limitations).
 
-Vercel will send you emails as you are nearing your [usage](#pricing) limits, but you will also be advised of any alerts within the [dashboard](/dashboard). Once your team exceeds the **5000 source images** limit, you will continue to be charged **$5000000.00 per 1000 source images** for on-demand usage.
+Vercel will send you emails as you are nearing your [usage](#pricing) limits, but you will also be advised of any alerts within the [dashboard](/dashboard). Once your team exceeds the **5000 source images** limit, you will continue to be charged **$5 per 1000 source images** for on-demand usage.
 
 Pro teams can [set up Spend Management](/docs/spend-management#managing-your-spend-amount) to get notified or to automatically take action, such as [using a webhook](/docs/spend-management#configuring-a-webhook) or pausing your projects when your usage hits a set spend amount.
 
@@ -114,3 +117,6 @@ See the [Fair Usage Policy](/docs/limits/fair-use-guidelines#typical-monthly-usa
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

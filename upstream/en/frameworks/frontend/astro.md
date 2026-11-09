@@ -3,18 +3,18 @@ title: Astro on Vercel
 product: vercel
 url: /docs/frameworks/frontend/astro
 canonical_url: "https://vercel.com/docs/frameworks/frontend/astro"
-last_updated: 2026-06-15
+last_updated: 2026-08-26
 type: conceptual
 prerequisites:
   - /docs/frameworks/frontend
   - /docs/frameworks
 related:
-  - /docs/functions/runtimes
+  - /docs/cli
+  - /docs/functions/limitations
   - /docs/analytics
   - /docs/analytics/quickstart
   - /docs/build-output-api/configuration
-  - /docs/deployments/vercel-ignore
-summary: "Learn how to use Vercel's features with Astro"
+summary: Deploy Astro sites to Vercel and configure server-side rendering, ISR, Web Analytics, Image Optimization, and Routing Middleware.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -28,15 +28,18 @@ Astro is an all-in-one web framework that enables you to build performant static
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud?from=related) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
-- [Migrate an Astro app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-an-astro-app-from-webflow-cloud-to-vercel?from=related) — Move your Astro app from Webflow Cloud to Vercel: swap the @astrojs/cloudflare adapter for @astrojs/vercel, drop the bas
-- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify?from=related) — Migrate your website's configuration from Netlify to Vercel
-- [Version 15](https://nextjs.org/docs/app/guides/upgrading/version-15?from=related) — Upgrade your Next.js Application from Version 14 to 15.
-- [Next.js](https://vercel.com/docs/frameworks/full-stack/nextjs?from=related) — Vercel is the native Next.js platform, designed to enhance the Next.js experience.
-- [Nuxt](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related) — Learn how to use Vercel's features with Nuxt.
-- [SvelteKit](https://vercel.com/docs/frameworks/full-stack/sveltekit?from=related) — Learn how to use Vercel's features with SvelteKit
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
-- [Remix](https://vercel.com/docs/frameworks/full-stack/remix?from=related) — Learn how to use Vercel's features with Remix.
+- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
+- [Migrate an Astro app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-an-astro-app-from-webflow-cloud-to-vercel) — Move your Astro app from Webflow Cloud to Vercel: swap the @astrojs/cloudflare adapter for @astrojs/vercel, drop the bas
+- [How to enable CORS on Vercel](https://vercel.com/kb/guide/how-to-enable-cors) — Learn how to enable CORS on Vercel with vercel.json, Routing Middleware, framework config, and route handlers, plus how
+- [Vercel Edge Middleware: Dynamic at the speed of static (historical)](https://vercel.com/blog/vercel-edge-middleware-dynamic-at-the-speed-of-static)
+- [How can I use files in Vercel Functions?](https://vercel.com/kb/guide/how-can-i-use-files-in-serverless-functions) — Learn how to import files inside Serverless Functions on Vercel.
+- [How to ship a NestJS app on Vercel](https://vercel.com/kb/guide/ship-a-nestjs-app-on-vercel) — Deploy a NestJS app to Vercel with zero configuration. Learn how to ship from a template, the Nest CLI, or Git, and conf
+- [Astro projects can now be deployed with zero configuration](https://vercel.com/changelog/astro-projects-can-now-be-deployed-with-zero-configuration)
+- [SvelteKit on Vercel](https://vercel.com/docs/frameworks/full-stack/sveltekit) — Deploy SvelteKit applications to Vercel and configure the adapter, rendering, streaming, ISR, analytics, and Routing Mid
+- [Nuxt on Vercel](https://vercel.com/docs/frameworks/full-stack/nuxt) — Deploy Nuxt applications to Vercel and configure rendering, functions, middleware, routing, image optimization, and cach
+- [React Router on Vercel](https://vercel.com/docs/frameworks/frontend/react-router) — Deploy React Router applications with SSR or SPA mode, then configure the Vercel preset, streaming, caching, and analyti
+- [Next.js on Vercel](https://vercel.com/docs/frameworks/full-stack/nextjs) — Vercel is the native Next.js platform, designed to enhance the Next.js experience.
+- [Remix on Vercel](https://vercel.com/docs/frameworks/full-stack/remix) — Deploy Remix applications to Vercel and configure the Vercel Vite preset, SSR, streaming, caching, and analytics.
 
 Full cross-link map for this page: [/docs/frameworks/frontend/astro.graph.md](/docs/frameworks/frontend/astro.graph.md)
 <!-- /docsgraph:related -->
@@ -45,63 +48,74 @@ You can deploy a static Astro app to Vercel with zero configuration.
 
 ## Get Started with Astro on Vercel
 
+To get started with Astro on Vercel:
+
+- If you already have a project with Astro, install [Vercel CLI](/docs/cli) and run the vercel command from your project's root directory
+- Clone one of our Astro example repos to your favorite git provider and deploy it on Vercel with the button below:
+
+\- Or, choose a template from Vercel's marketplace:
+
+Vercel deployments can \[integrate with your git provider]\(/docs/git) to \[generate preview URLs]\(/docs/deployments/environments#preview-environment-pre-production) for each pull request you make to your Astro project.
+
 ## Using Vercel's features with Astro
 
 To deploy a server-rendered Astro app, or a static Astro site with Vercel features like Web Analytics and Image Optimization, you must:
 
 1. Add [Astro's Vercel adapter](https://docs.astro.build/en/guides/integrations-guide/vercel) to your project. There are two ways to do so:
 
-   <CodeBlock>
-     <Code tab="pnpm">
-       ```bash
-       pnpm i @astrojs/vercel
-       ```
-     </Code>
-     <Code tab="yarn">
-       ```bash
-       yarn i @astrojs/vercel
-       ```
-     </Code>
-     <Code tab="npm">
-       ```bash
-       npm i @astrojs/vercel
-       ```
-     </Code>
-     <Code tab="bun">
-       ```bash
-       bun i @astrojs/vercel
-       ```
-     </Code>
-   </CodeBlock>
+   **pnpm**
+
+   ```bash
+   pnpm astro add vercel
+   ```
+
+   **yarn**
+
+   ```bash
+   yarn astro add @astrojs/vercel
+   ```
+
+   **npm**
+
+   ```bash
+   npx astro add @astrojs/vercel
+   ```
+
+   **bun**
+
+   ```bash
+   bun add @astrojs/vercel
+   ```
 
    - Or, manually installing the [`@astrojs/vercel`](https://www.npmjs.com/package/@astrojs/vercel) package. You should manually install the adapter if you don't want an opinionated initial configuration
 
-     <CodeBlock>
-       <Code tab="pnpm">
-         ```bash
-         pnpm i @astrojs/vercel
-         ```
-       </Code>
-       <Code tab="yarn">
-         ```bash
-         yarn i @astrojs/vercel
-         ```
-       </Code>
-       <Code tab="npm">
-         ```bash
-         npm i @astrojs/vercel
-         ```
-       </Code>
-       <Code tab="bun">
-         ```bash
-         bun i @astrojs/vercel
-         ```
-       </Code>
-     </CodeBlock>
+     **pnpm**
 
-2) Configure your project. In your  file, import either the `serverless` or `static` plugin, and set the output to `server` or `static` respectively:
+     ```bash
+     pnpm i @astrojs/vercel
+     ```
 
-   #### \['Serverless SSR'
+     **yarn**
+
+     ```bash
+     yarn add @astrojs/vercel
+     ```
+
+     **npm**
+
+     ```bash
+     npm i @astrojs/vercel
+     ```
+
+     **bun**
+
+     ```bash
+     bun add @astrojs/vercel
+     ```
+
+2) Configure your project. In your `astro.config.ts` file, import either the `serverless` or `static` plugin, and set the output to `server` or `static` respectively:
+
+   #### Serverless SSR
 
    ```js filename="astro.config.mjs" framework=all
    import { defineConfig } from 'astro/config';
@@ -125,7 +139,7 @@ To deploy a server-rendered Astro app, or a static Astro site with Vercel featur
    });
    ```
 
-   #### 'Static']
+   #### Static
 
    ```js filename="astro.config.mjs" framework=all
    import { defineConfig } from 'astro/config';
@@ -151,7 +165,7 @@ To deploy a server-rendered Astro app, or a static Astro site with Vercel featur
    });
    ```
 
-3) Enable Vercel's features using Astro's [configuration options](#configuration-options). The following example  enables Web Analytics and adds a maximum duration to Vercel Function routes:
+3) Enable Vercel's features using Astro's [configuration options](#configuration-options). The following example `astro.config.ts` enables Web Analytics and adds a maximum duration to Vercel Function routes:
 
    ```js filename="astro.config.mjs" framework=all
    import { defineConfig } from 'astro/config';
@@ -193,13 +207,13 @@ The following configuration options enable Vercel's features for Astro deploymen
 
 | Option                                                                                                                         | type                 | Rendering          | Purpose                                                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------ | -------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`maxDuration`](/docs/functions/runtimes#max-duration)                                                                         | `number`             | Serverless         | Extends or limits the maximum duration (in seconds) that Vercel functions can run before timing out.                                                                                                        |
+| [`maxDuration`](/docs/functions/limitations#max-duration)                                                                         | `number`             | Serverless         | Extends or limits the maximum duration (in seconds) that Vercel functions can run before timing out.                                                                                                        |
 | [`webAnalytics`](/docs/analytics)                                                                                              | `{enabled: boolean}` | Static, Serverless | Enables Vercel's [Web Analytics](/docs/analytics). See [the quickstart](/docs/analytics/quickstart) to set up analytics on your account.                                                                    |
 | [`imageService`](https://docs.astro.build/en/guides/integrations-guide/vercel/#imageservice)                                   | `boolean`            | Static, Serverless | For astro versions `3` and up. Enables an automatically [configured service](https://docs.astro.build/en/reference/image-service-reference/#what-is-an-image-service) to optimize your images.              |
 | [`devImageService`](https://docs.astro.build/en/guides/integrations-guide/vercel/#devimageservice)                             | `string`             | Static, Serverless | For astro versions `3` and up. Configure the [image service](https://docs.astro.build/en/reference/image-service-reference/#what-is-an-image-service) used to optimize your images in your dev environment. |
 | [`imagesConfig`](/docs/build-output-api/configuration#images)                                                               | `VercelImageConfig`  | Static, Serverless | Defines the behavior of the Image Optimization API, allowing on-demand optimization at runtime. See [the Build Output API docs](/docs/build-output-api/configuration#images) for required options.       |
 | [`functionPerRoute`](https://docs.astro.build/en/guides/integrations-guide/vercel/#function-bundling-configuration)            | `boolean`            | Serverless         | API routes are bundled into one function by default. Set this to true to split each route into separate functions.                                                                                          |
-| [`edgeMiddleware`](https://docs.astro.build/en/guides/integrations-guide/vercel/#vercel-edge-middleware-with-astro-middleware) | `boolean`            | Serverless         | Set to `true` to automatically convert Astro middleware to Routing Middleware, eliminating the need for a  file.                                                |
+| [`edgeMiddleware`](https://docs.astro.build/en/guides/integrations-guide/vercel/#vercel-edge-middleware-with-astro-middleware) | `boolean`            | Serverless         | Set to `true` to automatically convert Astro middleware to Routing Middleware, eliminating the need for a `middleware.ts` file.                                                |
 | [`includeFiles`](https://docs.astro.build/en/guides/integrations-guide/vercel/#includefiles)                                   | `string[]`           | Serverless         | Force files to be bundled with your Vercel functions.                                                                                                                                                       |
 | [`excludeFiles`](https://docs.astro.build/en/guides/integrations-guide/vercel/#excludefiles)                                   | `string[]`           | Serverless         | Exclude files from being bundled with your Vercel functions. Also available with [`.vercelignore`](/docs/deployments/vercel-ignore#)                                                                        |
 
@@ -278,7 +292,7 @@ export const prerender = true;
 **Statically rendered Astro sites on Vercel:**
 
 - Require zero configuration to deploy
-- Can use Vercel features with&#x20;
+- Can use Vercel features with `astro.config.ts`
 
 [Learn more about Astro Static Rendering](https://docs.astro.build/en/basics/rendering-modes/#pre-rendered)
 
@@ -422,7 +436,7 @@ Image Optimization with Astro on Vercel is supported out of the box with Astro's
 
 [Middleware](/docs/routing-middleware) is a function that execute before a request is processed on a site, enabling you to modify the response. Because it runs before the cache, Middleware is an effective way to personalize statically generated content.
 
-[Astro middleware](https://docs.astro.build/en/guides/middleware/#basic-usage) allows you to set and share information across your endpoints and pages with a  file in your `src` directory. The following example edits the global `locals` object, adding data which will be available in any `.astro` file:
+[Astro middleware](https://docs.astro.build/en/guides/middleware/#basic-usage) allows you to set and share information across your endpoints and pages with a `middleware.ts` file in your `src` directory. The following example edits the global `locals` object, adding data which will be available in any `.astro` file:
 
 ```ts filename="src/middleware.ts" framework=all
 // This helper automatically types middleware params
@@ -449,7 +463,7 @@ export function onRequest({ locals }, next) {
 }
 ```
 
-> **💡 Note:** , which has to be placed at the root directory of your project, outside
+> **💡 Note:** **Astro middleware is not the same as Vercel's Routing Middleware**, which has to be placed at the root directory of your project, outside
 > `src`.
 
 To add custom properties to `locals` in `middleware.ts`, you must declare a global namespace in your `env.d.ts` file:
@@ -474,9 +488,9 @@ const { title } = Astro.locals;
 
 ### Deploying middleware at the Edge
 
-You can deploy Astro's middleware at the Edge, giving you access to data in the `RequestContext` and `Request`, and enabling you to use [Vercel's Routing Middleware helpers](/docs/routing-middleware/api#routing-middleware-helper-methods), such as [`geolocation()`](/docs/routing-middleware/api#geolocation) or [`ipAddress()`](/docs/routing-middleware/api#geolocation).
+You can deploy Astro's middleware at the Edge, giving you access to data in the `RequestContext` and `Request`, and enabling you to use [Vercel's Routing Middleware helpers](/docs/routing-middleware/js-reference#routing-middleware-helper-methods), such as [`geolocation()`](/docs/routing-middleware#geolocation-headers) or [`ipAddress()`](/docs/routing-middleware/js-reference#ip-address).
 
-To use Astro's middleware at the Edge, set `edgeMiddleware: true` in your  file:
+To use Astro's middleware at the Edge, set `edgeMiddleware: true` in your `astro.config.ts` file:
 
 ```js filename="astro.config.mjs" framework=all
 import { defineConfig } from 'astro/config';
@@ -503,9 +517,9 @@ export default defineConfig({
 ```
 
 > **💡 Note:** If you're using [Vercel's Routing
-> Middleware](#using-vercel's-edge-middleware), you do not need to set
+> Middleware](/docs/frameworks/frontend/astro#using-vercel's-routing-middleware), you do not need to set
 > `edgeMiddleware: true` in your
-> &#x20;file.
+> `astro.config.ts` file.
 
 See Astro's docs on [the limitations and constraints](https://docs.astro.build/en/guides/integrations-guide/vercel/#limitations-and-constraints) for using middleware at the Edge, as well as [their troubleshooting tips](https://docs.astro.build/en/guides/integrations-guide/vercel/#troubleshooting).
 
@@ -513,38 +527,15 @@ See Astro's docs on [the limitations and constraints](https://docs.astro.build/e
 
 The `Astro.locals` object exposes data to your `.astro` components, allowing you to dynamically modify your content with middleware. To make changes to `Astro.locals` in Astro's middleware at the edge:
 
-1. Add a new middleware file next to your  and name it . This file name is required to make changes to [`Astro.locals`](https://docs.astro.build/en/reference/api-reference/#astrolocals). If you don't want to update `Astro.locals`, this step is not required
+1. Add a new middleware file next to your `src/middleware.ts` and name it `src/vercel-edge-middleware.ts`. This file name is required to make changes to [`Astro.locals`](https://docs.astro.build/en/reference/api-reference/#astrolocals). If you don't want to update `Astro.locals`, this step is not required
 2. Return an object with the properties you want to add to `Astro.locals`:
 
-   For TypeScript, you must install [the `@vercel/functions` package](/docs/routing-middleware/api#routing-middleware-helper-methods):
-
-   <CodeBlock>
-     <Code tab="pnpm">
-       ```bash
-       pnpm i @vercel/functions
-       ```
-     </Code>
-     <Code tab="yarn">
-       ```bash
-       yarn i @vercel/functions
-       ```
-     </Code>
-     <Code tab="npm">
-       ```bash
-       npm i @vercel/functions
-       ```
-     </Code>
-     <Code tab="bun">
-       ```bash
-       bun i @vercel/functions
-       ```
-     </Code>
-   </CodeBlock>
-
-   Then, type your middleware function like so:
+   For TypeScript, declare a type for the `context` parameter, which exposes the `waitUntil` method:
 
    ```ts filename="src/vercel-edge-middleware.ts" framework=all
-   import type { RequestContext } from '@vercel/functions';
+   type RequestContext = {
+     waitUntil(promise: Promise<unknown>): void;
+   };
 
    // Note the parameters are different from standard Astro middleware
    export default function ({
@@ -573,7 +564,7 @@ The `Astro.locals` object exposes data to your `.astro` components, allowing you
 
 ### Using Vercel's Routing Middleware
 
-Astro's middleware, which should be in , is distinct from Vercel Routing Middleware, which should be a  file at the root of your project.
+Astro's middleware, which should be in `src/middleware.ts`, is distinct from Vercel Routing Middleware, which should be a `middleware.ts` file at the root of your project.
 
 Vercel recommends using framework-native solutions. You should use Astro's middleware over Vercel's Routing Middleware wherever possible.
 
@@ -581,7 +572,7 @@ If you still want to use Vercel's Routing Middleware, see [the Quickstart](/docs
 
 ### Rewrites
 
-**Rewrites only work for static files with Astro**. You must use [Vercel's Routing Middleware](/docs/routing-middleware/api#match-paths-based-on-conditional-statements) for rewrites. You should not use `vercel.json` to rewrite URL paths with astro projects; doing so produces inconsistent behavior, and is not officially supported.
+**Rewrites only work for static files with Astro**. You must use [Vercel's Routing Middleware](/docs/routing-middleware/js-reference#match-paths-based-on-conditional-statements) for rewrites. You should not use `vercel.json` to rewrite URL paths with astro projects; doing so produces inconsistent behavior, and is not officially supported.
 
 ### Redirects
 
@@ -589,7 +580,7 @@ In general, Vercel recommends using framework-native solutions, and Astro has [b
 
 #### Redirects in your Astro config
 
-You can do redirects on Astro with  the `redirects` config option as shown below:
+You can do redirects on Astro with `astro.config.ts` the `redirects` config option as shown below:
 
 ```ts filename="astro.config.ts" framework=all
 import { defineConfig } from 'astro/config';
@@ -616,14 +607,14 @@ export default defineConfig({
 You can also return a redirect from a Server Endpoint using the [`redirect`](https://docs.astro.build/en/guides/endpoints/#redirects) utility:
 
 ```ts filename="src/pages/links/[id].ts" framework=all
-export async function GET({ params, redirect }): APIRoute {
+import type { APIRoute } from 'astro';
+
+export const GET: APIRoute = async ({ redirect }) => {
   return redirect('/redirect-path', 307);
-}
+};
 ```
 
 ```js filename="src/pages/links/[id].js" framework=all
-import { getLinkUrl } from '../db';
-
 export async function GET({ redirect }) {
   return redirect('/redirect-path', 307);
 }
@@ -651,8 +642,7 @@ if (!isLoggedIn(cookie)) {
 **Astro Middleware on Vercel:**
 
 - Executes before a request is processed on a site, allowing you to modify responses to user requests
-- Runs on *all* requests, but can be scoped to specific paths [through a `matcher` config](/docs/routing-middleware/api#match-paths-based-on-custom-matcher-config)
-- Uses Vercel's lightweight Edge Runtime to keep costs low and responses fast
+- Runs on *all* requests, but can be scoped to specific paths [through a `matcher` config](/docs/routing-middleware/js-reference#match-paths-based-on-custom-matcher-config)
 
 [Learn more about Routing Middleware](/docs/routing-middleware)
 
@@ -666,7 +656,7 @@ The following Astro component will show a new time every 10 seconds. It does so 
 
 ```jsx filename="src/pages/ssr-with-swr-caching.astro"
 ---
-Astro.response.headers.set('Cache-Control', 's-maxage=10, stale-while-revalidate');
+Astro.response.headers.set('Cache-Control', 's-maxage=10, stale-while-revalidate=59');
 const time = new Date().toLocaleTimeString();
 ---
 
@@ -727,3 +717,6 @@ Learn more about deploying Astro projects on Vercel with the following resources
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

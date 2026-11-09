@@ -3,7 +3,7 @@ title: Deployment integration actions
 product: vercel
 url: /docs/integrations/create-integration/deployment-integration-action
 canonical_url: "https://vercel.com/docs/integrations/create-integration/deployment-integration-action"
-last_updated: 2025-07-18
+last_updated: 2026-09-17
 type: how-to
 prerequisites:
   - /docs/integrations/create-integration
@@ -28,12 +28,13 @@ With deployment integration actions, integration providers can enable [integrati
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel?from=related) — Learn how to deploy based on tags/releases on Vercel.
-- [Actions](https://vercel.com/docs/platforms/platform-elements/actions?from=related) — Server actions you can install to run common platform tasks against the Vercel API.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Webhooks API Reference](https://vercel.com/docs/webhooks/webhooks-api?from=related) — Vercel Integrations allow you to subscribe to certain trigger-based events through webhooks. Learn about the supported w
-- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
-- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related) — Learn how you can add a product to your Vercel project through a native integration.
+- [Deployment integration actions for Marketplace integrations](https://vercel.com/changelog/deployment-integration-actions-for-marketplace-integrations)
+- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel) — Learn how to deploy based on tags/releases on Vercel.
+- [Actions](https://vercel.com/docs/platforms/platform-elements/actions) — Server actions you can install to run common platform tasks against the Vercel API.
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Deployment Checks](https://vercel.com/docs/deployment-checks) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
+- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
+- [Deploy Files](https://vercel.com/docs/platforms/platform-elements/actions/deploy-files) — Server action for programmatically deploying files to Vercel on behalf of platform users.
 
 Full cross-link map for this page: [/docs/integrations/create-integration/deployment-integration-action.graph.md](/docs/integrations/create-integration/deployment-integration-action.graph.md)
 <!-- /docsgraph:related -->
@@ -63,6 +64,20 @@ For example, you can use deployment integration actions with the checks API to [
 
 5. Deployment unblock:
    - Vercel validates the completed action, updates environment variables, and unblocks the deployment.
+
+## Environment targets
+
+Customers can select Custom Environments for Deployment Actions. Vercel first looks for a resource connection to the deployment’s Custom Environment. If no matching connection exists, Vercel checks for a Preview connection.
+
+A Preview Deployment Action can supply the Preview connection’s variables to that deployment. The connection’s environment selection stays unchanged.
+
+The provider-facing `deploymentActions[].targets` field contains only `production`, `preview`, and `development`. Vercel maps each Custom Environment to `preview`, removes duplicate values, and does not send the exact Custom Environment slug or ID.
+
+For example:
+
+- A deployment action for `qa` has `targets: ['preview']`.
+- A deployment action for `qa` and `staging` also has `targets: ['preview']`.
+- A deployment action for `production`, `preview`, and `qa` has `targets: ['production', 'preview']`.
 
 ## Creating deployment actions
 
@@ -95,7 +110,7 @@ As an integration provider, to allow your integration users to add deployment ac
   You can retrieve additional deployment details using the [Get a deployment by ID or URL](https://vercel.com/docs/rest-api#tag/deployments/get-a-deployment-by-id-or-url) endpoint:
   ```bash
   curl https://api.vercel.com/v13/deployments/dpl_568301234 \
-    -H "Authorization: {access_token}"
+    -H "Authorization: Bearer {access_token}"
   ```
   You can create your `access_token` from [Vercel's account settings](/docs/rest-api#creating-an-access-token).
 
@@ -130,3 +145,6 @@ As an integration provider, to allow your integration users to add deployment ac
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

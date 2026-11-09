@@ -3,15 +3,15 @@ title: Monitoring Quickstart
 product: vercel
 url: /docs/query/monitoring/quickstart
 canonical_url: "https://vercel.com/docs/query/monitoring/quickstart"
-last_updated: 2026-03-20
+last_updated: 2026-08-11
 type: tutorial
 prerequisites:
   - /docs/query/monitoring
   - /docs/query
 related:
-  - /docs/plans/pro-plan
   - /docs/plans/enterprise
-  - /docs/observability
+  - /docs/observability/observability-plus
+  - /docs/query
   - /docs/query/monitoring/monitoring-reference
   - /docs/query/monitoring
 summary: "In this quickstart guide, you'll discover how to create and execute a query to visualize the most popular posts on your website."
@@ -20,7 +20,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Monitoring Quickstart
 
-## Prerequisites
+Monitoring is now
 
 
 <!-- docsgraph:related -->
@@ -28,17 +28,42 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Web Analytics API](https://vercel.com/docs/analytics/web-analytics-api?from=related) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Using with CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
-- [Getting Started](https://vercel.com/docs/analytics/quickstart?from=related) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
-- [vercel metrics](https://vercel.com/docs/cli/metrics?from=related) — Query observability metrics and inspect available metrics, dimensions, and aggregations using the Vercel CLI.
+- [Introducing Vercel Monitoring](https://vercel.com/blog/introducing-monitoring)
+- [Monitoring is now available to view traffic and performance data for improved observability ](https://vercel.com/changelog/monitoring-is-now-available-to-view-traffic-and-performance-data-for)
+- [Create custom monitors in Vercel Observability](https://vercel.com/changelog/create-custom-monitors-in-vercel-observability)
+- [Run and share custom queries in Observability Plus](https://vercel.com/changelog/run-and-share-custom-queries-in-observability-plus)
+- [Observability Plus replacing legacy Monitoring](https://vercel.com/changelog/observability-plus-replacing-legacy-monitoring)
+- [Query Web Analytics with the API](https://vercel.com/docs/analytics/web-analytics-api) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
+- [Observability](https://vercel.com/docs/observability) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
+- [Limits and Pricing for Monitoring](https://vercel.com/docs/query/monitoring/limits-and-pricing) — Learn about our limits and pricing when using Monitoring. Different limitations are applied depending on your plan.
 
 Full cross-link map for this page: [/docs/query/monitoring/quickstart.graph.md](/docs/query/monitoring/quickstart.graph.md)
 <!-- /docsgraph:related -->
 
-- Make sure you upgrade to [Pro](/docs/plans/pro-plan) or [Enterprise](/docs/plans/enterprise) plan.
-- Pro and Enterprise teams should [Upgrade to Observability Plus](/docs/observability#enabling-observability-plus) to access Monitoring.
+deprecated
+
+. It is no longer available for Pro users or Enterprise customers who subscribed to Observability Plus after June 2025.
+
+Observability Plus
+
+includes
+
+Observability Query
+
+for monitoring your project.
+
+**Agent prompt**
+
+```text
+Help me set up Vercel Monitoring in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Run `vercel link` to connect the project. 2. Set up observability by configuring `vercel logs` for runtime logs and adding instrumentation for custom metrics.
+```
+
+## Prerequisites
+
+- Monitoring is only available to [Enterprise](/docs/plans/enterprise) teams that already have Monitoring access.
+- Pro teams and other Enterprise teams can't enable Monitoring. Instead, [enable Observability Plus](/docs/observability/observability-plus#enabling-observability-plus) and use [Query](/docs/query).
 
 ## Create a new query
 
@@ -50,14 +75,14 @@ In the following guide you will learn how to view the most requested posts on yo
   3. Click the **Edit Query** button to configure your query with clauses
 
 - ### Add Visualize clause
-  The [Visualize](/docs/query/monitoring/monitoring-reference#visualize") clause specifies which field in your query will be calculated. Set the **Visualize** clause to `requests` to monitor the most popular posts on your website.
+  The [Visualize](/docs/query/monitoring/monitoring-reference#visualize) clause specifies which field in your query will be calculated. Set the **Visualize** clause to `requests` to monitor the most popular posts on your website.
 
   Click the **Run Query** button, and the [Monitoring chart](/docs/query/monitoring#monitoring-chart) will display the total number of requests made.
 
 - ### Add Where clause
   To filter the query data, use the [Where](/docs/query/monitoring/monitoring-reference#where) clause and specify the conditions you want to match against. You can use a combination of [variables and operators](/docs/query/monitoring/monitoring-reference#where) to fetch the most requested posts. Add the following query statement to the **Where** clause:
   ```sql filename=Where
-  host = 'my-site.com' and like(request_path, '/posts%')
+  host = 'my-site.com' and request_path like '/posts%'
   ```
   This query retrieves data with a host field of `my-site.com` and a `request_path` field that starts with /posts.
 
@@ -74,9 +99,12 @@ In the following guide you will learn how to view the most requested posts on yo
   To control the number of results returned by the query, use the [**Limit**](/docs/query/monitoring/monitoring-reference#limit) clause and specify the desired number of results. You can choose from a few options, such as 5, 10, 25, 50, or 100 query results. For this example, set the limit to 5 query results.
 
 - ### Save and Run Query
-  Save your query and click the  button to generate the final results. The Monitoring chart will display a comprehensive view of the top 5 most requested posts on your website.
+  Save your query and click the **Run Query** button to generate the final results. The Monitoring chart will display a comprehensive view of the top 5 most requested posts on your website.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

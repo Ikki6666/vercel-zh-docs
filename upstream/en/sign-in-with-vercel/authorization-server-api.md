@@ -3,16 +3,16 @@ title: Authorization Server API
 product: vercel
 url: /docs/sign-in-with-vercel/authorization-server-api
 canonical_url: "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api"
-last_updated: 2026-03-30
+last_updated: 2026-08-21
 type: how-to
 prerequisites:
   - /docs/sign-in-with-vercel
 related:
   - /docs/sign-in-with-vercel/scopes-and-permissions
+  - /docs/sign-in-with-vercel/consent-page
   - /docs/sign-in-with-vercel/tokens
   - /docs/sign-in-with-vercel/manage-from-dashboard
-  - /docs/functions
-  - /docs/kms
+  - /docs/oidc
 summary: Learn how to use the Authorization Server API
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,12 +27,12 @@ The Authorization Server API exposes a set of endpoints which are used by your a
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Authentication](https://eve.dev/docs/guides/auth-and-route-protection?from=related) — Secure your agent's HTTP routes with an ordered auth walk, verifier helpers, and connection OAuth via Vercel Connect.
-- [Getting Started](https://vercel.com/docs/sign-in-with-vercel/getting-started?from=related) — Learn how to get started with Sign in with Vercel
-- [Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
-- [Quickstart](https://vercel.com/docs/kms/quickstart?from=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
-- [OIDC Reference](https://vercel.com/docs/oidc/reference?from=related) — Review helper libraries to help you connect with your backend and understand the structure of an OIDC token.
-- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related)
+- [The complete guide to authentication on Vercel](https://vercel.com/kb/guide/complete-guide-authentication-vercel) — Learn how to implement authentication in your Vercel applications. Covers NextAuth/Auth.js setup, environment variable c
+- [Getting started with Sign in with Vercel](https://vercel.com/docs/sign-in-with-vercel/getting-started) — Learn how to get started with Sign in with Vercel
+- [Connect to Microsoft Azure](https://vercel.com/docs/oidc/azure) — Learn how to configure your Microsoft Azure account to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\).
+- [Connect to your own API](https://vercel.com/docs/oidc/api) — Learn how to configure your own API to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\)
+- [SSO Token Exchange](https://vercel.com/docs/rest-api/authentication/sso-token-exchange) — POST /v1/integrations/sso/token — During the autorization process, Vercel sends the user to the provider \\\[redirectLogin
+- [OIDC Federation Reference](https://vercel.com/docs/oidc/reference) — Review helper libraries to help you connect with your backend and understand the structure of an OIDC token.
 
 Full cross-link map for this page: [/docs/sign-in-with-vercel/authorization-server-api.graph.md](/docs/sign-in-with-vercel/authorization-server-api.graph.md)
 <!-- /docsgraph:related -->
@@ -62,12 +62,13 @@ The Authorization Endpoint supports the following parameters:
 | Parameter               | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ----------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `client_id`             | **Yes**  | The ID of the App, located in the **Manage** page of the App.                                                                                                                                                                                                                                                                                                                                               |
-| `scope`                 | **No**   | A space-separated list of [scopes](/docs/sign-in-with-vercel/scopes-and-permissions) you're requesting: `openid`, `email`, `profile`, and `offline_access`. If you pass scopes that aren't configured in your app's **Manage** settings, they're filtered out. If you don't pass `scope`, all scopes configured in your app are included by default.                                                        |
+| `scope`                 | **No**   | A space-separated list of [scopes](/docs/sign-in-with-vercel/scopes-and-permissions) you're requesting: `openid`, `email`, `profile`, and `offline_access`. If you request `email` or `profile` and that scope isn't configured in your app's **Manage** settings, Vercel rejects the request. With the default `response_mode`, Vercel redirects to your `redirect_uri` with an `invalid_scope` error. If you request `offline_access` and it isn't configured, it's filtered out. If you don't pass `scope`, all scopes configured in your app are included by default.                                                        |
 | `redirect_uri`          | **Yes**  | The URL used to redirect users back to the application after granting authorization, located in the **Manage** page of the App under **Authorization Callback URLs**.                                                                                                                                                                                                                                       |
 | `response_type`         | **Yes**  | Must be `code`.                                                                                                                                                                                                                                                                                                                                                                                             |
-| `response_mode`         | **No**   | Specifies how the authorization response is delivered. Defaults to `query` (redirect with query parameters). Use `web_message.opener` for popup-based flows where the authorization response is sent via `postMessage` to the parent window instead of redirecting. For a full example of popup-based authentication, see the [reference app](https://github.com/vercel/sign-in-with-vercel-reference-app). |
+| `response_mode`         | **No**   | Specifies how the authorization response is delivered. If you omit this parameter, Vercel redirects to your `redirect_uri` with query parameters. The only value you can pass is `web_message.opener`. Vercel rejects any other value, including `query`, with an `invalid_request` error. Use `web_message.opener` for popup-based flows where the authorization response is sent via `postMessage` to the parent window instead of redirecting. For a full example of popup-based authentication, see the [reference app](https://github.com/vercel/sign-in-with-vercel-reference-app). |
 | `nonce`                 | No       | A random string generated by the application that is used to protect against replay attacks. The same value will be attached as a claim in the ID Token.                                                                                                                                                                                                                                                    |
 | `state`                 | No       | A random string generated by the application that is used to protect against [CSRF](# "What is CSRF?") attacks.                      |
+| `prompt`                | No       | Controls whether the user must sign in or consent again. Use `consent` to show the [consent page](/docs/sign-in-with-vercel/consent-page) even if the user already authorized your app. Use `login` to make the user sign in again before they continue. |
 | `code_challenge`        | **Yes**  | A random string generated by the application for additional protection, based on the [PKCE specification](https://datatracker.ietf.org/doc/html/rfc7636).                                                                                                                                                                                                                                                   |
 | `code_challenge_method` | **Yes**  | Must be `S256`.                                                                                                                                                                                                                                                                                                                                                                                             |
 
@@ -139,12 +140,12 @@ export async function GET(req: NextRequest) {
 The Token Endpoint is used to exchange the `code` returned from the Authorization Endpoint, or a Refresh Token for a new [Access Token](/docs/sign-in-with-vercel/tokens#access-token) and [Refresh Token](/docs/sign-in-with-vercel/tokens#refresh-token) pair.
 
 | Parameter       | Required     | Description                                                                                                                                                                                                                                                                                                      |
-| --------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `grant_type`    | **Yes**      | Either `authorization_code` or `refresh_token`.- If the user signs in from the application then `authorization_code` should be used.- If the user is already signed in but the [Access Token](/docs/sign-in-with-vercel/tokens#access-token) has expired, then `refresh_token` should be used.         |
+| --------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `grant_type`    | **Yes**      | Either `authorization_code` or `refresh_token`.<br />- If the user signs in from the application then `authorization_code` should be used.<br />- If the user is already signed in but the [Access Token](/docs/sign-in-with-vercel/tokens#access-token) has expired, then `refresh_token` should be used.         |
 | `client_id`     | **Yes**      | The ID of the App located in the [**Manage**](/docs/sign-in-with-vercel/manage-from-dashboard) page.                                                                                                                                                                                                             |
-| `client_secret`         | **Optional** | The client secret generated in the [**Manage**](/docs/sign-in-with-vercel/manage-from-dashboard) page. Omit this parameter if client authentication is set to `none`, or if you authenticate with a [JWT assertion](#authenticate-with-a-jwt-assertion) using `client_assertion` and `client_assertion_type`. |
-| `client_assertion`      | No           | Required when authenticating with a JWT assertion instead of `client_secret`. A signed JWT that proves the client's identity.                                                                                                                                                                                    |
-| `client_assertion_type` | No           | Required when using `client_assertion`. Must be `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.                                                                                                                                                                                                        |
+| `client_secret`         | **Optional** | The client secret generated in the [**Manage**](/docs/sign-in-with-vercel/manage-from-dashboard) page. Omit this parameter if client authentication is set to `none`, or if you authenticate with a [JWT assertion](#authenticate-with-a-jwt-assertion) or an [OIDC token](#authenticate-with-an-oidc-token) using `client_assertion` and `client_assertion_type`. |
+| `client_assertion`      | No           | Required when authenticating with `client_assertion` instead of `client_secret`. A JWT that proves the client's identity, either a [JWT assertion](#authenticate-with-a-jwt-assertion) you sign or an [OIDC token](#authenticate-with-an-oidc-token) from a trusted issuer. |
+| `client_assertion_type` | No           | Required when using `client_assertion`. Must be `urn:ietf:params:oauth:client-assertion-type:jwt-bearer` for a [JWT assertion](#authenticate-with-a-jwt-assertion), or `urn:vercel:params:oauth:client-assertion-type:oidc-bearer` for an [OIDC token](#authenticate-with-an-oidc-token). |
 | `code`                  | No           | If `grant_type` is `authorization_code` then this parameter is required. The value is obtained during the [Authorization Endpoint](#authorization-endpoint) flow.                                                                                                                                                |
 | `code_verifier` | No           | If `grant_type` is `authorization_code` then this parameter is required. It should be the code verifier bound to the `code_challenge` from the authorization request.                                                                                                                                            |
 | `redirect_uri`  | No           | If `grant_type` is `authorization_code` then this parameter is required. It should be the same value used in the [Authorization Endpoint](#authorization-endpoint).                                                                                                                                              |
@@ -279,7 +280,7 @@ async function setAuthCookies(tokenData: TokenData) {
 
 The expected response from the Token Endpoint is a JSON object with the following properties:
 
-```json filename="Token Endpoint response example"
+```jsonc filename="Token Endpoint response example"
 {
   "access_token": "vca_...",
   "token_type": "Bearer",
@@ -287,6 +288,61 @@ The expected response from the Token Endpoint is a JSON object with the followin
   "expires_in": 3600,
   "scope": "openid email profile offline_access", // The scopes that were granted to the application
   "refresh_token": "vcr_..." // Present if offline_access scope is requested
+}
+```
+
+### Authenticate with an OIDC token
+
+You can authenticate to the Token Endpoint and [Revoke Token Endpoint](#revoke-token-endpoint) using an OIDC token issued by a trusted issuer, such as GitHub Actions or [Vercel](/docs/oidc), instead of sending a `client_secret`. [Enable OIDC-based authentication](/docs/sign-in-with-vercel/manage-from-dashboard#configure-oidc-based-authentication) and configure trusted issuers for your app.
+
+Once configured, send `client_id`, `client_assertion` (the OIDC token), and `client_assertion_type` in the request body, setting `client_assertion_type` to `urn:vercel:params:oauth:client-assertion-type:oidc-bearer`. Vercel then verifies the token's signature against the issuer's published keys and checks the token's claims against the claims you configured.
+
+The following example runs as a [Vercel Function](/docs/functions) and exchanges an authorization code using the deployment's own [Vercel OIDC token](/docs/oidc). `getVercelOidcToken()` from `@vercel/oidc` returns the token, which carries `iss` of `https://oidc.vercel.com/<team-slug>`, `aud` of `https://vercel.com/<team-slug>`, and `sub` of `owner:<team-slug>:project:<project-name>:environment:production`. The example assumes a trusted issuer configured in the [dashboard](/docs/sign-in-with-vercel/manage-from-dashboard#choose-your-client-authentication-method) with:
+
+- An issuer URL of `https://oidc.vercel.com/<team-slug>`
+- A `sub` claim set to `owner:<team-slug>:project:<project-name>:environment:production`
+- An `aud` claim set to `https://vercel.com/<team-slug>`, which permits the Vercel OIDC token's default audience in place of the token endpoint default
+
+The configured `sub` must match the environment the function runs in. A preview deployment presents `environment:preview` and would not match this entry. The issuer and claim formats shown are for team-level OIDC tokens.
+
+```ts filename="app/api/auth/callback/route.ts"
+import { getVercelOidcToken } from '@vercel/oidc';
+import type { NextRequest } from 'next/server';
+
+const APP_ID = 'your_app_id_here';
+const TOKEN_ENDPOINT = 'https://api.vercel.com/login/oauth/token';
+
+export async function GET(request: NextRequest) {
+  const url = new URL(request.url);
+  const code = url.searchParams.get('code');
+  const codeVerifier = request.cookies.get('oauth_code_verifier')?.value;
+
+  if (!code || !codeVerifier) {
+    return Response.json(
+      { error: 'Missing authorization code or code verifier' },
+      { status: 400 },
+    );
+  }
+
+  const oidcToken = await getVercelOidcToken();
+
+  const tokenResponse = await fetch(TOKEN_ENDPOINT, {
+    method: 'POST',
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      client_id: APP_ID,
+      client_assertion_type:
+        'urn:vercel:params:oauth:client-assertion-type:oidc-bearer',
+      client_assertion: oidcToken,
+      code,
+      code_verifier: codeVerifier,
+      redirect_uri: `${url.origin}/api/auth/callback`,
+    }),
+  });
+
+  return Response.json(await tokenResponse.json(), {
+    status: tokenResponse.status,
+  });
 }
 ```
 
@@ -364,11 +420,11 @@ If your app runs as a [Vercel Function](/docs/functions), [Vercel KMS](/docs/kms
 
 KMS sets `kid`, `nbf`, and `exp`. Pass `iss` and `sub` as your client ID so they override the default KMS issuer URL. Set `ttl` to `60` so the assertion expires after 60 seconds.
 
-> **💡 Note:** Call `signToken` inside a route handler. It resolves the function's
+> **💡 Note:** Call `signJWT` inside a route handler. It resolves the function's
 > [OIDC token](/docs/oidc) at call time and cannot run at the module top level.
 
 ```ts filename="app/api/auth/callback/route.ts"
-import { signToken } from '@vercel/kms';
+import { signJWT } from '@vercel/kms';
 import type { NextRequest } from 'next/server';
 
 const CLIENT_ID = 'your_client_id_here';
@@ -376,7 +432,7 @@ const ISSUER_ID = 'your_kms_issuer_id_here';
 const TOKEN_ENDPOINT = 'https://api.vercel.com/login/oauth/token';
 
 async function createClientAssertion(): Promise<string> {
-  return signToken({
+  const { token } = await signJWT({
     issuerId: ISSUER_ID,
     claims: {
       iss: CLIENT_ID,
@@ -386,6 +442,8 @@ async function createClientAssertion(): Promise<string> {
     },
     ttl: 60,
   });
+
+  return token;
 }
 
 export async function GET(request: NextRequest) {
@@ -421,8 +479,6 @@ export async function GET(request: NextRequest) {
   });
 }
 ```
-
-The [Revoke Token Endpoint](#revoke-token-endpoint) accepts the same `client_assertion` and `client_assertion_type` parameters.
 
 ## Revoke Token Endpoint
 
@@ -567,7 +623,7 @@ The endpoint returns a JSON response with consented OpenID claims:
   "email_verified": true,
   "name": "Timmy Triangle",
   "preferred_username": "timmy-triangle",
-  "picture": "https://api.vercel.com/www/avatar/avatar-42…"
+  "picture": "https://vercel.com/api/www/avatar/avatar-42…"
 }
 ```
 
@@ -628,3 +684,6 @@ export async function GET(): Promise<Response> {
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

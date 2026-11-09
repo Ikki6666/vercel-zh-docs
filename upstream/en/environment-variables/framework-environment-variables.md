@@ -3,7 +3,7 @@ title: Framework environment variables
 product: vercel
 url: /docs/environment-variables/framework-environment-variables
 canonical_url: "https://vercel.com/docs/environment-variables/framework-environment-variables"
-last_updated: 2025-07-18
+last_updated: 2026-09-16
 type: reference
 prerequisites:
   - /docs/environment-variables
@@ -16,7 +16,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Framework environment variables
 
-Frameworks typically use a prefix in order to expose environment variables to the browser.
+Frameworks typically use a prefix to expose environment variables to the browser.
 
 
 <!-- docsgraph:related -->
@@ -24,12 +24,14 @@ Frameworks typically use a prefix in order to expose environment variables to th
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
-- [System Environment Variables](https://vercel.com/docs/environment-variables/system-environment-variables?from=related) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
-- [Vite](https://vercel.com/docs/frameworks/frontend/vite?from=related) — Learn how to use Vercel's features with Vite.
-- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration?from=related) — Learn how to configure Git for your project through vercel.json or vercel.ts.
-- [Bitbucket](https://vercel.com/docs/git/vercel-for-bitbucket?from=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
+- [Environment Variables](https://vercel.com/docs/agent-resources/vercel-mcp/tools/environment-variables) — Vercel MCP tools for environment variables.
+- [System environment variables](https://vercel.com/docs/environment-variables/system-environment-variables) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [Environment Variables UI](https://vercel.com/blog/environment-variables-ui)
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [vercel env](https://vercel.com/docs/cli/env) — Learn how to manage your environment variables in your Vercel Projects using the vercel env CLI command.
+- [Get a deployment by ID or URL](https://vercel.com/docs/rest-api/deployments/get-a-deployment-by-id-or-url) — GET /v13/deployments/{idOrUrl} — Retrieves information for a deployment either by supplying its ID \\(\\`id\\` property\\) o
 
 Full cross-link map for this page: [/docs/environment-variables/framework-environment-variables.graph.md](/docs/environment-variables/framework-environment-variables.graph.md)
 <!-- /docsgraph:related -->
@@ -38,7 +40,7 @@ The following prefixed environment variables will be available during the **buil
 
 ## Using prefixed framework environment variables locally
 
-Many frontend frameworks require prefixes on environment variable names to make them available to the client, such as `NEXT_PUBLIC_` for Next.js or `PUBLIC_` for SvelteKit. Vercel adds these prefixes automatically for your production and preview deployments, **but not for your local development environment**.
+Many frontend frameworks require prefixes on environment variable names to make them available to the client, such as `NEXT_PUBLIC_` for Next.js or `PUBLIC_` for Astro. Vercel adds these prefixes automatically for your production and preview deployments, **but not for your local development environment**.
 
 **Framework environment variables are not prefixed when pulled into your local development environment with `vercel env pull`**. For example, `VERCEL_ENV` will not be prefixed to `NEXT_PUBLIC_VERCEL_ENV`.
 
@@ -104,14 +106,24 @@ A production domain name of the project. We select the shortest production custo
 NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `NEXT_PUBLIC_VERCEL_HASH_SALT`
+### `NEXT_PUBLIC_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-NEXT_PUBLIC_VERCEL_HASH_SALT=1783933175
+NEXT_PUBLIC_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `NEXT_PUBLIC_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+NEXT_PUBLIC_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `NEXT_PUBLIC_VERCEL_GIT_PROVIDER`
@@ -204,6 +216,18 @@ The name attached to the author of the commit that the project was deployed by.
 NEXT_PUBLIC_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `NEXT_PUBLIC_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+NEXT_PUBLIC_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `NEXT_PUBLIC_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -268,14 +292,24 @@ A production domain name of the project. We select the shortest production custo
 NUXT_ENV_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `NUXT_ENV_VERCEL_HASH_SALT`
+### `NUXT_ENV_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-NUXT_ENV_VERCEL_HASH_SALT=1783933175
+NUXT_ENV_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `NUXT_ENV_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+NUXT_ENV_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `NUXT_ENV_VERCEL_GIT_PROVIDER`
@@ -368,6 +402,18 @@ The name attached to the author of the commit that the project was deployed by.
 NUXT_ENV_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `NUXT_ENV_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+NUXT_ENV_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `NUXT_ENV_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -432,14 +478,24 @@ A production domain name of the project. We select the shortest production custo
 REACT_APP_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `REACT_APP_VERCEL_HASH_SALT`
+### `REACT_APP_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-REACT_APP_VERCEL_HASH_SALT=1783933175
+REACT_APP_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `REACT_APP_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+REACT_APP_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `REACT_APP_VERCEL_GIT_PROVIDER`
@@ -532,6 +588,18 @@ The name attached to the author of the commit that the project was deployed by.
 REACT_APP_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `REACT_APP_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+REACT_APP_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `REACT_APP_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -596,14 +664,24 @@ A production domain name of the project. We select the shortest production custo
 GATSBY_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `GATSBY_VERCEL_HASH_SALT`
+### `GATSBY_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-GATSBY_VERCEL_HASH_SALT=1783933175
+GATSBY_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `GATSBY_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+GATSBY_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `GATSBY_VERCEL_GIT_PROVIDER`
@@ -696,6 +774,18 @@ The name attached to the author of the commit that the project was deployed by.
 GATSBY_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `GATSBY_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+GATSBY_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `GATSBY_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -760,14 +850,24 @@ A production domain name of the project. We select the shortest production custo
 VITE_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `VITE_VERCEL_HASH_SALT`
+### `VITE_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-VITE_VERCEL_HASH_SALT=1783933175
+VITE_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `VITE_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+VITE_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `VITE_VERCEL_GIT_PROVIDER`
@@ -858,6 +958,18 @@ The name attached to the author of the commit that the project was deployed by.
 
 ```bash
 VITE_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
+```
+
+### `VITE_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+VITE_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
 ```
 
 ### `VITE_VERCEL_GIT_PULL_REQUEST_ID`
@@ -924,14 +1036,24 @@ A production domain name of the project. We select the shortest production custo
 VITE_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `VITE_VERCEL_HASH_SALT`
+### `VITE_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-VITE_VERCEL_HASH_SALT=1783933175
+VITE_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `VITE_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+VITE_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `VITE_VERCEL_GIT_PROVIDER`
@@ -1024,6 +1146,18 @@ The name attached to the author of the commit that the project was deployed by.
 VITE_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `VITE_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+VITE_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `VITE_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -1088,14 +1222,24 @@ A production domain name of the project. We select the shortest production custo
 NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `NEXT_PUBLIC_VERCEL_HASH_SALT`
+### `NEXT_PUBLIC_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-NEXT_PUBLIC_VERCEL_HASH_SALT=1783933175
+NEXT_PUBLIC_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `NEXT_PUBLIC_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+NEXT_PUBLIC_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `NEXT_PUBLIC_VERCEL_GIT_PROVIDER`
@@ -1188,6 +1332,18 @@ The name attached to the author of the commit that the project was deployed by.
 NEXT_PUBLIC_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `NEXT_PUBLIC_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+NEXT_PUBLIC_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `NEXT_PUBLIC_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -1252,14 +1408,24 @@ A production domain name of the project. We select the shortest production custo
 PUBLIC_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `PUBLIC_VERCEL_HASH_SALT`
+### `PUBLIC_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-PUBLIC_VERCEL_HASH_SALT=1783933175
+PUBLIC_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `PUBLIC_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+PUBLIC_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `PUBLIC_VERCEL_GIT_PROVIDER`
@@ -1352,6 +1518,18 @@ The name attached to the author of the commit that the project was deployed by.
 PUBLIC_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `PUBLIC_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+PUBLIC_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `PUBLIC_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -1416,14 +1594,24 @@ A production domain name of the project. We select the shortest production custo
 VITE_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `VITE_VERCEL_HASH_SALT`
+### `VITE_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-VITE_VERCEL_HASH_SALT=1783933175
+VITE_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `VITE_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+VITE_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `VITE_VERCEL_GIT_PROVIDER`
@@ -1516,6 +1704,18 @@ The name attached to the author of the commit that the project was deployed by.
 VITE_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `VITE_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+VITE_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `VITE_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -1580,14 +1780,24 @@ A production domain name of the project. We select the shortest production custo
 VUE_APP_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `VUE_APP_VERCEL_HASH_SALT`
+### `VUE_APP_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-VUE_APP_VERCEL_HASH_SALT=1783933175
+VUE_APP_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `VUE_APP_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+VUE_APP_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `VUE_APP_VERCEL_GIT_PROVIDER`
@@ -1680,6 +1890,18 @@ The name attached to the author of the commit that the project was deployed by.
 VUE_APP_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `VUE_APP_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+VUE_APP_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `VUE_APP_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -1744,14 +1966,24 @@ A production domain name of the project. We select the shortest production custo
 REDWOOD_ENV_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `REDWOOD_ENV_VERCEL_HASH_SALT`
+### `REDWOOD_ENV_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-REDWOOD_ENV_VERCEL_HASH_SALT=1783933175
+REDWOOD_ENV_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `REDWOOD_ENV_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+REDWOOD_ENV_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `REDWOOD_ENV_VERCEL_GIT_PROVIDER`
@@ -1844,6 +2076,18 @@ The name attached to the author of the commit that the project was deployed by.
 REDWOOD_ENV_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `REDWOOD_ENV_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+REDWOOD_ENV_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `REDWOOD_ENV_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -1908,14 +2152,24 @@ A production domain name of the project. We select the shortest production custo
 PUBLIC_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `PUBLIC_VERCEL_HASH_SALT`
+### `PUBLIC_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-PUBLIC_VERCEL_HASH_SALT=1783933175
+PUBLIC_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `PUBLIC_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+PUBLIC_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `PUBLIC_VERCEL_GIT_PROVIDER`
@@ -2008,6 +2262,18 @@ The name attached to the author of the commit that the project was deployed by.
 PUBLIC_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `PUBLIC_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+PUBLIC_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `PUBLIC_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -2072,14 +2338,24 @@ A production domain name of the project. We select the shortest production custo
 VITE_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `VITE_VERCEL_HASH_SALT`
+### `VITE_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-VITE_VERCEL_HASH_SALT=1783933175
+VITE_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `VITE_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+VITE_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `VITE_VERCEL_GIT_PROVIDER`
@@ -2172,6 +2448,18 @@ The name attached to the author of the commit that the project was deployed by.
 VITE_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `VITE_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+VITE_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `VITE_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -2236,14 +2524,24 @@ A production domain name of the project. We select the shortest production custo
 SANITY_STUDIO_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `SANITY_STUDIO_VERCEL_HASH_SALT`
+### `SANITY_STUDIO_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-SANITY_STUDIO_VERCEL_HASH_SALT=1783933175
+SANITY_STUDIO_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `SANITY_STUDIO_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+SANITY_STUDIO_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `SANITY_STUDIO_VERCEL_GIT_PROVIDER`
@@ -2334,6 +2632,18 @@ The name attached to the author of the commit that the project was deployed by.
 
 ```bash
 SANITY_STUDIO_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
+```
+
+### `SANITY_STUDIO_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+SANITY_STUDIO_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
 ```
 
 ### `SANITY_STUDIO_VERCEL_GIT_PULL_REQUEST_ID`
@@ -2400,14 +2710,24 @@ A production domain name of the project. We select the shortest production custo
 SANITY_STUDIO_VERCEL_PROJECT_PRODUCTION_URL=my-site.com
 ```
 
-### `SANITY_STUDIO_VERCEL_HASH_SALT`
+### `SANITY_STUDIO_VERCEL_DEPLOYMENT_ID`
 
-**Available at:&#x20;**&#x42;uild time
+**Available at:&#x20;**&#x42;oth build and runtime
 
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
+The unique identifier for the deployment, which can be used to implement Skew Protection.
 
 ```bash
-SANITY_STUDIO_VERCEL_HASH_SALT=1783933175
+SANITY_STUDIO_VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
+```
+
+### `SANITY_STUDIO_VERCEL_PROJECT_ID`
+
+**Available at:&#x20;**&#x42;oth build and runtime
+
+The unique identifier for the project.
+
+```bash
+SANITY_STUDIO_VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
 ```
 
 ### `SANITY_STUDIO_VERCEL_GIT_PROVIDER`
@@ -2500,6 +2820,18 @@ The name attached to the author of the commit that the project was deployed by.
 SANITY_STUDIO_VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
+### `SANITY_STUDIO_VERCEL_GIT_PREVIOUS_SHA`
+
+**Available at:&#x20;**&#x42;uild time
+
+The git SHA of the last successful deployment for the project and branch. It's empty on a branch's first deployment, since that branch has no previous successful deployment yet.
+
+**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
+
+```bash
+SANITY_STUDIO_VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
+```
+
 ### `SANITY_STUDIO_VERCEL_GIT_PULL_REQUEST_ID`
 
 **Available at:&#x20;**&#x42;oth build and runtime
@@ -2514,3 +2846,6 @@ SANITY_STUDIO_VERCEL_GIT_PULL_REQUEST_ID=23
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

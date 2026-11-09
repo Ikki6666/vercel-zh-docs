@@ -3,11 +3,12 @@ title: Speed Insights Metrics
 product: vercel
 url: /docs/speed-insights/metrics
 canonical_url: "https://vercel.com/docs/speed-insights/metrics"
-last_updated: 2026-02-18
+last_updated: 2026-09-01
 type: conceptual
 prerequisites:
   - /docs/speed-insights
 related:
+  - /docs/speed-insights/limits-and-pricing
   - /docs/speed-insights/migrating-from-legacy
   - /docs/speed-insights/using-speed-insights
 summary: Learn what each performance metric on Speed Insights means and how the scores are calculated.
@@ -16,7 +17,13 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Speed Insights Metrics
 
+> **💡 Note:** [Speed Insights Plus](/docs/speed-insights/limits-and-pricing) is required to see detailed breakdowns for all Core Web Vitals.
+
 ## Real Experience Score (RES)
+
+### Real user monitoring
+
+While many performance measurement tools, like [Lighthouse](https://web.dev/measure/), estimate user experience based on lab simulations, Vercel's Real Experience Score (RES) uses real data points collected from your users' devices.
 
 
 <!-- docsgraph:related -->
@@ -24,30 +31,27 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Improve Cumulative Layout Shift \\(CLS\\) on Vercel](https://vercel.com/kb/guide/cls-on-vercel?from=related) — Read, diagnose, and fix Cumulative Layout Shift on Vercel using Speed Insights and Next.js best practices.
-- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime?from=related) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
-- [How to improve Core Web Vitals](https://vercel.com/kb/guide/how-to-improve-core-web-vitals?from=related) — Improve Core Web Vitals \\(INP, LCP, CLS\\) with metric-specific fixes, field-data measurement, and Next.js/Vercel perform
-- [Why site performance matters](https://vercel.com/kb/guide/why-site-performance-matters?from=related) — How site speed, Core Web Vitals, and SEO combine to drive user retention, conversion rates, and revenue growth.
-- [First Input Delay \\(FID\\) vs. Interaction to Next Paint \\(INP\\)](https://vercel.com/kb/guide/first-input-delay-vs-interaction-to-next-paint?from=related) — Learn about the differences between FID and INP and how to optimize your website's INP score.
-- [Analytics](https://nextjs.org/docs/app/guides/analytics?from=related) — Measure and track page performance using Next.js Speed Insights
-- [Using with CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Checks Reference](https://vercel.com/docs/checks/creating-checks?from=related) — Learn how to create your own Checks with Vercel Integrations. You can build your own Integration in order to register an
-- [Astro](https://vercel.com/docs/frameworks/frontend/astro?from=related) — Learn how to use Vercel's features with Astro
-- [Create React App](https://vercel.com/docs/frameworks/frontend/create-react-app?from=related) — Learn how to use Vercel's features with Create React App
+- [Speed Insights deprecates First Input Delay on November 1st](https://vercel.com/changelog/speed-insights-deprecates-first-input-delay-on-november-first)
+- [Improve Cumulative Layout Shift \\(CLS\\) on Vercel](https://vercel.com/kb/guide/cls-on-vercel) — Read, diagnose, and fix Cumulative Layout Shift on Vercel using Speed Insights and Next.js best practices.
+- [A/B testing on ecommerce storefronts without hurting Core Web Vitals](https://vercel.com/kb/guide/ecommerce-ab-testing-core-web-vitals) — Client-side A/B tools can worsen LCP and CLS on the pages you're testing. Run ecommerce A/B tests at the edge with Routi
+- [How to handle order-ahead traffic spikes on Vercel](https://vercel.com/kb/guide/handle-order-ahead-traffic-spikes-on-vercel) — Order-ahead traffic spikes hit the same routes every lunch hour. Learn how to scale, cache, queue, and test a restaurant
+- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
+- [Latency numbers every frontend developer should know](https://vercel.com/blog/latency-numbers-every-web-developer-should-know)
+- [How Core Web Vitals affect SEO](https://vercel.com/blog/how-core-web-vitals-affect-seo)
+- [How Core Web Vitals Will Impact Google Rankings in 2021](https://vercel.com/blog/core-web-vitals)
+- [Improved Speed Insights experience](https://vercel.com/changelog/improved-speed-insights-experience)
+- [First Input Delay (FID) vs. Interaction to Next Paint (INP)](https://vercel.com/blog/first-input-delay-vs-interaction-to-next-paint)
+- [Improving INP with React 18 and Suspense](https://vercel.com/blog/improving-interaction-to-next-paint-with-react-18-and-suspense)
+- [Why site performance matters](https://vercel.com/kb/guide/why-site-performance-matters) — How site speed, Core Web Vitals, and SEO combine to drive user retention, conversion rates, and revenue growth.
 
 Full cross-link map for this page: [/docs/speed-insights/metrics.graph.md](/docs/speed-insights/metrics.graph.md)
 <!-- /docsgraph:related -->
-
-### Real user monitoring
-
-While many performance measurement tools, like [Lighthouse](https://web.dev/measure/), estimate user experience based on lab simulations, Vercel's Real Experience Score (RES) uses real data points collected from your users' devices.
 
 As a result, RES shows how real users experience your application. This real-time data helps you understand your application's performance and track changes as they happen.
 
 You can use these insights to see how new deployments affect performance, helping you improve your application's user experience.
 
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/res-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/speed-insights/v2/res-light.png)
 
 *An example of a Real Experience Score over time.*
 
@@ -175,6 +179,8 @@ Performance metrics, including the [Real Experience Score](#real-user-monitoring
 
 Aim for 'Good' scores (90 to 100) for both Real and Virtual Experience Scores. Keep in mind that reaching a score of 100 is extremely challenging due to diminishing returns. For example, improving from 99 to 100 is much harder than moving from 90 to 94, as the effort needed increases dramatically at higher scores.
 
+> **💡 Note:** Poor entries require [Speed Insights Plus](/docs/speed-insights/limits-and-pricing).
+
 ### Implications of scores for the end-user experience
 
 Higher Real Experience and Virtual Experience Scores generally translate to better end-user experiences, making it worthwhile to strive for improved Web Vital Scores. Performance scores are color-coded and improvements within the same color range will enhance user experience but don't significantly impact search engine rankings.
@@ -191,7 +197,7 @@ Setting up an integration supporting performance checks enables these checks to 
 
 Like RES, the VES draws from four separate Speed Insights, albeit with some variations:
 
-- In place of the First Input Delay ([FID](#first-input-delay-fid)) Core Web Vital, the Virtual Experience Score utilizes Total Blocking Time ([TBT](#total-blocking-time-tbt))
+- In place of the Interaction to Next Paint ([INP](#interaction-to-next-paint-inp)) Core Web Vital, the Virtual Experience Score utilizes Total Blocking Time ([TBT](#total-blocking-time-tbt))
 - The specific device type used for checks depends on the Integration you've set up. For example, Checkly only uses "Desktop" for determining scores
 
 ## Breaking down data in Speed Insights
@@ -202,3 +208,6 @@ Speed Insights offers a variety of views to help you analyze your application's 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

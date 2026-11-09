@@ -3,12 +3,13 @@ title: Running commands in a Vercel Sandbox
 product: vercel
 url: /docs/sandbox/run-commands-in-sandbox
 canonical_url: "https://vercel.com/docs/sandbox/run-commands-in-sandbox"
-last_updated: 2026-08-04
+last_updated: 2026-09-04
 type: how-to
 prerequisites:
   - /docs/sandbox
 related:
   - /docs/sandbox/cli-reference
+  - /docs/sandbox/concepts/images
   - /docs/sandbox
 summary: Create isolated sandbox environments to run builds, tests, and commands safely.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
@@ -24,16 +25,16 @@ Use this guide to create isolated sandbox environments for running commands, bui
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to use snapshots for faster sandbox startup](https://vercel.com/kb/guide/how-to-use-snapshots-for-faster-sandbox-startup?from=related) — Learn how to save sandbox state with snapshots and skip installation on future runs.
-- [Sandbox](https://v0.app/docs/sandbox?from=related) — VM-backed chats run your project inside an isolated Vercel Sandbox that hosts your code, dev server, terminal, and agent
-- [Using Vercel Sandbox to run Claude’s Agent SDK](https://vercel.com/kb/guide/using-vercel-sandbox-claude-agent-sdk?from=related) — Learn how to deploy Claude's Agent SDK in Vercel Sandbox for secure and isolated execution of AI-powered code generation
-- [How to reconnect to a running Sandbox](https://vercel.com/kb/guide/how-to-reconnect-to-a-running-sandbox?from=related) — Learn how to use \\`Sandbox.get\\(\\)\\` to reconnect to an existing sandbox from a different process or after a script rest
-- [Using private GitHub repositories with Vercel Sandbox](https://vercel.com/kb/guide/sandbox-private-github-repositories?from=related) — Learn how to use Vercel Sandbox with private GitHub repositories using fine-grained tokens, classic tokens, or GitHub Ap
-- [vercel sandbox](https://vercel.com/docs/cli/sandbox?from=related) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
-- [Concepts](https://vercel.com/docs/sandbox/concepts?from=related) — Learn how Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applicat
-- [Quickstart](https://vercel.com/docs/sandbox/quickstart?from=related) — Learn how to run your first code in a Vercel Sandbox.
-- [Persistence](https://vercel.com/docs/sandbox/concepts/persistent-sandboxes?from=related) — Sandboxes automatically save their filesystem state when stopped and restore it when resumed. No manual snapshot managem
-- [Multi-Agent](https://vercel.com/docs/sandbox/concepts/multi-agent?from=related) — Give each AI agent an isolated Linux user in a Vercel Sandbox with the @vercel/sandbox createUser, createGroup, and asUs
+- [SSH into running Vercel Sandboxes with the CLI](https://vercel.com/changelog/ssh-into-running-sandboxes-with-the-sandbox-cli)
+- [The Vercel Sandbox CLI is now more agent-friendly](https://vercel.com/changelog/the-vercel-sandbox-cli-is-now-more-agent-friendly)
+- [Vercel Sandbox CLI is now available](https://vercel.com/changelog/vercel-sandbox-cli-is-now-available)
+- [Use and manage Vercel Sandbox directly from the Vercel CLI](https://vercel.com/changelog/use-vercel-sandbox-directly-within-vercel-cli)
+- [How Vercel Sandbox duration and persistence work](https://vercel.com/kb/guide/vercel-sandbox-duration-and-persistence) — Session duration and persistence are two separate controls in Vercel Sandbox. The timeout option keeps a single run aliv
+- [vercel sandbox](https://vercel.com/docs/cli/sandbox) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
+- [Understanding Sandboxes](https://vercel.com/docs/sandbox/concepts) — Learn how Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applicat
+- [Snapshots](https://vercel.com/docs/sandbox/concepts/snapshots) — Save and restore sandbox state with snapshots for faster startups and environment sharing.
+- [Run isolated AI agents in one sandbox](https://vercel.com/docs/sandbox/concepts/multi-agent) — Give each AI agent an isolated Linux user in a Vercel Sandbox with the @vercel/sandbox createUser, createGroup, and asUs
+- [Persistence](https://vercel.com/docs/sandbox/concepts/persistent-sandboxes) — Sandboxes automatically save their filesystem state when stopped and restore it when resumed. No manual snapshot managem
 
 Full cross-link map for this page: [/docs/sandbox/run-commands-in-sandbox.graph.md](/docs/sandbox/run-commands-in-sandbox.graph.md)
 <!-- /docsgraph:related -->
@@ -47,70 +48,86 @@ Full cross-link map for this page: [/docs/sandbox/run-commands-in-sandbox.graph.
 Use this block when you already know what you're doing and want the full command sequence. Use the steps below for context and checks.
 
 ```bash filename="terminal"
-# 1. Create a named sandbox
-sandbox create --name my-sandbox --runtime node24 --timeout 1h --publish-port 3000
+# 1. Create a sandbox with a name
+sandbox create --name my-sandbox --image vercel/sandbox/node:24 --timeout 1h --publish-port 3000
 
 # 2. Copy project files into the sandbox
-sandbox copy ./my-app/. my-sandbox:/app
+sandbox copy --recursive ./my-app my-sandbox:/tmp/app
 
 # 3. Run commands inside the sandbox
-sandbox exec --workdir /app my-sandbox -- npm install
-sandbox exec --workdir /app my-sandbox -- npm run build
-sandbox exec --workdir /app --env NODE_ENV=test my-sandbox -- npm test
+sandbox exec --workdir /tmp/app my-sandbox -- npm install
+sandbox exec --workdir /tmp/app my-sandbox -- npm run build
+sandbox exec --workdir /tmp/app --env NODE_ENV=test my-sandbox -- npm test
 
 # 4. Save the state as a snapshot for reuse
 sandbox snapshot my-sandbox --stop
 
 # 5. Create a new sandbox from the snapshot
-sandbox create --snapshot <snapshot-id> --timeout 30m
+sandbox create --name restored-sandbox --snapshot <snapshot-id> --timeout 30m
 
-# 6. Stop the current session (persistent sandboxes will resume on the next exec)
-sandbox stop my-sandbox
+# 6. Use the restored sandbox, then stop its session
+sandbox exec --workdir /tmp/app restored-sandbox -- npm test
+sandbox stop restored-sandbox
 
-# 7. Or permanently delete it
-sandbox remove my-sandbox
+# 7. Permanently delete both sandboxes when no longer needed
+sandbox remove restored-sandbox my-sandbox
 ```
 
 ## 1. Create a sandbox
 
-Create a new sandbox environment with the runtime and configuration you need:
+Create a new sandbox environment with the image and configuration you need:
 
 ```bash filename="terminal"
-sandbox create --runtime node24 --timeout 1h
+sandbox create --image vercel/sandbox/node:24 --timeout 1h
 ```
 
-This creates a Node.js 24 sandbox that auto-stops after one hour. The command outputs the sandbox ID.
+This creates a Node.js 24 sandbox that auto-stops after one hour. The command prints the sandbox name. If you don't pass `--image`, the sandbox uses the default [`vercel/sandbox/universal`](/docs/sandbox/concepts/images) image. The older `--runtime` flag is deprecated. Use `--image` instead.
 
 To make a port accessible via a public URL (useful for testing web applications):
 
 ```bash filename="terminal"
-sandbox create --runtime node24 --timeout 1h --publish-port 3000
+sandbox create --image vercel/sandbox/node:24 --timeout 1h --publish-port 3000
 ```
 
 For Python workloads:
 
 ```bash filename="terminal"
-sandbox create --runtime python3.13 --timeout 1h
+sandbox create --image vercel/sandbox/python:3.14 --timeout 1h
 ```
 
 To create a sandbox and immediately connect to an interactive shell:
 
 ```bash filename="terminal"
-sandbox create --runtime node24 --timeout 1h --connect
+sandbox create --image vercel/sandbox/node:24 --timeout 1h --connect
 ```
 
 ## 2. Copy files into the sandbox
 
-Copy your project files into the sandbox:
+The `sandbox copy` command copies one file by default. To copy a single file into the sandbox:
 
 ```bash filename="terminal"
-sandbox copy ./my-app/. <name>:/app
+sandbox exec <name> -- mkdir -p /tmp/app
+sandbox copy ./my-app/package.json <name>:/tmp/app/package.json
 ```
+
+To copy a whole directory, add `--recursive` (or `-r`):
+
+```bash filename="terminal"
+sandbox copy --recursive ./my-app <name>:/tmp/app
+```
+
+The contents of the source directory end up inside the destination directory, so `./my-app/package.json` becomes `/tmp/app/package.json`. The command creates the destination directory if it doesn't exist.
 
 You can also copy files out of the sandbox back to your local machine:
 
 ```bash filename="terminal"
-sandbox copy <name>:/app/output/results.json ./results.json
+sandbox copy <name>:/tmp/app/output/results.json ./results.json
+```
+
+To copy a directory out of the sandbox, add `--recursive`:
+
+```bash filename="terminal"
+sandbox copy --recursive <name>:/tmp/app/output ./output
 ```
 
 ## 3. Run commands
@@ -118,17 +135,17 @@ sandbox copy <name>:/app/output/results.json ./results.json
 Execute commands inside the sandbox. Use `--workdir` to set the working directory:
 
 ```bash filename="terminal"
-sandbox exec --workdir /app <name> -- npm install
+sandbox exec --workdir /tmp/app <name> -- npm install
 ```
 
 ```bash filename="terminal"
-sandbox exec --workdir /app <name> -- npm run build
+sandbox exec --workdir /tmp/app <name> -- npm run build
 ```
 
 To pass environment variables to the command:
 
 ```bash filename="terminal"
-sandbox exec --workdir /app --env NODE_ENV=test <name> -- npm test
+sandbox exec --workdir /tmp/app --env NODE_ENV=test <name> -- npm test
 ```
 
 For commands that need elevated permissions:
@@ -168,7 +185,7 @@ sandbox snapshots list
 Recreate an environment from a saved snapshot:
 
 ```bash filename="terminal"
-sandbox create --snapshot <snapshot-id> --timeout 30m
+sandbox create --name restored-sandbox --snapshot <snapshot-id> --timeout 30m
 ```
 
 This starts a new sandbox with all the files, dependencies, and configuration from the snapshot already in place.
@@ -178,23 +195,23 @@ This starts a new sandbox with all the files, dependencies, and configuration fr
 For simple tasks where you don't need to manage the sandbox lifecycle, use `sandbox run`. This creates a sandbox, runs a command, and optionally cleans up:
 
 ```bash filename="terminal"
-sandbox run --runtime node24 --rm -- node -e 'console.log(process.version)'
+sandbox run --image vercel/sandbox/node:24 --rm -- node -e 'console.log(process.version)'
 ```
 
 The `--rm` flag automatically deletes the sandbox after the command finishes.
 
 ## 8. Configure network access
 
-Control what network resources the sandbox can reach:
+Control what network resources the sandbox can reach. Passing `--allowed-domain` creates a custom policy that only allows traffic to the listed destinations:
 
 ```bash filename="terminal"
-sandbox create --runtime node24 --timeout 1h --network-policy deny-all --allowed-domain "*.npmjs.org" --allowed-domain "registry.npmjs.org"
+sandbox create --image vercel/sandbox/node:24 --timeout 1h --allowed-domain "*.npmjs.org" --allowed-domain "registry.npmjs.org"
 ```
 
 To update the network policy of an existing sandbox:
 
 ```bash filename="terminal"
-sandbox config network-policy <name> --network-policy deny-all --allowed-domain "api.example.com"
+sandbox config network-policy <name> --allowed-domain "api.example.com"
 ```
 
 ## 9. Clean up
@@ -241,3 +258,6 @@ sandbox snapshots delete <snapshot-id>
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

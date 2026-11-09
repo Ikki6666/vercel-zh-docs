@@ -3,15 +3,15 @@ title: vercel env
 product: vercel
 url: /docs/cli/env
 canonical_url: "https://vercel.com/docs/cli/env"
-last_updated: 2026-07-15
+last_updated: 2026-08-20
 type: reference
 prerequisites:
   - /docs/cli
 related:
   - /docs/environment-variables
   - /docs/cli/build
-  - /docs/cli/dev
   - /docs/cli/pull
+  - /docs/deployments/environments
   - /docs/environment-variables/sensitive-environment-variables
 summary: Learn how to manage your environment variables in your Vercel Projects using the vercel env CLI command.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
@@ -27,25 +27,27 @@ The `vercel env` command is used to manage [Environment Variables](/docs/environ
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
-- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare?from=related) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
-- [How do I use private dependencies with Vercel?](https://vercel.com/kb/guide/using-private-dependencies-with-vercel?from=related) — Information on how to use private dependencies with a Vercel deployment.
-- [Manage Across Environments](https://vercel.com/docs/environment-variables/manage-across-environments?from=related) — Add, sync, and verify environment variables across development, preview, production, and custom environments using the C
-- [vercel pull](https://vercel.com/docs/cli/pull?from=related) — Learn how to update your local project with remote environment variables using the vercel pull CLI command.
-- [Global Options](https://vercel.com/docs/cli/global-options?from=related) — Global options are commonly available to use with multiple Vercel CLI commands. Learn about Vercel CLI's global options
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [Environments](https://vercel.com/docs/deployments/environments?from=related) — Environments are for developing locally, testing changes in a pre-production environment, and serving end-users in produ
+- [Route form submissions with Jev and AI SDK](https://vercel.com/kb/guide/jev-ai-sdk-form-router) — Route form submissions to the right team with the Jev x AI SDK Form Router template. Jev routes clear cases and a fallba
+- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
+- [How do I use private dependencies with Vercel?](https://vercel.com/kb/guide/using-private-dependencies-with-vercel) — Information on how to use private dependencies with a Vercel deployment.
+- [Environment Variables UI](https://vercel.com/blog/environment-variables-ui)
+- [Environment variables now use Config and Secret types](https://vercel.com/changelog/environment-variables-now-use-config-and-secret-types)
+- [Managing environment variables across environments](https://vercel.com/docs/environment-variables/manage-across-environments) — Add, sync, and verify environment variables across development, preview, production, and custom environments using the C
+- [vercel pull](https://vercel.com/docs/cli/pull) — Learn how to update your local project with remote environment variables using the vercel pull CLI command.
+- [vercel deploy](https://vercel.com/docs/cli/deploy) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [vercel environments](https://vercel.com/docs/cli/target) — Work with custom environments using the --environment option in Vercel CLI.
+- [vercel global-config](https://vercel.com/docs/cli/global-config) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, delete, and manage items, read tokens, a
 
 Full cross-link map for this page: [/docs/cli/env.graph.md](/docs/cli/env.graph.md)
 <!-- /docsgraph:related -->
 
-To leverage environment variables in local tools (like `next dev` or `gatsby dev`) that want them in a file (like `.env`), run `vercel env pull <file>`. This will export your Project's environment variables to that file. After updating environment variables on Vercel (through the dashboard, `vercel env add`, or `vercel env rm`), you will have to run `vercel env pull <file>` again to get the updated values.
+To leverage environment variables in local tools (like `next dev` or `gatsby dev`) that want them in a file (like `.env`), run `vercel env pull <file>`. This will export your Project's environment variables to that file. After updating environment variables on Vercel (through the dashboard, `vercel env add`, or `vercel env remove`), you will have to run `vercel env pull <file>` again to get the updated values. When the target file already exists, `vercel env pull` merges the pulled values into it instead of discarding local-only entries. See [the pull merge behavior](#exporting-development-environment-variables) for details.
 
 To run a command with environment variables without writing them to a file, use `vercel env run -- <command>`. This fetches the environment variables directly from your linked Vercel project and passes them to the specified command.
 
 ### Exporting Development Environment Variables
 
-Some frameworks make use of environment variables during local development through CLI commands like `next dev` or `gatsby dev`. The `vercel env pull` sub-command will export development environment variables to a local `.env` file or a different file of your choice.
+Some frameworks make use of environment variables during local development through CLI commands like `next dev` or `gatsby dev`. The `vercel env pull` sub-command will export development environment variables to a local `.env.local` file or a different file of your choice.
 
 ```bash filename="terminal"
 vercel env pull [file]
@@ -57,17 +59,26 @@ To override environment variable values temporarily, use:
 MY_ENV_VAR="temporary value" next dev
 ```
 
-> **💡 Note:** If you are using [`vercel build`](/docs/cli/build) or [
-> `vercel dev`](/docs/cli/dev), you should use [
-> `vercel pull`](/docs/cli/pull) instead. Those commands
-> operate on a local copy of environment variables and Project settings that are
+#### How `vercel env pull` merges into an existing file
+
+When the target file already exists, `vercel env pull` merges the pulled values into it rather than overwriting the whole file:
+
+- Variables defined only in your local file, and not present in the pulled environment, are kept. The CLI logs `Kept <KEYS> (defined locally, not found in the <environment> Environment)`.
+- `VERCEL_OIDC_TOKEN` is never preserved from your local file. It is always refreshed from Vercel. The Vercel-managed analytics variables `VERCEL_ANALYTICS_ID`, `VERCEL_SPEED_INSIGHTS_ID`, and `VERCEL_WEB_ANALYTICS_ID` are also never preserved as local-only entries.
+- For Secret variables whose values cannot be read from Vercel, the CLI keeps the real value already in your local file. If your local file has no real value for that key, the CLI writes a placeholder for you to replace with a local-only value.
+
+<br />
+
+> **💡 Note:** If you are using [`vercel build`](/docs/cli/build), you should use [
+> `vercel pull`](/docs/cli/pull) instead. `vercel build`
+> operates on a local copy of environment variables and Project settings that are
 > saved under `.vercel/`, which
 > `vercel pull` provides.
 
 ## Usage
 
 ```bash filename="terminal"
-vercel env ls
+vercel env list
 ```
 
 *Using the \`vercel env\` command to list all Environment
@@ -81,7 +92,7 @@ vercel env add
 Variable to a Vercel Project.*
 
 ```bash filename="terminal"
-vercel env rm
+vercel env remove
 ```
 
 *Using the \`vercel env\` command to remove an Environment
@@ -89,59 +100,70 @@ Variable from a Vercel Project.*
 
 ## Extended Usage
 
+The `--environment` and `--git-branch` options of `vercel env add`, `list`, `remove`, and `update` need Vercel CLI 64.7.0 or later.
+
 ```bash filename="terminal"
-vercel env ls [environment]
+vercel env list --environment [environment]
 ```
 
 *Using the \`vercel env\` command to list Environment
 Variables for a specific Environment in a Vercel Project.*
 
 ```bash filename="terminal"
-vercel env ls [environment] [gitbranch]
+vercel env list --environment preview --git-branch [gitbranch]
 ```
 
-*Using the \`vercel env\` command to list Environment
-Variables for a specific Environment and Git branch.*
+*Using the \`vercel env\` command to list the Preview
+Environment Variables of a specific Git branch.*
 
 ```bash filename="terminal"
 vercel env add [name]
 ```
 
 *Using the \`vercel env\` command to add an Environment
-Variable to all Environments to a Vercel Project.*
+Variable to a Vercel Project. The CLI prompts you to select the Environments.*
 
 ```bash filename="terminal"
-vercel env add [name] [environment]
+vercel env add [name] --environment [environment]
 ```
 
 *Using the \`vercel env\` command to add an Environment
 Variable for a specific Environment to a Vercel Project.*
 
 ```bash filename="terminal"
-vercel env add [name] [environment] [gitbranch]
+vercel env add [name] --environment production,preview
 ```
 
 *Using the \`vercel env\` command to add an Environment
-Variable to a specific Git branch.*
+Variable to several Environments at once. Separate the Environments with
+commas.*
 
 ```bash filename="terminal"
-vercel env add [name] [environment] < [file]
+vercel env add [name] --environment preview --git-branch [gitbranch]
+```
+
+*Using the \`vercel env\` command to add an Environment
+Variable to a specific Git branch. Only Preview Environment Variables can
+target a Git branch.*
+
+```bash filename="terminal"
+vercel env add [name] --environment [environment] < [file]
 ```
 
 *Using the \`vercel env\` command to add an Environment
 Variable to a Vercel Project using a local file's content as the value.*
 
 ```bash filename="terminal"
-echo [value] | vercel env add [name] [environment]
+echo [value] | vercel env add [name] --environment [environment]
 ```
 
 *Using the \`echo\` command to generate the value of the
 Environment Variable and piping that value into the
-\`vercel dev\` command. Warning: this will save the value
-in bash history, so this is not recommend for secrets.*
+\`vercel env add\` command. Warning: this will save the value
+in bash history, so this is not recommended for secrets.*
 
 ```bash filename="terminal"
-vercel env add [name] [environment] [gitbranch] < [file]
+vercel env add [name] --environment preview --git-branch [gitbranch] < [file]
 ```
 
 *Using the \`vercel env\` command to add an Environment
@@ -149,7 +171,7 @@ Variable with Git branch to a Vercel Project using a local file's content as
 the value.*
 
 ```bash filename="terminal"
-vercel env rm [name] [environment]
+vercel env remove [name] --environment [environment]
 ```
 
 *Using the \`vercel env\` command to remove an Environment
@@ -167,24 +189,26 @@ vercel env update [name]
 Variable across all Environments.*
 
 ```bash filename="terminal"
-vercel env update [name] [environment]
+vercel env update [name] --environment [environment]
 ```
 
-*Using \`vercel env update\` to update an Environment
-Variable for a specific Environment.*
+*Using \`vercel env update\` to update the Environment
+Variable that covers a specific Environment. The new value applies to every
+Environment that the variable covers.*
 
 ```bash filename="terminal"
-vercel env update [name] [environment] [gitbranch]
+vercel env update [name] --environment preview --git-branch [gitbranch]
 ```
 
-*Using \`vercel env update\` to update an Environment
-Variable for a specific Environment and Git branch.*
+*Using \`vercel env update\` to update the Preview
+Environment Variable of a specific Git branch.*
 
 ```bash filename="terminal"
-cat ~/.npmrc | vercel env update NPM_RC preview
+cat ~/.npmrc | vercel env update NPM_RC --environment preview --yes
 ```
 
-*Update an Environment Variable value from stdin.*
+*Update an Environment Variable value from stdin. The \`--yes\` option skips
+the update confirmation, which piped input cannot answer.*
 
 ```bash filename="terminal"
 vercel env pull [file]
@@ -253,89 +277,64 @@ Git branch.*
 
 The following options are available for `vercel env run`:
 
-- `-e, --environment`: Specify the environment to pull variables from. Defaults to `development`. Accepts `development`, `preview`, or `production`.
+- `-e, --environment`: Specify the environment to pull variables from. Defaults to `development`. Accepts `development`, `preview`, `production`, or the name of a [custom environment](/docs/deployments/environments#custom-environments).
 - `--git-branch`: Specify a Git branch to pull branch-specific Environment Variables.
 
 ## Unique Options
 
 These are options that only apply to the `vercel env` command.
 
-### Sensitive
+### Type
 
-When you add an Environment Variable with `vercel env add`, Vercel defaults to `sensitive` for production, preview, and custom environments. Sensitive values are stored securely by Vercel and cannot be viewed later in the dashboard or with `vercel env ls`. Sensitive values are still available to builds run within the Vercel build container and at runtime.
+`vercel env add` and `vercel env update` store each variable as [Config or Secret](/docs/environment-variables/sensitive-environment-variables). Use `--type config` or `--type secret` to set the type explicitly. The `--sensitive` flag maps to Secret. With `vercel env add`, the `--no-sensitive` flag maps to Config. `--visibility` is a deprecated alias for `--type`.
 
-Development targets remain `encrypted` because the Vercel API does not allow sensitive Environment Variables in development.
+By default, `vercel env update` keeps the variable's current type. Pass `--type secret` to change a Config variable to a Secret. To change a Secret to Config, remove the variable and add it again with `--type config`.
+
+Success output includes a `Type` line (`Config` or `Secret`).
 
 | Target | Default type | Notes |
 | --- | --- | --- |
-| Production | `sensitive` | Pass `--no-sensitive` to opt out. Team policy may block opting out. |
-| Preview | `sensitive` | Pass `--no-sensitive` to opt out. Team policy may block opting out. |
-| Development | `encrypted` | Sensitive is not allowed. `--sensitive` returns an error. |
-| Custom environments | `sensitive` | The server decides whether sensitive is allowed for that environment. |
-
-If you select development with production or preview in the same command, `vercel env add` returns an error. Add development variables in a separate command.
-
-#### Team policy enforcement
-
-If your team enables [Enforce Sensitive Environment Variables](/docs/environment-variables/sensitive-environment-variables#environment-variables-policy), the CLI applies policy-aware behavior before it creates variables.
-
-Under this policy:
-
-- Development is disallowed for `vercel env add` and returns an error.
-- Production and preview writes are treated as sensitive, and the CLI logs a one-line notice so this behavior is explicit.
-- The interactive target picker labels development as `Development (disallowed)`.
-- The interactive `Make it sensitive?` prompt is skipped because policy fixes the outcome.
-- `--no-sensitive` is ignored for production and preview with this message: `--no-sensitive is ignored: your team enforces sensitive Environment Variables for Production and Preview.`
-
-When this policy is enabled, the CLI always creates production and preview variables as sensitive and shows that clearly in `--debug` output.
+| Production | `secret` | Use `--no-sensitive` or `--type config` for Config. |
+| Preview | `secret` | Use `--no-sensitive` or `--type config` for Config. |
+| Development | `config` | Use `--sensitive` or `--type secret` for Secret. Secrets are allowed in Development. |
+| Custom environments | `secret` | Use `--no-sensitive` or `--type config` for Config. |
 
 ```bash filename="terminal"
-vercel env add API_TOKEN --sensitive
+vercel env add API_URL --environment production --value "https://api.example.com" --no-sensitive --yes
 ```
 
-*Using \`vercel env add\` with the
-\`--sensitive\` option to add a sensitive Environment
-Variable.*
+*Add a Config variable. \`--no-sensitive\` infers \`type: config\`.*
 
 ```bash filename="terminal"
-vercel env update API_TOKEN --sensitive
+vercel env add API_KEY --environment production --value "sk_live_..." --sensitive --yes
 ```
 
-*Using \`vercel env update\` with the
-\`--sensitive\` option to update a variable and mark it
-as sensitive.*
-
-The `--sensitive` flag keeps its existing behavior and returns an error when you include a development target.
-
-The `--no-sensitive` flag opts out of the default sensitive behavior for production and preview.
+*Add a Secret variable. \`--sensitive\` infers \`type: secret\`.*
 
 ```bash filename="terminal"
-vercel env add API_TOKEN production --no-sensitive
+vercel env add DEV_API_KEY --environment development --value "sk_test_..." --sensitive --yes
 ```
 
-*Using \`vercel env add\` with
-\`--no-sensitive\` to store a production Environment
-Variable as encrypted instead of sensitive.*
+*Add a Secret in Development.*
 
-Using `--sensitive` and `--no-sensitive` together returns an error.
+```bash filename="terminal"
+vercel env add API_URL --environment production --type config --yes
+```
 
-#### Interactive prompt behavior
+*Set the type explicitly with \`--type config\` or \`--type secret\`.*
 
-The `Make it sensitive?` prompt (default `yes`) appears only when all of the following are true:
+Using `--sensitive` or `--no-sensitive` with a conflicting `--type` returns an error.
 
-1. You did not pass `--sensitive` or `--no-sensitive`.
-2. The selected targets include production or preview.
-3. Your team policy does not enforce sensitive environment variables.
-4. You are in an interactive terminal and confirmation prompts are not bypassed by `--yes`, `--value`, or stdin input.
+In an interactive terminal, the CLI asks `Environment Variable type?` unless you pass a type flag, `--yes`, `--value`, or a value through stdin. Variables with a public framework prefix, such as `NEXT_PUBLIC_`, are stored as Config.
 
-The prompt runs after target selection and value entry so it can evaluate the actual target set.
+The legacy **Enforce Sensitive Environment Variables** team policy is deprecated. The CLI no longer enforces that policy locally. See [Environment variables policy](/docs/environment-variables/sensitive-environment-variables#environment-variables-policy) for the replacement **Separate Production Secret Values** policy.
 
 ### Force
 
 The `--force` option overwrites an existing environment variable of the same target without prompting for confirmation.
 
 ```bash filename="terminal"
-vercel env add API_TOKEN production --force
+vercel env add API_TOKEN --environment production --force
 ```
 
 *Using \`vercel env add\` with the
@@ -355,20 +354,40 @@ vercel env pull --yes
 file.*
 
 ```bash filename="terminal"
-vercel env rm [name] --yes
+vercel env remove [name] --yes
 ```
 
-*Using the \`vercel env rm\` command with the
+*Using the \`vercel env remove\` command with the
 \`--yes\` option to skip the remove confirmation.*
 
 ```bash filename="terminal"
-vercel env update API_TOKEN production --yes
+vercel env update API_TOKEN --environment production --yes
 ```
 
 *Using the \`vercel env update\` command with the
 \`--yes\` option to skip the update confirmation.*
 
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel env` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

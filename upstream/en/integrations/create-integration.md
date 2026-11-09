@@ -3,7 +3,7 @@ title: Create an Integration
 product: vercel
 url: /docs/integrations/create-integration
 canonical_url: "https://vercel.com/docs/integrations/create-integration"
-last_updated: 2026-07-29
+last_updated: 2026-09-16
 type: how-to
 prerequisites:
   - /docs/integrations
@@ -27,12 +27,12 @@ Learn the process of creating and managing integrations on Vercel, helping you e
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
-- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related) — Learn how you can add a product to your Vercel project through a native integration.
-- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
-- [Permissions and Access](https://vercel.com/docs/integrations/install-an-integration/manage-integrations-reference?from=related) — Learn how to manage project access and added products for your integrations.
-- [Integrations for Agents](https://vercel.com/docs/agent-resources/integrations-for-agents?from=related) — Install AI agents and services through the Vercel Marketplace to automate workflows and build custom AI systems.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Introducing AI Integrations on Vercel](https://vercel.com/blog/ai-integrations)
+- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration) — Learn how you can add a product to your Vercel project through a native integration.
+- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
+- [Permissions and Access](https://vercel.com/docs/integrations/install-an-integration/manage-integrations-reference) — Learn how to manage project access and added products for your integrations.
+- [Integrations](https://vercel.com/docs/agent-resources/vercel-mcp/tools/integrations) — Vercel MCP tools for integrations.
+- [Storage on Vercel Marketplace](https://vercel.com/docs/marketplace-storage) — Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data,
 
 Full cross-link map for this page: [/docs/integrations/create-integration.graph.md](/docs/integrations/create-integration.graph.md)
 <!-- /docsgraph:related -->
@@ -56,7 +56,7 @@ Integrations can be created by filling out the **Create Integration** form. To a
 
 ### Native integration product creation
 
-> **💡 Note:** In order to create native integrations, please share your `team_id` and
+> **💡 Note:** To create native integrations, please share your `team_id` and
 > Integration's [URL
 > Slug](/docs/integrations/create-integration/submit-integration#url-slug) with
 > Vercel in your shared Slack channel (`#shared-mycompanyname`). You can sign up
@@ -84,7 +84,7 @@ The **Create Integration** form must be completed in full before you can submit 
 | [Privacy Policy URL](/docs/integrations/create-integration/submit-integration#urls)                                                                | The URL to your Privacy Policy for your integration.                                                                                     |     |
 | [Overview](/docs/integrations/create-integration/submit-integration#overview)                                                                      | A detailed overview of your integration.                                                                                                 |     |
 | [Additional Information](/docs/integrations/create-integration/submit-integration#additional-information)                                          | Additional information about configuring your integration.                                                                               |  |
-| [Feature Media](/docs/integrations/create-integration/submit-integration#feature-media)                                                            | A featured image or video for your integration. You can link up to 5 images or videos for your integration with an aspect ratio of 16:9. |     |
+| [Feature Media](/docs/integrations/create-integration/submit-integration#feature-media)                                                            | Images featured on your integration details page. You can upload 1 to 8 images with an aspect ratio of 16:9. |     |
 | [Redirect URL](/docs/integrations/create-integration/submit-integration#redirect-url)                                                              | The URL the user sees during installation.                                                                                               |     |
 | [API Scopes](/docs/integrations/create-integration/submit-integration#api-scopes)                                                                  | The API scopes for your integration.                                                                                                     |  |
 | [Webhook URL](/docs/integrations/create-integration/submit-integration#webhook-url)                                                                | The URL to receive webhooks from Vercel.                                                                                                 |  |
@@ -109,7 +109,7 @@ The **Create Product** form must be completed in full for at least one product b
 | [Tags](/docs/integrations/create-integration/submit-integration#product-tags)                                                       | Tags for the integrations marketplace categories.                          |     |
 | [Guides](/docs/integrations/create-integration/submit-integration#product-guides)                                                   | Getting started guides for specific frameworks.                            |     |
 | [Resource Links](/docs/integrations/create-integration/submit-integration#product-resource-links)                                   | Resource links such as documentation.                                      |  |
-| [Snippets](/docs/integrations/create-integration/submit-integration#product-snippets)                                               | Add up to 6 code snippets to help users get started with your product.     |  |
+| [Snippets](/docs/integrations/create-integration/submit-integration#product-snippets)                                               | Add up to 8 code snippets to help users get started with your product.     |  |
 | [Global Config Support](/docs/integrations/create-integration/submit-integration#global-config-support)                                 | Enable/Disable Experimentation Global Config Sync                            |  |
 | [Log Drain Settings](/docs/integrations/create-integration/submit-integration#log-drain-settings)                                   | Configure a Log Drain                                                      |  |
 | [Checks API](/docs/integrations/create-integration/submit-integration#checks-api)                                                   | Enable/Disable Checks API                                                  |  |
@@ -118,7 +118,7 @@ The **Create Product** form must be completed in full for at least one product b
 
 ### Native integrations
 
-To create a  for your [native integration](/docs/integrations#native-integrations), follow the steps in [Create a product for a native integration](/docs/integrations/create-integration/marketplace-product).
+To create a product for your [native integration](/docs/integrations#native-integrations), follow the steps in [Create a product for a native integration](/docs/integrations/create-integration/marketplace-product).
 
 ### Connectable account integrations
 
@@ -194,3 +194,6 @@ Vercel does not perform OFAC checks on behalf of its customers or their end user
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

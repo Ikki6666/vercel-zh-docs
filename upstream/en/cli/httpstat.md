@@ -3,7 +3,7 @@ title: vercel httpstat
 product: vercel
 url: /docs/cli/httpstat
 canonical_url: "https://vercel.com/docs/cli/httpstat"
-last_updated: 2026-07-15
+last_updated: 2026-08-21
 type: reference
 prerequisites:
   - /docs/cli
@@ -21,22 +21,22 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **💡 Note:** The `vercel httpstat` command is currently in beta. Features and behavior may change.
 
+The `vercel httpstat` command works like `httpstat`, but automatically handles deployment protection bypass tokens for you. It provides visualization of HTTP timing statistics, showing how long each phase of an HTTP request takes. When your project has [Deployment Protection](/docs/deployment-protection) enabled, this command lets you test protected deployments without manually managing bypass secrets.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [vercel list](https://vercel.com/docs/cli/list?from=related) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
-- [vercel api](https://vercel.com/docs/cli/api?from=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Deploying from CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [vercel list](https://vercel.com/docs/cli/list) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
+- [vercel api](https://vercel.com/docs/cli/api) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
+- [vercel logs](https://vercel.com/docs/cli/logs) — View and filter runtime logs or CDN request records for your Vercel project.
+- [vercel security](https://vercel.com/docs/cli/security) — Inspect the security posture of your Vercel team from the terminal: run every security check, list findings, and triage
+- [vercel health](https://vercel.com/docs/cli/health) — Read Vercel platform status, active incidents, scheduled maintenance, and recently resolved incidents from your terminal
 
 Full cross-link map for this page: [/docs/cli/httpstat.graph.md](/docs/cli/httpstat.graph.md)
 <!-- /docsgraph:related -->
-
-The `vercel httpstat` command works like `httpstat`, but automatically handles deployment protection bypass tokens for you. It provides visualization of HTTP timing statistics, showing how long each phase of an HTTP request takes. When your project has [Deployment Protection](/docs/deployment-protection) enabled, this command lets you test protected deployments without manually managing bypass secrets.
 
 The command runs the `httpstat` tool with the same arguments you provide, but adds an [`x-vercel-protection-bypass`](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation#using-protection-bypass-for-automation) header with a valid token. This makes it simple to measure response times, analyze performance bottlenecks, or debug latency issues on protected deployments.
 
@@ -86,19 +86,21 @@ deployment.*
 
 ### Multiple requests
 
-Run multiple requests to get average timing statistics by passing flags after `--`:
+Each run times one request. To get more reliable timing data, run the command more than once and compare the results:
 
 ```bash filename="terminal"
-vercel httpstat /api/data -- -n 10
+vercel httpstat /api/data
+vercel httpstat /api/data
+vercel httpstat /api/data
 ```
 
-*Running 10 requests to get more reliable timing data.*
+*Running the command three times to compare timing data.*
 
 ## How it works
 
 When you run `vercel httpstat`:
 
-1. The CLI finds your linked project (or you can specify one with [`--project`](/docs/cli/global-options#project))
+1. The CLI finds your linked project
 2. It gets the latest production deployment URL (or uses the deployment you specified)
 3. It retrieves or generates a deployment protection bypass token
 4. It runs the `httpstat` tool with the bypass token in the `x-vercel-protection-bypass` header
@@ -119,6 +121,8 @@ vercel httpstat /api/hello --deployment https://my-app-abc123.vercel.app
 ```
 
 *Using the \`--deployment\` option to target a specific deployment.*
+
+You don't need a linked project to use `--deployment`, and the deployment can belong to any team that you can access. The CLI creates a new bypass token only when the deployment belongs to your linked project. Otherwise, it uses the existing token of the deployment's project, so [create one manually](#failed-to-get-deployment-protection-bypass-token) if that project has none.
 
 ### Protection bypass
 
@@ -177,7 +181,7 @@ brew install httpstat
 
 *Installing httpstat on different systems.*
 
-### No deployment found for the project
+### No deployment URL found for the project
 
 Make sure you're in a directory with a linked Vercel project and that the project has at least one deployment:
 
@@ -197,7 +201,7 @@ If automatic token creation fails, you can create a bypass secret manually in th
 
 1. Go to your project's **Settings** → **Deployment Protection**
 2. Find "Protection Bypass for Automation"
-3. Click "Create" or "Generate" to create a new secret
+3. Click "Add Secret", then click "Add Bypass" to generate a new secret
 4. Copy the generated secret
 5. Use it with the `--protection-bypass` flag or [`VERCEL_AUTOMATION_BYPASS_SECRET`](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation#using-protection-bypass-for-automation) environment variable
 
@@ -206,8 +210,25 @@ If automatic token creation fails, you can create a bypass secret manually in th
 When using `--deployment`, verify that:
 
 - The deployment ID or URL is correct
-- The deployment belongs to your linked project
+- The deployment belongs to a team that you can access. If you pass `--scope`, the deployment must belong to that team.
 - The deployment hasn't been deleted
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel httpstat` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 ## Related
 
@@ -220,3 +241,6 @@ When using `--deployment`, verify that:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

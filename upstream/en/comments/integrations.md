@@ -3,7 +3,7 @@ title: Integrations for Comments
 product: vercel
 url: /docs/comments/integrations
 canonical_url: "https://vercel.com/docs/comments/integrations"
-last_updated: 2026-05-15
+last_updated: 2026-08-28
 type: how-to
 prerequisites:
   - /docs/comments
@@ -11,9 +11,9 @@ related:
   - /docs/git
   - /docs/git/vercel-for-github
   - /docs/project-configuration/general-settings
+  - /docs/comments/using-comments
   - /docs/cli
-  - /docs/vercel-toolbar/in-production-and-localhost
-summary: Learn how Comments integrates with Git providers like GitHub, GitLab, and BitBucket, as well as the Vercel app for Slack.
+summary: Learn how Comments integrates with Git providers like GitHub, GitLab, and Bitbucket, as well as the Vercel app for Slack.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -21,42 +21,42 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Git provider integration
 
+Comments are available for projects using **any** Git provider. GitHub, Bitbucket, and GitLab [are supported automatically](/docs/git#supported-git-providers).
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Slack](https://v0.app/docs/slack?from=related) — Add v0 to your Slack workspace so your whole team can contribute to production.
-- [Run and track deploys from Slack](https://vercel.com/kb/guide/run-and-track-deploys-from-slack?from=related) — Build a Slack deploy bot with Chat SDK and Vercel Workflows. Dispatch GitHub Actions from a slash command, gate producti
-- [GitHub](https://v0.app/docs/github?from=related) — Connect your GitHub repositories to v0 to automatically create projects and track changes.
-- [Using Comments](https://vercel.com/docs/comments/using-comments?from=related) — This guide will help you get started with using Comments with your Vercel Preview Deployments.
-- [Managing Comments](https://vercel.com/docs/comments/managing-comments?from=related) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
-- [vercel comments](https://vercel.com/docs/cli/comments?from=related) — Learn about vercel comments on Vercel.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Toolbar](https://vercel.com/docs/vercel-toolbar?from=related) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
+- [Comments now available in Vercel's Slack integration](https://vercel.com/changelog/comments-now-available-in-vercels-slack-integration)
+- [Convert comments to GitHub Issues](https://vercel.com/changelog/convert-comments-to-github-issues)
+- [Manage Vercel Toolbar comments from the CLI](https://vercel.com/changelog/manage-vercel-toolbar-comments-from-the-cli)
+- [Convert Comments on deployments to Jira issues](https://vercel.com/changelog/convert-comments-on-deployments-to-jira-issues)
+- [Convert Comments on Preview Deployments to Linear issues](https://vercel.com/changelog/convert-comments-on-preview-deployments-to-linear-issues)
+- [September 2020](https://vercel.com/blog/changelog-september-2020)
+- [Managing Comments on Preview Deployments](https://vercel.com/docs/comments/managing-comments) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
+- [vercel comments](https://vercel.com/docs/cli/comments) — Review and manage Vercel Toolbar comment threads from the terminal with the vercel comments CLI command.
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Firewall Observability](https://vercel.com/docs/vercel-firewall/firewall-observability) — Learn how firewall traffic monitoring and alerts help you react quickly to potential security threats.
 
 Full cross-link map for this page: [/docs/comments/integrations.graph.md](/docs/comments/integrations.graph.md)
 <!-- /docsgraph:related -->
 
-Comments are available for projects using **any** Git provider. Github, BitBucket and GitLab [are supported automatically](/docs/git#supported-git-providers) with the same level of integration.
-
 Pull requests (PRs) with deployments enabled receive [generated PR messages from Vercel bot](/docs/git/vercel-for-github). These PR messages contain the deployment URL.
 
-Generated Vercel bot PR messages display the project's [avatar](/docs/project-configuration/general-settings#project-avatar) when one is available. When the project has no avatar, the framework icon or generated avatar is shown instead.
+Generated Vercel bot PR messages on GitHub display the project's [avatar](/docs/project-configuration/general-settings#project-avatar) when one is available. When the project has no avatar, the framework icon or generated avatar is shown instead.
 
-The generated PR message will also display an **Add your feedback** URL, which lets people visit the deployment and automatically log in. The PR message tracks how many comments have been resolved.
-
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/vercel-bot-light.png`)
+To [add or read comments](/docs/comments/using-comments) from a PR, select the **Preview** link in the PR message to open the deployment. On GitLab and Bitbucket, the PR message also displays a **Comment** link, which lets people visit the deployment and automatically log in. After people leave comments, the link shows how many are unresolved and resolved.
 
 Vercel will also add a check to PRs with comments enabled. This check reminds the author of any unresolved comments, and **is not required by default**.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/failed-check-light.png`)
+![A failing check for unresolved Comments on a GitHub PR.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/failed-check-light.png)
 
 To make this check required, check the docs for your favorite Git provider. Docs on required checks for the most popular git providers are listed below.
 
 - [GitHub](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/managing-a-branch-protection-rule#creating-a-branch-protection-rule)
-- [BitBucket](https://support.atlassian.com/bitbucket-cloud/docs/suggest-or-require-checks-before-a-merge/)
+- [Bitbucket](https://support.atlassian.com/bitbucket-cloud/docs/suggest-or-require-checks-before-a-merge/)
 - [GitLab](https://docs.gitlab.com/ee/user/project/merge_requests/status_checks.html#block-merges-of-merge-requests-unless-all-status-checks-have-passed)
 
 ### Vercel CLI deployments
@@ -65,7 +65,7 @@ Commenting is available for deployments made with [the Vercel CLI](/docs/cli). T
 
 - GitHub
 - GitLab
-- BitBucket
+- Bitbucket
 
 See [the section on Git provider integration information](#git-provider-integration) to learn more.
 
@@ -176,9 +176,9 @@ To receive comment notifications as DMs from the Vercel app, you must link your 
 
 ## Adding Comments to your issue tracker
 
-> **🔒 Permissions Required**: Adding Comments to your issue tracker
+> Adding Comments to your issue tracker is available on all plans
 
-Any member of your team can covert comments to an issue in Linear, Jira, or GitHub. This is useful for tracking bugs, feature requests, and other issues that arise during development. To get started:
+Any member of your team can convert comments to an issue in Linear, Jira, or GitHub. This is useful for tracking bugs, feature requests, and other issues that arise during development. To get started:
 
 - ### Install the Vercel integration for your issue tracker
   The following issue trackers are supported:
@@ -195,7 +195,7 @@ Any member of your team can covert comments to an issue in Linear, Jira, or GitH
 
   If you have more than one issue tracker installed, the most recently used issue tracker will appear on a comment. To select a different one, select the ellipsis icon (⋯) and select the issue tracker you want to use:
 
-  ![Image](`/docs-assets/static/docs/workflow-collaboration/convert-to-issue-light.png`)
+  ![The context menu showing issue tracker options.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/workflow-collaboration/convert-to-issue-light.png)
 
 - ### Fill out the issue details
   Fill out the relevant information for the issue. The issue description will be populated with the comment text and any images in the comment thread. You can add additional text to the description if needed.
@@ -214,7 +214,7 @@ Any member of your team can covert comments to an issue in Linear, Jira, or GitH
 
   **GitHub**
 
-  Users can set the repository and issue title. If you installed the integration to a Github Organization, there will be an optional field to select the project to add your issue to.
+  Users can set the repository and issue title. If you installed the integration to a GitHub Organization, there will be an optional field to select the project to add your issue to.
 
 - ### Confirm the issue was created
   Vercel will display a confirmation toast at the bottom-right corner of the page. You can click the toast to open the relevant issue in a new browser tab. The converted issue contains all previous discussion and images, and a link back to the comment thread.
@@ -239,3 +239,6 @@ Any member of your team can covert comments to an issue in Linear, Jira, or GitH
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

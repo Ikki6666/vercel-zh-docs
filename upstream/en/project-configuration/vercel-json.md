@@ -3,7 +3,7 @@ title: Static Configuration with vercel.json
 product: vercel
 url: /docs/project-configuration/vercel-json
 canonical_url: "https://vercel.com/docs/project-configuration/vercel-json"
-last_updated: 2026-06-17
+last_updated: 2026-08-14
 type: reference
 prerequisites:
   - /docs/project-configuration
@@ -12,7 +12,7 @@ related:
   - /docs/functions
   - /docs/routing-middleware
   - /docs/functions/runtimes/edge
-  - /docs/incremental-static-regeneration
+  - /docs/functions/runtimes/node-js/node-js-versions
 summary: Learn how to use vercel.json to configure and override the default behavior of Vercel from within your project. 
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,16 +27,18 @@ The `vercel.json` file lets you configure, and override the default behavior of 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Are Vercel Preview Deployments indexed by search engines?](https://vercel.com/kb/guide/are-vercel-preview-deployment-indexed-by-search-engines?from=related) — Vercel Preview Deployments aren't indexed by default. Learn how the noindex header works, how to confirm it, and the cus
-- [How to Run Claude Managed Agents with Chat SDK](https://vercel.com/kb/guide/claude-managed-agents-chat-sdk?from=related) — Pair the Chat SDK with Claude Managed Agents to run a streaming research analyst in a browser chat, using Anthropic's Ch
-- [Deploy a Node.js Fastify app on Vercel with Docker](https://vercel.com/kb/guide/deploy-nodejs-on-vercel-with-docker?from=related) — Build a Node.js application with Fastify and Docker, then deploy it to Vercel Functions. Learn how to configure environm
-- [Deploy PHP on Vercel with Docker](https://vercel.com/kb/guide/deploy-php-on-vercel-with-docker?from=related) — Build a PHP application with FrankenPHP and Docker, then deploy it to Vercel Functions with managed configuration, stora
-- [Deploy Rust on Vercel with Docker](https://vercel.com/kb/guide/deploy-rust-on-vercel-with-docker?from=related) — Build a Rust application with Axum and Docker, then deploy it to Vercel Functions. Learn how to configure environment va
-- [vercel.ts](https://vercel.com/docs/project-configuration/vercel-ts?from=related) — Define your Vercel configuration in vercel.ts with @vercel/config for type-safe routing and build settings.
-- [Build Output Configuration](https://vercel.com/docs/build-output-api/configuration?from=related) — Learn about the Build Output Configuration file, which is used to configure the behavior of a Deployment.
-- [Advanced Configuration](https://vercel.com/docs/functions/configuring-functions/advanced-configuration?from=related) — Learn how to add utility files to the /api directory, and bundle Vercel Functions.
-- [Vercel Primitives](https://vercel.com/docs/build-output-api/primitives?from=related) — Learn about the Vercel platform primitives and how they work together to create a Vercel Deployment.
-- [Create a new project](https://vercel.com/docs/rest-api/projects/create-a-new-project?from=related)
+- [Server-Timing response headers will pass through to the client](https://vercel.com/changelog/server-timing-header)
+- [Skip sending request bodies to Routing Middleware](https://vercel.com/changelog/skip-sending-request-bodies-to-routing-middleware)
+- [Build Claude Managed Agents with Vercel Services](https://vercel.com/kb/guide/claude-managed-agents-vercel-services) — Deploy Claude Managed Agents with Vercel Services to run a streaming research analyst in a browser chat, using Anthropic
+- [Deploy a Node.js Fastify app on Vercel with Docker](https://vercel.com/kb/guide/deploy-nodejs-on-vercel-with-docker) — Build a Node.js application with Fastify and Docker, then deploy it to Vercel Functions. Learn how to configure environm
+- [Deploy Rust on Vercel with Docker](https://vercel.com/kb/guide/deploy-rust-on-vercel-with-docker) — Build a Rust application with Axum and Docker, then deploy it to Vercel Functions. Learn how to configure environment va
+- [Deploy ASP.NET Core on Vercel with Docker](https://vercel.com/kb/guide/dot-net-asp-net-on-vercel-with-docker) — Build a .NET application with Docker and deploy it to Vercel Functions. Learn how to configure environment variables, in
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [Programmatic Configuration with vercel.ts](https://vercel.com/docs/project-configuration/vercel-ts) — Define your Vercel configuration in vercel.ts with @vercel/config for type-safe routing and build settings.
+- [headers](https://nextjs.org/docs/pages/api-reference/config/next-config-js/headers) — Add custom HTTP headers to your Next.js app.
+- [Vercel Primitives](https://vercel.com/docs/build-output-api/primitives) — Learn about the Vercel platform primitives and how they work together to create a Vercel Deployment.
+- [Cache-Control headers](https://vercel.com/docs/caching/cache-control-headers) — Learn about the cache-control headers sent to each Vercel deployment and how to use them to control the caching behavior
+- [Build Output Configuration](https://vercel.com/docs/build-output-api/configuration) — Learn about the Build Output Configuration file, which is used to configure the behavior of a Deployment.
 
 Full cross-link map for this page: [/docs/project-configuration/vercel-json.graph.md](/docs/project-configuration/vercel-json.graph.md)
 <!-- /docsgraph:related -->
@@ -64,6 +66,7 @@ This file should be created in your project's root directory and allows you to s
 - [functionFailoverRegions](#functionfailoverregions)
 - [rewrites](#rewrites)
 - [routes](#routes)
+- [skipMiddlewareRequestBody](#skipmiddlewarerequestbody)
 - [trailingSlash](#trailingslash)
 
 ## schema autocomplete
@@ -93,7 +96,7 @@ This value overrides the [Build Command](/docs/builds/configure-a-build#build-co
 
 ## bunVersion
 
-> **🔒 Permissions Required**: The Bun runtime
+> The Bun runtime is available in Beta on all plans
 
 **Type:** `string`
 
@@ -110,6 +113,8 @@ The `bunVersion` property configures your project to use the Bun runtime instead
 
 > **💡 Note:** Vercel manages the Bun minor versions automatically. `1.4.x` and `1.x` are the
 > only valid values currently.
+
+If the `engines` field of your `package.json` sets a Node.js version and no Bun version, `package.json` takes precedence over `bunVersion`. The build logs a warning, and your functions run on Node.js. To run on Bun, remove [`engines.node`](/docs/functions/runtimes/node-js/node-js-versions#version-overrides-in-package.json) from `package.json`.
 
 When using Next.js with [ISR](/docs/incremental-static-regeneration) (Incremental Static Regeneration), you must also update your `build` and `dev` commands in `package.json`:
 
@@ -148,6 +153,16 @@ If you are using Next.js and running `vercel dev`, you will get a 404 error when
 ## crons
 
 Used to configure [cron jobs](/docs/cron-jobs) for the production deployment of a project.
+
+Cron Jobs are a legacy feature and will be migrated to
+
+Schedules
+
+in the future. Schedules include timezones, private function and queue targets. You can also create schedules at runtime.
+
+Migrate your Cron Jobs to Schedules
+
+.
 
 **Type**: `Array` of cron `Object`.
 
@@ -200,7 +215,7 @@ The `devCommand` property can be used to override the Development Command in the
 
 This value allows you to enable [Fluid compute](/docs/fluid-compute) programmatically.
 
-**Type:** `boolean | null`
+**Type:** `boolean`
 
 The `fluid` property allows you to test Fluid compute on a per-deployment or per [custom environment](/docs/deployments/environments#custom-environments) basis when using branch tracking, without needing to enable Fluid in production.
 
@@ -249,7 +264,7 @@ A [glob](https://github.com/isaacs/node-glob#glob-primer) pattern that matches t
 
 - `runtime` (optional): The npm package name of a [Runtime](/docs/functions/runtimes), including its version.
 - `memory`: Memory cannot be set in `vercel.json` with [Fluid compute](/docs/fluid-compute) enabled. Instead set it in the **Functions** section in your project dashboard sidebar. See [setting default function memory](/docs/functions/configuring-functions/memory#setting-your-default-function-memory-/-cpu-size) for more information.
-- `maxDuration` (optional): How long your Vercel Function can run on each request. Set an integer number of seconds between `1` and your plan's maximum limit. See [max duration](/docs/functions/limitations#max-duration).
+- `maxDuration` (optional): How long your Vercel Function can run on each request. Set an integer number of seconds between `1` and your plan's maximum limit. See [max duration](/docs/functions/limitations#max-duration). `"max"` is also accepted and resolves to your plan's maximum at deploy time, but not to the [extended max duration](/docs/functions/configuring-functions/duration#extended-max-duration-beta) beta.
 - `supportsCancellation` (optional): A boolean defining whether your Vercel Function should [support request cancellation](/docs/functions/functions-api-reference#cancel-requests). This is only available when you're using the Node.js runtime.
 - `includeFiles` (optional): A [glob](https://github.com/isaacs/node-glob#glob-primer) pattern to match files that should be included in your Vercel Function. If you’re using a Community Runtime, the behavior might vary. Please consult its documentation for more details. (Not supported in Next.js, instead use [`outputFileTracingIncludes`](https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats) in `next.config.js` )
 - `excludeFiles` (optional): A [glob](https://github.com/isaacs/node-glob#glob-primer) pattern to match files that should be excluded from your Vercel Function. If you’re using a Community Runtime, the behavior might vary. Please consult its documentation for more details. (Not supported in Next.js, instead use [`outputFileTracingExcludes`](https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats) in `next.config.js` )
@@ -327,7 +342,7 @@ In the example above, `api/eu-data.js` runs in Paris (`cdg1`) with London (`lhr1
 
 ### Using unsupported runtimes
 
-In order to use a runtime that is not [officially supported](/docs/functions/runtimes), you can add a `runtime` property to the definition:
+To use a runtime that is not [officially supported](/docs/functions/runtimes), you can add a `runtime` property to the definition:
 
 ```json filename="vercel.json"
 {
@@ -340,7 +355,7 @@ In order to use a runtime that is not [officially supported](/docs/functions/run
 }
 ```
 
-In the example above, the `api/test.php` Vercel Function does not use one of the [officially supported runtimes](/docs/functions/runtimes). In turn, a `runtime` property was added in order to invoke the [vercel-php](https://www.npmjs.com/package/vercel-php) community runtime.
+In the example above, the `api/test.php` Vercel Function does not use one of the [officially supported runtimes](/docs/functions/runtimes). In turn, a `runtime` property was added to invoke the [vercel-php](https://www.npmjs.com/package/vercel-php) community runtime.
 
 For more information on Runtimes, see the [Runtimes documentation](/docs/functions/runtimes):
 
@@ -412,7 +427,27 @@ This example configures custom response headers for static files, [Vercel functi
 
 ### Header `has` or `missing` object definition
 
+| Property | Type                                | Description                                                                                                                                                                                                                                                                                                                                                                      |
+| -------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`   | `String`                            | Must be either `header`, `cookie`, `host`, or `query`. The `type` property only applies to **request** headers sent by clients, not response headers sent by your functions or backends.                                                                                                                                                                                         |
+| `key`    | `String`                            | The key from the selected type to match against. For example, if the `type` is `header` and the `key` is `X-Custom-Header`, we will match against the `X-Custom-Header` header key.                                                                                                                                                                                              |
+| `value`  | `String` or `Object` or `undefined` | The value to check for, if `undefined` any value will match. A regex like string can be used to capture a specific part of the value. For example, if the value `first-(?<paramName>.*)` is used for `first-second` then `second` will be usable in the destination with `:paramName`. If an object is provided, it will match when all conditions are met for its fields below. |
+
 If `value` is an object, it has one or more of the following fields:
+
+| Condition | Type                       | Description                          |
+| --------- | -------------------------- | ------------------------------------ |
+| `eq`      | `String` (optional)        | Check for equality                   |
+| `neq`     | `String` (optional)        | Check for inequality                 |
+| `inc`     | `Array<String>` (optional) | Check for inclusion in the array     |
+| `ninc`    | `Array<String>` (optional) | Check for non-inclusion in the array |
+| `pre`     | `String` (optional)        | Check for prefix                     |
+| `suf`     | `String` (optional)        | Check for suffix                     |
+| `re`      | `String` (optional)        | Check for a regex match              |
+| `gt`      | `Number` (optional)        | Check for greater than               |
+| `gte`     | `Number` (optional)        | Check for greater than or equal to   |
+| `lt`      | `Number` (optional)        | Check for less than                  |
+| `lte`     | `Number` (optional)        | Check for less than or equal to      |
 
 This example demonstrates using the expressive `value` object to append the header `x-authorized: true` if the `X-Custom-Header` request header's value is prefixed by `valid` and ends with `value`.
 
@@ -547,12 +582,16 @@ The `proxy` property can be used to explicitly configure the file Vercel builds 
 
 ### Value definition
 
-- `entrypoint` (required): The path to your Routing Middleware file, relative to your project root. Must end in `.js` or `.ts`, must reference an existing file, and can live in a subdirectory such as `src/proxy.ts`.
-- `matcher` (optional): A path matcher starting with `/`, or an array of path matchers starting with `/`, that defines which requests run your Routing Middleware. See [matcher config](/docs/routing-middleware/api#match-paths-based-on-custom-matcher-config) for the supported syntax.
+- `entrypoint` (required): Your Routing Middleware entrypoint, relative to your project root. It must reference an existing file and can live in a subdirectory. Use one of these forms:
+  - TypeScript or JavaScript: a file path ending in `.ts` or `.js`, such as `src/proxy.ts`. See the [JS reference](/docs/routing-middleware/js-reference).
+  - Python: a `module:attribute` value that names an ASGI or WSGI app, such as `proxy:proxy`. See the [Python reference](/docs/routing-middleware/python-reference).
+- `matcher` (optional): A path matcher starting with `/`, or an array of path matchers starting with `/`, that defines which requests run your Routing Middleware. See [path matching](/docs/routing-middleware#path-matching) for the supported syntax.
 
 ### Description
 
-The following configuration builds `proxy.ts` as your Routing Middleware and runs it on requests under `/api`:
+The following configuration builds your entrypoint as Routing Middleware and runs it on requests under `/api`:
+
+#### TypeScript
 
 ```json filename="vercel.json"
 {
@@ -564,29 +603,42 @@ The following configuration builds `proxy.ts` as your Routing Middleware and run
 }
 ```
 
-Your entrypoint exports the handler as a default export:
-
 ```ts filename="proxy.ts"
 export default function proxy(request: Request) {
   return new Response('Hello from your Routing Middleware!');
 }
 ```
 
-```js filename="proxy.js"
-export default function proxy(request) {
-  return new Response('Hello from your Routing Middleware!');
+#### Python
+
+```json filename="vercel.json"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "proxy": {
+    "entrypoint": "proxy:proxy",
+    "matcher": "/api/:func*"
+  }
 }
+```
+
+```python filename="proxy.py"
+from vercel.proxy import PlainTextResponse, Proxy, Request, Response
+
+proxy = Proxy()
+
+
+@proxy.route("/api/{path:path}")
+def hello(request: Request) -> Response:
+    return PlainTextResponse("Hello from your Routing Middleware!")
 ```
 
 ### Runtime
 
-An entrypoint configured through `proxy` runs on the [Node.js runtime](/docs/functions/runtimes/node-js).
-
-A `middleware.ts` file that sets `runtime: 'nodejs'` in its exported `config` behaves the same as `"proxy": { "entrypoint": "middleware.ts" }`.
+TypeScript and JavaScript entrypoints run on the [Node.js runtime](/docs/functions/runtimes/node-js), or on the [Bun runtime](/docs/functions/runtimes/bun) if you set [`bunVersion`](#bunversion). Python entrypoints run on the [Python runtime](/docs/functions/runtimes/python). Your Routing Middleware must use the same runtime as your app.
 
 ### Setting the matcher
 
-You can set either `proxy.matcher` in `vercel.json`, or export a `config` object with a `matcher` property from your entrypoint.
+You can set `proxy.matcher` in `vercel.json`. In TypeScript and JavaScript, you can instead export a `config` object with a `matcher` property from your entrypoint.
 
 The matcher accepts a single path or an array of paths:
 
@@ -604,7 +656,7 @@ Without a matcher, your Routing Middleware runs on every request.
 
 ### Setting function options
 
-Set duration, memory, and other per-function options with the [`functions`](#functions) property, keyed on your entrypoint path:
+Set duration, memory, and other per-function options with the [`functions`](#functions) property:
 
 ```json filename="vercel.json"
 {
@@ -620,6 +672,8 @@ Set duration, memory, and other per-function options with the [`functions`](#fun
 }
 ```
 
+Use your entrypoint's file path as the key in `functions`, such as `proxy.ts` or `proxy.py`.
+
 ## redirects
 
 **Type:** `Array` of redirect `Object`.
@@ -627,6 +681,8 @@ Set duration, memory, and other per-function options with the [`functions`](#fun
 **Valid values:** a list of redirect definitions.
 
 ### Redirects examples
+
+> **💡 Note:** Some redirects and rewrites configurations can accidentally become gateways for semantic attacks. Learn how to check and protect your configurations with the [Enhancing Security for Redirects and Rewrites guide](/kb/guide/enhancing-security-for-redirects-and-rewrites).
 
 This example redirects requests to the path `/me` from your site's root to the `profile.html` file relative to your site's root with a [307 Temporary Redirect](https://developer.mozilla.org/docs/Web/HTTP/Status/307):
 
@@ -710,7 +766,7 @@ This example uses regex path matching to redirect requests to any path under `/p
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "source": "/post/:path(\\d{1,})",
+      "source": "/posts/:path(\\d{1,})",
       "destination": "/news/:path*"
     }
   ]
@@ -755,7 +811,27 @@ This example redirects requests to any path from your site's root that does not 
 
 ### Redirect `has` or `missing` object definition
 
+| Property | Type                                | Description                                                                                                                                                                                                                                                                                                                                                                      |
+| -------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`   | `String`                            | Must be either `header`, `cookie`, `host`, or `query`. The `type` property only applies to **request** headers sent by clients, not response headers sent by your functions or backends.                                                                                                                                                                                         |
+| `key`    | `String`                            | The key from the selected type to match against. For example, if the `type` is `header` and the `key` is `X-Custom-Header`, we will match against the `X-Custom-Header` header key.                                                                                                                                                                                              |
+| `value`  | `String` or `Object` or `undefined` | The value to check for, if `undefined` any value will match. A regex like string can be used to capture a specific part of the value. For example, if the value `first-(?<paramName>.*)` is used for `first-second` then `second` will be usable in the destination with `:paramName`. If an object is provided, it will match when all conditions are met for its fields below. |
+
 If `value` is an object, it has one or more of the following fields:
+
+| Condition | Type                       | Description                          |
+| --------- | -------------------------- | ------------------------------------ |
+| `eq`      | `String` (optional)        | Check for equality                   |
+| `neq`     | `String` (optional)        | Check for inequality                 |
+| `inc`     | `Array<String>` (optional) | Check for inclusion in the array     |
+| `ninc`    | `Array<String>` (optional) | Check for non-inclusion in the array |
+| `pre`     | `String` (optional)        | Check for prefix                     |
+| `suf`     | `String` (optional)        | Check for suffix                     |
+| `re`      | `String` (optional)        | Check for a regex match              |
+| `gt`      | `Number` (optional)        | Check for greater than               |
+| `gte`     | `Number` (optional)        | Check for greater than or equal to   |
+| `lt`      | `Number` (optional)        | Check for less than                  |
+| `lte`     | `Number` (optional)        | Check for less than or equal to      |
 
 This example uses the expressive `value` object to define a route that redirects users with a redirect status of 308 to `/end` only if the `X-Custom-Header` header's value is prefixed by `valid` and ends with `value`.
 
@@ -781,7 +857,7 @@ This example uses the expressive `value` object to define a route that redirects
 }
 ```
 
-Learn more about [redirects on Vercel](/docs/routing/redirects) and see [limitations](/docs/routing/redirects#limits).
+Learn more about [redirects on Vercel](/docs/routing/redirects) and see [limitations](/docs/routing/redirects/configuration-redirects#limits).
 
 ## bulkRedirectsPath
 
@@ -795,7 +871,7 @@ CSV, JSON, and JSONL file formats are supported, and the redirect files can be g
 
 ### CSV
 
-> **💡 Note:** CSV headers must match the field names below, can be specific in any order, and optional fields can be ommitted.
+> **💡 Note:** CSV headers must match the field names below and can appear in any order. Optional fields can be omitted.
 
 ```csv filename="redirects.csv"
 source,destination,permanent
@@ -834,20 +910,20 @@ https://old-domain.com/page,/new-page,true
 {"source": "https://old-domain.com/page", "destination": "/new-page", "permanent": true}
 ```
 
-> **💡 Note:** Bulk redirects do not work locally while using `vercel dev`
+> **💡 Note:** You can test bulk redirects locally with [`vercel dev`](/docs/cli/dev) when you configure `bulkRedirectsPath` in `vercel.json`.
 
 ### Bulk redirect field definition
 
 | Field                 | Type      | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | --------------------- | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `source`              | `string`  | Yes      | An absolute path or fully qualified URL that matches each incoming request (excluding query string). Max 2048 characters.                                                                                                                                                                                                                                                                                                                         |
+| `source`              | `string`  | Yes      | An absolute path or fully qualified URL that matches each incoming request, excluding the query string. The `source` field does not support query parameters. Vercel ignores any query parameters you include in `source`. Max 2048 characters.                                                                                                                                                                                                                                                                                                                         |
 | `destination`         | `string`  | Yes      | A location destination defined as an absolute pathname or external URL. Max 2048 characters.                                                                                                                                                                                                                                                                                                                                                      |
 | `permanent`           | `boolean` | No       | Toggle between permanent ([308](https://developer.mozilla.org/docs/Web/HTTP/Status/308)) and temporary ([307](https://developer.mozilla.org/docs/Web/HTTP/Status/307)) redirect. Default: `false`.                                                                                                                                                                                                                                                |
 | `statusCode`          | `integer` | No       | Specify the exact status code. Can be [301](https://developer.mozilla.org/docs/Web/HTTP/Status/301), [302](https://developer.mozilla.org/docs/Web/HTTP/Status/302), [303](https://developer.mozilla.org/docs/Web/HTTP/Status/303), [307](https://developer.mozilla.org/docs/Web/HTTP/Status/307), or [308](https://developer.mozilla.org/docs/Web/HTTP/Status/308). Overrides permanent when set, otherwise defers to permanent value or default. |
 | `caseSensitive`       | `boolean` | No       | Toggle whether source path matching is case sensitive. Default: `false`.                                                                                                                                                                                                                                                                                                                                                                          |
 | `preserveQueryParams` | `boolean` | No       | Toggle whether to preserve the query string on the redirect. Default: `false`.                                                                                                                                                                                                                                                                                                                                                                    |
 
-In order to improve space efficiency, all boolean values can be the single characters `t` (true) or `f` (false) while using the CSV format.
+To improve space efficiency, all boolean values can be the single characters `t` (true) or `f` (false) while using the CSV format.
 
 ## regions
 
@@ -872,7 +948,7 @@ You can also set `regions` on individual functions using the [`functions`](/docs
 
 ## functionFailoverRegions
 
-> **🔒 Permissions Required**: Setting failover regions for Vercel functions
+> Setting failover regions for Vercel functions are available on Enterprise plans
 
 Set this property to specify the [region](/docs/functions/configuring-functions/region) to which a Vercel Function should fallback when the default region(s) are unavailable.
 
@@ -909,6 +985,8 @@ If [`cleanUrls`](/docs/project-configuration/vercel-json#cleanurls) is set to `t
 your project's `vercel.json`, do not include the file extension in the source
 or destination path. For example, `/about-our-company.html` would be
 `/about-our-company`
+
+> **💡 Note:** Some redirects and rewrites configurations can accidentally become gateways for semantic attacks. Learn how to check and protect your configurations with the [Enhancing Security for Redirects and Rewrites guide](/kb/guide/enhancing-security-for-redirects-and-rewrites).
 
 ### Rewrites examples
 
@@ -1004,13 +1082,32 @@ or destination path. For example, `/about-our-company.html` would be
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `source`      | A pattern that matches each incoming pathname (excluding querystring).                                                                                                                                                                                                     |
 | `destination` | A location destination defined as an absolute pathname or external URL.                                                                                                                                                                                                    |
-| `permanent`   | A boolean to toggle between permanent and temporary redirect (default true). When `true`, the status code is [308](https://developer.mozilla.org/docs/Web/HTTP/Status/308). When `false` the status code is [307](https://developer.mozilla.org/docs/Web/HTTP/Status/307). |
 | `has`         | An optional array of `has` objects with the `type`, `key` and `value` properties. Used for conditional rewrites based on the **presence** of specified properties.                                                                                                         |
 | `missing`     | An optional array of `missing` objects with the `type`, `key` and `value` properties. Used for conditional rewrites based on the **absence** of specified properties.                                                                                                      |
 
 ### Rewrite `has` or `missing` object definition
 
+| Property | Type                                | Description                                                                                                                                                                                                                                                                                                                                                                      |
+| -------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`   | `String`                            | Must be either `header`, `cookie`, `host`, or `query`. The `type` property only applies to **request** headers sent by clients, not response headers sent by your functions or backends.                                                                                                                                                                                         |
+| `key`    | `String`                            | The key from the selected type to match against. For example, if the `type` is `header` and the `key` is `X-Custom-Header`, we will match against the `X-Custom-Header` header key.                                                                                                                                                                                              |
+| `value`  | `String` or `Object` or `undefined` | The value to check for, if `undefined` any value will match. A regex like string can be used to capture a specific part of the value. For example, if the value `first-(?<paramName>.*)` is used for `first-second` then `second` will be usable in the destination with `:paramName`. If an object is provided, it will match when all conditions are met for its fields below. |
+
 If `value` is an object, it has one or more of the following fields:
+
+| Condition | Type                       | Description                          |
+| --------- | -------------------------- | ------------------------------------ |
+| `eq`      | `String` (optional)        | Check for equality                   |
+| `neq`     | `String` (optional)        | Check for inequality                 |
+| `inc`     | `Array<String>` (optional) | Check for inclusion in the array     |
+| `ninc`    | `Array<String>` (optional) | Check for non-inclusion in the array |
+| `pre`     | `String` (optional)        | Check for prefix                     |
+| `suf`     | `String` (optional)        | Check for suffix                     |
+| `re`      | `String` (optional)        | Check for a regex match              |
+| `gt`      | `Number` (optional)        | Check for greater than               |
+| `gte`     | `Number` (optional)        | Check for greater than or equal to   |
+| `lt`      | `Number` (optional)        | Check for less than                  |
+| `lte`     | `Number` (optional)        | Check for less than or equal to      |
 
 This example demonstrates using the expressive `value` object to define a route that rewrites users to `/end` only if the `X-Custom-Header` header's value is prefixed by `valid` and ends with `value`.
 
@@ -1059,7 +1156,7 @@ For common use cases, use those higher-level properties instead. See [Routes vs 
 | ------------ | ------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src`        | `source`      | `String`   | A PCRE-compatible regular expression that matches each incoming pathname (excluding querystring).                                                                                                                                                                                                          |
 | `methods`    |               | `String[]` | A set of HTTP method types. If you omit this property, the route matches any HTTP method.                                                                                                                                                                                                                  |
-| `dest`       | `destination` | `String`   | A destination pathname or full URL, including querystring, with the ability to embed capture groups as $1, $2…When used with the route's `env` property, you can also reference environment variables using `$VAR`or`${VAR}` syntax.                                                             |
+| `dest`       | `destination` | `String`   | A destination pathname or full URL, including querystring, with the ability to embed capture groups as $1, $2…<br /><br />When used with the route's `env` property, you can also reference environment variables using `$VAR`or`${VAR}` syntax.                                                             |
 | `headers`    |               | `Object`   | A set of headers to apply for responses.                                                                                                                                                                                                                                                                   |
 | `status`     | `statusCode`  | `Number`   | A status code to respond with. Can be used in tandem with `Location:` header to implement redirects.                                                                                                                                                                                                       |
 | `continue`   |               | `Boolean`  | If `true`, routing will continue even when the `src` is matched.                                                                                                                                                                                                                                           |
@@ -1083,7 +1180,27 @@ The following route properties are deprecated:
 
 ### Conditional matching with `has` and `missing`
 
+| Property | Type                                | Description                                                                                                                                                                                                                                                                                                                                                                      |
+| -------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`   | `String`                            | Must be either `header`, `cookie`, `host`, or `query`. The `type` property only applies to **request** headers sent by clients, not response headers sent by your functions or backends.                                                                                                                                                                                         |
+| `key`    | `String`                            | The key from the selected type to match against. For example, if the `type` is `header` and the `key` is `X-Custom-Header`, we will match against the `X-Custom-Header` header key.                                                                                                                                                                                              |
+| `value`  | `String` or `Object` or `undefined` | The value to check for, if `undefined` any value will match. A regex like string can be used to capture a specific part of the value. For example, if the value `first-(?<paramName>.*)` is used for `first-second` then `second` will be usable in the destination with `:paramName`. If an object is provided, it will match when all conditions are met for its fields below. |
+
 If `value` is an object, it has one or more of the following fields:
+
+| Condition | Type                       | Description                          |
+| --------- | -------------------------- | ------------------------------------ |
+| `eq`      | `String` (optional)        | Check for equality                   |
+| `neq`     | `String` (optional)        | Check for inequality                 |
+| `inc`     | `Array<String>` (optional) | Check for inclusion in the array     |
+| `ninc`    | `Array<String>` (optional) | Check for non-inclusion in the array |
+| `pre`     | `String` (optional)        | Check for prefix                     |
+| `suf`     | `String` (optional)        | Check for suffix                     |
+| `re`      | `String` (optional)        | Check for a regex match              |
+| `gt`      | `Number` (optional)        | Check for greater than               |
+| `gte`     | `Number` (optional)        | Check for greater than or equal to   |
+| `lt`      | `Number` (optional)        | Check for less than                  |
+| `lte`     | `Number` (optional)        | Check for less than or equal to      |
 
 This example uses the `value` object to define a route that only rewrites to `/end` if the `X-Custom-Header` header's value starts with `valid` and ends with `value`:
 
@@ -1139,9 +1256,9 @@ This example configures custom routes that map to static files and [Vercel funct
 | Property | Type                                  | Description                                                                                                                                                                                                                                                                                                |
 | -------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `type`   | `String`                              | Must be `request.query`, `request.headers`, `response.headers`, or `request.path`. This specifies the scope of what your transforms will apply to.                                                                                                                                                         |
-| `op`     | `String`                              | These specify the possible operations:- `append` appends `args` to the value of the key, and will set if missing- `set` sets the key and value if missing- `delete` deletes the key entirely if `args` is not provided; otherwise, it will delete the value of `args` from the matching keyThe `request.path` transform only supports `set`. |
-| `target` | `Object`                              | An object with key `key`, which is either a `String` or an `Object`. If it is a string, the transform uses it as the header or query key. If it is an object, it may contain one or more of the properties [seen below.](#transform-target-object-definition)Not used for `request.path` transforms, which operate on the request path as a whole rather than a named key. |
-| `args`   | `String` or `String[]` or `undefined` | If `args` is a string or string array, it will be used as the value for the target according to the `op` property.The `request.path` transform requires `args` to be a single `String`; an array is rejected.When `env` is also set, `$VAR` and `${VAR}` references in `args` are replaced with environment variable values at request time.                                                |
+| `op`     | `String`                              | These specify the possible operations:<br />- `append` appends `args` to the value of the key, and will set if missing<br />- `set` sets the key and value if missing<br />- `delete` deletes the key entirely if `args` is not provided; otherwise, it will delete the value of `args` from the matching key<br /><br />The `request.path` transform only supports `set`. |
+| `target` | `Object`                              | An object with key `key`, which is either a `String` or an `Object`. If it is a string, the transform uses it as the header or query key. If it is an object, it may contain one or more of the properties [seen below.](#transform-target-object-definition)<br /><br />Not used for `request.path` transforms, which operate on the request path as a whole rather than a named key. |
+| `args`   | `String` or `String[]` or `undefined` | If `args` is a string or string array, it will be used as the value for the target according to the `op` property.<br /><br />The `request.path` transform requires `args` to be a single `String`; an array is rejected.<br /><br />When `env` is also set, `$VAR` and `${VAR}` references in `args` are replaced with environment variable values at request time.                                                |
 | `env`    | `String[]` or `undefined`             | A whitelist of [environment variable](/docs/environment-variables) names whose values replace `$VAR` or `${VAR}` references in `args` at request time. Only variables listed here are available for expansion. A maximum of 64 entries. See [using environment variables in transforms](#in-transforms).   |
 
 #### Transform target object definition
@@ -1571,7 +1688,7 @@ With `routes`, you use [PCRE-compatible regular expression](https://en.wikipedia
 ```json filename="vercel.json"
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "routes": [{ "src": "/(?!maintenance)", "dest": "/maintenance" }]
+  "routes": [{ "src": "/(?!maintenance).*", "dest": "/maintenance" }]
 }
 ```
 
@@ -1588,9 +1705,31 @@ With [`rewrites`](/docs/project-configuration/vercel-json#rewrites), the regex n
 
 #### Case sensitivity
 
-With `routes`, the `src` property is case-insensitive, so multiple request paths with different cases serve the same page, creating duplicate content.
+With `routes`, the `src` property is case-insensitive by default, so multiple request paths with different cases serve the same page, creating duplicate content. If the same configuration also sets `rewrites`, `redirects`, or `headers`, `src` matching is case-sensitive.
 
 With [`rewrites`](/docs/project-configuration/vercel-json#rewrites) / [`redirects`](/docs/project-configuration/vercel-json#redirects) / [`headers`](/docs/project-configuration/vercel-json#headers), the `source` property is case-sensitive so you don't accidentally create duplicate content.
+
+## skipMiddlewareRequestBody
+
+**Type**: `boolean`.
+
+**Default Value**: `false`.
+
+Set `skipMiddlewareRequestBody` to `true` to skip forwarding the client request body to [Routing Middleware](/docs/routing-middleware).
+
+This reduces [Fast Origin Transfer (FOT)](/docs/manage-cdn-usage#fast-origin-transfer) usage and can improve [Time to First Byte (TTFB)](/docs/speed-insights/metrics#time-to-first-byte-ttfb), especially for requests with large bodies. [Vercel Functions](/docs/functions) and [rewrite targets](/docs/routing/rewrites) still receive the request body.
+
+> **⚠️ Warning:** Before enabling `skipMiddlewareRequestBody`, you must ensure your Routing
+> Middleware does not read or access the client request body.
+
+We strongly recommend that you avoid reading or accessing request bodies in Routing Middleware. Middleware runs on every matching request, so reading the body can slow down your application. Read and process request bodies in your Vercel Functions or at your rewrite targets instead.
+
+```json filename="vercel.json"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "skipMiddlewareRequestBody": true
+}
+```
 
 ## trailingSlash
 
@@ -1666,9 +1805,9 @@ The `name` property has been deprecated in favor of [Project Linking](/docs/cli/
 
 **Limits**:
 
-- A maximum length of 52 characters
-- Only lower case alphanumeric characters or hyphens are allowed
-- Cannot begin or end with a hyphen, or contain multiple consecutive hyphens
+- A maximum length of 100 characters
+- Only lowercase letters, digits, and the characters `.`, `_`, and `-` are allowed
+- Cannot contain the sequence `---`
 
 The prefix for all new deployment instances. Vercel CLI usually generates this field automatically based on the name of the directory. But if you'd like to define it explicitly, this is the way to go.
 
@@ -1687,7 +1826,7 @@ The `version` property should not be used anymore.
 
 **Type**: `Number`.
 
-**Valid values**: `1`, `2`.
+**Valid values**: `2`.
 
 Specifies the Vercel Platform version the deployment should use.
 
@@ -1706,7 +1845,7 @@ The `alias` property should not be used anymore. To assign a custom Domain to yo
 
 **Valid values**: [domain names](/docs/domains/working-with-domains/add-a-domain) (optionally including subdomains) added to the account, or a string for a suffixed URL using `.vercel.app` or a Custom Deployment Suffix ([available on the Enterprise plan](/pricing)).
 
-**Limit**: A maximum of 64 aliases in the array.
+**Limit**: A maximum of 50 aliases in the array.
 
 The alias or aliases are applied automatically using [Vercel for GitHub](/docs/git/vercel-for-github), [Vercel for GitLab](/docs/git/vercel-for-gitlab), or [Vercel for Bitbucket](/docs/git/vercel-for-bitbucket) when merging or pushing to the [Production Branch](/docs/git#production-branch).
 
@@ -1727,9 +1866,9 @@ The `scope` property has been deprecated in favor of [Project Linking](/docs/cli
 
 **Valid values**: For teams, either an ID or slug. For users, either a email address, username, or ID.
 
-This property determines the scope ([Hobby team](/docs/accounts#creating-a-hobby-account) or [team](/docs/accounts#creating-a-team)) under which the project will be deployed by [Vercel CLI](/cli).
+This property determines the scope ([Hobby team](/docs/accounts) or [team](/docs/accounts#creating-a-team)) under which the project will be deployed by [Vercel CLI](/cli).
 
-It also affects any other actions that the user takes within the directory that contains this configuration (e.g. listing [environment variables](/docs/environment-variables) using `vercel secrets ls`).
+It also affects any other actions that the user takes within the directory that contains this configuration (e.g. listing [projects](/docs/projects) using `vercel project ls`).
 
 ```json filename="vercel.json"
 {
@@ -1777,9 +1916,11 @@ The following example will pass the `MY_KEY` environment variable to all [Builds
 ```json filename="vercel.json"
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "env": {
-    "MY_KEY": "this is the value",
-    "SECRET": "@my-secret-name"
+  "build": {
+    "env": {
+      "MY_KEY": "this is the value",
+      "SECRET": "@my-secret-name"
+    }
   }
 }
 ```
@@ -1817,3 +1958,6 @@ When at least one `builds` item is specified, only the outputs of the build proc
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

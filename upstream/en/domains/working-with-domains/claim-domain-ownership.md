@@ -3,7 +3,7 @@ title: Claiming Domain Ownership
 product: vercel
 url: /docs/domains/working-with-domains/claim-domain-ownership
 canonical_url: "https://vercel.com/docs/domains/working-with-domains/claim-domain-ownership"
-last_updated: 2026-07-20
+last_updated: 2026-09-18
 type: how-to
 prerequisites:
   - /docs/domains/working-with-domains
@@ -24,16 +24,11 @@ If a domain is registered with another Vercel account and you need to take owner
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Domain Linked to Another Account](https://vercel.com/kb/guide/domain-linked-to-another-account?from=related) — This guide explains how to claim a domain already linked to another Vercel account and add it to your team using the dom
-- [How do I transfer my domain to Vercel?](https://vercel.com/kb/guide/how-do-i-transfer-my-domain-to-vercel?from=related) — Information on how to transfer a domain to Vercel.
-- [Why is my Vercel domain not verified?](https://vercel.com/kb/guide/why-is-my-vercel-domain-unverified?from=related) — Information on why a Vercel domain may not be verified and how to verify it.
-- [Transferring Domains to Vercel](https://vercel.com/kb/guide/transferring-domains-to-vercel?from=related) — How to transfer your domain to Vercel.
-- [How do I transfer my domain out of Vercel?](https://vercel.com/kb/guide/how-do-i-transfer-my-domain-out-of-vercel?from=related) — Information on how to transfer a domain out of Vercel.
-- [Claim Domain Ownership](https://vercel.com/docs/rest-api/domains/claim-domain-ownership?from=related)
-- [Get Domain Verification Record](https://vercel.com/docs/rest-api/domains/get-domain-verification-record?from=related)
-- [Managing DNS Records](https://vercel.com/docs/domains/managing-dns-records?from=related) — Learn how to add, verify, and remove DNS records for your domains on Vercel with this guide.
-- [Working with DNS](https://vercel.com/docs/domains/working-with-dns?from=related) — Learn how DNS works in order to properly configure your domain.
-- [Adding a Domain](https://vercel.com/docs/domains/working-with-domains/add-a-domain?from=related) — Learn how to add a custom domain to your Vercel project, verify it, and correctly set the DNS or Nameserver values.
+- [Claim Domain Ownership](https://vercel.com/docs/rest-api/domains/claim-domain-ownership) — POST /v9/domains/{domain}/claim — Claim ownership of a domain for the authenticated team by verifying a TXT record. The
+- [Get Domain Verification Record](https://vercel.com/docs/rest-api/domains/get-domain-verification-record) — GET /v9/domains/{domain}/verification — Get the TXT verification record needed to claim ownership of a domain for the au
+- [Adding & Configuring a Custom Domain](https://vercel.com/docs/domains/working-with-domains/add-a-domain) — Learn how to add a custom domain to your Vercel project, verify it, and correctly set the DNS or Nameserver values.
+- [Transferring Domains to Another Team or Project](https://vercel.com/docs/domains/working-with-domains/transfer-your-domain) — Domains can be transferred to another team or project within Vercel, or to and from a third-party registrar. Learn how t
+- [get_domain_verification_record](https://vercel.com/docs/agent-resources/vercel-mcp/tools/domains/get_domain_verification_record) — Use get_domain_verification_record with Vercel MCP.
 
 Full cross-link map for this page: [/docs/domains/working-with-domains/claim-domain-ownership.graph.md](/docs/domains/working-with-domains/claim-domain-ownership.graph.md)
 <!-- /docsgraph:related -->
@@ -51,6 +46,18 @@ Use this flow when:
 > **💡 Note:** If you have access to both Vercel accounts, consider using the [Move
 > feature](/docs/domains/working-with-domains/transfer-your-domain#transfer-a-domain-to-another-vercel-user-or-team)
 > instead, which is simpler and doesn't require DNS verification.
+
+## When to use Account Recovery
+
+You must control the root domain's DNS to add the verification TXT record. If someone else controls it, ask that owner to add the record.
+
+If you bought the domain through Vercel, it uses Vercel's nameservers, and you can't access the owning account, you can't add the TXT record needed to claim it. Use [Account Recovery](/accountrecovery) to regain access first.
+
+## When verification is required again
+
+Claiming a domain for a team and verifying its use on a project are separate checks. After you claim the domain at the team level, adding records or unused subdomains to your projects doesn't require repeated ownership verification.
+
+If the domain or subdomain is already associated with another project, Vercel requires project-level verification when you add it, including when it is serving traffic. Follow the verification prompt for that specific hostname; claiming the root domain doesn't bypass this check.
 
 ## Getting started
 
@@ -105,3 +112,6 @@ dig TXT _vercel.example.com
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

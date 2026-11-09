@@ -3,7 +3,7 @@ title: Connect to Google Cloud Platform (GCP)
 product: vercel
 url: /docs/oidc/gcp
 canonical_url: "https://vercel.com/docs/oidc/gcp"
-last_updated: 2026-06-23
+last_updated: 2026-09-01
 type: how-to
 prerequisites:
   - /docs/oidc
@@ -16,7 +16,9 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Connect to Google Cloud Platform (GCP)
 
-> **🔒 Permissions Required**: Secure backend access with OIDC federation
+> Secure backend access with OIDC federation is available on all plans
+
+To understand how GCP supports OIDC through Workload Identity Federation, consult the [GCP documentation](https://cloud.google.com/iam/docs/workload-identity-federation).
 
 
 <!-- docsgraph:related -->
@@ -24,17 +26,17 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Azure](https://vercel.com/docs/oidc/azure?from=related) — Learn how to configure your Microsoft Azure account to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\).
-- [Google Vertex AI](https://ai-sdk.dev/providers/ai-sdk-providers/google-vertex?from=related)
-- [AWS](https://vercel.com/docs/oidc/aws?from=related) — Learn how to configure your AWS account to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\).
-- [Connect your API](https://vercel.com/docs/oidc/api?from=related) — Learn how to configure your own API to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\)
-- [OIDC](https://vercel.com/docs/ai-gateway/authentication-and-byok/oidc?from=related) — Authenticate AI Gateway requests with Vercel OIDC tokens, with no API key to manage.
-- [API Reference](https://vercel.com/docs/functions/functions-api-reference?from=related) — Learn about available APIs when working with Vercel Functions.
+- [Migrate from Google Cloud Run to Vercel](https://vercel.com/kb/guide/migrate-cloud-run-to-vercel) — Move a Cloud Run service or worker to Vercel. Compare runtimes, preserve Google Cloud access, and plan jobs, validation,
+- [Enhancing security of backend connectivity with OpenID Connect](https://vercel.com/blog/enhancing-security-of-backend-connectivity-with-openid-connect)
+- [Death to long-lived static credentials](https://vercel.com/blog/death-to-long-lived-static-credentials)
+- [Connect to Amazon Web Services \\(AWS\\)](https://vercel.com/docs/oidc/aws) — Learn how to configure your AWS account to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\).
+- [Connect to Microsoft Azure](https://vercel.com/docs/oidc/azure) — Learn how to configure your Microsoft Azure account to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\).
+- [Connect to your own API](https://vercel.com/docs/oidc/api) — Learn how to configure your own API to trust Vercel's OpenID Connect \\(OIDC\\) Identity Provider \\(IdP\\)
+- [AI Gateway OIDC Authentication](https://vercel.com/docs/ai-gateway/authentication-and-byok/oidc) — Authenticate AI Gateway requests from Vercel deployments with OIDC tokens. Configure the AI SDK or send bearer tokens di
+- [OIDC Federation Reference](https://vercel.com/docs/oidc/reference) — Review helper libraries to help you connect with your backend and understand the structure of an OIDC token.
 
 Full cross-link map for this page: [/docs/oidc/gcp.graph.md](/docs/oidc/gcp.graph.md)
 <!-- /docsgraph:related -->
-
-To understand how GCP supports OIDC through Workload Identity Federation, consult the [GCP documentation](https://cloud.google.com/iam/docs/workload-identity-federation).
 
 ## Configure your GCP project
 
@@ -46,7 +48,7 @@ To understand how GCP supports OIDC through Workload Identity Federation, consul
 - ### Create an identity pool
   1. Enter a name for the pool, e.g. `Vercel`
   2. Enter an ID for the pool, e.g. `vercel` and click **Continue**
-  ![Image](`/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-id-pool.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-id-pool.png)
 
 - ### Add a provider to the identity pool
   1. Select `OpenID Connect (OIDC)` from the provider types
@@ -57,38 +59,38 @@ To understand how GCP supports OIDC through Workload Identity Federation, consul
      - **Global**: `https://oidc.vercel.com`
   5. Leave JWK file (JSON) empty
   6. For the **Audience** field, you have two options:
-     - **Default audience (recommended)**: Select `Default audience`. GCP generates the audience URL automatically based on your provider configuration. You can copy this value from the provider details page after creation. When using this option, you must pass the same URL as the `audience` in your code. See the [custom audience section](#custom-audience) below
+     - **Default audience (recommended)**: Select `Default audience`. GCP generates the audience URL automatically based on your provider configuration. You can copy this value from the provider details page after creation. When using this option, you must pass the same URL as the `audience` in your code. A token with a custom audience always uses the team issuer, so enter the **Team** issuer URL in the **Issuer URL** field even when your issuer mode is Global. See the [custom audience section](#custom-audience) below
      - **Allowed audiences**: Select `Allowed audiences` and enter `https://vercel.com/[TEAM_SLUG]` in the "Audience 1" field. This works without any additional code configuration
   7. Click **Continue**
-  ![Image](`/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-id-pool-2.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-id-pool-2.png)
 
 - ### Configure the provider attributes
   1. Assign the `google.subject` mapping to `assertion.sub`
   2. Click **Save**
-  ![Image](`/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-id-pool-3.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-id-pool-3.png)
 
 - ### Create a service account
   1. Copy the **IAM Principal** from the pool details page from the previous step. It should look like `principal://iam.googleapis.com/projects/012345678901/locations/global/workloadIdentityPools/vercel/subject/SUBJECT_ATTRIBUTE_VALUE`
   2. Navigate to **IAM & Admin** then **Service Accounts**
   3. Click on **Create Service Account**
-  ![Image](`/docs-assets/static/docs/concepts/oidc-tokens/gcp-copy-pool-id.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/oidc-tokens/gcp-copy-pool-id.png)
 
 - ### Enter the service account details
   1. Enter a name for the service account, e.g. `Vercel`.
   2. Enter an ID for the service account, e.g. `vercel` and click **Create and continue**.
-  ![Image](`/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-service-account-1.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-service-account-1.png)
 
 - ### Grant the service account access to the project
   1. Select a role or roles for the service account, e.g. `Storage Object Admin`.
   2. Click **Continue**.
-  ![Image](`/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-service-account-2.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-service-account-2.png)
 
 - ### Grant users access to the service account
   1. Paste in the **IAM Principal** copied from the pool details page in the **Service account users role** field.
      - Replace `SUBJECT_ATTRIBUTE_VALUE` with `owner:[VERCEL_TEAM]:project:[PROJECT_NAME]:environment:[ENVIRONMENT]`. e.g. `principal://iam.googleapis.com/projects/012345678901/locations/global/workloadIdentityPools/vercel/subject/owner:acme:project:my-project:environment:production`.
      - You can add multiple principals to this field, add a principal for each project and environment you want to grant access to.
   2. Click **Done**.
-  ![Image](`/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-service-account-3.png`)
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/oidc-tokens/gcp-create-service-account-3.png)
 
 - ### Define GCP account values as environment variables
   Once you have configured your GCP project with OIDC access, gather the following values from the Google Cloud Console:
@@ -134,36 +136,39 @@ In the following example, you create a [Vercel function](/docs/functions/quickst
 
 ### Return GCP Vertex AI generated text
 
+This example uses the token's default `aud` claim, so it works with the **Allowed audiences** option. If you selected **Default audience**, use the custom audience example after this one.
+
 Install the following packages:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
+```
+
+**yarn**
+
+```bash
+yarn add google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
+```
+
+**npm**
+
+```bash
+npm i google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
+```
+
+**bun**
+
+```bash
+bun add google-auth-library @ai-sdk/google-vertex ai @vercel/oidc
+```
 
 In the API route for this function, use the following code to perform the following tasks:
 
 - Use `google-auth-library` to create an External Account Client
 - Use it to authenticate with Google Cloud Services
-- Use Vertex AI with [Google Vertex Provider](https://sdk.vercel.ai/providers/ai-sdk-providers/google-vertex) to generate text from a prompt
+- Use Vertex AI with [Google Vertex Provider](https://ai-sdk.dev/providers/ai-sdk-providers/google-vertex) to generate text from a prompt
 
 ```ts filename="/api/gcp-vertex-ai/route.ts"
 import { getVercelOidcToken } from '@vercel/oidc';
@@ -187,7 +192,7 @@ const authClient = ExternalAccountClient.fromJSON({
   service_account_impersonation_url: `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${GCP_SERVICE_ACCOUNT_EMAIL}:generateAccessToken`,
   subject_token_supplier: {
     // Use the Vercel OIDC token as the subject token
-    getSubjectToken: getVercelOidcToken,
+    getSubjectToken: () => getVercelOidcToken(),
   },
 });
 
@@ -202,11 +207,11 @@ const vertex = createVertex({
 
 // Export the route handler
 export const GET = async (req: Request) => {
-  const result = generateText({
+  const { text } = await generateText({
     model: vertex('gemini-1.5-flash'),
     prompt: 'Write a vegetarian lasagna recipe for 4 people.',
   });
-  return Response.json(result);
+  return Response.json({ text });
 };
 ```
 
@@ -253,11 +258,11 @@ const vertex = createVertex({
 });
 
 export const GET = async (req: Request) => {
-  const result = generateText({
+  const { text } = await generateText({
     model: vertex('gemini-1.5-flash'),
     prompt: 'Write a vegetarian lasagna recipe for 4 people.',
   });
-  return Response.json(result);
+  return Response.json({ text });
 };
 ```
 
@@ -265,3 +270,6 @@ export const GET = async (req: Request) => {
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

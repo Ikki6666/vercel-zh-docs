@@ -1,10 +1,10 @@
 ---
-title: Cohere Rerank API
+title: Cohere Rerank API with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/cohere-rerank
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/cohere-rerank"
-last_updated: 2026-07-07
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway
@@ -12,11 +12,12 @@ related:
   - /docs/ai-gateway/models-and-providers/provider-options
   - /docs/ai-gateway/sdks-and-apis/ai-sdk
   - /docs/ai-gateway/modalities/reranking
+  - /docs/ai-gateway/sdks-and-apis/rest-api
 summary: Use the Cohere-compatible Rerank API with AI Gateway to reorder documents by relevance with the Cohere SDK or plain HTTP.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Cohere Rerank API
+# Cohere Rerank API with AI Gateway
 
 AI Gateway provides Cohere-compatible Rerank API endpoints, so you can use the [Cohere SDK](https://docs.cohere.com/reference/about) or plain HTTP requests to rerank documents through a unified gateway with only a URL change.
 
@@ -26,15 +27,15 @@ AI Gateway provides Cohere-compatible Rerank API endpoints, so you can use the [
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Reranking](https://ai-sdk.dev/docs/ai-sdk-core/reranking?from=related)
-- [rerank](https://ai-sdk.dev/docs/reference/ai-sdk-core/rerank?from=related)
-- [Cohere](https://ai-sdk.dev/providers/ai-sdk-providers/cohere?from=related)
-- [Voyage AI](https://ai-sdk.dev/providers/ai-sdk-providers/voyage?from=related)
-- [Together.ai](https://ai-sdk.dev/providers/ai-sdk-providers/togetherai?from=related)
-- [Models & Providers](https://vercel.com/docs/ai-gateway/models-and-providers?from=related) — Work with models and providers in AI Gateway: provider routing and fallbacks, filtering, timeouts, caching, service tier
-- [Filtering, Ordering & Sorting](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering?from=related) — Control which providers handle your requests, in what order, and how they are ranked using order, only, and sort options
-- [Get virtual model config](https://vercel.com/docs/rest-api/api-ai-gateway/get-virtual-model-config?from=related)
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Reranking](https://ai-sdk.dev/docs/ai-sdk-core/reranking) — Learn how to rerank documents with the AI SDK.
+- [rerank](https://ai-sdk.dev/docs/reference/ai-sdk-core/rerank) — API Reference for rerank.
+- [Cohere](https://ai-sdk.dev/providers/ai-sdk-providers/cohere) — Learn how to use Cohere with AI Gateway and the direct provider.
+- [Voyage Rerank 3 and Rerank 3 Lite are now available on AI Gateway](https://vercel.com/changelog/voyage-rerank-3-and-rerank-3-lite-are-now-available-on-ai-gateway)
+- [AI Gateway Models and Providers](https://vercel.com/docs/ai-gateway/models-and-providers) — Choose AI Gateway models and providers. Configure routing, fallbacks, timeouts, prompt caching, reasoning, and web searc
+- [AI Gateway FAQ](https://vercel.com/docs/ai-gateway/faq) — Answers to common questions about AI Gateway, including request errors, pricing and markup, SDK and API compatibility, m
+- [Get virtual model config](https://vercel.com/docs/rest-api/ai-gateway/get-virtual-model-config) — GET /ai-gateway/virtual-model-configs — Get a virtual model config
+- [Update virtual model config](https://vercel.com/docs/rest-api/ai-gateway/update-virtual-model-config) — PATCH /ai-gateway/virtual-model-configs — Update a virtual model config
+- [List virtual model configs](https://vercel.com/docs/rest-api/ai-gateway/list-virtual-model-configs) — GET /ai-gateway/virtual-model-configs/list — List virtual model configs. For a team, returns all of its VMCs, or with \\`
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/cohere-rerank.graph.md](/docs/ai-gateway/sdks-and-apis/cohere-rerank.graph.md)
 <!-- /docsgraph:related -->
@@ -111,24 +112,6 @@ The response contains a ranked list of results, ordered by relevance:
 
 ## Example request
 
-#### cURL
-
-```bash filename="rerank.sh"
-curl https://ai-gateway.vercel.sh/v2/rerank \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "cohere/rerank-v3.5",
-    "query": "What is the capital of the United States?",
-    "documents": [
-      "Carson City is the capital city of the American state of Nevada.",
-      "Washington, D.C. is the capital of the United States.",
-      "Capital punishment has existed in the United States since before it was a country."
-    ],
-    "top_n": 2
-  }'
-```
-
 #### TypeScript
 
 ```typescript filename="rerank.ts"
@@ -178,6 +161,24 @@ response = co.rerank(
 print(response.results)
 ```
 
+#### cURL
+
+```bash filename="rerank.sh"
+curl https://ai-gateway.vercel.sh/v2/rerank \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "cohere/rerank-v3.5",
+    "query": "What is the capital of the United States?",
+    "documents": [
+      "Carson City is the capital city of the American state of Nevada.",
+      "Washington, D.C. is the capital of the United States.",
+      "Capital punishment has existed in the United States since before it was a country."
+    ],
+    "top_n": 2
+  }'
+```
+
 ## Object documents and `return_documents`
 
 The `/v1/rerank` endpoint accepts object documents. Use `rank_fields` to choose which fields to rank on, and `return_documents` to echo the original documents back in the response:
@@ -201,7 +202,7 @@ curl https://ai-gateway.vercel.sh/v1/rerank \
 
 ## Provider routing
 
-You can control which provider serves the request with `providerOptions.gateway`, the same way as other AI Gateway APIs. For example, restrict the request to a specific provider:
+You can control which provider serves the request with `providerOptions.gateway`, the same way as other AI Gateway APIs. For example, list a preferred provider with `order`:
 
 ```json
 {
@@ -210,13 +211,13 @@ You can control which provider serves the request with `providerOptions.gateway`
   "documents": ["..."],
   "providerOptions": {
     "gateway": {
-      "only": ["bedrock"]
+      "order": ["bedrock"]
     }
   }
 }
 ```
 
-See [provider options](/docs/ai-gateway/models-and-providers/provider-options) for the full list, including provider filtering, ordering, and model fallbacks.
+AI Gateway tries the providers in `order` first and falls back to any other provider that serves the model. Each reranking model is currently served by a single provider (`cohere/rerank-v3.5` runs on Amazon Bedrock), so `order` sets a preference for when more providers are available rather than adding a fallback today. See [provider options](/docs/ai-gateway/models-and-providers/provider-options) for the full list, including provider filtering, ordering, and model fallbacks.
 
 > **💡 Note:** To rank with an Amazon Bedrock reranking model using your own credentials
 > (BYOK), use SigV4 credentials (`accessKeyId` and `secretAccessKey`). The
@@ -229,7 +230,7 @@ If you use the [AI SDK](/docs/ai-gateway/sdks-and-apis/ai-sdk), call reranking m
 
 ## Error handling
 
-The API returns standard HTTP status codes. Errors follow the Cohere error format:
+The API returns standard HTTP status codes. Authentication errors, billing errors, unknown model errors, and model provider failures use the [standard AI Gateway error format](/docs/ai-gateway/sdks-and-apis/rest-api#error-responses): an `error` object with `message` and `type` fields. Request validation errors follow the Cohere error format:
 
 ```json
 {
@@ -250,3 +251,6 @@ The API returns standard HTTP status codes. Errors follow the Cohere error forma
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

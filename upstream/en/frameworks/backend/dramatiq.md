@@ -3,7 +3,7 @@ title: Deploy Dramatiq workers on Vercel
 product: vercel
 url: /docs/frameworks/backend/dramatiq
 canonical_url: "https://vercel.com/docs/frameworks/backend/dramatiq"
-last_updated: 2026-08-13
+last_updated: 2026-08-20
 type: how-to
 prerequisites:
   - /docs/frameworks/backend
@@ -13,14 +13,18 @@ related:
   - /docs/queues
   - /docs/functions
   - /docs/frameworks/backend/fastapi
-  - /docs/queues/pricing
+  - /docs/frameworks/backend/flask
 summary: Deploy Dramatiq workers on Vercel. Learn how Dramatiq actors use Vercel Queues and Vercel Functions to process background tasks.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Deploy Dramatiq workers on Vercel
 
-> **🔒 Permissions Required**: Vercel Queues
+> Vercel Queues are available in Beta on all plans
+
+[Dramatiq](https://dramatiq.io/) is a distributed task processing library for
+Python. You declare functions as actors, send them messages, and workers run
+them in the background.
 
 
 <!-- docsgraph:related -->
@@ -28,20 +32,15 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [How to ship a FastAPI app on Vercel](https://vercel.com/kb/guide/ship-a-fastapi-app-on-vercel?from=related) — Deploy a FastAPI app to Vercel with zero configuration. Learn how the Python runtime, Vercel Functions, streaming, middl
-- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related) — Set up Vercel Queues with the SDK.
-- [Django](https://vercel.com/docs/frameworks/full-stack/django?from=related) — Deploy a Django app on Vercel. Learn how the Python runtime, WSGI, ASGI, static assets, and Vercel Functions work togeth
-- [JS SDK Reference](https://vercel.com/docs/queues/sdk?from=related) — Publish and consume messages with the @vercel/queue SDK.
-- [Workflows](https://vercel.com/docs/workflows?from=related) — Vercel Workflows is a fully managed platform for building durable, reliable, and observable applications and AI agents w
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
+- [Running background workers on Vercel](https://vercel.com/kb/guide/background-workers-on-vercel) — Run background jobs on Vercel with waitUntil, Cron Jobs, Queues, Workflows, Daemons, or Sandbox. Compare the options and
+- [ Run a Docker monolith with workers on Vercel](https://vercel.com/kb/guide/docker-monolith-workers-vercel) — Run a Dockerized monolith on Vercel with Container Images, move long-running workers to Vercel Queues and Vercel Workflo
+- [Migrate a Python API from Heroku to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-heroku-to-vercel) — Move a FastAPI, Flask, or Django API from Heroku to Vercel Functions. Replace your Procfile, worker dynos, Heroku Schedu
+- [Migrate a Python API from Railway to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-railway-to-vercel) — Move a FastAPI, Flask, or Django API from Railway to Vercel Functions. Replace railway.json start commands, volumes, Cel
+- [Migrate a Python API from Render to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-render-to-vercel) — Move a FastAPI, Flask, or Django API from Render to Vercel Functions. Translate render.yaml and replace persistent disks
+- [Run background tasks with Celery on Vercel](https://vercel.com/changelog/run-background-tasks-with-celery-on-vercel)
 
 Full cross-link map for this page: [/docs/frameworks/backend/dramatiq.graph.md](/docs/frameworks/backend/dramatiq.graph.md)
 <!-- /docsgraph:related -->
-
-[Dramatiq](https://dramatiq.io/) is a distributed task processing library for
-Python. You declare functions as actors, send them messages, and workers run
-them in the background.
 
 Deploy Dramatiq workers to Vercel with the [Python
 runtime](/docs/functions/runtimes/python), [Vercel Queues](/docs/queues), and
@@ -66,7 +65,9 @@ dependencies = [
 ```
 
 This example uses [FastAPI](/docs/frameworks/backend/fastapi) to enqueue
-messages. You can use any supported Python web framework for the producer.
+messages. You can also send messages from [Flask](/docs/frameworks/backend/flask)
+or [Django](/docs/frameworks/full-stack/django). Follow the framework's deployment
+guide to configure the web application that produces messages.
 
 ### Define the broker and actors
 
@@ -293,15 +294,19 @@ client instead.
 ## Splitting queues across functions
 
 With no `topics` filter, the generated function consumes every queue the broker
-declares. Add a filter to split queues across separate functions:
+declares. Add a filter to split queues across separate functions. Each
+subscriber needs its own entrypoint module, because Vercel names a subscriber
+after its entrypoint and the build fails when two subscribers share a name.
+Create one worker module for each function, for example `emails_worker.py` and
+`reports_worker.py`, with the same contents as `worker.py`:
 
 ```toml filename="pyproject.toml"
 [[tool.vercel.subscribers]]
-entrypoint = "worker"
+entrypoint = "emails_worker"
 topics = ["emails*"]
 
 [[tool.vercel.subscribers]]
-entrypoint = "worker"
+entrypoint = "reports_worker"
 topics = ["reports*"]
 ```
 
@@ -325,6 +330,8 @@ duration and bundle size.
   queues, so `broker.flush()`, `broker.flush_all()`, and `broker.join()` raise
   `NotImplementedError`. Use Dramatiq's `StubBroker` in unit tests instead.
 
+If your worker requires a continuous process instead of queue-triggered invocations, see [choosing between Functions, containers, and Daemons](/kb/guide/vercel-functions-containers-daemons). That guide explains when to package an existing worker as a Daemon.
+
 ## More resources
 
 For more about deploying Dramatiq on Vercel, see:
@@ -339,3 +346,6 @@ For more about deploying Dramatiq on Vercel, see:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

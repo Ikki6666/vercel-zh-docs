@@ -3,7 +3,7 @@ title: Limits and Pricing for Image Optimization
 product: vercel
 url: /docs/image-optimization/limits-and-pricing
 canonical_url: "https://vercel.com/docs/image-optimization/limits-and-pricing"
-last_updated: 2026-02-23
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/image-optimization
@@ -21,21 +21,6 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Pricing
 
-
-<!-- docsgraph:related -->
-## Related pages
-
-> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
-
-- [Legacy Pricing](https://vercel.com/docs/image-optimization/legacy-pricing?from=related) — This page outlines information on the pricing and limits for the source images-based legacy option.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing?from=related) — Learn about the pricing for Vercel Blob.
-- [Getting Started](https://vercel.com/docs/image-optimization/quickstart?from=related) — Learn how you can leverage Vercel Image Optimization in your projects.
-
-Full cross-link map for this page: [/docs/image-optimization/limits-and-pricing.graph.md](/docs/image-optimization/limits-and-pricing.graph.md)
-<!-- /docsgraph:related -->
-
 > **💡 Note:** This is the default pricing option. For Enterprise teams created
 > before February 18th, 2025, you will be given the choice to
 > [opt-in](https://vercel.com/d?to=%2F%5Bteam%5D%2F~%2Fsettings%2Fbilling%23image-optimization-new-price\&title=Go+to+Billing+Settings)
@@ -43,6 +28,26 @@ Full cross-link map for this page: [/docs/image-optimization/limits-and-pricing.
 > images-based](/docs/image-optimization/legacy-pricing) pricing plan until the contract expires.
 
 Image optimization pricing is dependent on your plan and on specific parameters outlined in the table below. For detailed pricing information for each region, review [Regional Pricing](/docs/pricing/regional-pricing#specific-region-pricing).
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Exceeding included Image Optimization usage no longer pauses deployments](https://vercel.com/changelog/exceeding-included-image-optimization-usage-no-longer-pauses-deployments)
+- [Faster transformations and reduced pricing for Image Optimization](https://vercel.com/changelog/faster-transformations-and-reduced-pricing-for-image-optimization)
+- [Increased Hobby usage limits for Image Optimization](https://vercel.com/changelog/increased-hobby-usage-limits-for-image-optimization)
+- [How to reduce Vercel Image Optimization costs](https://vercel.com/kb/guide/reduce-image-optimization-costs-on-vercel) — Learn how to reduce Vercel Image Optimization costs in Next.js by tuning cache TTLs, image sizes, formats, and quality.
+- [Legacy Pricing for Image Optimization](https://vercel.com/docs/image-optimization/legacy-pricing) — This page outlines information on the pricing and limits for the source images-based legacy option.
+- [Changes to Vercel Image Optimization](https://vercel.com/changelog/changes-to-vercel-image-optimizations)
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Pricing on Vercel](https://vercel.com/docs/pricing) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Vercel Blob Pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing) — Learn about the pricing for Vercel Blob.
+- [Container Registry limits and pricing](https://vercel.com/docs/container-registry/limits-and-pricing) — Storage pricing, size limits, plan limits, and compatibility limits for Vercel Container Registry.
+
+Full cross-link map for this page: [/docs/image-optimization/limits-and-pricing.graph.md](/docs/image-optimization/limits-and-pricing.graph.md)
+<!-- /docsgraph:related -->
 
 | Image Usage | Hobby Included | On-demand Rates |
 | --- | --- | --- |
@@ -73,7 +78,7 @@ The total amount of Write Units used to store the cached image in the global cac
 
 You are billed for the number of [Image Transformations](#image-transformations), [Image Cache Reads](#image-cache-reads), and [Image Cache Writes](#image-cache-writes) during the billing period.
 
-Additionally, charges apply for [Fast Data Transfer](/docs/manage-cdn-usage#fast-data-transfer) and [Edge Requests](/docs/manage-cdn-usage#edge-requests) when transformed images are delivered from Vercel's [CDN](/docs/cdn) to clients.
+Additionally, charges apply for [Fast Data Transfer](/docs/manage-cdn-usage#fast-data-transfer) and [CDN Requests](/docs/manage-cdn-usage#cdn-requests) when transformed images are delivered from Vercel's [CDN](/docs/cdn) to clients.
 
 ### Hobby
 
@@ -83,7 +88,7 @@ Vercel will send you emails as you are nearing your [usage](#pricing) limits, bu
 
 Once you exceed the limits:
 
-- New images will fail to optimize and instead return a runtime error response with [402 status code](/docs/errors#402:-deployment_disabled). This will trigger the [`onError`](https://nextjs.org/docs/app/api-reference/components/image#onerror) callback and show the [`alt`](https://nextjs.org/docs/app/api-reference/components/image#alt) text instead of the image
+- New images will fail to optimize and instead return a runtime error response with [402 status code](/docs/errors/deployment_disabled). This will trigger the [`onError`](https://nextjs.org/docs/app/api-reference/components/image#onerror) callback and show the [`alt`](https://nextjs.org/docs/app/api-reference/components/image#alt) text instead of the image
 - Previously optimized images have already been cached and will continue to work as expected, without error
 
 You will **not** be charged for exceeding the usage limits, but this usually means your application is ready to upgrade to a [Pro plan](/docs/plans/pro-plan).
@@ -110,3 +115,6 @@ See the [Fair Usage Policy](/docs/limits/fair-use-guidelines#typical-monthly-usa
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

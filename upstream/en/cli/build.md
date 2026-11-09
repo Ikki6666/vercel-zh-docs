@@ -3,13 +3,16 @@ title: vercel build
 product: vercel
 url: /docs/cli/build
 canonical_url: "https://vercel.com/docs/cli/build"
-last_updated: 2026-03-17
+last_updated: 2026-10-07
 type: reference
 prerequisites:
   - /docs/cli
 related:
   - /docs/build-output-api
+  - /docs/schedules/quickstart
+  - /docs/build-output-api/services
   - /docs/deployments/environments
+  - /docs/cli/global-options
 summary: Learn how to build a Vercel Project locally or in your own CI environment using the vercel build CLI command.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -26,13 +29,12 @@ Build artifacts are placed into the `.vercel/output` directory according to the
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Troubleshooting Vercel Cron Jobs](https://vercel.com/kb/guide/troubleshooting-vercel-cron-jobs?from=related) — Learn how to troubleshoot cron jobs that aren't being run or logged when using Vercel Cron Jobs.
-- [Can I deploy a locally built Next.js app to Vercel?](https://vercel.com/kb/guide/deploying-locally-built-nextjs?from=related) — Learn how to deploy a locally built Next.js application to Vercel.
-- [Deploying from CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [Build System](https://vercel.com/docs/fundamentals/builds?from=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
-- [vercel dev](https://vercel.com/docs/cli/dev?from=related) — Learn how to replicate the Vercel deployment environment locally and test your Vercel Project before deploying using the
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [vercel dev](https://vercel.com/docs/cli/dev) — Learn how to replicate the Vercel deployment environment locally and test your Vercel Project before deploying using the
+- [vercel deploy](https://vercel.com/docs/cli/deploy) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [How Vercel builds your application](https://vercel.com/docs/fundamentals/builds) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
+- [Builds](https://vercel.com/docs/builds) — Understand how the build step works when creating a Vercel Deployment.
+- [Deploying Projects from Vercel CLI](https://vercel.com/docs/cli/deploying-from-cli) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
 
 Full cross-link map for this page: [/docs/cli/build.graph.md](/docs/cli/build.graph.md)
 <!-- /docsgraph:related -->
@@ -55,6 +57,12 @@ vercel build
 
 *Using the \`vercel build\` command to build a Vercel
 Project.*
+
+## Schedule configuration
+
+`vercel build` combines [Schedules](/docs/schedules/quickstart) defined in `vercel.json` with schedules that framework builders emit in their Build Output `config.json`. Schedule names must be unique across both sources. If a name appears more than once, the build fails with `SCHEDULE_NAME_CONFLICT`.
+
+For a schedule that targets a function in a [service](/docs/build-output-api/services), set `service` to the service's name and `function` to its build-output function identifier, without the `.func` suffix. For example, `service: "worker"` and `function: "index"` target `.vercel/output/services/worker/functions/index.func`, not a source filename. The build preserves function targets unchanged. `service` applies only to function targets, not `path` or `topic`. Service-hosted function schedules run after deployment; `vercel dev` rejects them with `DEV_SCHEDULE_SERVICE_FUNCTION_UNSUPPORTED`.
 
 ## Unique Options
 
@@ -82,12 +90,14 @@ vercel build --yes
 *Using the \`vercel build\` command with the
 \`--yes\` option.*
 
-### target
+### Environment
 
-Use the `--target` option to define the environment you want to build against. This could be production, preview, or a [custom environment](/docs/deployments/environments#custom-environments).
+Use the `--environment` option to define the environment you want to build against. This could be production, preview, or a [custom environment](/docs/deployments/environments#custom-environments). For production, [`--prod`](#production) does the same as `--environment=production`.
+
+The following example builds for a custom environment named `staging`:
 
 ```bash filename="terminal"
-vercel build --target=staging
+vercel build --environment=staging
 ```
 
 ### Output
@@ -101,6 +111,34 @@ vercel build --output ./custom-output
 *Using the \`vercel build\` command with the
 \`--output\` option to specify a custom output directory.*
 
+### Standalone
+
+The `--standalone` option creates a standalone build with all dependencies inlined into function output folders, so build artifacts are fully contained within the `.vercel` folder.
+
+```bash filename="terminal"
+vercel build --standalone
+```
+
+*Using the \`vercel build\` command with the
+\`--standalone\` option.*
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel build` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
+
 ## Related guides
 
 - [How can I use the Vercel CLI for custom workflows?](/kb/guide/using-vercel-cli-for-custom-workflows)
@@ -109,3 +147,6 @@ vercel build --output ./custom-output
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

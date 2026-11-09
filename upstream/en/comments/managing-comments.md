@@ -3,7 +3,7 @@ title: Managing Comments on Preview Deployments
 product: vercel
 url: /docs/comments/managing-comments
 canonical_url: "https://vercel.com/docs/comments/managing-comments"
-last_updated: 2026-02-26
+last_updated: 2026-08-28
 type: how-to
 prerequisites:
   - /docs/comments
@@ -17,22 +17,27 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Resolve comments
 
+You can resolve comments by selecting the **☐ Resolve** checkbox that appears under each thread or comment. You can access this checkbox by selecting a comment wherever it appears on the page, or by selecting the thread associated with the comment in the **Inbox**.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using Comments](https://vercel.com/docs/comments/using-comments?from=related) — This guide will help you get started with using Comments with your Vercel Preview Deployments.
-- [Enabling Comments](https://vercel.com/docs/comments/how-comments-work?from=related) — Learn when and where Comments are available, and how to enable and disable Comments at the account, project, and session
-- [vercel comments](https://vercel.com/docs/cli/comments?from=related) — Learn about vercel comments on Vercel.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Toolbar](https://vercel.com/docs/vercel-toolbar?from=related) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
+- [Introducing Commenting on Preview Deployments](https://vercel.com/blog/introducing-commenting-on-preview-deployments)
+- [Enhanced Preview experience](https://vercel.com/blog/making-live-reviews-a-reality-enhanced-preview-experience)
+- [Using Vercel comments to improve the Next.js 13 documentation](https://vercel.com/blog/using-vercel-comments-to-improve-the-next-js-13-documentation)
+- [Comments on Preview Deployments are now generally available](https://vercel.com/changelog/comments-on-preview-deployments-are-now-generally-available)
+- [Commenting on Previews is now in Public Beta](https://vercel.com/changelog/commenting-on-previews-is-now-in-public-beta)
+- [Comments are now visible in your dashboard notifications](https://vercel.com/changelog/comments-are-now-visible-in-your-dashboard-notifications)
+- [Convert Comments on Preview Deployments to Linear issues](https://vercel.com/changelog/convert-comments-on-preview-deployments-to-linear-issues)
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Vercel Toolbar](https://vercel.com/docs/vercel-toolbar) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
+- [Notifications](https://vercel.com/docs/notifications) — Learn how to use Notifications to view and manage important alerts about your deployments, domains, integrations, accoun
 
 Full cross-link map for this page: [/docs/comments/managing-comments.graph.md](/docs/comments/managing-comments.graph.md)
 <!-- /docsgraph:related -->
-
-You can resolve comments by selecting the **☐ Resolve** checkbox that appears under each thread or comment. You can access this checkbox by selecting a comment wherever it appears on the page, or by selecting the thread associated with the comment in the **Inbox**.
 
 Participants in a thread will receive a notification when that thread is resolved.
 
@@ -141,9 +146,12 @@ On desktop, you can hover your cursor over a comment's timestamp to view less de
 - Device pixel ratio
 - Which deployment they were viewing
 
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/debug-info-light.png`)
+![A comment's browsing session information.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/debug-info-light.png)
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

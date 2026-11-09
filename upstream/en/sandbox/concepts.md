@@ -3,23 +3,23 @@ title: Understanding Sandboxes
 product: vercel
 url: /docs/sandbox/concepts
 canonical_url: "https://vercel.com/docs/sandbox/concepts"
-last_updated: 2026-06-30
+last_updated: 2026-08-25
 type: conceptual
 prerequisites:
   - /docs/sandbox
 related:
   - /docs/sandbox/concepts/images
   - /docs/container-registry
+  - /docs/sandbox/working-with-sandbox
   - /docs/sandbox/concepts/regions
   - /docs/sandbox/cli-reference
-  - /docs/sandbox/sdk-reference
 summary: Learn how Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applications, and executing...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Understanding Sandboxes
 
-Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applications, executing AI-generated scripts, and more. Sandboxes are **persistent by default**: when a sandbox stops, the SDK automatically snapshots its filesystem, and the sandbox configuration is preserved across sessions, so both are restored the next time you resume.
+Vercel Sandboxes provide on-demand, isolated compute environments for running untrusted code, testing applications, executing AI-generated scripts, and more. Sandboxes are **persistent by default**: when a sandbox stops, Vercel automatically snapshots its filesystem, and the sandbox configuration is preserved across sessions, so both are restored the next time you resume.
 
 
 <!-- docsgraph:related -->
@@ -27,13 +27,14 @@ Vercel Sandboxes provide on-demand, isolated compute environments for running un
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox?from=related) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
-- [How Vercel Sandbox duration and persistence work](https://vercel.com/kb/guide/vercel-sandbox-duration-and-persistence?from=related) — Session duration and persistence are two separate controls in Vercel Sandbox. The timeout option keeps a single run aliv
-- [Sandbox](https://v0.app/docs/sandbox?from=related) — VM-backed chats run your project inside an isolated Vercel Sandbox that hosts your code, dev server, terminal, and agent
-- [Run Commands in Vercel Sandbox](https://vercel.com/docs/sandbox/run-commands-in-sandbox?from=related) — Create isolated sandbox environments to run builds, tests, and commands safely.
-- [vercel sandbox](https://vercel.com/docs/cli/sandbox?from=related) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
-- [Hermes](https://vercel.com/docs/sandbox/ecosystem/hermes?from=related) — Run Hermes Agent terminal commands in isolated Vercel Sandbox microVMs, with models served through Vercel AI Gateway.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [A sandbox without a network boundary is only half a sandbox](https://vercel.com/blog/a-sandbox-without-a-network-boundary-is-only-half-a-sandbox)
+- [Vercel Sandboxes are now generally available](https://vercel.com/changelog/vercel-sandboxes-ga)
+- [How Vercel Sandbox duration and persistence work](https://vercel.com/kb/guide/vercel-sandbox-duration-and-persistence) — Session duration and persistence are two separate controls in Vercel Sandbox. The timeout option keeps a single run aliv
+- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
+- [Vercel Sandbox vs CodeSandbox](https://vercel.com/kb/guide/vercel-sandbox-vs-codesandbox) — A detailed guide to Vercel Sandbox vs CodeSandbox: compute isolation, credential brokering, Active CPU billing, Docker s
+- [Run untrusted code with Vercel Sandbox, now generally available](https://vercel.com/blog/vercel-sandbox-is-now-generally-available)
+- [vercel sandbox](https://vercel.com/docs/cli/sandbox) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
+- [Hermes](https://vercel.com/docs/sandbox/ecosystem/hermes) — Run Hermes Agent terminal commands in isolated Vercel Sandbox microVMs, with models served through Vercel AI Gateway.
 
 Full cross-link map for this page: [/docs/sandbox/concepts.graph.md](/docs/sandbox/concepts.graph.md)
 <!-- /docsgraph:related -->
@@ -65,7 +66,7 @@ Unlike Docker containers, each sandbox runs in its own [Firecracker](https://fir
 | **Startup time** | Sub-second                                                | Milliseconds (Firecracker optimized for fast boot)             |
 | **Use case**     | Packaging and deploying applications                      | Running arbitrary, untrusted code safely                       |
 
-If you already use Docker images to define your environment, store the image in [Vercel Container Registry (VCR)](/docs/container-registry) and create the sandbox with a custom image. See [Images](/docs/sandbox/concepts/images#custom-images). You can also install packages with [your system's package manager](/kb/guide/how-to-install-system-packages-in-vercel-sandbox), or take a snapshot after setup when a Docker image is not needed.
+If you already use Docker images to define your environment, store the image in [Vercel Container Registry (VCR)](/docs/container-registry) and create the sandbox with a custom image. See [Images](/docs/sandbox/concepts/images#custom-images). You can also install packages with [your system's package manager](/docs/sandbox/working-with-sandbox#install-system-packages), or take a snapshot after setup when a Docker image is not needed.
 
 ## How sandboxes work
 
@@ -77,7 +78,7 @@ Here's what happens during the lifecycle:
 
 1. **Provisioning**: Vercel allocates compute resources and boots the microVM. Resuming from a snapshot is even faster than starting a fresh sandbox.
 2. **Running**: Your code executes inside a session. A **session** is a single running VM instance inside a sandbox. You can run commands, install packages, start servers, and interact with the filesystem.
-3. **Stopping**: When the timeout expires or you call `stop()`, the session shuts down. For persistent sandboxes (the default), the SDK automatically snapshots the filesystem so the next session resumes from the same state. For non-persistent sandboxes, the filesystem is discarded.
+3. **Stopping**: When the timeout expires or you call `stop()`, the session shuts down. For persistent sandboxes (the default), Vercel automatically snapshots the filesystem so the next session resumes from the same state. For non-persistent sandboxes, the filesystem is discarded.
 4. **Resuming**: The next SDK call (such as `runCommand` or `writeFiles`) on a stopped persistent sandbox starts a new session from the most recent snapshot. You don't need to resume manually.
 
 For long-term storage of data that doesn't belong in the filesystem, write it to external services like databases or object storage.
@@ -94,15 +95,132 @@ Sandboxes are identified by a **name** that is unique within your project. If yo
 
 To create a sandbox, you can use the [CLI](/docs/sandbox/cli-reference), the [JS SDK](/docs/sandbox/sdk-reference), or the [Python SDK](/docs/sandbox/python-sdk-reference):
 
+**terminal.sh**
+
+```bash filename="terminal.sh"
+# Create a sandbox with a random name
+sandbox create
+
+# Create with an explicit name
+sandbox create --name my-sandbox
+```
+
+**index.ts**
+
+```ts filename="index.ts"
+import { Sandbox } from '@vercel/sandbox';
+
+// Create a new sandbox
+const sandbox = await Sandbox.create({ name: 'my-sandbox' });
+
+// Or create from a snapshot
+const sandboxFromSnapshot = await Sandbox.create({
+  source: { type: 'snapshot', snapshotId: 'snap_abc123' },
+});
+
+// Or retrieve an existing sandbox by name
+// The next operation resumes it if it is stopped
+const existing = await Sandbox.get({ name: 'my-sandbox' });
+```
+
+**main.py**
+
+```py filename="main.py"
+from vercel import sandbox
+from vercel.sandbox import SnapshotSource
+
+box = await sandbox.create_sandbox(name="my-sandbox")
+
+box_from_snapshot = await sandbox.create_sandbox(
+    source=SnapshotSource(snapshot_id="snap_abc123")
+)
+
+# Or retrieve an existing sandbox by name
+# The next operation resumes it if it is stopped
+existing = await sandbox.get_sandbox(name="my-sandbox")
+```
+
 ### Running commands
 
 Once created, you can run commands inside the sandbox. Commands can run in blocking mode (wait for completion) or detached mode (return immediately).
+
+**terminal.sh**
+
+```bash filename="terminal.sh"
+# Run a command in an existing sandbox (by name)
+sandbox exec my-sandbox -- npm install
+
+# Run interactively
+sandbox exec --interactive --tty my-sandbox -- bash
+
+# Run with environment variables
+sandbox exec --env DEBUG=true my-sandbox -- npm test
+```
+
+**index.ts**
+
+```ts filename="index.ts"
+// Blocking: waits for the command to finish
+const result = await sandbox.runCommand('npm', ['install']);
+console.log(result.exitCode);
+
+// Detached: returns immediately, useful for servers
+const cmd = await sandbox.runCommand({
+  cmd: 'npm',
+  args: ['run', 'dev'],
+  detached: true,
+});
+
+// Stream logs from a detached command
+for await (const log of cmd.logs()) {
+  console.log(log.data);
+}
+```
+
+**main.py**
+
+```py filename="main.py"
+# Wait for a process and capture its output.
+result = await box.run_command(
+    "npm",
+    ["install"],
+    capture_output=True,
+    check=True,
+)
+print(result.returncode)
+
+# Return immediately with a live process handle.
+process = await box.create_command("npm", ["run", "dev"])
+
+# Stream stdout from the process.
+assert process.stdout is not None
+async for line in process.stdout:
+    print(line, end="")
+```
 
 ### Stopping a sandbox
 
 Sandboxes automatically stop after a timeout. The default timeout is 5 minutes, and the [maximum](/docs/sandbox/pricing#runtime-limits) applies to each [session](/docs/sandbox/concepts/persistent-sandboxes#sandboxes-and-sessions), not to the sandbox itself. A sandbox spans as many sessions as you resume it for: an agent workspace resumed once a day for a week is one sandbox and seven sessions.
 
 Alternatively, you can stop them manually. `stop()` resolves once the VM is fully stopped, and returns the final session state. For persistent sandboxes, the resolved value also includes metadata for the snapshot captured during shutdown.
+
+**terminal.sh**
+
+```bash filename="terminal.sh"
+sandbox stop my-sandbox
+```
+
+**index.ts**
+
+```ts filename="index.ts"
+await sandbox.stop();
+```
+
+**main.py**
+
+```py filename="main.py"
+await box.stop()
+```
 
 You can also stop sandboxes from the Vercel Dashboard by navigating to **Observability > Sandboxes** and clicking **Stop Sandbox**.
 
@@ -172,12 +290,18 @@ Sandboxes can make outbound HTTP requests by default, so you can install package
 
 Internet access from the sandbox can be restricted through network policies defined by the users, as part of the [sandbox firewall](/docs/sandbox/concepts/firewall).
 
+To send a sandbox's public-internet traffic through a Secure Compute network's static IPs, and to reach your own AWS VPC over VPC peering, see [Using Secure Compute with Sandbox](/docs/sandbox/concepts/secure-compute).
+
+#### Long-running WebSocket connections
+
+WebSocket connections to a sandbox's public URL can close while the sandbox continues running. For long-running sessions, reconnect clients automatically and resume application state after an interruption. You can also host the WebSocket server outside the sandbox and have the sandbox initiate the connection.
+
 #### Proxy CA certificates
 
 Vercel Sandbox mounts a unique, per-sandbox certificate authority (CA) certificate for the sandbox proxy in these locations:
 
 - `/etc/pki/ca-trust/source/anchors/vercel-proxy-ca.pem`
-- `/usr/local/share/ca-certificates/vercel-proxy-ca.pem`
+- `/usr/local/share/ca-certificates/vercel-proxy-ca.crt`
 
 Vercel Sandbox adds the proxy CA certificate to the system trust bundle automatically. Applications that use the system trust store do not need extra configuration.
 
@@ -197,7 +321,7 @@ REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
 SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ```
 
-If your application does not use the system trust store and these environment variables, configure it to trust one of the mounted `vercel-proxy-ca.pem` files. This is required for HTTPS traffic that the [sandbox firewall](/docs/sandbox/concepts/firewall) terminates for transformation rules.
+If your application does not use the system trust store and these environment variables, configure it to trust one of the mounted certificate files. This is required for HTTPS traffic that the [sandbox firewall](/docs/sandbox/concepts/firewall) terminates for transformation rules.
 
 **Containers do not inherit the proxy CA.** The proxy CA certificate and the CA environment variables are installed on the sandbox host. A container that you run inside the sandbox has its own isolated filesystem and trust store, so it does not inherit either of them. Without the certificate, HTTPS requests from inside the container fail TLS verification when the [sandbox firewall](/docs/sandbox/concepts/firewall) terminates them for transformation rules.
 
@@ -221,8 +345,9 @@ Sandboxes run on Vercel's secure infrastructure, which maintains SOC 2 Type II c
 
 - [Persistent sandboxes](/docs/sandbox/concepts/persistent-sandboxes): Sandboxes that auto-save state and resume where you left off.
 - [Tags](/docs/sandbox/concepts/tags): Categorize sandboxes by environment, team, or any other criteria using key-value tags.
-- [Drives (Beta)](/docs/sandbox/concepts/drives): Attach persistent filesystem storage to sandboxes and reuse data across sandbox runs.
+- [Drives](/docs/sandbox/concepts/drives): Attach persistent filesystem storage to sandboxes and reuse data across sandbox runs.
 - [Regions](/docs/sandbox/concepts/regions): Choose where your sandboxes run and configure failover regions.
+- [Secure Compute](/docs/sandbox/concepts/secure-compute): Send a sandbox's public-internet traffic through a network's static IPs, and reach your own VPC over VPC peering.
 - [Quickstart](/docs/sandbox/quickstart): Run your first sandbox.
 - [Working with Sandbox](/docs/sandbox/working-with-sandbox): Task-oriented guides for common operations.
 - [Authentication](/docs/sandbox/concepts/authentication): Configure SDK authentication.
@@ -236,3 +361,6 @@ Sandboxes run on Vercel's secure infrastructure, which maintains SOC 2 Type II c
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

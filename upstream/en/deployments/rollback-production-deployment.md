@@ -3,7 +3,7 @@ title: Rolling back a production deployment
 product: vercel
 url: /docs/deployments/rollback-production-deployment
 canonical_url: "https://vercel.com/docs/deployments/rollback-production-deployment"
-last_updated: 2026-05-28
+last_updated: 2026-09-11
 type: how-to
 prerequisites:
   - /docs/deployments
@@ -27,13 +27,13 @@ Use this guide to recover from a bad production deployment. You'll roll back to 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to gradually roll out new versions of your backend](https://vercel.com/kb/guide/how-to-gradually-roll-out-new-versions-of-your-backend?from=related) — Incrementally release updates to your backend to minimize impact of mistakes.
-- [How to determine which Vercel Deployment introduced an issue?](https://vercel.com/kb/guide/how-to-determine-which-vercel-deployment-introduced-an-issue?from=related) — Process to quickly determine when a deployment issue was introduced using the Vercel CLI
-- [Rolling Release Deployment](https://vercel.com/docs/rolling-releases/rolling-release-deployment?from=related) — Gradually roll out a production deployment using traffic stages, monitoring, and automated abort.
-- [Promote Preview to Production](https://vercel.com/docs/deployments/promote-preview-to-production?from=related) — Test a preview deployment and promote it to production using the CLI.
-- [Promoting Deployments](https://vercel.com/docs/deployments/promoting-a-deployment?from=related) — Learn how to promote deployments to production on Vercel.
-- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [How to determine which Vercel Deployment introduced an issue?](https://vercel.com/kb/guide/how-to-determine-which-vercel-deployment-introduced-an-issue) — Process to quickly determine when a deployment issue was introduced using the Vercel CLI
+- [How to gradually roll out new versions of your backend](https://vercel.com/kb/guide/how-to-gradually-roll-out-new-versions-of-your-backend) — Incrementally release updates to your backend to minimize impact of mistakes.
+- [Performing a rolling release deployment](https://vercel.com/docs/rolling-releases/rolling-release-deployment) — Gradually roll out a production deployment using traffic stages, monitoring, and automated abort.
+- [Promoting a preview deployment to production](https://vercel.com/docs/deployments/promote-preview-to-production) — Test a preview deployment and promote it to production using the CLI.
+- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Deployments](https://vercel.com/docs/agent-resources/vercel-mcp/tools/deployments) — Vercel MCP tools for deployments.
 
 Full cross-link map for this page: [/docs/deployments/rollback-production-deployment.graph.md](/docs/deployments/rollback-production-deployment.graph.md)
 <!-- /docsgraph:related -->
@@ -47,25 +47,25 @@ Use this block when you already know what you're doing and want the full command
 
 ```bash filename="terminal"
 # 1. Confirm the problem
-vercel logs --environment production --status-code 5xx --since 30m
+vercel logs requests --environment production --query 'httpStatus >= 500 AND httpStatus < 600' --since 30m
 
 # 2. Roll back immediately to restore service (pass the URL or ID to roll back to)
 vercel rollback <previous-deployment-url-or-id>
 vercel rollback status
 
 # 3. Verify service is restored
-vercel logs --environment production --status-code 5xx --since 5m
+vercel logs requests --environment production --query 'httpStatus >= 500 AND httpStatus < 600' --since 5m
 
 # 4. Identify the bad deployment
-vercel list --prod
+vercel list --environment production
 vercel inspect <bad-deployment-url>
 
 # 5. Check build logs for clues
 vercel inspect <bad-deployment-url> --logs
 
 # 6. Compare error logs between good and bad deployments
-vercel logs --deployment <bad-deployment-id> --level error --expand
-vercel logs --deployment <good-deployment-id> --level error --expand
+vercel logs --deployment <bad-deployment-id> --query 'level:error'
+vercel logs --deployment <good-deployment-id> --query 'level:error'
 
 # IF the cause spans multiple deployments, binary-search with bisect:
 vercel bisect --good <good-deployment-url> --bad <bad-deployment-url>
@@ -75,23 +75,29 @@ vercel bisect --good <good-deployment-url> --bad <bad-deployment-url> --run ./te
 # 7. Fix and deploy a preview
 vercel deploy
 vercel curl /affected-route --deployment <preview-url>
-vercel logs --deployment <preview-deployment-id> --level error
+vercel logs --deployment <preview-deployment-id> --query 'level:error'
 
 # 8. Ship to production
 vercel deploy --prod
-vercel logs --environment production --status-code 5xx --since 5m
+vercel logs requests --environment production --query 'httpStatus >= 500 AND httpStatus < 600' --since 5m
 
 # ALTERNATIVE to redeploying: promote an existing good deployment directly
 vercel promote <deployment-url>
 vercel promote status
 ```
 
+> Install the [Vercel plugin](/docs/agent-resources/vercel-plugin?from=docs-callout\&source_path=%2Fdocs%2Fdeployments%2Frollback-production-deployment) to recover from a failed production deployment with your coding agent.
+>
+> ```bash
+> npx plugins add vercel/vercel-plugin
+> ```
+
 ## 1. Confirm the problem
 
 Before rolling back, verify that the current production deployment is actually broken. Check for errors in production logs:
 
 ```bash filename="terminal"
-vercel logs --environment production --status-code 5xx --since 30m
+vercel logs requests --environment production --query 'httpStatus >= 500 AND httpStatus < 600' --since 30m
 ```
 
 If you're seeing a spike in errors or user reports, move to the next step.
@@ -121,7 +127,7 @@ vercel rollback status
 Confirm that the rollback resolved the issue by checking production logs again:
 
 ```bash filename="terminal"
-vercel logs --environment production --status-code 5xx --since 5m
+vercel logs requests --environment production --query 'httpStatus >= 500 AND httpStatus < 600' --since 5m
 ```
 
 If the error count has dropped, service is restored and you can investigate at your own pace.
@@ -131,10 +137,10 @@ If the error count has dropped, service is restored and you can investigate at y
 List recent production deployments to find the one that caused the issue:
 
 ```bash filename="terminal"
-vercel list --prod
+vercel list --environment production
 ```
 
-This shows deployment URLs, timestamps, and the git commits that triggered them. Identify the deployment that was serving traffic when the errors started.
+This shows the age, URL, status, build duration, and creator of each production deployment. Identify the deployment that was serving traffic when the errors started.
 
 To see full details about that deployment:
 
@@ -142,7 +148,7 @@ To see full details about that deployment:
 vercel inspect <bad-deployment-url>
 ```
 
-This shows the git commit SHA, branch, build time, and other metadata.
+This shows the deployment ID, target environment, status, creation time, build duration, and other metadata.
 
 ## 5. Check the build logs
 
@@ -159,11 +165,11 @@ Look for deprecation warnings, missing environment variables, or build-time erro
 If the cause isn't obvious, compare error logs between the good and bad deployments:
 
 ```bash filename="terminal"
-vercel logs --deployment <bad-deployment-id> --level error --expand
+vercel logs --deployment <bad-deployment-id> --query 'level:error'
 ```
 
 ```bash filename="terminal"
-vercel logs --deployment <good-deployment-id> --level error --expand
+vercel logs --deployment <good-deployment-id> --query 'level:error'
 ```
 
 The difference in error patterns between the two deployments narrows down what changed.
@@ -203,7 +209,7 @@ vercel curl /affected-route --deployment <preview-url>
 Check that no errors appear in the preview logs:
 
 ```bash filename="terminal"
-vercel logs --deployment <preview-deployment-id> --level error
+vercel logs --deployment <preview-deployment-id> --query 'level:error'
 ```
 
 ## 9. Ship to production
@@ -217,7 +223,7 @@ vercel deploy --prod
 Confirm the fix is working in production:
 
 ```bash filename="terminal"
-vercel logs --environment production --status-code 5xx --since 5m
+vercel logs requests --environment production --query 'httpStatus >= 500 AND httpStatus < 600' --since 5m
 ```
 
 ## Rolling back to a specific deployment
@@ -253,3 +259,6 @@ vercel promote status
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

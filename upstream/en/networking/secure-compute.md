@@ -3,14 +3,14 @@ title: Secure Compute
 product: vercel
 url: /docs/networking/secure-compute
 canonical_url: "https://vercel.com/docs/networking/secure-compute"
-last_updated: 2026-07-29
+last_updated: 2026-09-23
 type: reference
 prerequisites:
   - /docs/networking
 related:
   - /docs/functions
-  - /docs/projects
   - /docs/networking/static-ips
+  - /docs/projects
   - /docs/builds
   - /docs/functions/configuring-functions/region
 summary: Secure Compute provides dedicated private networks with VPC peering for Enterprise teams.
@@ -19,7 +19,9 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Secure Compute
 
-> **🔒 Permissions Required**: Secure Compute
+> Secure Compute is available for purchase on Enterprise plans
+
+Secure Compute creates private connections between your [Vercel Functions](/docs/functions) and your backend infrastructure like databases, APIs, or any private services you're running.
 
 
 <!-- docsgraph:related -->
@@ -27,23 +29,23 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide?from=related) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
-- [Application authentication on Vercel](https://vercel.com/kb/guide/application-authentication-on-vercel?from=related) — Secure application authentication on Vercel across layers: proxy checks, the Data Access Layer, PPR-safe rendering, and
-- [Can I get a fixed IP address for my Vercel deployments?](https://vercel.com/kb/guide/can-i-get-a-fixed-ip-address?from=related) — Vercel deployments use dynamic IPs by default. Learn how Static IPs, Secure Compute, and AWS PrivateLink give you a fixe
-- [Running Docker on Vercel vs Render](https://vercel.com/kb/guide/docker-on-vercel-vs-render?from=related) — Compare how Vercel and Render run Docker workloads, including deployment model, scaling, image sources, state, and netwo
-- [Does Vercel support Docker deployments?](https://vercel.com/kb/guide/does-vercel-support-docker-deployments?from=related) — Vercel supports deploying OCI-compatible container images through Vercel Functions and Vercel Container Registry, with A
-- [Create a Secure Compute network](https://vercel.com/docs/rest-api/networking/create-a-secure-compute-network?from=related)
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Enterprise Plan](https://vercel.com/docs/plans/enterprise?from=related) — Learn about the Enterprise plan for Vercel, including features, pricing, and more.
-- [Global Network & Regions](https://vercel.com/docs/regions?from=related) — View the list of regions supported by Vercel's CDN and learn about our global infrastructure.
-- [Elysia](https://vercel.com/docs/frameworks/backend/elysia?from=related) — Build fast TypeScript backends with Elysia and deploy to Vercel. Learn the project structure, plugins, middleware, and h
+- [Secure Compute and Static IP builds start 64% faster](https://vercel.com/changelog/secure-compute-and-static-ip-builds-start-64-faster)
+- [Vercel Connect now supports Secure Compute](https://vercel.com/changelog/vercel-connect-secure-compute)
+- [Vercel Functions can now be up to 5GB in package size](https://vercel.com/changelog/vercel-functions-can-now-be-up-to-5-gb-in-package-size)
+- [Vercel Sandbox now supports Secure Compute](https://vercel.com/changelog/vercel-sandbox-now-supports-secure-compute)
+- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
+- [Application authentication on Vercel](https://vercel.com/kb/guide/application-authentication-on-vercel) — Secure application authentication on Vercel across layers: proxy checks, the Data Access Layer, PPR-safe rendering, and
+- [The Complete Guide to Bring Your Own Cloud](https://vercel.com/kb/guide/byoc) — Use Bring Your Own Cloud \\(BYOC\\) to run Vercel Functions as AWS Lambda functions in your own AWS account, from setup to
+- [ Run a Docker monolith with workers on Vercel](https://vercel.com/kb/guide/docker-monolith-workers-vercel) — Run a Dockerized monolith on Vercel with Container Images, move long-running workers to Vercel Queues and Vercel Workflo
+- [Running Docker on Vercel vs Render](https://vercel.com/kb/guide/docker-on-vercel-vs-render) — Compare how Vercel and Render run Docker workloads, including deployment model, scaling, image sources, state, and netwo
+- [Vercel for Enterprise](https://vercel.com/blog/vercel-for-enterprise)
+- [Secure Compute is now self-serve](https://vercel.com/changelog/secure-compute-is-now-self-serve)
+- [Introducing Vercel Firewall and Vercel Secure Compute](https://vercel.com/blog/vercel-security)
 
 Full cross-link map for this page: [/docs/networking/secure-compute.graph.md](/docs/networking/secure-compute.graph.md)
 <!-- /docsgraph:related -->
 
-Secure Compute creates private connections between your [Vercel Functions](/docs/functions) and your backend infrastructure like databases, APIs, or any private services you're running.
-
-By default, Vercel deployments can come from [any IP address](/kb/guide/how-to-allowlist-deployment-ip-address). Secure Compute gives you dedicated static IPs, so you can tighten your backend's access controls to only allow traffic from your specific Vercel infrastructure.
+By default, Vercel deployments can come from [any IP address](/docs/networking/static-ips). Secure Compute gives you dedicated static IPs, so you can tighten your backend's access controls to only allow traffic from your specific Vercel infrastructure.
 
 When you enable Secure Compute on your [project](/docs/projects), your deployments and build container get their own [dedicated network with static IP addresses](#secure-compute-networks-and-dedicated-ip-addresses) in a [region you choose](#specific-region). Your traffic stays completely separate from other customers.
 
@@ -57,7 +59,7 @@ Here's what you get with Secure Compute:
 
 - Your own dedicated private network inside a VPC
 - Static IPs that won't change, plus a NAT Gateway
-- Complete isolation — only your specified resources can reach your Vercel Functions
+- Complete isolation, so only your specified resources can reach your Vercel Functions
 
 ## Enabling Secure Compute
 
@@ -82,7 +84,7 @@ Once created, your network includes:
 - AWS VPC ID
 - CIDR block based on your selection
 
-![Image](https://vercel.com/front/docs/secure-compute/private-network-light.png)
+![Secure Compute network settings.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/secure-compute/private-network-light.png)
 
 When you enable Secure Compute on a project, Vercel attaches your project's [build container](/docs/builds) and subsequent deployment inside a Secure Compute network with a specific IP address pair ([dedicated IP](#secure-compute-networks-and-dedicated-ip-addresses)). You can choose to [exclude the build container](#managing-the-build-container) from the private network.
 
@@ -92,20 +94,11 @@ Each private network has its own dedicated IP pair and is isolated from others, 
 
 You can create multiple Secure Compute networks for your team directly from the dashboard. For example, separate networks for different projects, environments, or teams. Navigate to your team's **Settings** → [**Networking**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fnetworking%23secure-compute\&title=Networking) and click **Create Network** to add additional networks.
 
-Once your IP pair is ready, add it to your backend's access control list. You'll still need to use a username/password or authentication key on top of the IP filtering — the IPs alone aren't enough.
+Once your IP pair is ready, add it to your backend's access control list. You'll still need to use a username/password or authentication key on top of the IP filtering. The IPs alone aren't enough.
 
 ## Specific region
 
 When you create a Secure Compute network, you select the [Vercel Function region](/docs/functions/configuring-functions/region) where it will be provisioned. For the best performance, pick the same [region](/docs/functions/configuring-functions/region) where your backend runs.
-
-Vercel applies Secure Compute to [Vercel Functions](/docs/functions) using the following runtimes:
-
-- [Node.js](/docs/functions/runtimes/node-js)
-- [Ruby](/docs/functions/runtimes/ruby)
--
-- [Python](/docs/functions/runtimes/python)
-
-The [Edge Runtime](/docs/functions/runtimes/edge) **is not supported** meaning features like [Routing Middleware](/docs/routing-middleware) and Vercel Functions using the [`edge` runtime](/docs/functions/runtimes/edge) will **not** use the provided dedicated IP addresses.
 
 ### Region failover
 
@@ -131,7 +124,7 @@ To add a project to your Secure Compute network:
    - Optionally enable **Builds** to include the project's build container in the network.
 3. Click **Save** to persist your changes.
 
-![Image](https://vercel.com/front/docs/secure-compute/secure-compute-connect-envs-light.png)
+![Adding a project to a Secure Compute network. One environment at a time.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/secure-compute/secure-compute-connect-envs-light.png)
 
 To change multiple environments at once:
 
@@ -144,15 +137,13 @@ To change multiple environments at once:
    - Click **Apply** to modify the selected environments.
 4. Click **Save** to persist your changes.
 
-![Image](https://vercel.com/front/docs/secure-compute/secure-compute-connect-envs-bulk-light.png)
+![Adding a project to a Secure Compute network. Multiple environments at once.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/secure-compute/secure-compute-connect-envs-bulk-light.png)
 
 ### Managing the build container
 
 When you add a project to a Secure Compute network, you can choose to include the project's build container in the network. This is useful if your application calls your data sources at build time.
 
 You can opt the [build container](/docs/builds) out of using the dedicated IP addresses. This is useful if your application **only** calls your data sources at run time and **not** at build time.
-
-By opting out of including the build container, you will not incur the 5s delay when provisioning a secure build container.
 
 To manage the build container during the [project connection](#add-a-project-to-your-secure-compute-network) process select **Include Builds**.
 
@@ -165,7 +156,7 @@ To manage the build container *after* the project is connected to the Secure Com
 5. Check/uncheck **Include Builds** to include/exclude the project's build container in the network.
 6. Click **Save**.
 
-![Image](https://vercel.com/front/docs/secure-compute/manage-build-container-light.png)
+![Exclude your build from the private network.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/secure-compute/manage-build-container-light.png)
 
 ## Multiple Secure Compute networks
 
@@ -191,11 +182,17 @@ To set up VPC peering:
 4. **Accept peering connection**: Go back to your Vercel dashboard and click **Accept** to accept the connection.
 5. **Update route tables**: Go to AWS's VPC dashboard, select **Route Tables**, and configure routing to allow traffic from Vercel's CIDR block.
 
-![Image](https://vercel.com/front/docs/secure-compute/vpc-connection-light.png)
+![Secure Compute VPC peering settings.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/secure-compute/vpc-connection-light.png)
 
 The connection can be deleted from either the Vercel dashboard, or the AWS VPC dashboard.
 
-## VPN Support
+## VPN support
+
+Because Secure Compute gives you a dedicated network that Vercel runs on your behalf, you can establish private connectivity with networks in any cloud provider, including your own data centers. Where [VPC peering](#vpc-peering) covers AWS, a site-to-site (S2S) VPN terminated on your Secure Compute network covers everything else:
+
+- **Microsoft Azure**: connect to an Azure Virtual Network. Once the connection is established, your Vercel Functions can reach Azure services exposed in the same network, including VMs, Kubernetes clusters, or platform services through Private Endpoints. See [Using Vercel with Microsoft Azure](/docs/integrations/external-platforms/azure).
+- **Google Cloud**: connect to a Google Cloud VPC network and the services running inside it.
+- **On-premises and other environments**: connect to a data center or any other network that terminates a standard site-to-site VPN.
 
 If your current security and compliance obligations require more than dedicated IP addresses, contact us for guidance related to your specific needs.
 
@@ -222,17 +219,20 @@ Monitor your usage in the **Team Settings** **Usage** section in the sidebar und
 
 ## Limits
 
-### Build delay
+### Runtime and middleware support
 
-When connected to a Secure Compute network, builds experience up to a 5s delay as they provision a secure build container. When this happens, your build is marked as **Provisioning Container** in the dashboard.
+Secure Compute applies to [Vercel Functions](/docs/functions) using the following runtimes, plus build traffic when you include the build container:
+
+- [Node.js](/docs/functions/runtimes/node-js)
+- [Ruby](/docs/functions/runtimes/ruby)
+- [Go](/docs/functions/runtimes/go)
+- [Python](/docs/functions/runtimes/python)
+
+Secure Compute does not apply to [Routing Middleware](/docs/routing-middleware). Middleware runs at the edge before a request completes, so its outbound traffic never routes through the dedicated IP addresses. Vercel Functions using the [Edge Runtime](/docs/functions/runtimes/edge) are likewise **not supported** and will **not** use the provided dedicated IP addresses.
 
 ### Beta enhancements
 
-Most of the features of [Vercel Functions](/docs/functions/limitations) are fully supported on Secure Compute except for the following beta enhancements that are not yet available:
-
-- [**Extended max duration beta**](/docs/functions/configuring-functions/duration#extended-max-duration-beta): The standard maximum of 800 seconds applies on Pro and Enterprise plans.
-- [**Large Functions beta**](/docs/functions/limitations#large-functions-beta): The standard bundle size limit of 250 MB applies, with a 500 MB limit for Python.
-- [**Container Images beta**](/docs/functions/container-images): Standard function deployments are unaffected.
+The [Vercel Functions](/docs/functions/limitations) betas are fully supported on Secure Compute, including the [extended max duration beta](/docs/functions/configuring-functions/duration#extended-max-duration-beta), [large functions beta](/docs/functions/limitations#large-functions-beta), and [container images beta](/docs/functions/container-images). Each beta has the same requirements on Secure Compute as on any other project, including [fluid compute](/docs/fluid-compute) with Active CPU enabled.
 
 ### Max projects per network
 
@@ -246,3 +246,6 @@ The maximum number of VPC peering connections that can be established per networ
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,13 +3,12 @@ title: Configuring the Runtime for Vercel Functions
 product: vercel
 url: /docs/functions/configuring-functions/runtime
 canonical_url: "https://vercel.com/docs/functions/configuring-functions/runtime"
-last_updated: 2026-06-29
+last_updated: 2026-08-12
 type: how-to
 prerequisites:
   - /docs/functions/configuring-functions
   - /docs/functions
 related:
-  - /docs/functions/runtimes
   - /docs/functions/runtimes/go
   - /docs/functions/runtimes/python
   - /docs/functions/runtimes/python/api-directory
@@ -19,7 +18,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Configuring the Runtime for Vercel Functions
 
-The runtime of your function determines the environment in which your function will execute. Vercel supports various runtimes including Node.js, Python, Ruby, and Go. You can also configure [other runtimes](/docs/functions/runtimes#community-runtimes) using the `vercel.json` file. Here's how to set up each:
+The runtime of your function determines the environment in which your function will execute. Vercel supports various runtimes including Node.js, Python, Ruby, and Go. You can also configure [other runtimes](/docs/functions/configuring-functions/runtime#other-runtimes) using the `vercel.json` file. Here's how to set up each:
 
 
 <!-- docsgraph:related -->
@@ -27,11 +26,11 @@ The runtime of your function determines the environment in which your function w
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Ruby](https://vercel.com/docs/functions/runtimes/ruby?from=related) — Learn how to use the Ruby runtime to compile Ruby Vercel Functions on Vercel.
-- [Go](https://vercel.com/docs/functions/runtimes/go?from=related) — Learn how to use the Go runtime to run Go APIs on Vercel.
-- [Node.js](https://vercel.com/docs/functions/runtimes/node-js?from=related) — Learn how to use the Node.js runtime to create functions and deploy Node.js servers on Vercel.
-- [Rust](https://vercel.com/docs/functions/runtimes/rust?from=related) — Build fast, memory-safe serverless functions with Rust on Vercel.
-- [Getting Started](https://vercel.com/docs/functions/quickstart?from=related) — Build your first Vercel Function in a few steps.
+- [Using the Ruby Runtime with Vercel Functions](https://vercel.com/docs/functions/runtimes/ruby) — Learn how to use the Ruby runtime to compile Ruby Vercel Functions on Vercel.
+- [Using the Go Runtime with Vercel Functions](https://vercel.com/docs/functions/runtimes/go) — Learn how to use the Go runtime to run Go APIs on Vercel.
+- [Runtimes](https://vercel.com/docs/functions/runtimes) — Runtimes transform your source code into Functions, which are served by our CDN. Learn about the official runtimes suppo
+- [Using the Rust Runtime with Vercel functions](https://vercel.com/docs/functions/runtimes/rust) — Build fast, memory-safe serverless functions with Rust on Vercel.
+- [Advanced Configuration](https://vercel.com/docs/functions/configuring-functions/advanced-configuration) — Learn how to add utility files to the /api directory, and bundle Vercel Functions.
 
 Full cross-link map for this page: [/docs/functions/configuring-functions/runtime.graph.md](/docs/functions/configuring-functions/runtime.graph.md)
 <!-- /docsgraph:related -->
@@ -41,6 +40,9 @@ Full cross-link map for this page: [/docs/functions/configuring-functions/runtim
 By default, a function with no additional configuration will be deployed as a Vercel Function on the Node.js runtime.
 
 > For \['nextjs']:
+
+> **💡 Note:** To stream responses you must use Route Handlers in the App Router, even if the
+> rest of your app uses the Pages Router.
 
 ```ts v0="build" filename="app/api/hello/route.ts" framework=nextjs
 export function GET(request: Request) {
@@ -184,11 +186,12 @@ You can configure other runtimes by using the `functions` property in your `verc
 }
 ```
 
-In this case, the function at `api/hello.ts` would use the custom runtime specified.
-
-For more information, see [Community runtimes](/docs/functions/runtimes#community-runtimes)
+In this case, the function at `api/test.php` would use the custom runtime specified.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

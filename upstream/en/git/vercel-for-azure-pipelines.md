@@ -3,7 +3,7 @@ title: Deploying from Azure DevOps with Vercel
 product: vercel
 url: /docs/git/vercel-for-azure-pipelines
 canonical_url: "https://vercel.com/docs/git/vercel-for-azure-pipelines"
-last_updated: 2026-06-26
+last_updated: 2026-09-16
 type: conceptual
 prerequisites:
   - /docs/git
@@ -12,7 +12,7 @@ related:
   - /docs/deployments
   - /docs/git
   - /docs/cli/project
-  - /docs/rest-api
+  - /docs/projects/managing-projects
 summary: ​Vercel for Azure DevOps allows you to deploy from Azure Pipelines to Vercel automatically.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,14 +27,16 @@ The [Vercel Deployment Extension](https://marketplace.visualstudio.com/items?ite
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How can I use Bitbucket Pipelines with Vercel?](https://vercel.com/kb/guide/how-can-i-use-bitbucket-pipelines-with-vercel?from=related) — Learn how to use Bitbucket Pipelines to deploy to Vercel including support for Bitbucket Data Center.
-- [How can I use GitLab Pipelines with Vercel?](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
-- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel?from=related) — Learn how to deploy based on tags/releases on Vercel.
-- [Bitbucket](https://vercel.com/docs/git/vercel-for-bitbucket?from=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [GitHub](https://vercel.com/docs/git/vercel-for-github?from=related) — Vercel for GitHub automatically deploys your GitHub projects with Vercel, providing Preview Deployment URLs, and automat
-- [System Environment Variables](https://vercel.com/docs/environment-variables/system-environment-variables?from=related) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Vercel extension for Azure DevOps now available](https://vercel.com/changelog/vercel-extension-for-azure-devops-now-available)
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel) — Learn how to deploy based on tags/releases on Vercel.
+- [How can I use the Vercel CLI for custom workflows?](https://vercel.com/kb/guide/using-vercel-cli-for-custom-workflows) — You can use the Vercel CLI to deploy any application, including custom git providers and restricted source code.
+- [How can I use CircleCI with Vercel?](https://vercel.com/kb/guide/how-can-i-use-circleci-with-vercel) — Learn how to use CircleCI to deploy to Vercel with custom CI/CD.
+- [Deploying Bitbucket Projects with Vercel](https://vercel.com/docs/git/vercel-for-bitbucket) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [System environment variables](https://vercel.com/docs/environment-variables/system-environment-variables) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
+- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [Integrations for Comments](https://vercel.com/docs/comments/integrations) — Learn how Comments integrates with Git providers like GitHub, GitLab, and Bitbucket, as well as the Vercel app for Slack
 
 Full cross-link map for this page: [/docs/git/vercel-for-azure-pipelines.graph.md](/docs/git/vercel-for-azure-pipelines.graph.md)
 <!-- /docsgraph:related -->
@@ -63,20 +65,20 @@ Once you have the Vercel Deployment extension set up, you only need to modify yo
 
 ### Prerequisites
 
-- An  Vercel Project with no Git integration
+- An **empty** Vercel Project with no Git integration
 
 * An [Azure DevOps project](https://learn.microsoft.com/en-us/azure/devops/organizations/projects/create-project)
   that contains the code that you would like to deploy on Vercel
 
 To create an empty Vercel project:
 
-1. Use the [Vercel CLI](/docs/cli/project) with the `add` command, passing the project name
+1. Use the [Vercel CLI](/docs/cli/project) with the `create` command, passing the project name
 
 ```bash filename="terminal"
-vercel project add <project-name>
+vercel project create <project-name>
 ```
 
-2. Or through the [dashboard](/docs/projects#creating-a-project) and then disconnect the [Git integration](/docs/projects#git) that you would have set up
+2. Or through the [dashboard](/docs/projects/managing-projects#creating-a-project) and then disconnect the [Git integration](/docs/project-configuration/project-settings#git) that you would have set up
 
 ### Extension and Pipeline set up
 
@@ -96,7 +98,7 @@ vercel project add <project-name>
 - ### Set up a basic pipeline
   This step assumes that your code exists as a repository in **Azure Repos** and that your Vercel Project is named `azure-devops-extension`.
 
-  ![Image](`/docs-assets/static/docs/concepts/deployments/git/Azure-pipeline-light.png`)
+  ![Azure Pipelines creation at the review stage to create variables and save/edit your pipeline](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/git/Azure-pipeline-light.png)
   - From the Azure DevOps portal, select **Pipelines** from the left side bar
   - Select the **New Pipeline** button
   - Select where your code is located. In this example, we uploaded the code as an **Azure Repos Git**: select **Azure Repos Git** and then select your uploaded repository.
@@ -144,7 +146,7 @@ Before you update your pipeline file to enable preview deployments, you need to 
 
 ### Triggers and comments on pull requests
 
-In order to allow pull requests in Azure Repos to create a deployment and report back with a comment, you need the following:
+To allow pull requests in Azure Repos to create a deployment and report back with a comment, you need the following:
 
 - An Azure DevOps Personal Access Token
 - A build validation policy for your branch
@@ -162,7 +164,7 @@ In order to allow pull requests in Azure Repos to create a deployment and report
 
 ### Create a build validation policy
 
-![Image](`/docs-assets/static/docs/concepts/deployments/git/Azure-build-policy-light.png`)
+![Azure Build Validation under Branch Policies of Project settings](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/git/Azure-build-policy-light.png)
 
 1. Go to your Azure DevOps Project's page
 2. Select **Project settings** in the lower left corner
@@ -181,7 +183,7 @@ Create a pull request to the `main` branch. This will trigger the pipeline, run 
 - From your Azure DevOps Project, select **Pipelines** from the left side bar
 - Select the pipeline that you want to edit by selecting the  icon
 - Select the **Variables** button and add a new secret variable called `AZURE_TOKEN` with the value of the Azure DevOps Personal Access Token you created earlier. Select **Ok**
-- Close the **Variables** window and paste the following code to replace the code in `vercel-pipelines.yml`
+- Close the **Variables** window and paste the following code to replace the code in `vercel-pipeline.yml`
 
 ```yaml filename="vercel-pipeline.yml"
 trigger:
@@ -236,12 +238,12 @@ Here, you can find a list of available properties for each of the available task
 
 | Property          | Required | Type    | Description                                                                                                                                                                                                                                         |
 | ----------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `vercelProjectId` | No       | string  | The [ID of your Vercel Project](#value-of-vercelprojectid); starts with `project_`. It can alternatively be set as the environment variable `VERCEL_PROJECT_ID`                                                                                     |
+| `vercelProjectId` | No       | string  | The [ID of your Vercel Project](#value-of-vercelprojectid); starts with `prj_`. It can alternatively be set as the environment variable `VERCEL_PROJECT_ID`                                                                                         |
 | `vercelTeamId`    | No       | string  | The [ID of your Vercel Team](#value-of-vercelteamid); starts with `team_`. It can alternatively be set as the environment variable `VERCEL_TEAM_ID`                                                                                                 |
 | `vercelToken`     | No       | string  | A [Vercel personal access token](/docs/rest-api#creating-an-access-token) with deploy permissions for your Vercel Project. It can alternatively be set as the environment variable `VERCEL_TOKEN`                                                   |
 | `vercelCWD`       | No       | string  | The working directory where the Vercel deployment task will run. When omitted, the task will run in the current directory (default value is `System.DefaultWorkingDirectory`). It can alternatively be set as the environment variable `VERCEL_CWD` |
 | `production`      | No       | boolean | Boolean value specifying if the task should create a production deployment. When omitted or set to `false`, the task will create preview deployments                                                                                                |
-| `target`          | No       | string  | Option to define the environment you want to deploy to. This could be production, preview, or a custom environment. This is equivalent to passing the `--target` flag when deploying using the Vercel CLI.                                          |
+| `target`          | No       | string  | Option to define the environment you want to deploy to. This could be production, preview, or a custom environment. This is equivalent to passing the `--environment` flag when deploying using the Vercel CLI.                                     |
 | `archive`         | No       | boolean | Enables the `--archive=tgz` flag for the internal Vercel CLI operations                                                                                                                                                                             |
 | `env`             | No       | string  | Adding environment variables at runtime using the Vercel CLI's `--env` option                                                                                                                                                                       |
 | `buildEnv`        | No       | string  | Adding build environment variables to the build step using the Vercel CLI's `--build-env` option                                                                                                                                                    |
@@ -269,3 +271,6 @@ Here, you can find a list of available properties for each of the available task
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

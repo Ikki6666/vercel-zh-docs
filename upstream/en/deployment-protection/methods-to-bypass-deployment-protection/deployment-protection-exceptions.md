@@ -3,7 +3,7 @@ title: Deployment Protection Exceptions
 product: vercel
 url: /docs/deployment-protection/methods-to-bypass-deployment-protection/deployment-protection-exceptions
 canonical_url: "https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/deployment-protection-exceptions"
-last_updated: 2026-06-16
+last_updated: 2026-09-15
 type: how-to
 prerequisites:
   - /docs/deployment-protection/methods-to-bypass-deployment-protection
@@ -19,7 +19,9 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Deployment Protection Exceptions
 
-> **🔒 Permissions Required**: Deployment Protection Exceptions
+> Deployment Protection Exceptions are available on all plans
+
+Deployment Protection Exceptions let you disable Deployment Protection (including [Vercel Authentication](/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication), [Password Protection](/docs/deployment-protection/methods-to-protect-deployments/password-protection), and [Trusted IPs](/docs/deployment-protection/methods-to-protect-deployments/trusted-ips)) for a list of preview domains.
 
 
 <!-- docsgraph:related -->
@@ -27,22 +29,24 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Slack](https://eve.dev/docs/channels/slack?from=related) — Reach your agent from Slack app mentions and DMs with Vercel Connect-managed credentials, threaded replies, and interact
-- [How to lock down deployments on Vercel and v0](https://vercel.com/kb/guide/locking-down-deployments?from=related) — Protect who can see your deployments.
-- [Protect Deployments](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments?from=related) — Vercel offers several methods to protect your deployments: Vercel Authentication, Passport, Password Protection, and Tru
-- [OPTIONS Allowlist](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/options-allowlist?from=related) — Learn how to disable Deployment Protection for CORS preflight requests for a list of paths.
-- [Automated & Agent Access](https://vercel.com/docs/deployment-protection/automated-agent-access?from=related) — Grant AI agents, CI/CD pipelines, MCP servers, and testing tools access to Vercel deployments that have Deployment Prote
-- [Access Control](https://vercel.com/docs/security/access-control?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Preview Deployment Suffix](https://vercel.com/docs/deployments/preview-deployment-suffix?from=related) — When you create a new deployment, Vercel will automatically generate a unique URL which you can use to access that parti
+- [Slack Reference](https://eve.dev/docs/channels/slack/reference) — Slack channel options, credentials, inbound hooks, code channels, rendering, human-in-the-loop, proactive targets, and a
+- [Connections](https://eve.dev/docs/connections) — Expose external MCP and OpenAPI servers to the model, with connection tokens the model never sees.
+- [Protect production deployments for free on every plan](https://vercel.com/changelog/protect-production-deployments-for-free-on-every-plan)
+- [How to lock down deployments on Vercel and v0](https://vercel.com/kb/guide/locking-down-deployments) — Protect who can see your deployments.
+- [Deployment Protection: Added security controls now available on all plans](https://vercel.com/blog/protecting-deployments)
+- [Protected Preview Deployments available on all plans](https://vercel.com/changelog/protected-preview-deployments-available-on-all-plans)
+- [Methods to Protect Deployments](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments) — Vercel offers several methods to protect your deployments: Vercel Authentication, Passport, Password Protection, and Tru
+- [Access Control](https://vercel.com/docs/security/access-control) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
+- [Preview Deployment Suffix](https://vercel.com/docs/deployments/preview-deployment-suffix) — When you create a new deployment, Vercel will automatically generate a unique URL which you can use to access that parti
+- [Security settings](https://vercel.com/docs/project-configuration/security-settings) — Configure security settings for your Vercel project, including Vercel Support Code Visibility, Git Fork Protection, and
+- [Vercel Hobby Plan](https://vercel.com/docs/plans/hobby) — Learn about the Hobby plan and how it compares to the Pro plan.
 
 Full cross-link map for this page: [/docs/deployment-protection/methods-to-bypass-deployment-protection/deployment-protection-exceptions.graph.md](/docs/deployment-protection/methods-to-bypass-deployment-protection/deployment-protection-exceptions.graph.md)
 <!-- /docsgraph:related -->
 
-Deployment Protection Exceptions let you disable Deployment Protection (including [Vercel Authentication](/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication), [Password Protection](/docs/deployment-protection/methods-to-protect-deployments/password-protection), and [Trusted IPs](/docs/deployment-protection/methods-to-protect-deployments/trusted-ips)) for a list of preview domains.
-
 When you add a domain to Deployment Protection Exceptions, it becomes publicly accessible and is no longer covered by Deployment Protection features. When you remove a domain from Deployment Protection Exceptions, the domain becomes protected again with the project's Deployment Protection settings.
 
-![Image](https://vercel.com/front/docs/security/deployment-exception-light.png)
+![Deployment Protection Exceptions.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/security/deployment-exception-light.png)
 
 Deployment Protection Exceptions is designed for Preview Deployment domains. If you wish to make a Production Deployment domain public, see [Only Production Deployments](/docs/deployment-protection#only-production-deployments).
 
@@ -56,13 +60,13 @@ Deployment Protection Exceptions is designed for Preview Deployment domains. If 
 - ### Select Add Domain in the Deployment Protection Exceptions section
   From the **Deployment Protection Exceptions** section, select **Add Domain**:
 
-  ![Image](https://vercel.com/front/docs/security/deployment-exception-no-domain-light.png)
+  ![Add Deployment Protection Exception.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/security/deployment-exception-no-domain-light.png)
 
 - ### Specify the domain to unprotect
   From the **Unprotect Domain** modal:
   1. Enter the domain that you wish to unprotect in the input
   2. Select **Continue**
-  ![Image](https://vercel.com/front/docs/security/deployment-protection-exceptions-add-domain-light.png)
+  ![Add Deployment Protection Exception.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/security/deployment-protection-exceptions-add-domain-light.png)
 
 - ### Confirm the domain to unprotect
   From the **Unprotect Domain** modal:
@@ -71,7 +75,7 @@ Deployment Protection Exceptions is designed for Preview Deployment domains. If 
   3. Select **Confirm**
   All your existing and future deployments for that domain will be **unprotected**.
 
-  ![Image](https://vercel.com/front/docs/security/deployment-protection-exceptions-confirm-add-light.png)
+  ![Add Deployment Protection Exception.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/security/deployment-protection-exceptions-confirm-add-light.png)
 
 ## Removing a Deployment Protection Exception
 
@@ -85,7 +89,7 @@ Deployment Protection Exceptions is designed for Preview Deployment domains. If 
   1. Find the domain row in the **Unprotected Domains** section
   2. Select the dot menu at the end of the row
   3. From the context menu, select **Remove**
-  ![Image](https://vercel.com/front/docs/security/remove-deployment-exception-light.png)
+  ![Removing Deployment Protection Exception.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/security/remove-deployment-exception-light.png)
 
 - ### Confirm the domain to remove
   From the **Reprotect Domain** modal:
@@ -94,7 +98,7 @@ Deployment Protection Exceptions is designed for Preview Deployment domains. If 
   3. Select **Confirm**
   All your existing and future deployments for that domain will be **protected**.
 
-  ![Image](https://vercel.com/front/docs/security/deployment-protection-exceptions-remove-light.png)
+  ![Removing Deployment Protection Exception.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/security/deployment-protection-exceptions-remove-light.png)
 
 ## Managing Deployment Protection Exceptions
 
@@ -104,9 +108,12 @@ You can view and manage all the existing Deployment Protection Exceptions for yo
 2. Select the **Access** section in the sidebar
 3. Select the **All Access** button and choose `Unprotected Previews`
 
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployments/deployment-protection-exceptions-list.png`)
+![Dashboard > Settings > Deployment Protection > Access](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/preview-deployments/deployment-protection-exceptions-list.png)
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

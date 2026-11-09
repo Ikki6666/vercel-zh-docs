@@ -3,7 +3,7 @@ title: Incremental Migration to Vercel
 product: vercel
 url: /docs/incremental-migration
 canonical_url: "https://vercel.com/docs/incremental-migration"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   []
@@ -27,19 +27,25 @@ When migrating to Vercel you should use an incremental migration strategy. This 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
-- [Incremental Migrations with Microfrontends](https://vercel.com/kb/guide/incremental-migrations-with-microfrontends?from=related) — Learn how to migrate legacy applications using microfrontends
-- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime?from=related) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify?from=related) — Migrate your website's configuration from Netlify to Vercel
-- [Redirects](https://vercel.com/docs/routing/redirects?from=related) — Learn how to use redirects on Vercel to instruct Vercel's platform to redirect incoming requests to a new URL.
-- [Kubernetes](https://vercel.com/docs/integrations/external-platforms/kubernetes?from=related) — Deploy your frontend on Vercel alongside your existing Kubernetes infrastructure.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Why all application migrations should be incremental ](https://vercel.com/blog/incremental-migrations)
+- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
+- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
+- [Incremental Migrations with Microfrontends](https://vercel.com/kb/guide/incremental-migrations-with-microfrontends) — Learn how to migrate legacy applications using microfrontends
+- [Dynamic redirects with Global Config and Next.js proxy](https://vercel.com/kb/guide/dynamic-redirects-with-global-config-and-next-js-proxy) — Learn how to create redirects that update instantly without redeploying by storing rules in Global Config and reading th
+- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify) — Migrate your website's configuration from Netlify to Vercel
+- [Life of a Vercel request: Application-aware routing](https://vercel.com/blog/life-of-a-request-application-aware-routing)
+- [Headless Salesforce: An incremental migration from monolith to composable](https://vercel.com/blog/salesforce-incremental-migration)
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure)
+- [How Vercel adopted microfrontends](https://vercel.com/blog/how-vercel-adopted-microfrontends)
+- [Redirects](https://vercel.com/docs/routing/redirects) — Learn how to use redirects on Vercel to instruct Vercel's platform to redirect incoming requests to a new URL.
+- [Integrating Vercel and Kubernetes](https://vercel.com/docs/integrations/external-platforms/kubernetes) — Deploy your frontend on Vercel alongside your existing Kubernetes infrastructure.
 
 Full cross-link map for this page: [/docs/incremental-migration.graph.md](/docs/incremental-migration.graph.md)
 <!-- /docsgraph:related -->
 
 In this guide, we'll explore incremental migration benefits, strategies, and implementation approaches for a zero-downtime migration to Vercel.
+
+For platform-specific steps to move a Docker app or Python API, see the [migration guides](/kb/migrations). Use them alongside the traffic-routing and cutover strategies below.
 
 ## Why opt for incremental migration?
 
@@ -69,7 +75,7 @@ Despite requiring more effort to make the new and legacy sites work concurrently
 
 ## Incremental migration strategies
 
-![Image](`/docs-assets/static/docs/incremental-migration/incremental-migration-steps-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/incremental-migration/incremental-migration-steps-light.png)
 
 *Incremental migration process*
 
@@ -110,7 +116,7 @@ Follow these steps to incrementally migrate your website to Vercel. Two possible
 
 In this approach, you make Vercel [the entry point for all your production traffic](/docs/domains/working-with-domains/add-a-domain). When you begin, all traffic will be sent to the legacy server with [rewrites](/docs/routing/rewrites) and/or fallbacks. As you migrate different aspects of your site to Vercel, you can remove the rewrites/fallbacks to the migrated paths so that they are now served by Vercel.
 
-![Image](`/docs-assets/static/docs/incremental-migration/approach-1-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/incremental-migration/approach-1-light.png)
 
 *Point your domain to Vercel approach*
 
@@ -203,7 +209,7 @@ Repeat this process until all the paths are migrated to Vercel and all rewrites 
 
 In this approach, once you have tested a specific feature on your new Vercel application, you configure your legacy server or proxy to send the traffic on that path to the path on the Vercel deployment where the feature is deployed.
 
-![Image](`/docs-assets/static/docs/incremental-migration/approach-2-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/incremental-migration/approach-2-light.png)
 
 *Keep your domain on the legacy server approach*
 
@@ -229,7 +235,7 @@ const nextConfig: NextConfig = {
 export default nextConfig;
 ```
 
-When deployed, your new feature will be available at `https://my-new-app.vercel.app/`.
+When deployed, your new feature will be available at `https://my-new-app.vercel.app/new-feature`.
 
 You can then use the following nginx configuration to send the traffic for that feature from the legacy server to the new implementation:
 
@@ -239,7 +245,7 @@ server {
     server_name legacy-server.com www.legacy-server.com;
 
     location /feature-path-on-legacy-server {
-        proxy_pass https://my-new-app.vercel.app/;
+        proxy_pass https://my-new-app.vercel.app/new-feature;
     }
 }
 ```
@@ -250,7 +256,7 @@ Repeat steps 1 and 2 until all the features have been migrated to Vercel. You ca
 
 ### Maximum number of routes
 
-Vercel has a limit of 1024 routes per deployment for rewrites. If you have more than 1024 routes, you may want to consider creating a custom solution using Middleware. For more information on how to do this in Next.js, see [Managing redirects at scale](https://nextjs.org/docs/app/guides/redirecting#managing-redirects-at-scale-advanced).
+On the Hobby and Pro plans, Vercel has a [limit of 2,048 routes per deployment](/docs/limits#routes-created-per-deployment), which includes rewrites. The limit is custom on the Enterprise plan. If you have more routes than your limit allows, you may want to consider creating a custom solution using Middleware. For more information on how to do this in Next.js, see [Managing redirects at scale](https://nextjs.org/docs/app/guides/redirecting#managing-redirects-at-scale-advanced).
 
 ### Handling emergencies
 
@@ -273,8 +279,8 @@ export async function middleware(request: NextRequest) {
 
     // If `isNewVersionActive` is false, rewrite to the legacy server URL
     if (!isNewVersionActive) {
-      req.nextUrl.pathname = `/legacy-path`;
-      return NextResponse.rewrite(req.nextUrl);
+      request.nextUrl.pathname = `/legacy-path`;
+      return NextResponse.rewrite(request.nextUrl);
     }
   } catch (error) {
     console.error(error);
@@ -321,3 +327,6 @@ Prevent the loss of indexed pages, links, and duplicate content when creating re
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

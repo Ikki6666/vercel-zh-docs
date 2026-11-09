@@ -3,7 +3,7 @@ title: Account Plans on Vercel
 product: vercel
 url: /docs/plans
 canonical_url: "https://vercel.com/docs/plans"
-last_updated: 2026-06-16
+last_updated: 2026-09-18
 type: reference
 prerequisites:
   []
@@ -27,12 +27,18 @@ Vercel offers multiple account plans: Hobby, Pro, and Enterprise.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The Complete Guide to Vercel Services](https://vercel.com/kb/guide/vercel-services?from=related) — Vercel Services let you deploy multiple frontends and backends in one project on a shared domain. Learn how to define se
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
-- [Account Management](https://vercel.com/docs/accounts?from=related) — Learn how to manage your Vercel account and team members.
-- [Pricing](https://vercel.com/docs/analytics/limits-and-pricing?from=related) — Learn about pricing for Vercel Web Analytics.
-- [Usage & Pricing](https://vercel.com/docs/cron-jobs/usage-and-pricing?from=related) — Learn about cron jobs usage and pricing details.
+- [Glyph Cluster is now available in stealth for free on AI Gateway](https://vercel.com/changelog/glyph-cluster-is-now-available-in-stealth-for-free-on-ai-gateway)
+- [Vercel Passport is now generally available](https://vercel.com/changelog/vercel-passport-generally-available)
+- [Vercel Sandbox maximum duration extended to 5 hours](https://vercel.com/changelog/vercel-sandbox-maximum-duration-extended-to-5-hours)
+- [Run Cursor Cloud Agents on Vercel Sandbox](https://vercel.com/kb/guide/cursor-vercel-sandbox) — Learn how to run Cursor Cloud Agents on Vercel Sandbox with self-hosted worker pools, durable workflows, isolated microV
+- [The Complete Guide to Vercel Daemons](https://vercel.com/kb/guide/vercel-daemons) — Run background workers with Vercel Daemons. Learn how to deploy container images, configure resources, handle shutdowns,
+- [The Complete Guide to Vercel Services](https://vercel.com/kb/guide/vercel-services) — Vercel Services let you deploy multiple frontends and backends in one project on a shared domain. Learn how to define se
+- [A more flexible Pro plan for modern teams](https://vercel.com/blog/new-pro-pricing-plan)
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing)
+- [Pricing on Vercel](https://vercel.com/docs/pricing) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
+- [Account Management](https://vercel.com/docs/accounts) — Learn how to manage your Vercel account and team members.
+- [Usage & Pricing for Deployment Protection](https://vercel.com/docs/deployment-protection/usage-and-pricing) — Compare Deployment Protection feature availability and pricing across Hobby, Pro, and Enterprise plans.
 
 Full cross-link map for this page: [/docs/plans.graph.md](/docs/plans.graph.md)
 <!-- /docsgraph:related -->
@@ -80,7 +86,7 @@ You can also learn more about how [usage incurs on your site](/docs/pricing/how-
 All plans [receive notifications](/docs/notifications#on-demand-usage-notifications) by email and on the dashboard when they are approaching and exceed their usage limits.
 
 - Hobby plans will be paused when they exceed the included free tier usage
-- Pro plans users can configure [Spend Management](/docs/spend-management) to automatically pause deployments, trigger a webhook, or send SMS notifications when they reach 100% usage
+- Pro teams and Enterprise teams on the Flexible Commitment plan can configure [Spend Management](/docs/spend-management) to automatically pause deployments, trigger a webhook, or send SMS notifications when they reach 100% usage
 
 For Pro and Enterprise teams, when you reach 100% usage your deployments are **not** automatically stopped. Rather, Vercel enables you to incur on-demand usage as your site grows. It's important to be aware of the [usage page of your dashboard](/docs/pricing/manage-and-optimize-usage) to see if you are approaching your limit.
 
@@ -92,3 +98,6 @@ See [Manage & optimize usage](/docs/pricing/manage-and-optimize-usage) for more 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

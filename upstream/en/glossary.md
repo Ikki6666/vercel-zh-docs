@@ -3,16 +3,16 @@ title: Glossary
 product: vercel
 url: /docs/glossary
 canonical_url: "https://vercel.com/docs/glossary"
-last_updated: 2026-07-29
+last_updated: 2026-11-03
 type: reference
 prerequisites:
   []
 related:
   - /docs/fluid-compute
   - /docs/activity-log
+  - /docs/agent-harnesses
   - /docs/ai-gateway
   - /docs/ai-sdk
-  - /docs/alerts
 summary: "Learn about the terms and concepts used in Vercel's products and documentation."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,18 +27,18 @@ A full glossary of terms used in Vercel's products and documentation.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Introduction](https://turborepo.dev/docs?from=related) — Learn what Turborepo is, how it solves monorepo scaling problems, and how to navigate the documentation.
-- [Structuring a repository](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository?from=related) — Set up a multi-package workspace with the directory structure, package.json files, and lockfile that Turborepo expects.
-- [Add to an existing repository](https://turborepo.dev/docs/getting-started/add-to-existing-repository?from=related) — Incrementally adopt Turborepo in an existing single-package or multi-package repository.
-- [Single-package workspaces](https://turborepo.dev/docs/guides/single-package-workspaces?from=related) — Use Turborepo's caching and task parallelization in a standalone application without a monorepo.
-- [Recursive `turbo` invocations](https://turborepo.dev/docs/messages/recursive-turbo-invocations?from=related) — How to fix infinite loops caused by package.json scripts that recursively invoke `turbo`.
-- [Vercel vs Webflow Cloud](https://vercel.com/kb/guide/vercel-vs-webflow-cloud?from=related) — Compare Vercel and Webflow Cloud for deploying Next.js and Astro apps, including runtime, framework support, storage, pr
-- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
-- [Runtimes](https://vercel.com/docs/functions/runtimes?from=related) — Runtimes transform your source code into Functions, which are served by our CDN. Learn about the official runtimes suppo
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Introduction](https://turborepo.dev/docs) — Learn what Turborepo is, how it solves monorepo scaling problems, and how to navigate the documentation.
+- [Structuring a repository](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository) — Set up a multi-package workspace with the directory structure, package.json files, and lockfile that Turborepo expects.
+- [Add to an existing repository](https://turborepo.dev/docs/getting-started/add-to-existing-repository) — Incrementally adopt Turborepo in an existing single-package or multi-package repository.
+- [Single-package workspaces](https://turborepo.dev/docs/guides/single-package-workspaces) — Use Turborepo's caching and task parallelization in a standalone application without a monorepo.
+- [Recursive `turbo` invocations](https://turborepo.dev/docs/messages/recursive-turbo-invocations) — How to fix infinite loops caused by package.json scripts that recursively invoke `turbo`.
+- [s1ngularity: supply chain attack in Nx packages](https://vercel.com/changelog/s1ngularity-supply-chain-attack-in-nx-packages)
+- [Vercel Pricing](https://vercel.com/pricing) — Choose a Vercel plan and compare features and usage pricing.
+- [Life of a Vercel request: What happens when a user presses enter](https://vercel.com/blog/life-of-a-vercel-request-what-happens-when-a-user-presses-enter)
+- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly) — A detailed guide to Vercel vs Fastly: full-stack application platform vs CDN infrastructure layer, covering framework su
+- [How to enable CORS on Vercel](https://vercel.com/kb/guide/how-to-enable-cors) — Learn how to enable CORS on Vercel with vercel.json, Routing Middleware, framework config, and route handlers, plus how
+- [Hosting your API on Vercel](https://vercel.com/kb/guide/hosting-backend-apis) — Learn how to build and scale performant APIs on Vercel.
+- [Application authentication on Vercel](https://vercel.com/kb/guide/application-authentication-on-vercel) — Secure application authentication on Vercel across layers: proxy checks, the Data Access Layer, PPR-safe rendering, and
 
 Full cross-link map for this page: [/docs/glossary.graph.md](/docs/glossary.graph.md)
 <!-- /docsgraph:related -->
@@ -55,7 +55,15 @@ A chronological record of events on your team, including user actions, [deployme
 
 ### Agent
 
-See [Vercel Agent](#vercel-agent).
+An AI system that uses a model to choose actions, call tools, and use the results to work toward a task. An [agent harness](#agent-harness) manages this execution loop. For Vercel's built-in assistant, see [Vercel Agent](#vercel-agent).
+
+### Agent Browser
+
+A browser automation command-line tool for AI agents. Agents use `agent-browser` to navigate pages, inspect accessibility snapshots, interact with elements, and capture screenshots. See [Agent Browser](https://agent-browser.dev/).
+
+### Agent Harness
+
+The execution loop around an AI model that manages instructions, tool calls, and context. On Vercel, durable harnesses preserve conversation state and resume interrupted turns after a crash, timeout, or redeploy. See [Agent Harnesses](/docs/agent-harnesses).
 
 ### AI Gateway
 
@@ -63,11 +71,11 @@ A proxy service from Vercel that routes model requests to AI providers through a
 
 ### AI SDK
 
-A TypeScript toolkit for building AI-powered applications with React, Next.js, Vue, Svelte, and Node.js through unified APIs for multiple LLM providers. See [AI SDK](/docs/ai-sdk).
+A TypeScript toolkit for building AI-powered applications with React, Next.js, Vue, Svelte, and Node.js through unified APIs for multiple LLM providers. See [AI SDK](/docs/ai-sdk). The [AI SDK for Python](/docs/ai-gateway/sdks-and-apis/ai-sdk-python) is in public beta.
 
 ### Alerts
 
-Notifications that fire when something is wrong with your project, such as a spike in failed function invocations or unusual usage patterns. Configure delivery through email, Slack, or webhooks. See [Alerts](/docs/alerts).
+Notifications that fire when something is wrong with your project, such as a spike in failed function invocations or unusual usage patterns. Configure delivery through email, Slack, or webhooks. Alerts require [Observability Plus](#observability-plus) on Pro and Enterprise plans. See [Alerts](/docs/alerts).
 
 ### Analytics
 
@@ -95,13 +103,17 @@ Managed [Vercel Firewall](#vercel-firewall) rulesets that mitigate malicious bot
 
 An invisible CAPTCHA from Vercel, powered by Kasada, that detects sophisticated bots without showing visible challenges or requiring user action. Use it to protect high-value routes such as checkouts, signups, and APIs. See [BotID](/docs/botid).
 
+### Bring Your Own Cloud
+
+An Enterprise feature that runs your project's [Vercel Functions](#vercel-functions) as AWS Lambda functions in your own AWS account, while Vercel routes requests, serves static assets, and manages the deployment. Use it to meet security, compliance, or data-residency requirements. See [Bring Your Own Cloud](/docs/networking/bring-your-own-cloud).
+
 ### Build
 
 The process Vercel runs on every deployment that compiles, bundles, and optimizes your application. See [Builds](/docs/builds).
 
 ### Build Cache
 
-A cache that stores build artifacts and dependencies to speed up subsequent deployments. Each build cache holds up to 1 GB and is retained for one month.
+A cache that stores build artifacts and dependencies to speed up subsequent deployments. The [maximum size](/docs/limits#build-cache-maximum-size) depends on the build machine type. The cache is retained for one month.
 
 ### Build Command
 
@@ -120,6 +132,10 @@ The multi-layer cache between visitors and your backend. Covers the [CDN](#cdn-c
 ### CDN (Content Delivery Network)
 
 A distributed network of servers that stores static content in multiple locations around the globe to serve content from the closest server to users. See [Vercel's CDN](/docs/cdn).
+
+### Chat SDK
+
+A TypeScript library for building bots that work across chat platforms, including Slack, Discord, and Microsoft Teams. Platform adapters translate messages and interactions into a shared API, so you can reuse bot logic across platforms. See [Chat SDK](/docs/chat-sdk).
 
 ### Checks
 
@@ -143,7 +159,7 @@ Discussion threads on [preview deployments](#preview-deployment) where teams and
 
 ### Compute
 
-The processing power and execution environment where your application code runs. Vercel offers serverless compute through Functions and Routing Middleware.
+The processing power and execution environment where your application code runs. Vercel runs your code in [Vercel Functions](#vercel-functions), [Routing Middleware](#routing-middleware), [Vercel Sandbox](#vercel-sandbox), [Daemons](#daemons), and [Vercel Workflows](#vercel-workflows).
 
 ### Concurrency
 
@@ -152,6 +168,14 @@ The ability to handle multiple requests simultaneously. Vercel Functions support
 ### Conformance
 
 An Enterprise feature that runs automated checks on your code for performance, security, and code health issues during local development and CI. Use [Conformance](/docs/conformance) to prevent regressions and burn down existing issues over time.
+
+### Container Registry
+
+A beta, Docker-compatible container registry built into Vercel. Push images built from a Dockerfile or Containerfile, then run them on [Vercel Functions](#vercel-functions) or use them as custom [Vercel Sandbox](#vercel-sandbox) images. See [Vercel Container Registry](/docs/container-registry).
+
+### Container Runtime
+
+A beta runtime that runs any code and library on [Vercel Functions](#vercel-functions) from an OCI container image built from a `Dockerfile` or `Containerfile`, billed with [Active CPU](#active-cpu) pricing. A root `Dockerfile` is enough when no other framework is detected. See [Container Runtime](/docs/functions/runtimes/container).
 
 ### Core Web Vitals
 
@@ -165,15 +189,23 @@ Scheduled tasks that run at specified intervals. Vercel supports cron jobs for a
 
 A [domain](#domains) you own and configure to point to your Vercel deployment, replacing the default `.vercel.app` domain.
 
+### Custom Environments
+
+Long-running pre-production [environments](#environment), such as `staging` or `QA`, that you create in addition to Preview and Production. Available on Pro and Enterprise plans. See [Custom Environments](/docs/deployments/environments#custom-environments).
+
 ### Custom Error Pages
 
 An Enterprise feature that replaces Vercel's default platform error pages, such as function timeouts and throttling, with your own branded HTML pages. See [Custom error pages](/docs/custom-error-pages).
 
 ## D
 
+### Daemons
+
+A beta feature that runs long-running container processes, such as queue consumers and workflow workers, that don't receive traffic. You declare daemons in `vercel.json`, and Vercel runs a fixed number of instances of each daemon per region. See [Daemons](/docs/daemons).
+
 ### Data Cache
 
-A specialized cache for the Next.js App Router that stores responses from data fetches, allowing for granular segment-level caching rather than per-route caching.
+A beta cache for the Next.js App Router that stores responses from data fetches, allowing for granular segment-level caching rather than per-route caching. When you adopt Cache Components, use `use cache: remote` to store cached data in [Runtime Cache](#runtime-cache) instead. See [Data Cache](/docs/caching/runtime-cache/data-cache).
 
 ### DDoS (Distributed Denial of Service)
 
@@ -197,7 +229,7 @@ Conditions that must pass before Vercel promotes a build to your production doma
 
 ### Deployment Protection
 
-Security features that restrict access to your deployments using methods like Vercel Authentication, Password Protection, or Trusted IPs.
+Security features that restrict access to your deployments using methods like [Vercel Authentication](#vercel-authentication), [Password Protection](#password-protection), [Trusted IPs](#trusted-ips), or [Passport](#passport). See [Deployment Protection](/docs/deployment-protection).
 
 ### Deployment Retention
 
@@ -221,21 +253,13 @@ A feature that allows you to send observability data (logs, traces, speed insigh
 
 ## E
 
-### Edge
-
-Servers closest to users in a distributed network. Vercel's CDN serves content and runs code from edge locations globally.
-
-### Edge Runtime
-
-A minimal JavaScript runtime that exposes Web Standard APIs, used for Vercel Functions and Routing Middleware.
-
 ### Edit Mode
 
 A Pro and Enterprise feature that lets content authors edit CMS content in the context of the live website, with one-click jumps from any element to its editing interface. Supports Contentful, Sanity, Builder, TinaCMS, DatoCMS, Payload, Uniform, and Strapi. See [Edit Mode](/docs/edit-mode).
 
 ### Environment
 
-A context for running your application, such as Local Development, Preview, or Production. Each environment can have its own configuration and environment variables.
+A context for running your application, such as Local Development, Preview, or Production. Each environment can have its own configuration and environment variables. Pro and Enterprise teams can also create [Custom Environments](#custom-environments). See [Environments](/docs/deployments/environments).
 
 ### Environment Variables
 
@@ -245,23 +269,39 @@ Configuration values that can be accessed by your application at build time or r
 
 Standardized codes for issues you may encounter on Vercel, covering both application errors such as build failures or function timeouts and platform errors. See [Error Codes](/docs/errors) for solutions and explanations.
 
+### eve
+
+Vercel's open-source framework for building durable AI agents. Define instructions and skills in Markdown, tools in TypeScript, and channels for interacting with users. eve handles durable execution and integrates with AI Gateway, Vercel Sandbox, and Vercel Connect. See [eve](/docs/frameworks/agents/eve).
+
 ### External Origins
 
-An external origin is any API or website outside your Vercel project. You can use [rewrites to external origins](/docs/routing/rewrites#external-rewrites) to forward requests to these destinations, allowing Vercel to function as a reverse proxy or standalone CDN.
+An external origin is any API or website outside your Vercel project. You can use [rewrites to external origins](/docs/routing/rewrites#rewrites-to-external-origins) to forward requests to these destinations, allowing Vercel to function as a reverse proxy or standalone CDN.
 
 ## F
 
 ### Fast Data Transfer
 
-Data transfer between the Vercel CDN and user devices, optimized for performance and charged based on usage.
+Data transfer between the Vercel CDN and user devices. On-demand CDN prices it regionally by usage, while [Flat Rate CDN](#flat-rate-cdn) covers it in a fixed monthly capacity tier. See [Fast Data Transfer](/docs/manage-cdn-usage#fast-data-transfer).
 
 ### Feature Flags
 
-Configuration switches that allow you to enable or disable features without deploying new code. Vercel offers the [Flags SDK](/docs/flags) for implementing flags in Next.js and SvelteKit, and Flags Explorer for managing flags through the Vercel Toolbar.
+Configuration switches that allow you to enable or disable features without deploying new code. Use Vercel Flags as your feature flag provider, or connect a provider from the Vercel Marketplace, and manage all flags from one dashboard. The Flags SDK implements flags in Next.js and SvelteKit, and Flags Explorer overrides flags through the [Vercel Toolbar](#vercel-toolbar). See [Flags](/docs/flags).
 
 ### Firewall
 
 See [Vercel Firewall](#vercel-firewall).
+
+### Flags SDK
+
+An open-source library for defining and evaluating [feature flags](#feature-flags) in Next.js and SvelteKit. Use flags declared in code with Vercel Flags, another provider, or your own evaluation logic. See [Flags SDK](/docs/flags/flags-sdk-reference).
+
+### Flat Rate CDN
+
+A Pro CDN service tier with a fixed monthly price for a CDN request and data transfer capacity, so short-term traffic spikes don't change your bill. Pro includes the lowest tier. See [Flat Rate CDN](/docs/pricing/flat-rate-cdn).
+
+### Flex CDN
+
+A best-effort CDN service tier, with no latency or availability guarantees, for projects that can tolerate reduced reliability. Available only to teams using [Flat Rate CDN](#flat-rate-cdn). See [CDN service tiers](/docs/cdn#cdn-service-tiers).
 
 ### Fluid Compute
 
@@ -269,7 +309,7 @@ An enhanced execution model for Vercel Functions that provides in-function concu
 
 ### Framework
 
-A software library that provides a foundation for building applications. Vercel supports over 30 frameworks including Next.js, React, Vue, and Svelte.
+A software library that provides a foundation for building applications. Vercel supports many frameworks, including Next.js, React, Vue, and Svelte. See [Frameworks](/docs/frameworks).
 
 ### Framework Preset
 
@@ -283,11 +323,11 @@ See [Vercel Functions](#vercel-functions).
 
 ### Git Integration
 
-Automatic connection between your Git repository (GitHub, GitLab, Bitbucket, Azure DevOps) and Vercel for continuous deployment.
+Automatic connection between your Git repository on GitHub, GitLab, or Bitbucket and Vercel for continuous deployment. Azure DevOps repositories deploy through Azure DevOps Pipelines. See [Git integrations](/docs/git).
 
 ### Global Config
 
-A global data store that enables ultra-fast data reads in the region closest to the user (within 15ms at P99, often less than 1ms) for configuration data like feature flags.
+A global data store for configuration data like feature flags. Reads on Vercel typically complete in less than a millisecond, with [latency depending on your application's usage patterns](/docs/global-config#read-latency).
 
 ## H
 
@@ -317,6 +357,10 @@ A feature that allows you to update static content without redeployment by rebui
 
 The command used to install dependencies before building your project, such as `npm install` or `pnpm install`.
 
+### Instant Rollback
+
+A way to revert production to a previous production deployment without rebuilding. Pro and Enterprise teams can roll back to any eligible deployment, and Hobby teams can roll back to the immediately previous one. See [Instant Rollback](/docs/instant-rollback).
+
 ### Integration
 
 Third-party services and tools that connect with Vercel to extend functionality, available through the [Vercel Marketplace](#vercel-marketplace).
@@ -326,6 +370,12 @@ Third-party services and tools that connect with Vercel to extend functionality,
 ### JA3/JA4 Fingerprints
 
 TLS fingerprinting techniques used by Vercel's security systems to identify and restrict malicious traffic patterns.
+
+## K
+
+### Knowledge Base
+
+Vercel's collection of practical guides, tutorials, and troubleshooting articles for building and running applications on Vercel. Use it for task-specific walkthroughs that complement the product documentation and API references. See the [Knowledge Base](/kb).
 
 ## L
 
@@ -391,6 +441,10 @@ Configurable alerts about deployments, domains, integrations, account changes, a
 
 Tools and features that help you monitor, analyze, and understand your application's performance, traffic, and behavior in production.
 
+### Observability Plus
+
+A Pro and Enterprise add-on that extends [Observability](#observability) with more granular data exploration, 30-day data retention, and features such as [Alerts](#alerts), [Query](#query), and [Notebooks](#notebooks). Enabled by default for teams created or upgraded to Pro on or after April 3, 2026. See [Observability Plus](/docs/observability/observability-plus).
+
 ### OG Image Generation
 
 Dynamic Open Graph image generation using the `@vercel/og` library, which renders HTML and CSS into social card images through [Vercel Functions](#vercel-functions). See [OG Image Generation](/docs/og-image-generation).
@@ -417,9 +471,13 @@ A collection of files and directories grouped together for a common purpose, suc
 
 Tools that install your project's dependencies. Vercel auto-detects npm, Yarn, pnpm, Bun, and Vlt by reading the lock file in your repository. See [Package Managers](/docs/package-managers).
 
+### Passport
+
+An Enterprise [deployment protection](#deployment-protection) method that requires visitors to sign in with your own identity provider, such as Microsoft Entra ID, Okta, or another OpenID Connect provider, before they can view a deployment. See [Passport](/docs/passport).
+
 ### Password Protection
 
-A deployment protection method that restricts access to deployments using a password, available on Enterprise plans or through the Advanced Deployment Protection add-on for Pro plans.
+A deployment protection method that restricts access using a password. Pro teams pay $20 per month for each protected project. Enterprise includes Team Level Password Protection for every project, while existing Pro teams with the legacy Advanced Deployment Protection package retain team-level coverage for $150 per month per team. See [Usage & Pricing for Deployment Protection](/docs/deployment-protection/usage-and-pricing) for the full plan comparison.
 
 ### Plans
 
@@ -428,6 +486,10 @@ Vercel's account tiers: Hobby (free, for personal projects), Pro (credit-based, 
 ### Points of Presence (PoPs)
 
 Distributed servers in Vercel's CDN that provide the first point of contact for requests. PoPs terminate TCP and route traffic over a private network to the nearest Vercel region, where TLS termination and caching occur.
+
+### Portless
+
+A local development proxy that gives apps stable, named `.localhost` URLs instead of URLs with port numbers. It assigns ports to development servers and supports HTTPS and separate URLs for Git worktrees. See [Portless](https://portless.sh/).
 
 ### Postgres
 
@@ -444,6 +506,10 @@ Vercel's billing model and per-resource rates for products such as [Vercel Funct
 ### Private Registry
 
 A private npm registry from Vercel that distributes packages under the `@vercel-private` scope, requiring authentication through a Vercel account. See [Private Registry](/docs/private-registry).
+
+### PrivateLink
+
+A private connection from your Vercel deployments to AWS-hosted backend services through AWS PrivateLink endpoint services, so traffic doesn't cross the public internet. See [AWS PrivateLink](/docs/networking/privatelink).
 
 ### Production Deployment
 
@@ -487,15 +553,19 @@ HTTP responses that tell clients to make a new request to a different URL, usefu
 
 ### Redis
 
-An in-memory key-value store connected to your Vercel project through the [Vercel Marketplace](#vercel-marketplace), provisioned from providers such as Upstash. Replaces the deprecated Vercel KV. See [Redis on Vercel](/docs/redis).
+An in-memory key-value store connected to your Vercel project through the [Vercel Marketplace](#vercel-marketplace), provisioned from providers such as Upstash. See [Redis on Vercel](/docs/redis).
 
 ### Region
 
-Geographic locations where Vercel can run your functions and store data. Vercel has 20 compute-capable regions globally.
+Geographic locations where Vercel can run your functions and store data. Vercel has 19 compute-capable regions globally.
 
 ### Release Phases
 
-The stages a Vercel product passes through before becoming generally available: Alpha (under development), Beta (pre-GA without an SLA), Private Beta (under NDA), Limited Beta (publicly announced with gated access), and General Availability (GA). See [Release Phases](/docs/release-phases).
+The stages a Vercel product passes through before becoming generally available: Alpha (under development), Beta (pre-GA without an SLA), Private Beta (under NDA), Limited Beta (publicly announced with gated access), Public Beta (available without special invitation), and General Availability (GA). See [Release Phases](/docs/release-phases).
+
+### Remote Cache
+
+A cache that shares build outputs and task artifacts across your Vercel team, CI, and Vercel builds, so unchanged tasks don't run twice. [Turborepo](#turborepo) uses it natively, and the Remote Cache SDK supports other build tools such as Nx and Rush. See [Remote Caching](/docs/monorepos/remote-caching).
 
 ### Repository
 
@@ -523,7 +593,11 @@ Code that executes before a request is processed, running on [Fluid Compute](/do
 
 ### Runtime
 
-The execution environment for your functions, such as Node.js, Edge Runtime, Python, or other supported runtimes.
+The execution environment for your functions. Vercel Functions support Node.js, Bun, Python, Rust, Go, Ruby, Wasm, and the beta Container runtime. See [Runtimes](/docs/functions/runtimes).
+
+### Runtime Cache
+
+A regional, ephemeral cache for storing and retrieving data across Vercel Functions, Routing Middleware, and builds within a Vercel region, with invalidation through TTLs and tags. See [Runtime Cache](/docs/caching/runtime-cache).
 
 ### Runtime Logs
 
@@ -541,19 +615,19 @@ See [Vercel Sandbox](#vercel-sandbox).
 
 ### Secure Compute
 
-An Enterprise add-on that creates private connections between Vercel Functions and backend infrastructure using dedicated static IP addresses, VPC peering, and isolated networks.
+An Enterprise add-on that creates private connections between Vercel Functions or [Vercel Sandbox](#vercel-sandbox) and backend infrastructure using dedicated static IP addresses, VPC peering, and isolated networks. See [Secure Compute](/docs/networking/secure-compute).
 
 ### Serverless
 
 A cloud computing model where code runs without managing servers, automatically scaling based on demand and charging only for actual usage.
 
-### Session
-
-A single running microVM instance inside a [Vercel Sandbox](#vercel-sandbox). Persistent sandboxes can have many sessions over time: each time a sandbox resumes from its last snapshot, a new session begins. See [Persistent Sandboxes](/docs/sandbox/concepts/persistent-sandboxes).
-
 ### Services
 
 A beta feature that lets you deploy multiple backends and frontends within a single Vercel project, such as a Next.js frontend and a FastAPI backend in the same repository sharing routing, environment variables, and a domain. See [Services](/docs/services).
+
+### Session
+
+A single running microVM instance inside a [Vercel Sandbox](#vercel-sandbox). Persistent sandboxes can have many sessions over time: each time a sandbox resumes from its last snapshot, a new session begins. See [Persistent Sandboxes](/docs/sandbox/concepts/persistent-sandboxes).
 
 ### Skew Protection
 
@@ -569,7 +643,11 @@ Performance monitoring that provides detailed insights into your website's Core 
 
 ### Spend Management
 
-A Pro feature that notifies you, triggers a webhook, or pauses production deployments when team spend reaches a threshold within a billing cycle. Configurable by team owners and billing roles. See [Spend Management](/docs/spend-management).
+A Pro and Enterprise feature that notifies you, triggers a webhook, or pauses production deployments when team spend reaches a threshold within a billing cycle. Enterprise teams need the Flexible Commitment plan. Configurable by team owners and billing roles. See [Spend Management](/docs/spend-management).
+
+### Static IPs
+
+Shared static egress IP addresses that let Pro and Enterprise projects reach backend services that require IP allowlisting. Static IPs apply to outbound traffic only. For dedicated networks and VPC peering, use [Secure Compute](#secure-compute). See [Static IPs](/docs/networking/static-ips).
 
 ### Storage
 
@@ -587,7 +665,7 @@ See [Vercel Toolbar](#vercel-toolbar).
 
 ### Tracing
 
-The collection and analysis of how a request flows through your application and Vercel's infrastructure, captured as spans. Continuously collect sampled traces from production and preview traffic with [always-on tracing](/docs/tracing/always-on-tracing), trace your own session with Session Tracing in the [Vercel Toolbar](#vercel-toolbar), export them with trace [drains](#drains), or add spans with `@vercel/otel` for OpenTelemetry. See [Tracing](/docs/tracing).
+The collection and analysis of how a request flows through your application and Vercel's infrastructure, captured as spans. You can collect sampled traces from production and preview traffic by [turning on tracing](/docs/tracing/configure-tracing), trace your own session with Session Tracing in the [Vercel Toolbar](#vercel-toolbar), export traces with [drains](#drains), or add spans with `@vercel/otel` for OpenTelemetry. See [Tracing](/docs/tracing).
 
 ### Trusted IPs
 
@@ -599,17 +677,17 @@ A high-performance build system for monorepos that provides fast incremental bui
 
 ### Two-factor Authentication (2FA)
 
-An additional login verification step using either an authenticator app for time-based one-time passwords or a passkey through a WebAuthN-compatible device. You can configure recovery codes to regain access if you lose your second factor. See [Two-factor authentication](/docs/two-factor-authentication).
+An additional login verification step using either an authenticator app for time-based one-time passwords or a passkey through a WebAuthn-compatible device. You can configure recovery codes to regain access if you lose your second factor. See [Two-factor authentication](/docs/two-factor-authentication).
 
 ## V
 
 ### v0
 
-An AI-powered tool that converts natural language descriptions into React code and UI components, integrated with Vercel for deployment.
+An AI agent from Vercel that builds full-stack apps and agents from natural language prompts and deploys them to Vercel. See the [v0 docs](https://v0.app/docs).
 
 ### Vercel Agent
 
-A suite of AI-powered development tools that includes Code Review for pull request feedback and Investigations for automatically diagnosing production alerts. See [Vercel Agent](/docs/agent).
+An AI assistant built into Vercel that uses context from your projects, deployments, logs, and repositories. Chat with it from the dashboard or Slack, use Investigations to analyze alerts, failed deployments, runtime errors, and cost or performance issues, and use Code Review for pull request feedback. In public beta for Pro and Enterprise teams. See [Vercel Agent](/docs/agent).
 
 ### Vercel Authentication
 
@@ -619,9 +697,17 @@ A deployment protection method that restricts access to team members and authori
 
 Scalable object storage service for static assets like images, videos, and files, optimized for global content delivery.
 
+### Vercel Connect
+
+A service that gives your agents and apps short-lived access to third-party APIs such as Slack, GitHub, Microsoft, and Snowflake. You set up a connection once at the team level, and allowed projects request tokens at runtime, so provider secrets never live in your environment variables. See [Vercel Connect](/docs/connect).
+
 ### Vercel Firewall
 
 A multi-layered security system that protects applications from threats, including platform-wide DDoS protection and customizable WAF rules.
+
+### Vercel for Platforms
+
+Tools for building platforms where agents and users deploy apps, either as isolated projects for generated apps or as one multi-tenant deployment that serves many customers through custom domains and subdomains. See [Vercel for Platforms](/docs/platforms).
 
 ### Vercel Functions
 
@@ -629,7 +715,7 @@ Serverless compute that allows you to run server-side code without managing serv
 
 ### Vercel Marketplace
 
-A catalog of third-party services that integrate directly with your Vercel projects, including databases, observability tools, AI providers, and CMSs. Marketplace integrations inject credentials as environment variables and bill through your Vercel account. See [Vercel Marketplace](/docs/marketplace-storage).
+A catalog of third-party services that integrate directly with your Vercel projects, including databases, observability tools, AI providers, and CMSs. Marketplace integrations inject credentials as environment variables and bill through your Vercel account. See [Integrations](/docs/integrations).
 
 ### Vercel Queues
 
@@ -677,3 +763,6 @@ In JavaScript, an entity in a repository that can be either a single package or 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

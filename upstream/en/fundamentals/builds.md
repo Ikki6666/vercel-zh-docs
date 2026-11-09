@@ -3,7 +3,7 @@ title: How Vercel builds your application
 product: vercel
 url: /docs/fundamentals/builds
 canonical_url: "https://vercel.com/docs/fundamentals/builds"
-last_updated: 2026-06-17
+last_updated: 2026-09-03
 type: conceptual
 prerequisites:
   - /docs/fundamentals
@@ -27,14 +27,13 @@ When you push code to Vercel, your source files need to be transformed into some
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to Deploy a Vue.js Site with Vercel](https://vercel.com/kb/guide/deploying-vuejs-to-vercel?from=related) — Create your Vue.js app and deploy it with Vercel.
-- [Deploy a TanStack Start app to Vercel](https://vercel.com/kb/guide/deploy-a-tanstack-start-app-to-vercel?from=related) — Learn how to deploy a TanStack Start app to Vercel using the Nitro Vite plugin. Covers framework setup, Git and CLI depl
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [vercel build](https://vercel.com/docs/cli/build?from=related) — Learn how to build a Vercel Project locally or in your own CI environment using the vercel build CLI command.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [How Vercel CDN works](https://vercel.com/docs/how-vercel-cdn-works?from=related) — Learn how Vercel's CDN processes requests through routing, caching, and compute layers to deliver your content with low
-- [Vite](https://vercel.com/docs/frameworks/frontend/vite?from=related) — Learn how to use Vercel's features with Vite.
+- [Announcing the Build Output API](https://vercel.com/blog/build-output-api)
+- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
+- [Troubleshooting Build Error: "Build step did not complete within the maximum of 45 minutes"](https://vercel.com/kb/guide/troubleshooting-build-error-build-step-did-not-complete-within-45-minutes) — Learn common reasons Vercel builds hit the 45-minute limit and how to reduce build times so your deployments stay fast a
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure)
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [Migrate to Vercel from Netlify](https://vercel.com/kb/guide/migrate-to-vercel-from-netlify) — Migrate your website's configuration from Netlify to Vercel
+- [vercel build](https://vercel.com/docs/cli/build) — Learn how to build a Vercel Project locally or in your own CI environment using the vercel build CLI command.
 
 Full cross-link map for this page: [/docs/fundamentals/builds.graph.md](/docs/fundamentals/builds.graph.md)
 <!-- /docsgraph:related -->
@@ -68,7 +67,7 @@ When Vercel recognizes your framework, it applies a preset that configures the [
 
 ## Installing dependencies
 
-With the environment ready and your project understood, Vercel begins the **build step** by installing dependencies. It detects your [package manager](/docs/builds/build-image#package-manager-selection) by looking for lockfiles. For example, if it finds `pnpm-lock.yaml`, it uses pnpm. This detection ensures your dependencies install exactly as they do on your local machine, using the same package manager and respecting the same lockfile.
+With the environment ready and your project understood, Vercel begins the **build step** by installing dependencies. It detects your [package manager](/docs/package-managers#manually-specifying-a-package-manager) by looking for lockfiles. For example, if it finds `pnpm-lock.yaml`, it uses pnpm. This detection ensures your dependencies install exactly as they do on your local machine, using the same package manager and respecting the same lockfile.
 
 Vercel [caches](/docs/deployments/troubleshoot-a-build#caching) these installed dependencies between builds. When you push your next commit, the cache is restored before installation begins. If your lockfile hasn't changed, installation can complete in seconds rather than minutes. This caching is automatic and requires no configuration.
 
@@ -80,7 +79,7 @@ What occurs during this phase depends entirely on your framework. For a Next.js 
 
 During the build, your framework has access to [environment variables](/docs/environment-variables) you've configured in your project settings. This allows the build to include API keys, feature flags, or other configuration that differs between environments. Preview deployments can use different variables than production, enabling you to test against staging backends before going live.
 
-The build runs until completion or until it hits the [timeout limit](/docs/builds#limits-and-resources). If you want your build to run faster, you may need to optimize your build process or upgrade to a [build machine with more resources](/docs/builds/managing-builds#larger-build-machines).
+The build runs until completion or until it hits the [timeout limit](/docs/builds#limits-and-resources). If you want your build to run faster, you may need to optimize your build process or upgrade to a [build machine with more resources](/docs/builds/managing-builds#build-machine-types).
 
 ## Producing output
 
@@ -106,3 +105,6 @@ Your application is now live. When users visit your site, their requests flow th
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: Project settings
 product: vercel
 url: /docs/project-configuration/project-settings
 canonical_url: "https://vercel.com/docs/project-configuration/project-settings"
-last_updated: 2026-07-15
+last_updated: 2026-09-21
 type: reference
 prerequisites:
   - /docs/project-configuration
@@ -13,7 +13,7 @@ related:
   - /docs/functions/runtimes/node-js/node-js-versions
   - /docs/builds/managing-builds
   - /docs/deployments
-summary: Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection, functions, cron jobs, project...
+summary: Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection, functions, project members,...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -27,12 +27,13 @@ From the Vercel [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Das
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
-- [Bitbucket](https://vercel.com/docs/git/vercel-for-bitbucket?from=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [Managing projects](https://vercel.com/docs/projects/managing-projects?from=related) — Learn how to manage your projects through the Vercel Dashboard.
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
-- [Build Features](https://vercel.com/docs/builds/build-features?from=related) — Learn how to customize your deployments using Vercel's build features.
+- [July 2020](https://vercel.com/blog/changelog-july-2020)
+- [June 2020](https://vercel.com/blog/changelog-june-2020)
+- [Projects overview](https://vercel.com/docs/projects) — A project is where you deploy and operate frontend apps, APIs, backends, containers, and agent workloads on Vercel.
+- [Managing projects](https://vercel.com/docs/projects/managing-projects) — Learn how to manage your projects through the Vercel Dashboard.
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Build Features for Customizing Deployments](https://vercel.com/docs/builds/build-features) — Learn how to customize your deployments using Vercel's build features.
+- [Builds](https://vercel.com/docs/builds) — Understand how the build step works when creating a Vercel Deployment.
 
 Full cross-link map for this page: [/docs/project-configuration/project-settings.graph.md](/docs/project-configuration/project-settings.graph.md)
 <!-- /docsgraph:related -->
@@ -81,10 +82,10 @@ To ignore the build step:
 
 1. Choose a project from the [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard)
 2. Open **Settings** in the sidebar and then select the **Build and Deployment** menu item
-3. In the **Ignored Build Step** section, select the behavior you would like. This behavior provides a command that outputs a code, which tells Vercel whether to issue a new build or not. The command is executed within the [Root Directory](/docs/builds/configure-a-build#root-directory) and can access all [System Environment Variables](/docs/environment-variables/system-environment-variables):
+3. In the **Ignored Build Step** section, select the behavior you would like. This behavior provides a command that outputs a code, which tells Vercel whether to issue a new build or not. The command is executed within the [Root Directory](/docs/builds/configure-a-build#root-directory) and can access the [System Environment Variables](/docs/environment-variables/system-environment-variables) that are available at build time. Runtime-only variables, such as `VERCEL_REGION`, are not available:
    - **Automatic**: Each commit will issue a new build
    - **Only build production**: When the `VERCEL_ENV` is production, a new build will be issued
-   - **Only build preview**: When the `VERCEL_ENV` is preview, a new build will be issued
+   - **Only build pre-production**: When the `VERCEL_ENV` is preview, a new build will be issued
    - **Only build if there are changes**: A new build will be issued only when the Git diff contains changes
    - **Only build if there are changes in a folder**: A new build will be issued only when the Git diff contains changes in a folder that you specify
    - **Don't build anything**: A new build will never be issued
@@ -118,7 +119,7 @@ To learn more, [see the Domains documentation](/docs/domains)
 
 ## Environment Variables
 
-You can configure Environment Variables for each environment directly from your project's settings. This includes [linking Shared Environment Variables](/docs/environment-variables/shared-environment-variables#project-level-linking) and [creating Sensitive Environment Variables](/docs/environment-variables/sensitive-environment-variables)
+You can configure Environment Variables for each environment directly from your project's settings. This includes [linking Shared Environment Variables](/docs/environment-variables/shared-environment-variables#project-level-linking) and [creating Config and Secret Environment Variables](/docs/environment-variables/sensitive-environment-variables)
 
 To learn more, [see the Environment Variables documentation](/docs/environment-variables).
 
@@ -148,7 +149,7 @@ To learn more, see [Configuring Functions](/docs/functions/configuring-functions
 
 ## Cron Jobs
 
-You can enable and disable Cron Jobs for your project from the Project Settings. Configuring cron jobs is done in your codebase.
+Cron jobs have moved from the project settings to the **Cron Jobs** tab under **Schedules** in your project's sidebar, where you can view, enable, and disable them. Configuring cron jobs is done in your codebase.
 
 To learn more, see [Cron Jobs](/docs/cron-jobs).
 
@@ -166,19 +167,19 @@ To learn more, see the [Webhooks documentation](/docs/webhooks).
 
 ## Drains
 
-Drains are a Pro and Enterprise feature that allow you to send observability data (logs, traces, speed insights, and analytics) to external services. Drains are created at the team-level, but you can manage them on a per-project level from the project settings.
+Drains are a Pro and Enterprise feature that allow you to send observability data (logs, traces, speed insights, and analytics) to external services. Drains are created at the team-level, but you can manage them on a per-project level from the project settings. Speed Insights drains only forward data from projects that use [Speed Insights Plus](/docs/speed-insights/limits-and-pricing).
 
 To learn more, see the [Drains documentation](/docs/drains/using-drains).
 
 ## Security settings
 
-From your project's security settings you can enable or disable [Attack Mode](/docs/vercel-firewall/attack-mode), [Logs and Source Protection](/docs/projects#logs-and-source-protection), [Vercel Support Code Visibility](/docs/project-configuration/security-settings#vercel-support-code-visibility) [Git Fork Protection](/docs/projects#git-fork-protection), and set a [retention policy for your deployments](/docs/deployment-retention).
+From your project's security settings you can enable or disable [Attack Mode](/docs/vercel-firewall/attack-mode), [Logs and Source Protection](/docs/project-configuration/security-settings#build-logs-and-source-protection), [Vercel Support Code Visibility](/docs/project-configuration/security-settings#vercel-support-code-visibility), [Git Fork Protection](/docs/project-configuration/security-settings#git-fork-protection), and restore [recently deleted deployments](/docs/deployment-retention#restoring-a-deleted-deployment).
 
 To learn more, see [Security Settings](/docs/project-configuration/security-settings).
 
 ## Advanced
 
-Vercel provides some additional features in order to configure your project in a more advanced way. This includes:
+Vercel provides some additional features to configure your project in a more advanced way. This includes:
 
 - Displaying [directory listing](/docs/directory-listing)
 - Enabling [Skew protection](/docs/skew-protection)
@@ -187,3 +188,6 @@ Vercel provides some additional features in order to configure your project in a
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

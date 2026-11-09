@@ -3,16 +3,16 @@ title: Tracing
 product: vercel
 url: /docs/tracing
 canonical_url: "https://vercel.com/docs/tracing"
-last_updated: 2026-07-06
+last_updated: 2026-11-03
 type: how-to
 prerequisites:
   []
 related:
-  - /docs/tracing/always-on-tracing
+  - /docs/tracing/configure-tracing
   - /docs/tracing/session-tracing
-  - /docs/drains/reference/traces
   - /docs/tracing/instrumentation
-  - /docs/logs/runtime
+  - /docs/drains/reference/traces
+  - /docs/cli/traces
 summary: Learn how to trace your application to understand performance and infrastructure details.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,18 +27,18 @@ In observability, tracing is the process of collecting and analyzing how a reque
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify?from=related) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
-- [Vercel vs Northflank](https://vercel.com/kb/guide/vercel-vs-northflank?from=related) — A detailed guide to Vercel vs Northflank: Fluid compute, CDN and caching, security defaults, AI infrastructure, GPU comp
-- [OpenTelemetry](https://nextjs.org/docs/app/guides/open-telemetry?from=related) — Learn how to instrument your Next.js app with OpenTelemetry.
-- [Observability](https://eve.dev/docs/guides/instrumentation?from=related) — Trace an agent with OpenTelemetry in instrumentation.ts, read the workflow run tags eve emits, and debug discovery with
-- [SigNoz](https://ai-sdk.dev/providers/observability/signoz?from=related)
-- [Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains?from=related) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Observability](https://vercel.com/docs/eve/observability?from=related) — View agent runs in the Vercel dashboard with no setup, and optionally export AI SDK spans through OpenTelemetry.
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Traces now support Tree and Waterfall views](https://vercel.com/changelog/traces-now-support-tree-and-waterfall-views)
+- [Vercel Tracing is now generally available](https://vercel.com/changelog/vercel-tracing-is-now-generally-available)
+- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly) — A detailed guide to Vercel vs Fastly: full-stack application platform vs CDN infrastructure layer, covering framework su
+- [Vercel vs Netlify](https://vercel.com/kb/guide/vercel-vs-netlify) — A detailed guide to Vercel vs Netlify: runtimes, compute architecture, AI infrastructure, security, and when to choose e
+- [Vercel vs Northflank](https://vercel.com/kb/guide/vercel-vs-northflank) — A detailed guide to Vercel vs Northflank: Fluid compute, CDN and caching, container image functions, security defaults,
+- [Always-on tracing for production and preview traffic](https://vercel.com/changelog/always-on-tracing-for-production-and-preview-traffic)
+- [Search trace spans from the Vercel CLI](https://vercel.com/changelog/search-trace-spans-from-the-vercel-cli)
+- [Track a request's full lifecycle with session tracing](https://vercel.com/changelog/session-tracing-now-available)
+- [AI Gateway Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
+- [Observability for Durable Agent Harnesses](https://vercel.com/docs/agent-harnesses/observability) — See each durable agent session in Vercel Agent Runs, with its turns, model and tool calls, timing, and token usage, and
 
 Full cross-link map for this page: [/docs/tracing.graph.md](/docs/tracing.graph.md)
 <!-- /docsgraph:related -->
@@ -51,28 +51,26 @@ Each step in this process is a **span**. A span is a single unit of work in a tr
 
 ## Automatic instrumentation
 
-Vercel automatically instruments your application without needing any additional code changes. When you enable [always-on tracing](/docs/tracing/always-on-tracing) or start a [session trace](/docs/tracing/session-tracing), you'll be able to visualize traces in the dashboard for:
+Vercel automatically instruments your application without needing any additional code changes. When you [turn on tracing](/docs/tracing/configure-tracing) for a project or start a [session trace](/docs/tracing/session-tracing), you'll be able to visualize traces in the dashboard for:
 
 - **Vercel infrastructure**: You'll be able to view spans showing the lifecycle of each invocation of your Vercel Functions and how it moves through Vercel's infrastructure, including routing, middleware, caching, and other infrastructure details.
-- **Outbound HTTP calls**: The HTTP requests made from your function will be displayed as fetch spans, displaying information on the length of time, location, and other attributes.
+- **Outbound HTTP calls**: Each HTTP request your function makes appears as a fetch span, with its duration, location, and other attributes. If your project uses OpenTelemetry, your OpenTelemetry setup records fetch spans instead. See [How OpenTelemetry affects fetch spans](/docs/tracing/instrumentation#how-opentelemetry-affects-fetch-spans).
 
 To send this trace data to an external observability tool, use [Trace Drains](/docs/drains/reference/traces).
 
 For additional tracing, such as framework spans, you can install the [@vercel/otel](/docs/tracing/instrumentation) package to use the OpenTelemetry SDK. In addition, you can [add custom spans](/docs/tracing/instrumentation#adding-custom-spans) to your traces to capture spans and gain more visibility into your application.
 
-## Always-on tracing
+## Tracing production and preview traffic
 
-Always-on tracing continuously collects traces from your production and preview traffic, so you can investigate real requests without reproducing them first. You choose how much to collect with sampling rules you set per project.
+When you turn on tracing, Vercel continuously collects traces from your production and preview traffic, so you can investigate real requests without reproducing them first. You choose how much to collect with sampling rules you set per project.
 
-Unlike [session tracing](/docs/tracing/session-tracing), it captures traces across real user traffic, not just your own browser session. Collection is sampled at the rate you set. It lets you:
+Unlike [Session Tracing](/docs/tracing/session-tracing), tracing captures real user traffic, not only your own browser session. Use it to:
 
 - Debug issues after they happen, using traces that were already collected.
 - Catch rare or intermittent errors across real user traffic.
-- Monitor performance for all sampled requests, not just your own session.
+- Monitor performance for all sampled requests, not only your own session.
 
-> **💡 Note:** Always-on tracing is in Beta and available on all plans.
-
-To turn it on and configure sampling rules, see [Always-on tracing](/docs/tracing/always-on-tracing).
+Tracing is available on all plans. [New projects on Next.js 16.5 or later](/docs/tracing/configure-tracing#default-tracing-for-new-next.js-projects) have it on by default. To turn it on and configure sampling rules, see [Configuring Tracing](/docs/tracing/configure-tracing).
 
 ## Sampling
 
@@ -80,11 +78,11 @@ Vercel collects a sample of your traffic based on the sampling rules you configu
 
 Sampling applies to a whole trace at once, not to individual spans. For each trace, Vercel makes one keep-or-drop decision and applies it to every span, so you never see a partial trace: a sampled request keeps all of its spans, and a dropped one keeps none.
 
-Always-on tracing and Trace Drains use separate rule sets that behave differently when empty. With no rules, always-on tracing collects nothing, while a [Trace Drain](/docs/drains/reference/traces) forwards all traces. Adding rules to either then limits collection to the requests those rules match. To configure rules, see [Always-on tracing](/docs/tracing/always-on-tracing#enable-always-on-tracing).
+Tracing and Trace Drains use separate rule sets that behave differently when empty. With no rules, tracing collects nothing, while a [Trace Drain](/docs/drains/reference/traces) forwards all traces. Adding rules to either then limits collection to the requests those rules match. To configure rules, see [Manage sampling rules](/docs/tracing/configure-tracing#manage-sampling-rules).
 
-## Session tracing
+## Session Tracing
 
-Session tracing captures spans for requests made during **your** individual browser session, using the Vercel toolbar. Use it for targeted, interactive debugging when you want to trace a specific flow you're clicking through, without collecting traces for all of your traffic.
+Session Tracing captures spans for requests made during **your** individual browser session, using the Vercel toolbar. Use it for targeted, interactive debugging when you want to trace a specific flow you're clicking through, without collecting traces for all of your traffic.
 
 You can initiate a session trace in two ways:
 
@@ -95,20 +93,53 @@ For detailed instructions on starting traces, managing active sessions, and view
 
 ## Using OpenTelemetry
 
-Vercel uses [OpenTelemetry](https://opentelemetry.io/), an open standard for collecting traces from your application. In order to capture framework and custom spans, install the `@vercel/otel` package. This package provides helper methods to make it easier to instrument your application with OpenTelemetry.
+Vercel uses [OpenTelemetry](https://opentelemetry.io/), an open standard for collecting traces from your application. To capture framework and custom spans, install the `@vercel/otel` package. This package provides helper methods to make it easier to instrument your application with OpenTelemetry.
 
 See the [Instrumentation](/docs/tracing/instrumentation) guide to set up OpenTelemetry for your project.
 
 ## Viewing traces in the dashboard
 
-Once traces are being collected, through always-on tracing or a session trace, you can visualize them in your dashboard:
+After you turn on tracing or start a session trace, you can find your traces in two places in your dashboard:
+
+- **Traces**: Search and filter every trace and span collected for a project.
+- **Logs**: Open the trace for a specific request from its log.
+
+### From the project Traces page
+
+To browse all traces for a project:
+
+1. Select your team from the team switcher and select your project.
+2. Select [**Traces** in the sidebar](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Ftraces\&title=Go+to+Traces).
+3. Choose **Spans** (the default) or **Traces** with the switch above the filters. **Spans** shows individual spans, including child spans such as outbound fetches. **Traces** shows one row per traced request.
+4. Narrow the list with filters, or enter a [Kibana Query Language (KQL)](/docs/cli/traces#filter-with-kql) query in the search box. Each condition needs a field, such as `trace.id:<id>`, `http.route:/api/*`, or `span.name:db* AND span.duration > 500`. In the **Traces** list, the query matches each trace's root span.
+5. Select a row to open its trace.
+
+The filters available depend on the list you choose:
+
+| Filter          | List   | Description                                                                     |
+| --------------- | ------ | ------------------------------------------------------------------------------- |
+| **Timeline**    | Both   | The time range to show.                                                         |
+| **Environment** | Both   | **Production**, **Preview**, or both.                                           |
+| **Method**      | Traces | The HTTP method of the incoming request.                                        |
+| **Route**       | Traces | The route that handled the request. For prerendered dynamic pages, this is the actual path, such as `/blog/1`, not the pattern. |
+| **Path**        | Traces | The exact request path, without the query string.                               |
+| **Status**      | Spans  | **Error** or **Ok**.                                                            |
+| **Kind**        | Spans  | The OpenTelemetry span kind, one of **Internal**, **Server**, **Client**, **Producer**, or **Consumer**. |
+| **Service**     | Spans  | The service that emitted the span.                                              |
+| **Span**        | Spans  | The span name.                                                                  |
+
+Turn on **Live** to see new traces as they arrive.
+
+### From Logs
+
+To open the trace for a specific request:
 
 1. Select your team from the team switcher and select your project.
 2. Select the [**Logs** section in the sidebar](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Flogs\&title=Go+to+Logs).
 3. Use the tracing icon  in the filter bar to filter to traces. You can filter traces using [all the same filters available](/docs/logs/runtime#log-filters) in the **Logs** section in the sidebar of the dashboard. To view traces for requests to your browser, press the user icon next to the Traces icon.
-4. Find the request you want to view traces for and click the **Trace** button at the bottom of the request details panel. This will open the traces for that request:
+4. Select the request you want to view traces for, then select the **Trace** tab next to **Logs** in the bottom panel. This opens the trace for that request:
 
-![Image](https://vercel.com/front/docs/observability/trace-timeline-view-light.png?lightbox)
+![View traces in the logs tab.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/observability/trace-timeline-view-light.png?lightbox)
 
 ### Anatomy of a trace
 
@@ -121,11 +152,39 @@ Your traces display the following types of spans:
 | **Infrastructure spans** | Black and white with a triangle icon | Capture how requests move through Vercel's infrastructure, including routing, middleware, and caching.                                                                         |
 | **Fetch spans**          | Green                                | Represent HTTP requests made from your functions.                                                                                                                              |
 | **Framework spans**      | Blue                                 | Appear when you [instrument your application](/docs/tracing/instrumentation) with OpenTelemetry. Next.js 13.4+ automatically contributes spans for routes and rendering tasks. |
-| **Custom spans**         | Blue                                 | [Custom instrumentation](/docs/tracing#adding-custom-spans) you can add to your application using OpenTelemetry.                                                               |
+| **Custom spans**         | Blue                                 | [Custom instrumentation](/docs/tracing/instrumentation#adding-custom-spans) you can add to your application using OpenTelemetry.                                                               |
 
 To view details of a span, click on the span in the trace. The sidebar will display the span's details. For infrastructure spans, a "what is this?" explanation will be provided.
 
-To view trace spans in more detail, click and drag to zoom in on a specific area of the trace. You can also use the zoom controls in the bottom right corner of the trace.
+To view trace spans in more detail, hold Shift and drag to zoom in on a specific area of the trace. You can also use the zoom controls in the bottom right corner of the trace. To move around the trace, click and drag it.
+
+### Switching between trace views
+
+When you open a trace, you can switch between three visualizations of the same spans using the view menu in the top-right corner of the trace panel. Each view lays out the same data differently, so you can pick the one that fits what you're debugging:
+
+| View         | What it shows                                                                  | Use it to                                                               |
+| ------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| **Timeline** | Spans on a shared horizontal time axis, positioned by start time and duration. | Spot where a request spends its time. For example, find a slow database query that delays the response, or check whether your outbound fetches run in parallel or one after another. |
+| **Tree**     | Spans as an indented hierarchy you can expand and collapse.                    | Follow how one operation triggers another. For example, see which route handler fanned out into a burst of downstream API calls, without exact timing getting in the way.            |
+| **Waterfall** | The span hierarchy alongside duration bars on a time axis.                     | Read structure and timing together. For example, walk a chain of nested calls to find the deepest span that dominates the total request duration.                                   |
+
+#### Timeline view
+
+The timeline is the default view. Spans appear as horizontal bars on a shared time axis, so you can see when each step started, how long it took, and where spans overlap.
+
+![Timeline view of a trace.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/observability/trace-timeline-view-light.png?lightbox)
+
+#### Tree view
+
+The tree view shows spans as an indented, collapsible hierarchy. Expand a span to reveal its child spans, which helps you follow how one operation leads to another without focusing on exact timing.
+
+![Tree view of a trace.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/observability/trace-tree-view-light.png?lightbox)
+
+#### Waterfall view
+
+The waterfall view combines the tree's hierarchy with the timeline's duration bars. Each row shows a span's place in the hierarchy next to a bar sized and positioned by its duration, so you can read both structure and timing at once.
+
+![Waterfall view of a trace.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/observability/trace-waterfall-view-light.png?lightbox)
 
 ## Exporting traces to a third party
 
@@ -161,7 +220,7 @@ attribute.
 
 ## More resources
 
-- [Always-on Tracing](/docs/tracing/always-on-tracing)
+- [Configuring Tracing](/docs/tracing/configure-tracing)
 - [Using Vercel Drains](/docs/drains)
 - [Trace Drains](/docs/drains/reference/traces)
 - [Learn about the Vercel toolbar](/docs/vercel-toolbar)
@@ -171,3 +230,6 @@ attribute.
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

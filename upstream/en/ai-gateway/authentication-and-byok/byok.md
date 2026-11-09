@@ -1,9 +1,9 @@
 ---
-title: Bring Your Own Key (BYOK)
+title: Bring Your Own Key (BYOK) to AI Gateway
 product: vercel
 url: /docs/ai-gateway/authentication-and-byok/byok
 canonical_url: "https://vercel.com/docs/ai-gateway/authentication-and-byok/byok"
-last_updated: 2026-07-31
+last_updated: 2026-09-22
 type: how-to
 prerequisites:
   - /docs/ai-gateway/authentication-and-byok
@@ -11,18 +11,18 @@ prerequisites:
 related:
   - /docs/ai-gateway/pricing
   - /docs/ai-gateway/observability-and-spend/budgets
-  - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
-  - /docs/ai-gateway/security-and-compliance/zdr
-  - /docs/ai-gateway/security-and-compliance/regional-inference
-summary: Learn how to configure your own provider keys with the AI Gateway.
+  - /docs/ai-gateway/authentication-and-byok/api-keys
+  - /docs/ai-gateway/authentication-and-byok/oidc
+  - /docs/ai-gateway/models-and-providers/provider-filtering-and-ordering
+summary: Learn how to configure your own provider keys with AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Bring Your Own Key (BYOK)
+# Bring Your Own Key (BYOK) to AI Gateway
 
 Using your own credentials with an external AI provider allows AI Gateway to authenticate requests on your behalf with [no added markup](/docs/ai-gateway/pricing#bring-your-own-key-byok).
 This approach is useful for using credits provided by the AI provider or executing AI queries that access private cloud data.
-If a query using your credentials fails, AI Gateway will retry the query with its system credentials to improve service availability.
+If a query using your credentials fails, AI Gateway will retry the query with its system credentials to improve service availability. When [ZDR](#zero-data-retention-zdr) is enabled, this fallback is limited to ZDR-eligible system credentials.
 
 
 <!-- docsgraph:related -->
@@ -30,15 +30,15 @@ If a query using your credentials fails, AI Gateway will retry the query with it
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How I use OpenCode with Vercel AI Gateway to build features fast](https://vercel.com/kb/guide/how-i-use-opencode-with-vercel-ai-gateway-to-build-features-fast?from=related) — How to route different AI models to different coding tasks automatically, cutting token costs by ~70% without losing qua
-- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router?from=related) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
-- [AI Gateway](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway?from=related)
-- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced?from=related) — Configure provider options, model fallbacks, BYOK credentials, and prompt caching.
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [Zero Data Retention](https://vercel.com/docs/ai-gateway/security-and-compliance/zdr?from=related) — Learn about zero data retention policies and how to enforce ZDR on a per-request basis with AI Gateway.
-- [Disallow Prompt Training](https://vercel.com/docs/ai-gateway/security-and-compliance/disallow-prompt-training?from=related) — Learn how to prevent AI providers from using your prompts and responses for model training through AI Gateway.
-- [Model Allowlist](https://vercel.com/docs/ai-gateway/security-and-compliance/model-allowlist?from=related) — Restrict which AI models your team can use through AI Gateway. Available on Pro and Enterprise.
+- [10x more capacity for Laguna S 2.1 on AI Gateway](https://vercel.com/changelog/10x-more-capacity-for-laguna-s-2-1-on-ai-gateway)
+- [AI Gateway adds Browserbase Search and Fetch tools](https://vercel.com/changelog/ai-gateway-adds-browserbase-search-and-fetch-tools)
+- [AI Gateway adds DeepSeek Search and Fetch tools](https://vercel.com/changelog/ai-gateway-adds-deepseek-search-and-fetch-tools)
+- [Cat Jam is now available in stealth for free on AI Gateway](https://vercel.com/changelog/cat-jam-is-now-available-in-stealth-for-free-on-ai-gateway)
+- [Claude Sonnet 5.5 now available on AI Gateway](https://vercel.com/changelog/claude-sonnet-5-5-now-available-on-ai-gateway)
+- [Cost-aware model routing with Vercel AI Gateway](https://vercel.com/kb/guide/cost-aware-model-routing-with-ai-gateway) — Send easy requests to a lower-cost model and escalate only the complex ones to a frontier model through AI Gateway, with
+- [Claude Code and Claude Agent SDK with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/claude-code) — Connect Claude Code to AI Gateway with one CLI command, or configure it manually.
+- [AI Gateway Google and Vertex Reasoning](https://vercel.com/docs/ai-gateway/models-and-providers/reasoning/google) — Configure thinking for Google Gemini and Gemma models with the AI SDK and AI Gateway.
+- [Ecosystem](https://vercel.com/docs/sandbox/ecosystem) — Use Vercel Sandbox with the agent frameworks, model SDKs, and agents you already work with.
 
 Full cross-link map for this page: [/docs/ai-gateway/authentication-and-byok/byok.graph.md](/docs/ai-gateway/authentication-and-byok/byok.graph.md)
 <!-- /docsgraph:related -->
@@ -53,7 +53,7 @@ Provider credentials are scoped to be available throughout your Vercel team, so 
 > BYOK, your team needs purchased [AI Gateway
 > credits](/docs/ai-gateway/pricing).
 
-Spend through your own credentials isn't counted in [budgets](/docs/ai-gateway/observability-and-spend/budgets). It's metered separately and doesn't count toward a team, project, or API key limit, so a budget can't be used to cap BYOK spend.
+Spend through your own credentials isn't counted in [budgets](/docs/ai-gateway/observability-and-spend/budgets). It's metered separately and doesn't count toward a team, project, or API key limit, so a budget can't be used to cap BYOK spend. After a budget is exceeded, AI Gateway rejects every request in that budget's scope, including BYOK requests.
 
 ## Getting started
 
@@ -62,13 +62,60 @@ Spend through your own credentials isn't counted in [budgets](/docs/ai-gateway/o
 
 - ### Add the credentials to your Vercel team
   1. Go to the [AI Gateway Bring Your Own Key (BYOK) page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fbyok\&title=AI+Gateway+BYOK) in your Vercel dashboard.
-  2. Find your provider from the list and click **Add**.
+  2. Find your provider from the list and click **Add Key**.
   3. In the dialog that appears, enter the credentials you retrieved from the provider.
-  4. Ensure that the **Enabled** toggle is turned on so that the credentials are active.
-  5. Click **Test Key** to validate and add your credentials.
+  4. Click **Test API Key** to validate and add your credentials. AI Gateway enables new credentials by default.
 
 - ### Use the credentials in your AI Gateway requests
   Once you add credentials, AI Gateway automatically includes them in your requests. You can now use these credentials to authenticate your requests.
+
+## Use API credits from a ChatGPT or Claude subscription
+
+Eligible ChatGPT Pro and Business subscribers and Claude Max and Team subscribers can claim API credits in a linked provider organization. Use a key from that organization with BYOK so eligible requests can draw from the grant. The credits stay with OpenAI or Anthropic, separate from your AI Gateway Credits balance.
+
+Follow the walkthrough for your subscription to check eligibility, claim the grant, and connect the credited organization's key:
+
+- [Use ChatGPT API credits with Vercel AI Gateway](/i/chatgpt-api-credits-ai-gateway)
+- [Use Claude API credits with Vercel AI Gateway](/i/claude-api-credits-ai-gateway)
+
+After claiming the grant:
+
+1. Add the organization's OpenAI or Anthropic key using the steps above. For dashboard credentials, confirm that the key is enabled. If the provider has more than one key, also confirm that the dashboard marks this key **In Use**.
+2. Authenticate your application to AI Gateway with an [AI Gateway API key](/docs/ai-gateway/authentication-and-byok/api-keys) or [OIDC](/docs/ai-gateway/authentication-and-byok/oidc). These credentials authenticate to AI Gateway; the provider key authenticates to OpenAI or Anthropic.
+3. [Restrict the serving provider](/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering#restrict-providers-with-the-only-filter) to `openai` or `anthropic`, respectively. A provider restriction doesn't disable fallback to AI Gateway's system credentials if your key fails.
+4. Check the request's provider and credential source in [AI Gateway Logs](/docs/ai-gateway/observability-and-spend/logs), then confirm grant usage in the provider's billing dashboard. A successful response or key test doesn't establish that the grant funded the request.
+
+## Manage keys in the dashboard
+
+### Use more than one key per provider
+
+You can add up to 10 keys per provider. Each key has its own name, **Enabled** state, and ZDR setting, and the dashboard lists every key under its provider.
+
+AI Gateway uses the oldest enabled key for a provider, which the dashboard marks **In Use**. Requests that require [Zero Data Retention (ZDR)](#zero-data-retention-zdr) can use another enabled key that's marked ZDR-compliant.
+
+Other enabled keys are on standby. If the key in use fails, requests fall back to system credentials, not to your next key. To switch to a standby key, disable the key in use.
+
+### Replace a key
+
+Replace a key when you rotate it at the provider. Replacing a key changes only the stored credential, so the key keeps its name, **Enabled** state, ZDR setting, and [model mappings](#model-mappings). Your BYOK traffic keeps using your own credentials during the swap. If you delete a key and add a new one instead, requests use system credentials in between.
+
+1. In the [AI Gateway Bring Your Own Key (BYOK) page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fbyok\&title=AI+Gateway+BYOK), click the menu for the key you want to replace.
+2. Select **Replace Key**.
+3. Enter the new credentials and click **Replace API Key**.
+
+AI Gateway tests the new credentials before saving them. If the test fails, the existing key stays in place. To see when a key was last replaced, hover its created date in the list.
+
+> **💡 Note:** Keep the old key valid at the provider for a few minutes after you replace
+> it. Requests already in progress can still use it, and an open realtime
+> WebSocket session keeps the key it started with until the session ends.
+
+### Who can manage keys
+
+| Role      | View keys | Add, replace, rename, enable, or delete keys | Mark a key as ZDR-compliant |
+| --------- | --------- | -------------------------------------------- | --------------------------- |
+| Owner     | Yes       | Yes                                          | Yes                         |
+| Member    | Yes       | Yes                                          | No                          |
+| Developer | Yes       | No                                           | No                          |
 
 ## Request-scoped BYOK
 
@@ -76,23 +123,317 @@ In addition to configuring credentials in the dashboard, you can pass provider c
 
 When request-scoped BYOK credentials are provided, AI Gateway doesn't consider any cached BYOK credentials configured in the dashboard for that request. Requests may still fall back to system credentials if the provided credentials fail.
 
-### AI SDK usage
+### Request examples
 
-```typescript
-import type { GatewayProviderOptions } from '@ai-sdk/gateway';
+The cURL examples use `jq` to encode the provider key in JSON.
+
+These examples use AI SDK 7 and the AI SDK for Python beta. Set `AI_GATEWAY_API_KEY` before running them. See [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for setup, request fields, and response handling.
+
+#### AI SDK
+
+#### TypeScript
+
+See the [AI SDK BYOK reference](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway#bring-your-own-key-byok) for SDK configuration and usage.
+
+```typescript filename="byok.ts"
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-opus-5',
-  prompt: 'Hello, world!',
+  model: 'anthropic/claude-sonnet-5',
+  prompt: 'Explain quantum computing in two sentences.',
   providerOptions: {
     gateway: {
       byok: {
-        anthropic: [{ apiKey: process.env.ANTHROPIC_API_KEY }],
+        anthropic: [
+          {
+            apiKey: process.env.ANTHROPIC_API_KEY!,
+          },
+        ],
       },
-    } satisfies GatewayProviderOptions,
+    },
   },
 });
+
+console.log(text);
+```
+
+#### Python (beta)
+
+```python filename="byok_ai.py"
+import asyncio
+import os
+import ai
+
+async def main():
+    model = ai.get_model("anthropic/claude-sonnet-5")
+    messages = [ai.user_message("Explain quantum computing in two sentences.")]
+    params = ai.InferenceRequestParams(
+        extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}}
+    )
+    async with ai.stream(model, messages, params=params) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
+
+asyncio.run(main())
+```
+
+#### Chat Completions
+
+#### TypeScript
+
+```typescript filename="byok-chat.ts"
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.chat.completions.create({
+  model: 'anthropic/claude-sonnet-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  // AI Gateway extension fields are not included in the upstream SDK types.
+  ...{
+    providerOptions: {
+      gateway: {
+        byok: {
+          anthropic: [
+            {
+              apiKey: process.env.ANTHROPIC_API_KEY!,
+            },
+          ],
+        },
+      },
+    },
+  },
+});
+
+console.log(response.choices[0]?.message.content);
+```
+
+#### Python
+
+```python filename="byok_chat.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.chat.completions.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}},
+)
+
+print(response.choices[0].message.content)
+```
+
+#### cURL
+
+```bash filename="byok-chat.sh"
+jq -n '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "providerOptions": {
+    "gateway": {
+      "byok": {
+        "anthropic": [
+          {
+            "apiKey": $ENV.ANTHROPIC_API_KEY
+          }
+        ]
+      }
+    }
+  }
+}' | curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data-binary @-
+```
+
+#### Messages API
+
+#### TypeScript
+
+```typescript filename="byok-messages.ts"
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh',
+});
+
+const response = await client.messages.create({
+  model: 'anthropic/claude-sonnet-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  max_tokens: 1024,
+  ...{
+    providerOptions: {
+      gateway: {
+        byok: {
+          anthropic: [
+            {
+              apiKey: process.env.ANTHROPIC_API_KEY!,
+            },
+          ],
+        },
+      },
+    },
+  },
+});
+
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
+}
+```
+
+#### Python
+
+```python filename="byok_messages.py"
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh",
+)
+
+response = client.messages.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    max_tokens=1024,
+    extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}},
+)
+
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="byok-messages.sh"
+jq -n '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "max_tokens": 1024,
+  "providerOptions": {
+    "gateway": {
+      "byok": {
+        "anthropic": [
+          {
+            "apiKey": $ENV.ANTHROPIC_API_KEY
+          }
+        ]
+      }
+    }
+  }
+}' | curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  --data-binary @-
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="byok-responses.ts"
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.responses.create({
+  model: 'anthropic/claude-sonnet-5',
+  input: 'Explain quantum computing in two sentences.',
+  ...{
+    providerOptions: {
+      gateway: {
+        byok: {
+          anthropic: [
+            {
+              apiKey: process.env.ANTHROPIC_API_KEY!,
+            },
+          ],
+        },
+      },
+    },
+  },
+});
+
+console.log(response.output_text);
+```
+
+#### Python
+
+```python filename="byok_responses.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.responses.create(
+    model="anthropic/claude-sonnet-5",
+    input="Explain quantum computing in two sentences.",
+    extra_body={"providerOptions": {"gateway": {"byok": {"anthropic": [{"apiKey": os.environ["ANTHROPIC_API_KEY"]}]}}}},
+)
+
+print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="byok-responses.sh"
+jq -n '{
+  "model": "anthropic/claude-sonnet-5",
+  "input": "Explain quantum computing in two sentences.",
+  "providerOptions": {
+    "gateway": {
+      "byok": {
+        "anthropic": [
+          {
+            "apiKey": $ENV.ANTHROPIC_API_KEY
+          }
+        ]
+      }
+    }
+  }
+}' | curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data-binary @-
 ```
 
 ### Credential structure by provider
@@ -136,7 +477,7 @@ providerOptions: {
 
 > **💡 Note:** For Chat Completions API usage with request-scoped BYOK, see the
 > [OpenAI Chat Completions API
-> documentation](/docs/ai-gateway/sdks-and-apis/openai-chat-completions#request-scoped-byok-bring-your-own-key).
+> documentation](/docs/ai-gateway/authentication-and-byok/byok#request-scoped-byok).
 
 ### Model mappings
 
@@ -183,6 +524,10 @@ When ZDR is enabled, either team-wide or per-request, AI Gateway skips your BYOK
 
 If you have your own ZDR agreement with a provider, mark an individual BYOK key as ZDR-compliant to include it in the ZDR routing set. This applies to both team-wide and request-level ZDR.
 
+Marking a key as ZDR-compliant makes it eligible for ZDR routing; it does not enable ZDR. ZDR is enforced only when team-wide ZDR is on or the request sets `zeroDataRetention: true`. Without team-wide or request-level ZDR enabled, normal routing and fallback apply. Marking a BYOK key as ZDR-compliant does not enforce ZDR for the request.
+
+ZDR also changes fallback. With ZDR enabled, a ZDR-marked BYOK key is tried first, and a failed request falls back only to system credentials for providers with ZDR agreements. If none are available for the model, the request fails instead of routing through a non-ZDR provider.
+
 > **💡 Note:** For the full behavior and configuration steps, see [ZDR and
 > BYOK](/docs/ai-gateway/security-and-compliance/zdr#byok).
 
@@ -197,7 +542,7 @@ For the full behavior, including failure cases and how to confirm where a reques
 After successfully adding your credentials for a provider, you can verify that they're working directly from the **Bring Your Own Key (BYOK)** tab. To test your credentials:
 
 1. In the [AI Gateway](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2F\&title=) tab, navigate to the **Bring Your Own Key (BYOK)** section.
-2. Click the menu for your configured provider.
+2. Click the menu for the key you want to test.
 3. Select **Test Key** from the dropdown.
 
 This will execute a small test query using a cheap and fast model from the selected provider to verify the health of your credentials. The test is designed to be minimal and cost-effective while ensuring your authentication is working properly.
@@ -211,3 +556,6 @@ Once the test completes, you can click on the test result badge to open a detail
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

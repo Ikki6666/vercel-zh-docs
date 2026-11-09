@@ -3,14 +3,14 @@ title: Using Global Config with Split
 product: vercel
 url: /docs/global-config/global-config-integrations/split-global-config
 canonical_url: "https://vercel.com/docs/global-config/global-config-integrations/split-global-config"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: tutorial
 prerequisites:
   - /docs/global-config/global-config-integrations
   - /docs/global-config
 related:
   - /docs/cli
-  - /docs/projects
+  - /docs/projects/managing-projects
   - /docs/global-config/get-started
   - /docs/global-config/global-config-sdk
   - /docs/global-config/global-config-dashboard
@@ -28,102 +28,93 @@ This guide will help you get started with using Vercel's Split integration with 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Backend for Frontend](https://nextjs.org/docs/app/guides/backend-for-frontend?from=related) — Learn how to use Next.js as a backend framework
-- [route.js](https://nextjs.org/docs/app/api-reference/file-conventions/route?from=related) — API reference for the route.js special file.
-- [Build a Claude Managed Agent with Vercel Sandbox](https://vercel.com/kb/guide/run-claude-managed-agent-tools-with-vercel-sandbox?from=related) — Build a Claude Managed Agent with Vercel Sandbox: each session runs in a fresh microVM with credential brokering and a w
-- [Version 15](https://nextjs.org/docs/app/guides/upgrading/version-15?from=related) — Upgrade your Next.js Application from Version 14 to 15.
-- [@vercel/analytics](https://vercel.com/docs/analytics/package?from=related) — With the @vercel/analytics npm package, you are able to configure your application to send analytics data to Vercel.
-- [API](https://vercel.com/docs/routing-middleware/api?from=related) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
-- [CDN Cache](https://vercel.com/docs/caching/cdn-cache?from=related) — Learn how Vercel's CDN cache stores your content across a global network to reduce latency and origin load.
-- [DevCycle](https://vercel.com/docs/global-config/global-config-integrations/devcycle-global-config?from=related) — Learn how to use Global Config with Vercel's DevCycle integration.
-- [Client Uploads](https://vercel.com/docs/vercel-blob/client-upload?from=related) — Learn how to upload files larger than 4.5 MB directly from the browser to Vercel Blob
+- [Global Config](https://vercel.com/docs/agent-resources/vercel-mcp/tools/global-config) — Vercel MCP tools for Global Config.
+- [Integrations](https://vercel.com/docs/agent-resources/vercel-mcp/tools/integrations) — Vercel MCP tools for integrations.
+- [How to use Next.js as a backend for your frontend](https://nextjs.org/docs/app/guides/backend-for-frontend) — Learn how to use Next.js as a backend framework
+- [route.js](https://nextjs.org/docs/app/api-reference/file-conventions/route) — API reference for the route.js special file.
+- [How to build zero-CLS A/B tests with Next.js and Vercel Edge Config](https://vercel.com/blog/zero-cls-experiments-nextjs-edge-config)
+- [TanStack Start](https://ai-sdk.dev/docs/getting-started/tanstack-start) — Learn how to build your first agent with the AI SDK and TanStack Start.
+- [Client Uploads with Vercel Blob](https://vercel.com/docs/vercel-blob/client-upload) — Learn how to upload files larger than 4.5 MB directly from the browser to Vercel Blob
+- [Advanced Web Analytics Config with @vercel/analytics](https://vercel.com/docs/analytics/package) — With the @vercel/analytics npm package, you are able to configure your application to send analytics data to Vercel.
+- [OG Image Generation Examples](https://vercel.com/docs/og-image-generation/examples) — Learn how to use the @vercel/og library with examples.
 
 Full cross-link map for this page: [/docs/global-config/global-config-integrations/split-global-config.graph.md](/docs/global-config/global-config-integrations/split-global-config.graph.md)
 <!-- /docsgraph:related -->
 
-> **🔒 Permissions Required**: The Split Global Config integration
+> The Split Global Config integration is available in Beta on all plans
 
 Split is a feature flag provider that tracks event data, enabling you to release features, target them to audiences, and measure their impact on customer experience metrics securely.
 
-The Split Global Config integration enables you to write your [Split rollout plan](https://help.split.io/hc/en-us/articles/9805284145549-Creating-a-rollout-plan "Rollout Plan") to a Global Config. Doing so will allow you to evaluate feature flags at ultra-low latency with Vercel's CDN while tracking events and impressions data with Split.
+The Split Global Config integration enables you to write your [Split rollout plan](https://developer.harness.io/feature-management-experimentation/use-fme/feature-management/setup/create-a-rollout-plan "Rollout Plan") to a Global Config. Doing so will allow you to evaluate feature flags at ultra-low latency with Vercel's CDN while tracking events and impressions data with Split.
 
 ## Prerequisites
 
 Before using this integration, you should have:
 
 1. The latest version of Vercel CLI. To check your version, use `vercel --version`. To [install](/docs/cli#installing-vercel-cli) or update Vercel CLI, use:
-   <CodeBlock>
-     <Code tab="pnpm">
-       ```bash
-       pnpm i vercel
-       ```
-     </Code>
-     <Code tab="yarn">
-       ```bash
-       yarn i vercel
-       ```
-     </Code>
-     <Code tab="npm">
-       ```bash
-       npm i vercel
-       ```
-     </Code>
-     <Code tab="bun">
-       ```bash
-       bun i vercel
-       ```
-     </Code>
-   </CodeBlock>
+
+   **pnpm**
+   ```bash
+   pnpm i -g vercel@latest
+   ```
+   **yarn**
+   ```bash
+   yarn global add vercel@latest
+   ```
+   **npm**
+   ```bash
+   npm i -g vercel@latest
+   ```
+   **bun**
+   ```bash
+   bun add -g vercel@latest
+   ```
 2. A project. If you don't have one, you can run the following terminal commands to create a Next project:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i 
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i 
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i 
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i 
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
 
-1. A Vercel project. If you don't have one, see [Creating a Project](/docs/projects#creating-a-project)
+```bash
+pnpm create next-app@latest
+```
+
+**yarn**
+
+```bash
+yarn create next-app@latest
+```
+
+**npm**
+
+```bash
+npx create-next-app@latest
+```
+
+**bun**
+
+```bash
+bunx create-next-app@latest
+```
+
+1. A Vercel project. If you don't have one, see [Creating a Project](/docs/projects/managing-projects#creating-a-project)
 2. A Global Config. If you don't have one, follow [the Global Config quickstart](/docs/global-config/get-started)
 3. The Global Config SDK:
-   <CodeBlock>
-     <Code tab="pnpm">
-       ```bash
-       pnpm i @vercel/global-config
-       ```
-     </Code>
-     <Code tab="yarn">
-       ```bash
-       yarn i @vercel/global-config
-       ```
-     </Code>
-     <Code tab="npm">
-       ```bash
-       npm i @vercel/global-config
-       ```
-     </Code>
-     <Code tab="bun">
-       ```bash
-       bun i @vercel/global-config
-       ```
-     </Code>
-   </CodeBlock>
+
+   **pnpm**
+   ```bash
+   pnpm i @vercel/global-config
+   ```
+   **yarn**
+   ```bash
+   yarn add @vercel/global-config
+   ```
+   **npm**
+   ```bash
+   npm i @vercel/global-config
+   ```
+   **bun**
+   ```bash
+   bun add @vercel/global-config
+   ```
 
 > **💡 Note:** To configure this integration, Split Admin access (Split Admin users can add
 > feature flags and segments, and edit them at will) is required.
@@ -132,12 +123,12 @@ Before using this integration, you should have:
   Visit [the Split page in the Vercel Integration Marketplace](/marketplace/split) and select the **Add Integration** button. From the Integration dialog:
   1. Select a Vercel team and project to connect the integration to
   2. Log into Split
-  3. Select the **[Split Environment](https://developer.harness.io/docs/feature-management-experimentation/integrations/vercel/)** you want to use
+  3. Select the **[Split Environment](https://developer.harness.io/feature-management-experimentation/management-and-administration/integrations/vercel)** you want to use
   4. Select an existing Global Config or create a new one
   5. Copy the Global Config item key provided on this page. You'll need it to add it to your Environment Variables
   > **💡 Note:** You can also find your Global Config Split item key in [your dashboard on
-  > Vercel](/dashboard/integrations). In the  section in the sidebar,
-  > select , then select  on the
+  > Vercel](/dashboard/integrations). In the **Integrations** section in the sidebar,
+  > select **Manage**, then select **Configure** on the
   > integration page. You should see the item key on the page that opens.
 
 - ### Create your feature flags
@@ -173,35 +164,29 @@ Before using this integration, you should have:
   4. You should see the item key on the page that opens. Copy it
   To add your Global Config's connection string to your project:
   1. Visit your project's page in [the dashboard](/dashboard)
-  2. Open **Storage** in the sidebar. Select **Connect Store** and select the Global Config associated with your Split integration. The `GLOBAL_CONFIG` environment variable will be set automatically.
+  2. Open **Storage** in the sidebar. Select **Connect Database** and select the Global Config associated with your Split integration. The `GLOBAL_CONFIG` environment variable will be set automatically.
   Now you're ready to use the Split Global Config integration in your code.
 
 - ### Use the Split integration in your code
   Open your project's code on your local machine and do the following:
   1. Install Split's Browser SDK, Vercel integration utilities, and Vercel's Global Config SDK:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
-      ```
-    </Code>
-  </CodeBlock>
-  2. Create an API route in your project. The following example fetches a treatement based on which user is visiting. You can specify the user by appending `?userKey=Joe` or `?userKey=Bobby` to the URL when visiting the route:
+  **pnpm**
+  ```bash
+  pnpm i @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
+  ```
+  **yarn**
+  ```bash
+  yarn add @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
+  ```
+  **npm**
+  ```bash
+  npm i @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
+  ```
+  **bun**
+  ```bash
+  bun add @splitsoftware/splitio-browserjs @splitsoftware/vercel-integration-utils @vercel/global-config
+  ```
+  2. Create an API route in your project. The following example fetches a treatment based on which user is visiting. You can specify the user by appending `?userKey=Joe` or `?userKey=Bobby` to the URL when visiting the route:
   ```ts filename="app/api/marketing-example/route.ts" framework=nextjs-app
   import {
     SplitFactory,
@@ -243,9 +228,9 @@ Before using this integration, you should have:
       debug: ErrorLogger(),
     }).client();
 
-    await new Promise((resolve) => {
-      client.on(client.Event.SDK_READY, () => resolve);
-      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve);
+    await new Promise<void>((resolve) => {
+      client.on(client.Event.SDK_READY, () => resolve());
+      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve());
     });
 
     // Replace this with the feature flag you want
@@ -306,8 +291,8 @@ Before using this integration, you should have:
     }).client();
 
     await new Promise((resolve) => {
-      client.on(client.Event.SDK_READY, () => resolve);
-      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve);
+      client.on(client.Event.SDK_READY, () => resolve());
+      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve());
     });
 
     // Replace this with the feature flag you want
@@ -372,9 +357,9 @@ Before using this integration, you should have:
     }).client();
 
     // Wait until
-    await new Promise((resolve) => {
-      client.on(client.Event.SDK_READY, () => resolve);
-      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve);
+    await new Promise<void>((resolve) => {
+      client.on(client.Event.SDK_READY, () => resolve());
+      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve());
     });
 
     // Replace this with the feature flag you want
@@ -436,8 +421,8 @@ Before using this integration, you should have:
 
     // Wait until
     await new Promise((resolve) => {
-      client.on(client.Event.SDK_READY, () => resolve);
-      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve);
+      client.on(client.Event.SDK_READY, () => resolve());
+      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve());
     });
 
     // Replace this with the feature flag you want
@@ -502,9 +487,9 @@ Before using this integration, you should have:
     }).client();
 
     // Wait until
-    await new Promise((resolve) => {
-      client.on(client.Event.SDK_READY, () => resolve);
-      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve);
+    await new Promise<void>((resolve) => {
+      client.on(client.Event.SDK_READY, () => resolve());
+      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve());
     });
 
     // Replace this with the feature flag you want
@@ -524,8 +509,8 @@ Before using this integration, you should have:
   }
   ```
   ```js filename="pages/api/marketing-example.js" framework=other
-    SplitFactory,
   import {
+    SplitFactory,
     PluggableStorage,
     ErrorLogger,
   } from '@splitsoftware/splitio-browserjs';
@@ -566,8 +551,8 @@ Before using this integration, you should have:
 
     // Wait until
     await new Promise((resolve) => {
-      client.on(client.Event.SDK_READY, () => resolve);
-      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve);
+      client.on(client.Event.SDK_READY, () => resolve());
+      client.on(client.Event.SDK_READY_TIMED_OUT, () => resolve());
     });
 
     // Replace this with the feature flag you want
@@ -592,7 +577,7 @@ Before using this integration, you should have:
   ```bash filename="terminal"
   vercel dev
   ```
-  1. Navigate to <http://localhost:3000/api/split-example?userKey=Joe>. You should see either `New marketing page` or `Old marketing page` based on how your feature flags are configured in Split
+  1. Navigate to <http://localhost:3000/api/marketing-example?userKey=Joe>. You should see either `New marketing page` or `Old marketing page` based on how your feature flags are configured in Split
      - Try changing the `userKey` search param's value to `Bobby`, or deleting it altogether, to see different responses when you visit the route
 
 ## Next steps
@@ -608,3 +593,6 @@ Now that you have set up the Split Global Config integration, you can explore th
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,12 +3,15 @@ title: Global Vercel CLI Configuration
 product: vercel
 url: /docs/project-configuration/global-configuration
 canonical_url: "https://vercel.com/docs/project-configuration/global-configuration"
-last_updated: 2025-12-19
+last_updated: 2026-08-25
 type: reference
 prerequisites:
   - /docs/project-configuration
 related:
   - /docs/accounts
+  - /docs/cli
+  - /docs/cli/telemetry
+  - /docs/cli/about-telemetry
 summary: Learn how to configure Vercel CLI under your system user.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -23,11 +26,11 @@ Using the following files and configuration options, you can configure [Vercel C
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Global Options](https://vercel.com/docs/cli/global-options?from=related) — Global options are commonly available to use with multiple Vercel CLI commands. Learn about Vercel CLI's global options
-- [vercel global-config](https://vercel.com/docs/cli/global-config?from=related) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, remove, and manage items, read tokens, a
-- [Using Global Config](https://vercel.com/docs/global-config/using-global-config?from=related) — Learn how to use Global Configs in your projects.
-- [Global Configs & Dashboard](https://vercel.com/docs/global-config/global-config-dashboard?from=related) — Learn how to create, view and update your Global Configs and the data inside them in your Vercel Dashboard at the Hobby
-- [Global Config](https://vercel.com/docs/global-config?from=related) — A Global Config is a global data store that enables experimentation with feature flags, A/B testing, critical redirects,
+- [Vercel CLI Global Options](https://vercel.com/docs/cli/global-options) — Global options are commonly available to use with multiple Vercel CLI commands. Learn about Vercel CLI's global options
+- [vercel global-config](https://vercel.com/docs/cli/global-config) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, delete, and manage items, read tokens, a
+- [Using Global Config](https://vercel.com/docs/global-config/using-global-config) — Learn how to use Global Configs in your projects.
+- [Managing Global Configs with the Dashboard](https://vercel.com/docs/global-config/global-config-dashboard) — Learn how to create, view and update your Global Configs and the data inside them in your Vercel Dashboard at the Hobby
+- [Get Global Configs](https://vercel.com/docs/rest-api/global-config/get-global-configs) — GET /v1/global-config — Returns all Global Configs.
 
 Full cross-link map for this page: [/docs/project-configuration/global-configuration.graph.md](/docs/project-configuration/global-configuration.graph.md)
 <!-- /docsgraph:related -->
@@ -45,7 +48,7 @@ The two global configuration files are: `config.json` and `auth.json`. These fil
 
 This file is used for global configuration of Vercel deployments. Vercel CLI uses this file as a way to co-ordinate how deployments should be treated, consistently.
 
-The first option is a single `_` that gives a description to the file, if a user should find themselves looking through it without context.
+The first options are `// Note` and `// Docs`. They give a description of the file and a link to its documentation, if a user should find themselves looking through it without context.
 
 You can use the following options to configure all Vercel deployments on your system's user profile:
 
@@ -63,17 +66,19 @@ This option tells [Vercel CLI](/cli) which context is currently active. If this 
 }
 ```
 
-### collectMetrics
+### telemetry
 
-**Type**: `Boolean`.
+**Type**: `Object`.
 
-**Valid values**: `true` (default), `false`.
+**Valid values**: An object with an `enabled` property that is `true` (default) or `false`.
 
-This option defines whether [Vercel CLI](/cli) should collect anonymous metrics about which commands are invoked the most, how long they take to run, and which errors customers are running into.
+This option defines whether [Vercel CLI](/docs/cli) collects telemetry. The [`vercel telemetry`](/docs/cli/telemetry) command sets this value when you run `vercel telemetry enable` or `vercel telemetry disable`. To learn what Vercel CLI collects, see [Telemetry](/docs/cli/about-telemetry).
 
 ```json filename="config.json"
 {
-  "collectMetrics": true
+  "telemetry": {
+    "enabled": true
+  }
 }
 ```
 
@@ -87,3 +92,6 @@ In the case that you are uploading your global configuration setup to a potentia
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

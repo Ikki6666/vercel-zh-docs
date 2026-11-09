@@ -1,18 +1,18 @@
 ---
-title: SDK Reference
+title: "Vercel Queues: JS SDK Reference"
 product: vercel
 url: /docs/queues/sdk
 canonical_url: "https://vercel.com/docs/queues/sdk"
-last_updated: 2026-07-02
+last_updated: 2026-08-12
 type: reference
 prerequisites:
   - /docs/queues
 related:
   - /docs/queues/python-sdk
-  - /docs/queues
-  - /docs/queues/api
+  - /docs/queues/concepts
   - /docs/queues/poll-mode
-summary: Publish and consume messages with the @vercel/queue SDK.
+  - /docs/queues/api
+summary: Publish and consume messages with the Vercel Queues SDK for JavaScript and TypeScript.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -26,39 +26,44 @@ The `@vercel/queue` SDK lets JavaScript and TypeScript apps publish and consume 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related) — Set up Vercel Queues with the SDK.
-- [Concepts](https://vercel.com/docs/queues/concepts?from=related) — Learn delivery, retries, visibility timeouts, and deployment isolation in Vercel Queues.
-- [Celery](https://vercel.com/docs/frameworks/backend/celery?from=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
-- [Dramatiq](https://vercel.com/docs/frameworks/backend/dramatiq?from=related) — Deploy Dramatiq workers on Vercel. Learn how Dramatiq actors use Vercel Queues and Vercel Functions to process backgroun
-- [API Reference](https://vercel.com/docs/functions/functions-api-reference?from=related) — Learn about available APIs when working with Vercel Functions.
+- [Use Vercel Daemons with eve agents](https://vercel.com/kb/guide/vercel-daemons-eve-agents) — Connect eve agents to Vercel Daemons to process queued jobs, offload heavy work, and react to events. Includes code, aut
+- [Vercel Python Queues SDK is now available in beta](https://vercel.com/changelog/vercel-python-queues-sdk-is-now-available-in-beta)
+- [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta)
+- [Vercel Queues is now in Limited Beta](https://vercel.com/changelog/vercel-queues-is-now-in-limited-beta)
+- [Process background jobs in Python with Vercel Queues](https://vercel.com/kb/guide/python-and-vercel-queues) — Move slow and failure-prone work out of your Python request handlers, with typed topics, consumer groups, and built-in r
+- [How to handle order-ahead traffic spikes on Vercel](https://vercel.com/kb/guide/handle-order-ahead-traffic-spikes-on-vercel) — Order-ahead traffic spikes hit the same routes every lunch hour. Learn how to scale, cache, queue, and test a restaurant
+- [Run background tasks with Celery on Vercel](https://vercel.com/docs/frameworks/backend/celery) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
+- [Vercel Schedules: JS SDK Reference](https://vercel.com/docs/schedules/sdk) — Reference for @vercel/schedules: create, list, update, enable, disable, invoke, and delete schedules, and handle schedul
+- [Queues Observability](https://vercel.com/docs/queues/observability) — Monitor queue throughput, message age, retries, and consumer performance to optimize your queue-based workflows.
 
 Full cross-link map for this page: [/docs/queues/sdk.graph.md](/docs/queues/sdk.graph.md)
 <!-- /docsgraph:related -->
 
 ## Installation
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i @vercel/queue
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i @vercel/queue
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i @vercel/queue
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i @vercel/queue
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i @vercel/queue
+```
+
+**yarn**
+
+```bash
+yarn add @vercel/queue
+```
+
+**npm**
+
+```bash
+npm i @vercel/queue
+```
+
+**bun**
+
+```bash
+bun add @vercel/queue
+```
 
 ## Top-level exports
 
@@ -125,7 +130,6 @@ await send('orders', payload, {
   retentionSeconds: 3600,
   delaySeconds: 60,
   idempotencyKey: 'order-123',
-  headers: { 'x-trace-id': 'abc-123' },
 });
 ```
 
@@ -134,8 +138,53 @@ await send('orders', payload, {
 | `region`           | `string`                 | Auto-detected | Target a specific region for this message                                   |
 | `retentionSeconds` | `number`                 | 24 hours      | Message TTL. Minimum 60 seconds, maximum 7 days (604,800 seconds)           |
 | `delaySeconds`     | `number`                 | Zero seconds  | Delay before message becomes visible. Maximum 7 days, capped at message TTL |
-| `idempotencyKey`   | `string`                 | -             | Deduplication key for the message                                           |
-| `headers`          | `Record<string, string>` | -             | Custom headers to include with this message                                 |
+| `idempotencyKey`   | `string`                 | -             | Deduplication key for the message. The deduplication window is the message's retention period. Maximum 256 characters |
+| `headers`          | `Record<string, string>` | -             | Custom HTTP headers to send with the publish request. Message handlers do not receive these headers. To pass data such as a trace ID to a handler, put it in the message payload |
+
+### Batch sends
+
+Use `sendBatch` to publish 1 to 100 messages in a single request. Each entry takes the same per-message options as `send`:
+
+```ts filename="app/api/orders/route.ts" framework=nextjs-app
+import { sendBatch } from '@vercel/queue';
+
+const results = await sendBatch('orders', [
+  { payload: { orderId: 1 } },
+  { payload: { orderId: 2 }, idempotencyKey: 'order-2', delaySeconds: 60 },
+]);
+```
+
+`region` is the one option that does not belong to an individual message. Pass it in the third argument to route the whole batch:
+
+```ts filename="app/api/orders/route.ts" framework=nextjs-app
+await sendBatch('orders', messages, { region: 'sfo1' });
+```
+
+`sendBatch` returns one result per message, in the order you sent them. The request can succeed even when individual messages fail, so check every result:
+
+```ts
+results.forEach((result, index) => {
+  if (result.status === 'failed' && result.retryable) {
+    // Retry messages[index]
+  }
+});
+```
+
+Each result has one of three shapes:
+
+| `status`     | Fields                             | Meaning                                                               |
+| ------------ | ---------------------------------- | --------------------------------------------------------------------- |
+| `"sent"`     | `messageId: string`                | Vercel accepted the message and assigned it an ID                     |
+| `"deferred"` | `messageId: null`                  | Vercel accepted the message for deferred processing, with no ID yet   |
+| `"failed"`   | `statusCode`, `error`, `retryable` | Vercel rejected the message. Retry it only when `retryable` is `true` |
+
+A batch of zero messages, or of more than 100, throws a `RangeError` before the SDK sends anything.
+
+When the request itself fails, for example with a network error or a rate limit, you get no per-message results, and Vercel may have accepted some messages already. To make the batch safe to retry, set an [`idempotencyKey`](/docs/queues/concepts#idempotency) on every message in the first attempt, not only in the retry: Vercel deduplicates a republished message against the key it already saw, and a message sent without a key has nothing to deduplicate against. Keys cover publishing only. Delivery stays [at-least-once](/docs/queues/concepts#at-least-once-delivery), so your consumers still need to handle a message they have already processed.
+
+`sendBatch` is also available on a `QueueClient` or `PollingQueueClient` instance, where the client's region applies to the batch.
+
+> **💡 Note:** `sendBatch` was previously named `experimental_sendBatch`. The old name still works as a deprecated alias of the same function, so existing code keeps running. Use `sendBatch` in new code.
 
 ## Consuming messages in push mode
 
@@ -213,7 +262,7 @@ export const POST = handleCallback(
 );
 ```
 
-> **💡 Note:** The SDK defaults `visibilityTimeoutSeconds` to 300 seconds (5 minutes) and automatically re-extends the lease while your handler is still running. The underlying [Queues API](/docs/queues#visibility-timeout) defaults to 60 seconds and does not auto-extend.
+> **💡 Note:** The SDK defaults `visibilityTimeoutSeconds` to 300 seconds (5 minutes) and automatically re-extends the lease while your handler is still running. The underlying [Queues API](/docs/queues/concepts#visibility-timeout) defaults to 60 seconds and does not auto-extend.
 
 ### Custom retry behavior
 
@@ -303,15 +352,13 @@ Queues also run in `nitro dev`. Run `vercel link` and `vercel env pull` first so
 
 ## Error handling
 
-The SDK provides typed error classes for each failure mode.
+The SDK provides typed error classes for each failure mode. Import the ones you handle and check instances in your `catch` block.
 
 ```ts
 import {
   UnauthorizedError,
   BadRequestError,
-  DuplicateMessageError,
   MessageNotFoundError,
-  QueueEmptyError,
 } from '@vercel/queue';
 
 try {
@@ -319,15 +366,36 @@ try {
 } catch (error) {
   if (error instanceof UnauthorizedError) {
     // Invalid or expired token
-  } else if (error instanceof DuplicateMessageError) {
-    // Idempotency key collision
+  } else if (error instanceof BadRequestError) {
+    // Invalid request parameters
   }
 }
 ```
 
+A repeated `send` with the same `idempotencyKey` is not an error. The publish succeeds and the duplicate is deduplicated server-side after the call returns.
+
+The SDK exports the following error classes:
+
+| Error class                         | Thrown when                                                                       |
+| ----------------------------------- | --------------------------------------------------------------------------------- |
+| `UnauthorizedError`                 | Authentication fails because the token is missing, invalid, or expired            |
+| `ForbiddenError`                    | Access is forbidden, for example the queue belongs to a different environment or project |
+| `BadRequestError`                   | Request parameters are invalid                                                    |
+| `MessageNotFoundError`              | A message does not exist or has expired                                           |
+| `MessageNotAvailableError`          | A message exists but cannot be processed because it is in the wrong state or already claimed by another consumer |
+| `MessageCorruptedError`             | Message data is corrupted or cannot be parsed                                     |
+| `MessageLockedError`                | A message is temporarily locked by another consumer and currently being processed. Exposes an optional `retryAfter` (seconds) |
+| `MessageAlreadyProcessedError`      | You attempt to process a message that has already been successfully processed     |
+| `QueueEmptyError`                   | Never thrown. An empty queue is not an error. When no messages are available, [`receive`](/docs/queues/poll-mode#receiving-messages) returns `{ ok: false, reason: 'empty' }`, so check that result instead of catching this class |
+| `InvalidLimitError`                 | A batch limit parameter is outside the valid range of 1 to 10 (inclusive)         |
+| `TooManyRequestsError`              | The server rate-limits a request (HTTP 429). Exposes an optional `retryAfter` (seconds) |
+| `InternalServerError`               | The server encounters an unexpected error                                         |
+| `ConsumerDiscoveryError`            | Consumer discovery fails because the deployment could not be reached or is not configured correctly |
+| `ConsumerRegistryNotConfiguredError`| The consumer registry is not configured for the project                           |
+
 ## Transports
 
-The SDK serializes common JSON, text, and byte payloads from the payload type. Use transports when you need to override serialization, validate payloads, or receive large payloads as streams.
+The SDK serializes payloads as JSON by default. Use transports when you need to send raw bytes, override serialization, or send and receive large payloads as streams.
 
 ```ts filename="lib/queue.ts" framework=nextjs-app
 import { QueueClient, BufferTransport, StreamTransport } from '@vercel/queue';
@@ -357,3 +425,6 @@ const streamQueue = new QueueClient({
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

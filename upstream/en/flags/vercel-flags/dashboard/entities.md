@@ -3,7 +3,7 @@ title: Entities
 product: vercel
 url: /docs/flags/vercel-flags/dashboard/entities
 canonical_url: "https://vercel.com/docs/flags/vercel-flags/dashboard/entities"
-last_updated: 2026-04-16
+last_updated: 2026-09-18
 type: how-to
 prerequisites:
   - /docs/flags/vercel-flags/dashboard
@@ -27,14 +27,14 @@ Entities represent the things your application knows about: users, teams, device
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How Splits Work in Vercel Flags](https://vercel.com/kb/guide/how-splits-work-in-vercel-flags?from=related) — Use weighted splits in Vercel Flags to deterministically bucket users into variants by percentage for gradual rollouts a
-- [How Vercel Flags are evaluated](https://vercel.com/kb/guide/how-vercel-flags-are-evaluated?from=related) — Learn how Vercel Flags determines a flag’s value across environments using evaluation context, targeting, rules, and fal
-- [Vercel Flags](https://flags-sdk.dev/docs/providers/vercel?from=related)
-- [How Vercel Flags resolves environments](https://vercel.com/kb/guide/how-vercel-flags-resolves-environments?from=related) — Configure Vercel Flags per environment by using environment-scoped SDK Keys that map your Vercel deployment environment
-- [Evaluation Context](https://flags-sdk.dev/docs/frameworks/sveltekit/evaluation-context?from=related) — Segment by any criteria, using an evaluation context
-- [Evaluation Context](https://flags-sdk.dev/docs/frameworks/next/evaluation-context?from=related) — Segment by any criteria, using an evaluation context.
-- [Getting Started](https://vercel.com/docs/flags/vercel-flags/quickstart?from=related) — Create your first feature flag and evaluate it in your application using the Flags SDK, OpenFeature, or the core library
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Manage Vercel Flags targeting rules from the CLI](https://vercel.com/changelog/manage-vercel-flags-targeting-rules-from-the-cli)
+- [Timestamp attributes are now supported in Vercel Flags](https://vercel.com/changelog/timestamp-attributes-are-now-supported-in-vercel-flags)
+- [How Splits Work in Vercel Flags](https://vercel.com/kb/guide/how-splits-work-in-vercel-flags) — Use weighted splits in Vercel Flags to deterministically bucket users into variants by percentage for gradual rollouts a
+- [How Vercel Flags are evaluated](https://vercel.com/kb/guide/how-vercel-flags-are-evaluated) — Learn how Vercel Flags determines a flag’s value across environments using evaluation context, targeting, rules, and fal
+- [Vercel Flags](https://flags-sdk.dev/docs/providers/vercel)
+- [How Vercel Flags resolves environments](https://vercel.com/kb/guide/how-vercel-flags-resolves-environments) — Configure Vercel Flags per environment by using environment-scoped SDK Keys that map your Vercel deployment environment
+- [Getting Started with Vercel Flags](https://vercel.com/docs/flags/vercel-flags/quickstart) — Create your first feature flag and evaluate it in your application using the Flags SDK, OpenFeature, or the core library
+- [Getting started with Flags Explorer](https://vercel.com/docs/flags/flags-explorer/getting-started) — Learn how to set up the Flags Explorer so you can see and override your application's feature flags
 
 Full cross-link map for this page: [/docs/flags/vercel-flags/dashboard/entities.graph.md](/docs/flags/vercel-flags/dashboard/entities.graph.md)
 <!-- /docsgraph:related -->
@@ -59,22 +59,28 @@ Before you can use targeting rules, you need to define your entities in the dash
 
 Each attribute has a type that determines how it can be used in targeting rules:
 
-| Type         | Description     | Example values                    |
-| ------------ | --------------- | --------------------------------- |
-| String       | Text values     | `"user@example.com"`, `"premium"` |
-| Number       | Numeric values  | `42`, `3.14`                      |
-| Boolean      | True or false   | `true`, `false`                   |
-| String Array | List of strings | `["admin", "editor"]`             |
+| Type         | Description             | Example values                    |
+| ------------ | ----------------------- | --------------------------------- |
+| String       | Text values             | `"user@example.com"`, `"premium"` |
+| Number       | Numeric values          | `42`, `3.14`                      |
+| Boolean      | True or false           | `true`, `false`                   |
+| String Array | List of strings         | `["admin", "editor"]`             |
+| Timestamp    | Unix epoch milliseconds | `Date.now()`, `1719792000000`     |
+
+> **💡 Note:** Timestamp values:
+> Pass Timestamp attributes in milliseconds, for example `Date.now()` or a
+> stored timestamp.<br />When using `Date.now()`, dedupe your `identify()` function as in this
+> [example](/docs/flags/vercel-flags/dashboard/entities#release-at-a-certain-time).
 
 ## Entity evaluation behavior
 
 Entities are evaluated fresh for each flag call. There's no automatic merging or persistence between evaluations.
 
-- If you don't provide an entity or attribute, rules targeting it won't match
+- If you don't provide an entity or attribute, conditions that target it don't match, with the exceptions listed below
 - Each evaluation uses exactly the context you supply
 - Previously sent attributes aren't remembered
 
-Provide the full context on every evaluation. If a targeting rule references an attribute that is missing from the context, that rule is skipped.
+Provide the full context on every evaluation. If a targeting rule references an attribute that is missing from the context, the condition on that attribute doesn't match. The exceptions are the **is not**, **has no value**, and **contains none of** operators, which match a missing attribute.
 
 ## How to provide entities in code
 
@@ -160,6 +166,20 @@ const result = await client.evaluate<boolean>(
 
 Add extra attributes in `identify` when targeting rules need them. Create matching entities and attributes in the dashboard first.
 
+### Release at a certain time
+
+Pass the current time as `system.time` so rules can compare against a Timestamp attribute. Keep `Date.now()` inside `dedupe` so every flag in the request uses the same time.
+
+```ts filename="flags.ts"
+const identify = dedupe(async () => {
+  return {
+    system: {
+      time: Date.now(),
+    },
+  };
+});
+```
+
 ### Enable features for a specific branch
 
 Vercel sets [`VERCEL_GIT_COMMIT_REF`](/docs/environment-variables/system-environment-variables) to the Git branch that triggered the deployment. Pass it as `system.gitCommitRef` to target preview branches.
@@ -211,3 +231,6 @@ See [Segments](/docs/flags/vercel-flags/dashboard/segments) for creating reusabl
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

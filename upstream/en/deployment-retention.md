@@ -3,7 +3,7 @@ title: Deployment Retention
 product: vercel
 url: /docs/deployment-retention
 canonical_url: "https://vercel.com/docs/deployment-retention"
-last_updated: 2026-06-16
+last_updated: 2026-09-16
 type: conceptual
 prerequisites:
   []
@@ -11,7 +11,6 @@ related:
   - /docs/deployment-storage
   - /docs/cli/list
   - /docs/domains/working-with-domains/assign-domain-to-a-git-branch
-  - /docs/deployments/environments
   - /docs/errors/deployment_deleted
 summary: "Learn how Deployment Retention policies affect a deployment's lifecycle"
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
@@ -19,7 +18,9 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Deployment Retention
 
-> **🔒 Permissions Required**: Deployment Retention
+> Deployment Retention is available on all plans
+
+Deployment retention refers to the configured policies that determine how long different types of deployments are kept before they are automatically deleted.
 
 
 <!-- docsgraph:related -->
@@ -27,17 +28,20 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I delete an individual deployment?](https://vercel.com/kb/guide/how-do-i-delete-an-individual-deployment?from=related) — Information on deleting an individual deployment.
-- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
-- [Optimize Deployment Storage](https://vercel.com/docs/deployment-storage/optimize?from=related) — Learn about optimize deployment storage on Vercel.
-- [Deployment Policies](https://vercel.com/docs/deployments/deployment-policy?from=related) — Use a deployment policy to control which Git sources and deployment mechanisms can deploy to your team and projects, per
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Instant Rollback](https://vercel.com/docs/instant-rollback?from=related) — Learn how to perform an Instant Rollback on your production deployments and quickly roll back to a previously deployed p
+- [Deleted deployments are permanently removed sooner](https://vercel.com/changelog/deleted-deployments-are-permanently-removed-sooner)
+- [Deployment retention policies now preserve active branch deployments](https://vercel.com/changelog/deployment-retention-policies-now-preserve-active-branch-deployments)
+- [Deployment Storage keeps your deployments rollback-ready](https://vercel.com/changelog/deployment-storage-keeps-your-deployments-rollback-ready)
+- [Deployment Storage billing begins for existing Pro teams](https://vercel.com/changelog/deployment-storage-pricing-expands-to-existing-teams)
+- [Hobby projects now default to 30-day deployment retention](https://vercel.com/changelog/hobby-projects-now-default-to-30-day-deployment-retention)
+- [How to reduce build costs on Vercel](https://vercel.com/kb/guide/how-reduce-build-costs) — Find which projects drive your Build CPU Minutes, then lower them by skipping unneeded builds, shortening each build, an
+- [Optimize Deployment Storage](https://vercel.com/docs/deployment-storage/optimize) — Set retention periods, review remaining usage, and reduce deployment output size.
+- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
+- [Deployment Policies](https://vercel.com/docs/deployments/deployment-policy) — Use a deployment policy to control which Git sources and deployment mechanisms can deploy to your team and projects, per
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Operating BYOC Deployments](https://vercel.com/docs/networking/bring-your-own-cloud/operations) — Retry failed Bring Your Own Cloud \\(BYOC\\) deployments, clean up AWS resources, monitor logs, and rotate credentials.
 
 Full cross-link map for this page: [/docs/deployment-retention.graph.md](/docs/deployment-retention.graph.md)
 <!-- /docsgraph:related -->
-
-Deployment retention refers to the configured policies that determine how long different types of deployments are kept before they are automatically deleted.
 
 These configured retention policies allow you to control how long your deployment data is stored, providing:
 
@@ -51,8 +55,8 @@ Unless a team or project uses a custom policy, the default retention periods are
 
 | Plan | Canceled | Errored | Pre-Production | Production |
 | --- | --- | --- | --- | --- |
-| Hobby | 30 days | 30 days | 30 days | 30 days |
-| Pro and Enterprise | 30 days | 90 days | 180 days | 1 year |
+| Hobby and Pro | 30 days | 30 days | 30 days | 30 days |
+| Enterprise | 30 days | 90 days | 180 days | 1 year |
 
 A team policy can replace these defaults for new projects or all existing projects. A project policy applies only to that project and replaces the team default.
 
@@ -69,9 +73,11 @@ After a deployment reaches its configured retention limit, a background job typi
 
 ## Setting a deployment retention policy
 
-To configure a retention policy, open **Settings** in the sidebar of your project and follow these steps:
+To set a team policy, open the team's Settings page, select Build and Deployment, and find Deployment Retention Policy. You can apply the policy to new projects or all existing projects.
 
-1. Select **Security** on the side panel of the project settings page
+To set a policy for one project, open Settings in the sidebar of your project and follow these steps:
+
+1. Select Build and Deployment on the side panel of the project settings page
 2. Scroll down to the **Deployment Retention Policy** section
 3. Select the drop down menu with the appropriate duration
 4. Save the new retention policy for your project
@@ -86,24 +92,40 @@ vercel list [project-name] [--policy errored=6m]
 
 ### Exceptions to the retention policy
 
-Deployments older than the configured retention interval are not always deleted. Deployments will be kept while any of the following is true:
+Deployments older than the configured retention interval are not always deleted. Vercel keeps a deployment while any of the following is true.
 
-- The deployment is one of the last 10 deployments created in the project.
-- The deployment is one of the last 20 production deployments in state Ready.
-- The deployment is one of the last 20 non-production deployments in state Ready.
+These recent deployment exceptions depend on your plan:
+
+| Exception | Hobby | Pro and Enterprise |
+| --- | --- | --- |
+| Last deployments created in the project | Last 3 | Last 10 |
+| Production deployments in state Ready | Last 3 | Last 20 |
+| Non-production deployments in state Ready | Not applied | Last 20 |
+
+These exceptions apply on every plan:
+
 - The deployment has a production alias assigned to it.
-- The deployment is the target of a [branch alias](/docs/domains/working-with-domains/assign-domain-to-a-git-branch) for a [custom environment](/docs/deployments/environments#custom-environments).
+- The deployment is the latest deployment in state Ready for a Git branch that has a [domain assigned to it](/docs/domains/working-with-domains/assign-domain-to-a-git-branch).
 - The deployment is a non-production deployment and has any custom alias assigned to it.
-- The deployment is the latest preview deployment for a Git branch that is still active. A branch is considered active when it has not been deleted and its associated pull request has not been merged or closed.
+- The deployment is the latest preview deployment for a Git branch that is still active. A branch is considered active when it has not been deleted and it has an open pull request. A branch that never had a pull request, or whose pull request was merged or closed, is not active.
 
 ## Restoring a deleted deployment
 
-When a deployment is marked for deletion either accidentally or as part of the retention policy, you can restore it within the recovery period. This period is 30 days for successfully built deployments, but unsuccessful deployments may be garbage collected sooner.
+When a deployment is deleted, either manually or as part of the retention policy, it enters a recovery period during which you can restore it. After the recovery period ends, Vercel garbage collects the deployment and permanently deletes it.
+
+The length of the recovery period depends on how old the deployment is when it is deleted:
+
+- **Deleted at 30 days of age or older:** The recovery period is 30 days from deletion. This includes any deployment under a retention policy of 30 days or more.
+- **Deleted before reaching 30 days of age:** The recovery period is shorter. For a deployment deleted by a retention policy set to less than 30 days, the recovery period matches the retention policy, so a 7-day retention policy results in a 7-day recovery period. For a deployment deleted manually, the recovery period is determined by the deployment's age at deletion, down to a minimum of 1 day.
+
+This matches the recovery period to the deployment's age, so short retention policies do not leave large numbers of old deployments in the **Recently Deleted Deployments** section.
+
+These recovery periods apply to successfully built deployments. Unsuccessful deployments may be garbage collected sooner.
 
 To restore a deleted deployment, open **Settings** in the sidebar of your project:
 
 1. Select **Security** on the side panel of the project settings page
-2. Scroll down to the **Recently Deleted** section
+2. Scroll down to the **Recently Deleted Deployments** section
 3. Find the deployment that needs to be restored, and click on the dropdown menu item **Restore**
 4. Complete the modal
 
@@ -116,3 +138,6 @@ To restore a deleted deployment, open **Settings** in the sidebar of your projec
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

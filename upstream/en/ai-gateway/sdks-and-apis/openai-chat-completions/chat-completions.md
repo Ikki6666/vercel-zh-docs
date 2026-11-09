@@ -1,9 +1,9 @@
 ---
-title: Chat Completions
+title: OpenAI Chat Completions Requests with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions"
-last_updated: 2026-07-28
+last_updated: 2026-09-08
 type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
@@ -11,13 +11,14 @@ prerequisites:
 related:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/images
+  - /docs/ai-gateway/security-and-compliance/safety-identifiers
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs
-summary: Create chat completions using the Chat Completions API with support for streaming, image attachments, and PDF documents.
+summary: Create chat completions using the Chat Completions API with support for streaming, image attachments, and PDF documents through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Chat Completions
+# OpenAI Chat Completions Requests with AI Gateway
 
 Create chat completions using various AI models available through the AI Gateway.
 
@@ -27,13 +28,11 @@ Create chat completions using various AI models available through the AI Gateway
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [useCompletion](https://ai-sdk.dev/docs/reference/ai-sdk-ui/use-completion?from=related)
-- [Create Chat](https://v0.app/docs/api/v2/reference/chats/create-chat?from=related) — Creates a new chat from a prompt. The request blocks until the model response is complete and returns the chat.
-- [Image Generation](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/image-generation?from=related) — Generate images using AI models that support multimodal output through the Chat Completions API.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [REST API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/rest-api?from=related) — Use the AI Gateway API directly without client libraries using curl and fetch.
-- [OpenAI Responses API](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses?from=related) — Use the OpenAI Responses API with AI Gateway to generate text, call tools, stream tokens, and more across any supported
-- [Tool Calling](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/tool-calling?from=related) — Use function calling with the Chat Completions API to enable models to call tools and functions through AI Gateway.
+- [OpenAI Chat Completions Tool Calling with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/tool-calling) — Use function calling with the Chat Completions API to enable models to call tools and functions through AI Gateway.
+- [AI Gateway Chat Completions Image Generation Reference](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/image-generation) — Generate images using AI models that support multimodal output through the Chat Completions API through AI Gateway.
+- [Python with AI Gateway: OpenAI and Anthropic SDKs](https://vercel.com/docs/ai-gateway/sdks-and-apis/python) — Use AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
+- [OpenAI Responses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses) — Use the OpenAI Responses API with AI Gateway to generate text, call tools, stream tokens, and more across any supported
+- [Call AI Gateway Chat Completions with REST](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/rest-api) — Use AI Gateway API directly without client libraries using curl and fetch.
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions.graph.md](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions.graph.md)
 <!-- /docsgraph:related -->
@@ -49,24 +48,6 @@ POST /chat/completions
 Create a non-streaming chat completion.
 
 Example request
-
-#### cURL
-
-```bash filename="chat-completion.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Write a one-sentence bedtime story about a unicorn."
-      }
-    ],
-    "stream": false
-  }'
-```
 
 #### TypeScript
 
@@ -123,6 +104,24 @@ print('Assistant:', completion.choices[0].message.content)
 print('Tokens used:', completion.usage)
 ```
 
+#### cURL
+
+```bash filename="chat-completion.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a one-sentence bedtime story about a unicorn."
+      }
+    ],
+    "stream": false
+  }'
+```
+
 Response format
 
 ```json
@@ -171,18 +170,21 @@ The chat completions endpoint supports the following parameters:
 - `stream` (boolean): Whether to stream the response. Defaults to `false`
 - `temperature` (number): Controls randomness in the output. Range: 0-2
 - `max_tokens` (integer): Maximum number of tokens to generate
+- `max_completion_tokens` (integer): Maximum number of tokens to generate. If you set both `max_tokens` and `max_completion_tokens`, AI Gateway uses `max_completion_tokens`
 - `top_p` (number): Nucleus sampling parameter. Range: 0-1
 - `frequency_penalty` (number): Penalty for frequent tokens. Range: -2 to 2
 - `presence_penalty` (number): Penalty for present tokens. Range: -2 to 2
 - `stop` (string or array): Stop sequences for the generation
+- `safety_identifier` (string): A non-empty, opaque ID for the end user. AI Gateway truncates values longer than 64 characters and maps the field to `providerOptions.gateway.safetyIdentifier`. See [Safety identifiers](/docs/ai-gateway/security-and-compliance/safety-identifiers) for examples and precedence
 - `tools` (array): Array of tool definitions for function calling
-- `tool_choice` (string or object): Controls which tools are called (`auto`, `none`, or specific function)
+- `tool_choice` (string or object): Controls which tools are called (`auto`, `none`, `required`, or specific function)
 - `providerOptions` (object): [Provider routing and configuration options](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced#provider-options)
 - `provider` (object): Shorthand for provider routing. Supports `sort` (`'cost'`, `'ttft'`, `'tps'`). Equivalent to setting `providerOptions.gateway.sort`. See [Provider sorting](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced#provider-sorting)
 - `response_format` (object): Controls the format of the model's response
   - For OpenAI standard format: `{ type: "json_schema", json_schema: { name, schema, strict?, description? } }`
   - For legacy format: `{ type: "json", schema?, name?, description? }`
   - For plain text: `{ type: "text" }`
+  - For JSON mode without a schema: `{ type: "json_object" }`
   - See [Structured outputs](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs) for detailed examples
 
 ### Message format
@@ -238,3 +240,6 @@ Messages support different content types:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

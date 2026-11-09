@@ -3,21 +3,21 @@ title: vercel api
 product: vercel
 url: /docs/cli/api
 canonical_url: "https://vercel.com/docs/cli/api"
-last_updated: 2026-07-15
+last_updated: 2026-10-06
 type: reference
 prerequisites:
   - /docs/cli
 related:
+  - /docs/cli/global-options
   - /docs/rest-api
   - /docs/cli/curl
-  - /docs/cli/global-options
 summary: Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # vercel api
 
-> **💡 Note:** The `vercel api` command is currently in beta. Features and behavior may change.
+The `vercel api` command lets you make authenticated HTTP requests to the Vercel API directly from your terminal. It handles authentication automatically using your CLI session, supports interactive endpoint discovery, and provides features like automatic pagination and request body construction.
 
 
 <!-- docsgraph:related -->
@@ -25,16 +25,15 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [vercel list](https://vercel.com/docs/cli/list?from=related) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
-- [vercel webhooks](https://vercel.com/docs/cli/webhooks?from=related) — Learn how to manage webhooks for your Vercel account using the vercel webhooks CLI command.
-- [vercel crons](https://vercel.com/docs/cli/crons?from=related) — Manage Cron Jobs from the Vercel CLI: add cron entries to your vercel.json, list them, and trigger them on demand.
-- [vercel comments](https://vercel.com/docs/cli/comments?from=related) — Learn about vercel comments on Vercel.
+- [Introducing the vercel api CLI command](https://vercel.com/changelog/introducing-the-vercel-api-cli-command)
+- [vercel list](https://vercel.com/docs/cli/list) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
+- [vercel tokens](https://vercel.com/docs/cli/tokens) — Manage your personal Vercel authentication tokens from the CLI: list, create, and revoke access tokens for use with the
+- [vercel comments](https://vercel.com/docs/cli/comments) — Review and manage Vercel Toolbar comment threads from the terminal with the vercel comments CLI command.
+- [vercel logs](https://vercel.com/docs/cli/logs) — View and filter runtime logs or CDN request records for your Vercel project.
+- [vercel kms](https://vercel.com/docs/cli/kms) — Manage Vercel KMS issuers, rotate signing keys, and control which projects can sign tokens from the command line.
 
 Full cross-link map for this page: [/docs/cli/api.graph.md](/docs/cli/api.graph.md)
 <!-- /docsgraph:related -->
-
-The `vercel api` command lets you make authenticated HTTP requests to the Vercel API directly from your terminal. It handles authentication automatically using your CLI session, supports interactive endpoint discovery, and provides features like automatic pagination and request body construction.
 
 This command is useful for scripting, debugging, and exploring the Vercel API without needing to manage tokens or construct requests manually.
 
@@ -249,6 +248,16 @@ vercel api /v2/user --verbose
 
 The `--raw` flag outputs JSON without pretty-printing.
 
+When you pipe or capture stdout, JSON responses automatically use single-line JSON, equivalent to `--raw`. Interactive terminal output keeps its normal formatting. Use `--raw` to force single-line JSON in a terminal.
+
+JSON Lines responses, which contain one JSON value per line, print as text rather than a single parsed JSON document.
+
+For example, capture a JSON response for a script:
+
+```bash filename="terminal"
+vercel api /v2/user > user.json
+```
+
 ```bash filename="terminal"
 vercel api /v2/user --raw
 ```
@@ -257,7 +266,7 @@ vercel api /v2/user --raw
 
 ### Refresh
 
-The `--refresh` flag forces a refresh of the cached OpenAPI specification used for interactive mode.
+The `--refresh` flag forces a refresh of the cached OpenAPI specification used for interactive mode and the `list` subcommand.
 
 ```bash filename="terminal"
 vercel api --refresh
@@ -277,7 +286,7 @@ vercel api /v2/user --generate=curl
 
 ### Dangerously skip permissions
 
-The `--dangerously-skip-permissions` flag skips confirmation prompts for DELETE operations. Use with caution.
+The CLI asks you to confirm every DELETE request before it sends the request. The `--dangerously-skip-permissions` flag skips that confirmation. When the CLI can't prompt, such as in CI, a DELETE request fails unless you pass this flag. Use with caution.
 
 ```bash filename="terminal"
 vercel api /v13/deployments/dpl_abc123 -X DELETE --dangerously-skip-permissions
@@ -289,10 +298,10 @@ vercel api /v13/deployments/dpl_abc123 -X DELETE --dangerously-skip-permissions
 
 ### list
 
-The `list` subcommand (alias `ls`) displays all available API endpoints.
+The `list` subcommand displays all available API endpoints.
 
 ```bash filename="terminal"
-vercel api ls
+vercel api list
 ```
 
 *Listing all available API endpoints.*
@@ -300,10 +309,27 @@ vercel api ls
 You can output the list as JSON:
 
 ```bash filename="terminal"
-vercel api ls --format json
+vercel api list --json
 ```
 
 *Listing endpoints in JSON format for scripting.*
+
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel api` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
 
 ## Related
 
@@ -315,3 +341,6 @@ vercel api ls --format json
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

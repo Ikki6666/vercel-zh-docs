@@ -3,7 +3,7 @@ title: Using Comments with Preview Deployments
 product: vercel
 url: /docs/comments/using-comments
 canonical_url: "https://vercel.com/docs/comments/using-comments"
-last_updated: 2026-05-15
+last_updated: 2026-08-28
 type: how-to
 prerequisites:
   - /docs/comments
@@ -18,22 +18,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Add comments
 
+You must be logged in to create a comment. You can press `c` to enable the comment placement cursor.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Managing Comments](https://vercel.com/docs/comments/managing-comments?from=related) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
-- [Enabling Comments](https://vercel.com/docs/comments/how-comments-work?from=related) — Learn when and where Comments are available, and how to enable and disable Comments at the account, project, and session
-- [vercel comments](https://vercel.com/docs/cli/comments?from=related) — Learn about vercel comments on Vercel.
-- [Toolbar](https://vercel.com/docs/vercel-toolbar?from=related) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
+- [Introducing Commenting on Preview Deployments](https://vercel.com/blog/introducing-commenting-on-preview-deployments)
+- [Enhanced Preview experience](https://vercel.com/blog/making-live-reviews-a-reality-enhanced-preview-experience)
+- [Markdown support for comments on Preview Deployments ](https://vercel.com/changelog/markdown-support-for-comments-on-preview-deployments)
+- [Using Vercel comments to improve the Next.js 13 documentation](https://vercel.com/blog/using-vercel-comments-to-improve-the-next-js-13-documentation)
+- [Commenting on Previews is now in Public Beta](https://vercel.com/changelog/commenting-on-previews-is-now-in-public-beta)
+- [Comments on Preview Deployments are now generally available](https://vercel.com/changelog/comments-on-preview-deployments-are-now-generally-available)
+- [Emoji reactions now available in Preview Deployment comments ](https://vercel.com/changelog/emoji-reactions-now-available-in-preview-deployment-comments)
+- [Comments now available in Vercel's Slack integration](https://vercel.com/changelog/comments-now-available-in-vercels-slack-integration)
+- [Vercel Toolbar](https://vercel.com/docs/vercel-toolbar) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Interaction Timing Tool](https://vercel.com/docs/vercel-toolbar/interaction-timing-tool) — The interaction timing tool allows you to inspect in detail each interaction's latency and get notified for interactions
+- [Layout Shift Tool](https://vercel.com/docs/vercel-toolbar/layout-shift-tool) — The layout shift tool gives you insight into any elements that may cause layout shifts on the page.
 
 Full cross-link map for this page: [/docs/comments/using-comments.graph.md](/docs/comments/using-comments.graph.md)
 <!-- /docsgraph:related -->
-
-You must be logged in to create a comment. You can press `c` to enable the comment placement cursor.
 
 Alternatively, select the **Comment** option in the toolbar menu. You can then select a location to place your comment with your cursor.
 
@@ -41,17 +48,17 @@ Alternatively, select the **Comment** option in the toolbar menu. You can then s
 
 You can use `@` to mention team members and alert them to your comment. For example, you might want to request Jennifer's input by writing "Hey @Jennifer, how do you feel about this?"
 
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/comment-light.png`)
+![A comment using the @ symbol to mention someone.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/comment-light.png)
 
 ### Add emojis to a comment
 
 You can add emojis by entering `:` (the colon symbol) into your comment input box, then entering the name of the emoji. For example, add a smile by entering `:smile:`. As you enter the name of the emoji you want, suggestions will be offered in a popup modal above the input box. You can select one of the suggestions with your cursor.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/emojis-light.png`)
+![Emoji suggestions appear as you type.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/emojis-light.png)
 
 To add a reaction, select the emoji icon to the right of the name of the commenter whose comment you want to react to. You can then search for the emoji you want to react with.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/reaction-screenshot-light.png`)
+![A comment with reactions.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/preview-deployments/comments/reaction-screenshot-light.png)
 
 > **💡 Note:** Custom emoji from your Slack organization are supported when you integrate the
 > [Vercel app for Slack](/docs/comments/integrations#use-the-vercel-app-for-slack).
@@ -64,7 +71,7 @@ You can add screenshots to a comment in any of the following ways:
 - Click the camera icon to take a screenshot of the page you are on.
 - Click and drag while in commenting mode to automatically screenshot a portion of the page and start a comment with it attached.
 
-The latter two options are only available to users with the [browser extension](/docs/vercel-toolbar/in-production-and-localhost/add-to-production#accessing-the-toolbar-using-the-chrome-extension) installed.
+The latter two options are only available to users with the [browser extension](/docs/vercel-toolbar/in-production-and-localhost/add-to-production#accessing-the-toolbar-using-the-browser-extension) installed.
 
 ### Use Markdown in a comment
 
@@ -111,3 +118,6 @@ You can copy a link to a comment in two ways:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

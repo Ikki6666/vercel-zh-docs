@@ -3,17 +3,17 @@ title: Using the Core Library
 product: vercel
 url: /docs/flags/vercel-flags/sdks/core
 canonical_url: "https://vercel.com/docs/flags/vercel-flags/sdks/core"
-last_updated: 2026-06-24
+last_updated: 2026-09-16
 type: how-to
 prerequisites:
   - /docs/flags/vercel-flags/sdks
   - /docs/flags/vercel-flags
 related:
   - /docs/flags/vercel-flags/sdks/flags-sdk
+  - /docs/flags/vercel-flags/project-connections
   - /docs/flags/vercel-flags/dashboard/sdk-keys
   - /docs/flags/vercel-flags/dashboard/entities
-  - /docs/functions/limitations
-  - /docs/flags/vercel-flags/sdks/openfeature
+  - /docs/flags/vercel-flags/dashboard/feature-flag
 summary: Use the Vercel Flags core evaluation library directly for custom setups.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -28,14 +28,13 @@ The `@vercel/flags-core` library provides direct access to the Vercel Flags eval
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to use Vercel Flags across projects](https://vercel.com/kb/guide/how-to-use-vercel-flags-across-projects?from=related) — Evaluate flags across projects using a source project SDK Key in the consumer project via a custom adapter
-- [How Vercel Flags resolves environments](https://vercel.com/kb/guide/how-vercel-flags-resolves-environments?from=related) — Configure Vercel Flags per environment by using environment-scoped SDK Keys that map your Vercel deployment environment
-- [Vercel Flags](https://flags-sdk.dev/docs/providers/vercel?from=related)
-- [Quickstart](https://flags-sdk.dev/docs/frameworks/sveltekit?from=related) — Using the Flags SDK in SvelteKit
-- [How Vercel Flags are evaluated](https://vercel.com/kb/guide/how-vercel-flags-are-evaluated?from=related) — Learn how Vercel Flags determines a flag’s value across environments using evaluation context, targeting, rules, and fal
-- [Quickstart](https://flags-sdk.dev/docs/frameworks/next?from=related) — Learn how to start using the Flags SDK in your Next.js project.
-- [Getting Started](https://vercel.com/docs/flags/flags-explorer/getting-started?from=related) — Learn how to set up the Flags Explorer so you can see and override your application's feature flags
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Flags](https://flags-sdk.dev/docs/providers/vercel)
+- [How to use Vercel Flags across projects](https://vercel.com/kb/guide/how-to-use-vercel-flags-across-projects) — Evaluate flags across projects using a source project SDK Key in the consumer project via a custom adapter
+- [How Vercel Flags resolves environments](https://vercel.com/kb/guide/how-vercel-flags-resolves-environments) — Configure Vercel Flags per environment by using environment-scoped SDK Keys that map your Vercel deployment environment
+- [How Vercel Flags are evaluated](https://vercel.com/kb/guide/how-vercel-flags-are-evaluated) — Learn how Vercel Flags determines a flag’s value across environments using evaluation context, targeting, rules, and fal
+- [Vercel Flags: Platform-native feature flags](https://vercel.com/blog/vercel-flags-platform-native-feature-flags)
+- [Introducing the Flags Explorer, first-party integrations, and updates to the Flags SDK ](https://vercel.com/blog/introducing-the-flags-explorer-first-party-integrations-and-updates)
+- [Flags SDK Reference](https://vercel.com/docs/flags/flags-sdk-reference) — API reference for the Flags SDK for Next.js and SvelteKit.
 
 Full cross-link map for this page: [/docs/flags/vercel-flags/sdks/core.graph.md](/docs/flags/vercel-flags/sdks/core.graph.md)
 <!-- /docsgraph:related -->
@@ -53,32 +52,35 @@ Full cross-link map for this page: [/docs/flags/vercel-flags/sdks/core.graph.md]
 
 ## Installation
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i @vercel/flags-core
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i @vercel/flags-core
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i @vercel/flags-core
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i @vercel/flags-core
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i @vercel/flags-core
+```
+
+**yarn**
+
+```bash
+yarn add @vercel/flags-core
+```
+
+**npm**
+
+```bash
+npm i @vercel/flags-core
+```
+
+**bun**
+
+```bash
+bun add @vercel/flags-core
+```
 
 ## Creating a client
 
-Use the default client to authenticate with either Vercel OpenID Connect (OIDC) or the `FLAGS` environment variable:
+### Default client with OIDC
+
+Use the default client when your code runs on Vercel. It authenticates with Vercel OpenID Connect (OIDC) and needs no configuration:
 
 ```ts
 import { flagsClient } from '@vercel/flags-core';
@@ -86,7 +88,9 @@ import { flagsClient } from '@vercel/flags-core';
 const result = await flagsClient.evaluate('flag-name', false);
 ```
 
-Or create a client with the default Vercel OIDC authentication or the `FLAGS` environment variable:
+If the `FLAGS` environment variable is set, the default client uses that SDK key instead of OIDC.
+
+To pass [client options](#client-options), create your own client with `createClient()`. Without an argument, it authenticates with OIDC. It doesn't read the `FLAGS` environment variable:
 
 ```ts
 import { createClient } from '@vercel/flags-core';
@@ -94,13 +98,25 @@ import { createClient } from '@vercel/flags-core';
 const client = createClient();
 ```
 
-Use an [SDK Key](/docs/flags/vercel-flags/dashboard/sdk-keys) for manual authentication, such as reading flags from another project or running outside Vercel:
+To read another project's flags in the same team, use [Project Connections](/docs/flags/vercel-flags/project-connections) with `@vercel/flags-core` version 1.11.0 or later. Pass the source project's ID to `createClient({ projectId: 'prj_source' })`. The client authenticates with your project's OIDC token.
+
+### SDK keys
+
+Use an [SDK Key](/docs/flags/vercel-flags/dashboard/sdk-keys) when your code runs outside Vercel, such as on a custom backend, or when it reads flags from another project. Pass the key to `createClient()`:
 
 ```ts
 import { createClient } from '@vercel/flags-core';
 
 const client = createClient(process.env.FLAGS_SDK_KEY);
 ```
+
+### Use request-scoped OIDC
+
+On Vercel, the OpenID Connect (OIDC) token can come from the current request context. The token might not be available while modules load. Create the client at module scope, but call `evaluate()` or `bulkEvaluate()` inside a request handler. These methods initialize the client when you first call them.
+
+Do not call `initialize()` at module scope or store a module-scoped initialization promise when you use request-scoped OIDC. Awaiting an already-started promise inside a request handler does not move that work into the request context. This also applies to embedded definitions because the client uses the token's `project_id` claim to select the correct definitions.
+
+Local credentials can hide this timing requirement. For example, `vercel env pull` writes an OIDC token to `.env.local`. Keep evaluation and explicit initialization inside the request handler so the same code works locally and in a deployment.
 
 ### Client options
 
@@ -115,16 +131,19 @@ const client = createClient(undefined, {
 });
 ```
 
-| Option      | Type                                       | Default | Description                                                                                                       |
-| ----------- | ------------------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------- |
-| `datafile`  | `DatafileInput`                            | -       | An initial datafile for immediate reads without waiting for a network request.                                    |
-| `stream`    | `boolean \| { initTimeoutMs: number }`     | `true`  | Enable streaming updates via SSE. Set `initTimeoutMs` to control how long to wait for the first update.           |
-| `polling`   | `boolean \| { intervalMs, initTimeoutMs }` | `true`  | Enable polling as a fallback. `intervalMs` controls refresh frequency, `initTimeoutMs` controls the initial wait. |
-| `buildStep` | `boolean`                                  | auto    | Override build step auto-detection. See [Data source fallback chain](#data-source-fallback-chain).                |
+| Option      | Type                                       | Default          | Description                                                                                                       |
+| ----------- | ------------------------------------------ | ---------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `datafile`  | `DatafileInput`                            | -                | An initial datafile for immediate reads without waiting for a network request.                                    |
+| `stream`    | `boolean \| { initTimeoutMs: number }`     | `true`           | Enable streaming updates via SSE. Set `initTimeoutMs` to control how long to wait for the first update.           |
+| `polling`   | `boolean \| { intervalMs, initTimeoutMs }` | `true`           | Enable polling as a fallback. `intervalMs` controls refresh frequency, `initTimeoutMs` controls the initial wait. |
+| `buildStep` | `boolean`                                  | Auto-detected    | Override build step auto-detection. See [Data source fallback chain](#data-source-fallback-chain).                |
+| `waitUntil` | `(promise: Promise<unknown>) => void`       | Runtime-specific | Keep background usage and exposure reporting alive until the supplied promise settles.                            |
+
+The Next.js export uses `after` from `next/server` as its `waitUntil` default. Other runtimes use `waitUntil` from `@vercel/functions`. Pass your platform's lifecycle function when it does not support either default. An explicit `waitUntil` option always takes precedence.
 
 ## Initializing the client
 
-Before evaluating flags, initialize the client to load flag definitions and subscribe to changes:
+The client initializes automatically when you call `evaluate()` or `bulkEvaluate()`. Call `initialize()` explicitly only when you need to load definitions and handle initialization errors before evaluation:
 
 ```ts
 await client.initialize();
@@ -193,7 +212,7 @@ switch (result.reason) {
     // A targeting rule matched
     break;
   case Reason.FALLTHROUGH:
-    // No rules matched, using default
+    // No rules matched, using the fallthrough outcome
     break;
   case Reason.PAUSED:
     // Flag is paused/disabled
@@ -204,6 +223,8 @@ switch (result.reason) {
     break;
 }
 ```
+
+With `Reason.FALLTHROUGH`, the value comes from the flag's fallthrough [outcome](/docs/flags/vercel-flags/dashboard/feature-flag#outcome), which the flag serves when no target or rule matches. It isn't the default value that you pass to `evaluate`.
 
 ## Data source fallback chain
 
@@ -222,15 +243,15 @@ During a build step (detected when `CI=1` or `NEXT_PHASE=phase-production-build`
 At runtime (the default, or when `buildStep: false` is set), the client uses real-time mechanisms first and falls back to static sources:
 
 1. **Stream**: Real-time updates via SSE, waits up to `initTimeoutMs` (default: 3000ms)
-2. **Polling**: Interval-based HTTP requests, waits up to `initTimeoutMs` (default: 10000ms)
+2. **Polling**: Interval-based HTTP requests, waits up to `initTimeoutMs` (default: 3000ms)
 3. **Provided datafile**: Uses the `datafile` option if provided
 4. **Embedded definitions**: Uses definitions [embedded at build time](#embedded-definitions)
 
 Key behaviors:
 
 - The client never streams and polls at the same time
-- If the stream disconnects, the client starts polling (if enabled)
-- If the stream reconnects while polling, polling stops
+- If the stream disconnects, the client keeps serving the definitions it has in memory and tries to reconnect
+- If the stream still can't connect after repeated attempts, the client starts polling (if enabled)
 - If in-memory data already exists, the client serves it immediately while background updates happen
 
 ### Overriding build step detection
@@ -253,13 +274,16 @@ This is useful when auto-detection doesn't match your environment. If you pass c
 
 ## Embedded definitions
 
+> **💡 Note:** Embedded definitions require pnpm. With other package managers, the SDK
+> fetches definitions at runtime instead.
+
 When you deploy to Vercel, the build process fetches your latest flag definitions once at build time and bundles them into the deployment. This happens automatically when the project uses `@flags-sdk/vercel` or `@vercel/flags-core` and the build can authenticate with Vercel OIDC or an SDK Key. This serves two purposes:
 
 - **Build consistency**: Every function in the build uses the same snapshot of flag definitions, fetched once at the start of the build. Without embedding, each function may fetch definitions independently, which could lead to inconsistent behavior if definitions change mid-build.
 - **Runtime resilience**: If the Vercel Flags service is temporarily unreachable at runtime, the SDK falls back to the embedded snapshot instead of returning hardcoded default values. Because the snapshot preserves your full configuration, including targeting rules, segments, and percentages, your flags continue to evaluate accurately. Since the snapshot is from build time, users may see slightly outdated values until the service recovers.
 
 > **💡 Note:** You can opt out of embedding by setting
-> `VERCEL_FLAGS_DISABLE_DEFINITION_EMBEDDING=1` in your project's environment
+> `VERCEL_FLAGS_EMBED_DEFINITIONS=force-off` in your project's environment
 > variables.
 
 Because the flag definitions are bundled into your deployment, they count toward the [function bundle size limit](/docs/functions/limitations#bundle-size-limits).
@@ -272,7 +296,7 @@ When your application exits, shut down the client to clean up resources:
 await client.shutdown();
 ```
 
-This outputs detailed information about the client's data source connections, fallback behavior, and evaluation steps.
+This stops streaming and polling, and sends any pending [evaluation metrics](/docs/flags/vercel-flags/evaluation-metrics).
 
 ## Next steps
 
@@ -284,3 +308,6 @@ This outputs detailed information about the client's data source connections, fa
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

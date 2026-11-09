@@ -3,23 +3,25 @@ title: Audit Log Drains Reference
 product: vercel
 url: /docs/drains/reference/audit-logs
 canonical_url: "https://vercel.com/docs/drains/reference/audit-logs"
-last_updated: 2026-07-22
+last_updated: 2026-08-07
 type: reference
 prerequisites:
   - /docs/drains
 related:
   - /docs/activity-log
+  - /docs/passport
   - /docs/drains/using-drains
   - /docs/drains/audit-logs-to-s3
   - /docs/drains/audit-logs-to-splunk
-  - /docs/drains/audit-logs-to-datadog
 summary: Learn about Audit Log Drains - data formats, fields, and team activity events.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Audit Log Drains Reference
 
-> **🔒 Permissions Required**: Audit Log Drains
+> Audit Log Drains are available on Enterprise plans
+
+Audit Log Drains forward team activity events to external endpoints for storage, compliance review, and analysis. Vercel sends Audit Log events to custom HTTP endpoints over HTTPS when team activity creates audit log records.
 
 
 <!-- docsgraph:related -->
@@ -27,16 +29,18 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Web Analytics](https://vercel.com/docs/drains/reference/analytics?from=related) — Learn about Web Analytics Drains - data formats and custom events configuration.
-- [Logs](https://vercel.com/docs/drains/reference/logs?from=related) — Learn about Log Drains - data formats, sources, environments, and security configuration.
-- [Traces](https://vercel.com/docs/drains/reference/traces?from=related) — Learn about Trace Drains - OpenTelemetry-compliant distributed tracing data formats and configuration.
-- [Speed Insights](https://vercel.com/docs/drains/reference/speed-insights?from=related) — Learn about Speed Insights Drains - data formats and performance metrics configuration.
-- [Trace Drains](https://vercel.com/docs/ai-gateway/observability-and-spend/trace-drains?from=related) — Forward an OpenTelemetry trace of every AI Gateway request to your own observability tool, and understand trace drain bi
+- [Audit Log Drains now support Datadog, Splunk, and Panther](https://vercel.com/changelog/audit-log-drains-now-support-datadog-splunk-and-panther)
+- [Expanded Audit Log coverage, now delivered through Vercel Drains](https://vercel.com/changelog/expanded-audit-log-coverage-now-delivered-through-vercel-drains)
+- [Introducing Vercel Security Review](https://vercel.com/blog/vercel-security-review)
+- [Introducing Vercel Drains: Complete observability data, anywhere](https://vercel.com/blog/introducing-vercel-drains)
+- [Web Analytics Drains Reference](https://vercel.com/docs/drains/reference/analytics) — Learn about Web Analytics Drains - data formats and custom events configuration.
+- [Drains](https://vercel.com/docs/agent-resources/vercel-mcp/tools/drains) — Vercel MCP tools for drains.
+- [Trace Drains Reference](https://vercel.com/docs/drains/reference/traces) — Learn about Trace Drains - OpenTelemetry-compliant distributed tracing data formats and configuration.
+- [AI Gateway Budgets and Spend Limits](https://vercel.com/docs/ai-gateway/observability-and-spend/budgets) — Cap AI Gateway spend for your team, a project, an individual API key, or a team member with budgets, refresh periods, sp
+- [vercel buy](https://vercel.com/docs/cli/buy) — Learn how to purchase Vercel products like credits, addons, subscriptions, and domains using the vercel buy CLI command.
 
 Full cross-link map for this page: [/docs/drains/reference/audit-logs.graph.md](/docs/drains/reference/audit-logs.graph.md)
 <!-- /docsgraph:related -->
-
-Audit Log Drains forward team activity events to external endpoints for storage, compliance review, and analysis. Vercel sends Audit Log events to custom HTTP endpoints over HTTPS when team activity creates audit log records.
 
 Audit Log Drains apply to the whole team. Filtering, sampling, and project selection are not available for Audit Log Drains.
 
@@ -50,14 +54,14 @@ The following table describes the possible fields sent via Audit Log Drains:
 | --------------- | ------ | -------- | ------------------------------------------------------------------ | ------------------------------- |
 | `schema`        | string | Yes      | Schema version identifier                                          | `vercel.audit_log.v1`           |
 | `id`            | string | Yes      | Unique identifier for the audit log event                          | `uev_O0Sn1S6VHTDuKJ6sNs3hLIEy`                     |
-| `teamId`        | string | No       | Identifier for the Vercel team                                     | `team_123`                      |
+| `teamId`        | string | Yes      | Identifier for the Vercel team                                     | `team_123`                      |
 | `projectId`     | string | No       | Identifier for the Vercel project related to the event             | `prj_123`                       |
 | `action`        | string | Yes      | Name of the action that created the audit log event                 | `drain-created`                 |
 | `timestamp`     | number | Yes      | Unix timestamp in milliseconds when the event occurred              | 1779444000123                   |
 | `actor`         | object | Yes      | Principal that performed the action                                | See actor fields below          |
-| `actor.type`    | enum   | Yes\*    | Type of actor                                                      | `user`, `app`, `system`, or `integration` |
+| `actor.type`    | enum   | Yes\*    | Type of actor. `external` is an actor that is not a Vercel user, app, or integration. For example, a visitor who signs in to a deployment protected by [Passport](/docs/passport#monitor-passport-access) is an `external` actor | `user`, `app`, `external`, `system`, or `integration` |
 | `actor.id`      | string | Yes\*    | Identifier for the actor                                           | `user_123`                      |
-| `actor.name`    | string | Yes\*    | Vercel username, app name, integration name, or `system` for the actor | `test-user`                     |
+| `actor.name`    | string | Yes\*    | Vercel username, app name, integration name, external actor name, or `system` for the actor | `test-user`                     |
 | `actor.email`   | string | No       | Email address for the actor                                        | `test@example.com`              |
 | `via`           | array  | No       | Delegation chain for actions performed through another actor        | See via fields below            |
 | `via[].type`    | enum   | Yes\*\*  | Type of delegated actor                                            | `app`                           |
@@ -189,3 +193,6 @@ For more information on Audit Log Drains and how to use them, check out the foll
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

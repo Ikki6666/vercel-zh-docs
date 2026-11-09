@@ -3,13 +3,16 @@ title: Queues Observability
 product: vercel
 url: /docs/queues/observability
 canonical_url: "https://vercel.com/docs/queues/observability"
-last_updated: 2026-03-03
+last_updated: 2026-09-10
 type: how-to
 prerequisites:
   - /docs/queues
 related:
   - /docs/queues/sdk
-summary: Monitor queue throughput, message age, and consumer performance to optimize your queue-based workflows.
+  - /docs/queues/concepts
+  - /docs/observability/observability-plus
+  - /docs/alerts/configure-alerts
+summary: Monitor queue throughput, message age, retries, and consumer performance to optimize your queue-based workflows.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -23,11 +26,13 @@ The **Queues** observability tab provides visibility into your queue operations,
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
-- [Concepts](https://vercel.com/docs/queues/concepts?from=related) — Learn delivery, retries, visibility timeouts, and deployment isolation in Vercel Queues.
-- [Pricing and Limits](https://vercel.com/docs/queues/pricing?from=related) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [API Reference](https://vercel.com/docs/queues/api?from=related) — HTTP API reference for Vercel Queues. Publish, consume, acknowledge, and manage messages.
+- [Process background jobs in Python with Vercel Queues](https://vercel.com/kb/guide/python-and-vercel-queues) — Move slow and failure-prone work out of your Python request handlers, with typed topics, consumer groups, and built-in r
+- [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta)
+- [Observability Insights](https://vercel.com/docs/observability/insights) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Observability](https://vercel.com/docs/observability) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
+- [Pricing and Limits](https://vercel.com/docs/queues/pricing) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
+- [API Reference](https://vercel.com/docs/queues/api) — HTTP API reference for Vercel Queues. Publish, consume, acknowledge, and manage messages.
+- [Build Queues](https://vercel.com/docs/builds/build-queues) — Understand how concurrency and same branch build queues manage multiple simultaneous deployments.
 
 Full cross-link map for this page: [/docs/queues/observability.graph.md](/docs/queues/observability.graph.md)
 <!-- /docsgraph:related -->
@@ -81,7 +86,7 @@ When you click on a specific queue, you can see detailed charts and breakdowns:
 | Column             | Description                                                        |
 | ------------------ | ------------------------------------------------------------------ |
 | **Consumer Group** | Name of the consumer group                                         |
-| **Processed/s**    | Messages processed per second by this consumer group               |
+| **Received/s**     | Messages received per second by this consumer group                |
 | **Received**       | Total messages received with sparkline chart                       |
 | **Deleted**        | Total messages successfully deleted with sparkline chart           |
 | **Redeliveries**   | Receives by this consumer group beyond a message's first attempt   |
@@ -102,7 +107,18 @@ A Retry Depth that climbs over time points to a poison message: one payload your
 
 Both metrics are also available under **Queue Actions** on the Observability **Query** tab, where you can group them by queue name, consumer group, or event type.
 
+## Alerting on retries
+
+A rising Retry Depth is the earliest sign that a consumer is failing every delivery. Because [messages stay pinned to the deployment that published them](/docs/queues/concepts#stopping-deliveries-to-a-deployment), a rolled-back deployment can keep failing and retrying for the full message retention period without showing up in production traffic.
+
+For projects with [Observability Plus](/docs/observability/observability-plus) enabled, teams can create a [custom monitor](/docs/alerts/configure-alerts#configure-custom-rules) on Retry Depth. The **Queue Retry Depth** preset in the monitor wizard sets this up: it triggers when the maximum Retry Depth in the project exceeds 5 within a 15-minute window, which a message reaches within minutes under the default retry delay when its consumer fails every time.
+
+When the alert fires, open the queue's **Consumers** table to find the consumer group, then check [function duration grouped by deployment](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fobservability%2Fquery%3Fmetric%3DserverlessFunctionInvocation.functionDurationGbhr%26aggregation%3Dsum%26by%3DdeploymentId\&title=Function+duration+by+deployment) on the **Query** tab to see which deployment the retries are running on and what they cost. See [Cost of failed deliveries](/docs/queues/concepts#cost-of-failed-deliveries) for what to do next.
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

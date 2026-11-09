@@ -3,7 +3,7 @@ title: Vercel CDN overview
 product: vercel
 url: /docs/cdn
 canonical_url: "https://vercel.com/docs/cdn"
-last_updated: 2026-06-16
+last_updated: 2026-09-14
 type: conceptual
 prerequisites:
   []
@@ -27,17 +27,18 @@ Vercel's CDN is a globally distributed network that caches content near your vis
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn?from=related) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
-- [Videos](https://nextjs.org/docs/app/guides/videos?from=related) — Recommendations and best practices for optimizing videos in your Next.js application.
-- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
-- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template?from=related) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
-- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template?from=related) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
-- [Build with a Flask starter template](https://vercel.com/kb/guide/build-with-a-flask-starter-template?from=related) — Deploy a Flask app to Vercel from a starter template. Compare the Flask Hello World starter, AI SDK, alt text generator,
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Runtimes](https://vercel.com/docs/functions/runtimes?from=related) — Runtimes transform your source code into Functions, which are served by our CDN. Learn about the official runtimes suppo
-- [Vercel Primitives](https://vercel.com/docs/build-output-api/primitives?from=related) — Learn about the Vercel platform primitives and how they work together to create a Vercel Deployment.
+- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
+- [How to use and optimize videos](https://nextjs.org/docs/app/guides/videos) — Recommendations and best practices for optimizing videos in your Next.js application.
+- [Caching details now available in Runtime Logs](https://vercel.com/changelog/caching-details-now-available-in-runtime-logs)
+- [Python projects now support routing rules](https://vercel.com/changelog/python-projects-now-support-routing-rules)
+- [Vercel CDN gets a new dashboard experience](https://vercel.com/changelog/vercels-cdn-gets-a-new-dashboard-experience)
+- [Build with an Express starter template](https://vercel.com/kb/guide/build-with-a-express-starter-template) — Deploy an Express app to Vercel from a template. Browse Express starters from Vercel and the community, then run them lo
+- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
+- [Build with a Flask starter template](https://vercel.com/kb/guide/build-with-a-flask-starter-template) — Deploy a Flask app to Vercel from a starter template. Compare the Flask Hello World starter, AI SDK, alt text generator,
+- [Build with a Hono starter template](https://vercel.com/kb/guide/build-with-a-hono-starter-template) — Deploy a Hono app to Vercel from a starter template. Compare the Hono API starter, MCP server, AI SDK, Slack Bolt, Next.
+- [Backends on Vercel: Python, containers, and Daemons](https://vercel.com/blog/backends-on-vercel-python-containers-and-daemons)
+- [Build your own web framework](https://vercel.com/blog/build-your-own-web-framework)
+- [Introducing Flat Rate CDN](https://vercel.com/blog/introducing-flat-rate-cdn)
 
 Full cross-link map for this page: [/docs/cdn.graph.md](/docs/cdn.graph.md)
 <!-- /docsgraph:related -->
@@ -45,9 +46,9 @@ Full cross-link map for this page: [/docs/cdn.graph.md](/docs/cdn.graph.md)
 Unlike traditional CDNs that only cache static assets, Vercel's CDN is framework-aware. It reads your routing, caching, and rendering configuration at build time, with the following benefits:
 
 - **Git-driven and previewable**: Every CDN change is scoped to a branch and deployed to a unique [preview URL](/docs/deployments/environments#preview-environment-pre-production), so you can test routing, caching, and security rules before they reach production.
-- **Global network**: [126+ PoPs across 51 countries and 20+ Vercel regions](/docs/regions), with built-in request acceleration and high-availability architecture.
+- **Global network**: [126+ PoPs across 51 countries and 19 Vercel regions](/docs/regions), with built-in request acceleration and high-availability architecture.
 - **Framework-aware, zero config**: CDN configuration and [caching policies](/docs/caching) are an output of the build and deployment process if you are using a supported framework, eliminating the need to define manual cache-control headers.
-- **Standard CDN directives**: When needed, you can override [routing and caching rules](/docs/routing). You can also proxy and cache responses from external backends with [external rewrites](/docs/routing/rewrites#external-rewrites), and [invalidate content by tag](/docs/caching/cdn-cache/purge) across all frameworks and backends.
+- **Standard CDN directives**: When needed, you can override [routing and caching rules](/docs/routing). You can also proxy and cache responses from external backends with [external rewrites](/docs/routing/rewrites#rewrites-to-external-origins), and [invalidate content by tag](/docs/caching/cdn-cache/purge) across all frameworks and backends.
 - **Default protections**: Unmetered, always-on [DDoS mitigation and network-level security](/docs/vercel-firewall) on every deployment at no extra cost.
 
 ## What you can build
@@ -65,6 +66,8 @@ You can use Vercel's CDN across a range of architectures:
 ### Get started with templates
 
 Deploy a CDN-ready template to see routing, caching, and revalidation in action:
+
+[View all CDN templates](https://vercel.com/templates/cdn)
 
 ## How Vercel CDN works
 
@@ -85,7 +88,7 @@ The CDN evaluates routing rules before checking any cache. Redirects return a ne
 
 - [Redirects](/docs/routing/redirects)
 - [Rewrites](/docs/routing/rewrites)
-- [Reverse proxy with external rewrites](/docs/routing/rewrites#external-rewrites)
+- [Reverse proxy with external rewrites](/docs/routing/rewrites#rewrites-to-external-origins)
 
 ## Security
 
@@ -138,12 +141,37 @@ You can configure branded error pages for 5xx server errors so visitors see a co
 
 ## Pricing and usage
 
-CDN pricing covers three billable resources: Edge Requests, Fast Data Transfer, and Fast Origin Transfer. Edge Requests and Fast Data Transfer include explicit Pro allowances; Vercel bills Fast Origin Transfer on demand on Pro. Pricing can vary by the region where requests originate.
+CDN pricing covers [CDN requests](/docs/manage-cdn-usage#cdn-requests), data transfer to visitors, and [Fast Origin Transfer](/docs/manage-cdn-usage#fast-origin-transfer). Pricing can vary by the region where requests originate.
 
-- [CDN pricing and usage](/docs/manage-cdn-usage)
-- [Networking usage details](/docs/manage-cdn-usage)
+For resource definitions, rates, usage dashboards, and ways to manage or stop charges, see [CDN pricing and usage](/docs/manage-cdn-usage).
+
+### CDN service tiers
+
+Vercel offers three CDN service tiers for different reliability, cost, and usage patterns: [On-demand CDN](#on-demand-cdn), [Flat Rate CDN](#flat-rate-cdn), and [Flex CDN](#flex-cdn).
+
+#### On-demand CDN
+
+On-demand CDN is the usage-based model for teams that want CDN usage to scale automatically with demand. You pay for the CDN resources your team uses, without choosing a predefined capacity level.
+
+Use On-demand CDN when you need the highest level of reliability, have mission-critical or highly variable traffic, or prefer to pay directly for usage.
+
+#### Flat Rate CDN
+
+[Flat Rate CDN](/docs/pricing/flat-rate-cdn) is a Pro feature that gives your team a fixed monthly price for CDN capacity that matches your typical usage.
+
+Use Flat Rate CDN when you want reliable delivery and predictable monthly CDN costs. Short-term spikes in usage **do not** change your bill, but remain subject to the [fair use guidelines](/docs/pricing/flat-rate-cdn#fair-use-guidelines).
+
+#### Flex CDN
+
+Flex CDN is a best-effort service tier for projects that can tolerate reduced reliability.
+Traffic on Flex CDN has no latency or availability guarantees, regardless of level.
+
+Flex CDN is available only to teams using Flat Rate CDN. To move a project onto Flex, see [Excluding projects from Flat Rate CDN](/docs/pricing/flat-rate-cdn#excluding-projects-from-flat-rate-cdn).
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

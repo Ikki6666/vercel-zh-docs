@@ -3,16 +3,16 @@ title: Claim Deployments
 product: vercel
 url: /docs/deployments/claim-deployments
 canonical_url: "https://vercel.com/docs/deployments/claim-deployments"
-last_updated: 2026-03-31
+last_updated: 2026-08-21
 type: conceptual
 prerequisites:
   - /docs/deployments
 related:
   - /docs/projects/transferring-projects
+  - /docs/drop
+  - /docs/cli/deploy
+  - /docs/cli/login
   - /docs/integrations/create-integration/marketplace-flows
-  - /docs/rest-api/projects/create-project-transfer-request
-  - /docs/rest-api/projects/accept-project-transfer-request
-  - /docs/rest-api/deployments/upload-deployment-files
 summary: Learn how to take ownership of deployments on Vercel with the Claim Deployments feature.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,18 +27,36 @@ The Claim Deployments feature enables users to take control of deployments by tr
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [AI Agents on Vercel](https://vercel.com/kb/guide/ai-agents?from=related) — This guide provides an overview of how to build and deploy AI agents on Vercel.
-- [Domain Linked to Another Account](https://vercel.com/kb/guide/domain-linked-to-another-account?from=related) — This guide explains how to claim a domain already linked to another Vercel account and add it to your team using the dom
-- [Claim Deployment](https://vercel.com/docs/platforms/platform-elements/blocks/claim-deployment?from=related) — A component for users to claim ownership of Vercel deployments created on their behalf.
-- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
-- [Claiming Ownership](https://vercel.com/docs/domains/working-with-domains/claim-domain-ownership?from=related) — Learn how to claim ownership of a domain that is registered with another Vercel account by verifying DNS ownership.
-- [List deployments](https://vercel.com/docs/rest-api/deployments/list-deployments?from=related)
-- [Claim Domain Ownership](https://vercel.com/docs/rest-api/domains/claim-domain-ownership?from=related)
+- [Claim Deployments now available for fast and secure deployment transfers](https://vercel.com/changelog/claim-deployments)
+- [Claimed deployments now include third-party resources](https://vercel.com/changelog/claimed-deployments-now-include-third-party-resources)
+- [September 2020](https://vercel.com/blog/changelog-september-2020)
+- [Deploying to Vercel Without Logging In](https://vercel.com/docs/deployments/deploy-without-logging-in) — Deploy to Vercel without an account using Vercel Drop or the CLI, then claim the project to keep it.
+- [Claim Deployment](https://vercel.com/docs/platforms/platform-elements/blocks/claim-deployment) — A component for users to claim ownership of Vercel deployments created on their behalf.
+- [Deployments](https://vercel.com/docs/agent-resources/vercel-mcp/tools/deployments) — Vercel MCP tools for deployments.
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Transferring Domains to Another Team or Project](https://vercel.com/docs/domains/working-with-domains/transfer-your-domain) — Domains can be transferred to another team or project within Vercel, or to and from a third-party registrar. Learn how t
 
 Full cross-link map for this page: [/docs/deployments/claim-deployments.graph.md](/docs/deployments/claim-deployments.graph.md)
 <!-- /docsgraph:related -->
 
 However, when transferring a project between two teams owned by the same user, it is recommended to use the [Project Transfer flow](/docs/projects/transferring-projects#starting-a-transfer) instead of the Claim Deployments flow.
+
+## Claim a temporary deployment
+
+When you deploy without an account, with [Vercel Drop](/docs/drop) or [`vercel deploy --temporary`](/docs/cli/deploy#temporary), you get a claim URL. Claiming moves the project to one of your teams, so it stops expiring and stays live.
+
+To claim a temporary deployment:
+
+1. Open the claim URL. In Vercel Drop, select **Claim Project**. In the CLI, open the URL that `vercel deploy --temporary` prints.
+2. Log in, or create a free account.
+3. Select the team to move the project to.
+4. Select **Transfer**. If Vercel shows terms and conditions, select **Accept and Transfer**.
+
+Vercel moves the project to your team and opens it in the dashboard. To keep deploying it from the CLI, run [`vercel login`](/docs/cli/login).
+
+Claim the deployment before it expires. After it expires, you can't claim it, and you need an account to deploy it again. Don't share the claim URL, because anyone with it can claim the project.
+
+The rest of this page covers building claim flows into your own platform.
 
 ## Get started
 
@@ -99,3 +117,6 @@ Freelancers or employees can move deployments from their personal accounts to a 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

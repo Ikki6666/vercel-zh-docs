@@ -1,10 +1,10 @@
 ---
-title: OpenResponses API
+title: OpenResponses API with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/openresponses
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway
@@ -18,7 +18,7 @@ summary: Use the OpenResponses API specification with AI Gateway for a unified, 
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# OpenResponses API
+# OpenResponses API with AI Gateway
 
 AI Gateway supports the [OpenResponses API](https://openresponses.org) specification, an open standard for AI model interactions. OpenResponses provides a unified interface across providers with built-in support for streaming, tool calling, reasoning, and multi-modal inputs.
 
@@ -28,12 +28,13 @@ AI Gateway supports the [OpenResponses API](https://openresponses.org) specifica
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [OpenAI Responses API](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses?from=related) — Use the OpenAI Responses API with AI Gateway to generate text, call tools, stream tokens, and more across any supported
-- [OpenAI Responses API](https://ai-sdk.dev/cookbook/guides/openai-responses?from=related)
-- [OpenAI Chat Completions API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions?from=related) — Use the OpenAI Chat Completions API with AI Gateway for seamless integration with existing tools and libraries.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [Text](https://vercel.com/docs/ai-gateway/getting-started/text?from=related) — Generate and stream text responses using AI Gateway.
-- [WebSocket Mode](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/websockets?from=related) — Keep a persistent connection open across turns with the OpenAI Responses API over WebSocket through AI Gateway.
+- [OpenResponses API now supported on Vercel AI Gateway](https://vercel.com/changelog/openresponses-api-now-supported-on-vercel-ai-gateway)
+- [Open Responses](https://ai-sdk.dev/providers/ai-sdk-providers/open-responses) — Learn how to use Open Responses with AI Gateway and the direct provider.
+- [Service tiers now available on AI Gateway](https://vercel.com/changelog/service-tiers-now-available-on-ai-gateway)
+- [Zero Data Retention on AI Gateway](https://vercel.com/blog/zdr-on-ai-gateway)
+- [AI Gateway supports OpenAI's Responses API](https://vercel.com/changelog/ai-gateway-supports-openais-responses-api)
+- [OpenAI Responses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses) — Use the OpenAI Responses API with AI Gateway to generate text, call tools, stream tokens, and more across any supported
+- [AI Gateway Video Input](https://vercel.com/docs/ai-gateway/inputs-and-tools/video-input) — Analyze video clips with AI Gateway using AI SDK 7, Python, Chat Completions, and Responses / OpenResponses.
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openresponses.graph.md](/docs/ai-gateway/sdks-and-apis/openresponses.graph.md)
 <!-- /docsgraph:related -->
@@ -69,27 +70,9 @@ The OpenResponses API supports the following features:
 
 ## Getting started
 
-Here's a simple example to generate a text response:
+Generate a text response:
 
-#### \['cURL'
-
-```bash filename="quickstart.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "input": [
-      {
-        "type": "message",
-        "role": "user",
-        "content": "What is the capital of France?"
-      }
-    ]
-  }'
-```
-
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="quickstart.ts"
 const apiKey = process.env.AI_GATEWAY_API_KEY;
@@ -113,11 +96,13 @@ const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
 });
 
 const result = await response.json();
-const message = result.output.find((item) => item.type === 'message');
-console.log(message.content[0].text);
+const message = result.output.find((item: { type: string }) => item.type === 'message');
+for (const block of message.content) {
+  if (block.type === 'output_text') console.log(block.text);
+}
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="quickstart.py"
 import os
@@ -140,15 +125,35 @@ response = client.responses.create(
 )
 
 message = next(item for item in response.output if item.type == 'message')
-print(message.content[0].text)
+for block in message.content:
+    if block.type == "output_text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="quickstart.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "input": [
+      {
+        "type": "message",
+        "role": "user",
+        "content": "What is the capital of France?"
+      }
+    ]
+  }'
 ```
 
 ## Parameters
 
 ### Required parameters
 
-- `model` (string): The model ID in `provider/model` format (e.g., `openai/gpt-5.6-sol`, `anthropic/claude-opus-5`)
-- `input` (array): Array of message objects containing `type`, `role`, and `content` fields
+- `model` (string): The model ID in `provider/model` format (e.g., `openai/gpt-6-astra`, `anthropic/claude-opus-5`)
+- `input` (string or array): A text string, or an array of message objects containing `type`, `role`, and `content` fields
 
 ### Optional parameters
 
@@ -157,7 +162,7 @@ print(message.content[0].text)
 - `top_p` (number): Nucleus sampling. Range: 0-1
 - `max_output_tokens` (integer): Maximum tokens to generate
 - `tools` (array): Tool definitions for function calling
-- `tool_choice` (string): Tool selection mode: `auto`, `required`, or `none`
+- `tool_choice` (string or object): Tool selection mode: `auto`, `required`, `none`, or an object that names a specific function
 - `reasoning` (object): Reasoning configuration with `effort` level
 - `providerOptions` (object): Provider-specific options for gateway configuration
 
@@ -188,7 +193,7 @@ const response = await fetch('https://ai-gateway.vercel.sh/v1/responses', {
     },
     providerOptions: {
       gateway: {
-        models: ['anthropic/claude-opus-5', 'openai/gpt-5.6-sol'], // fallbacks
+        models: ['anthropic/claude-opus-5', 'openai/gpt-6-astra'], // fallbacks
       },
     },
   }),
@@ -215,10 +220,8 @@ When an error occurs, the API returns a JSON object with details about what went
 ```json
 {
   "error": {
-    "message": "Invalid request: missing required parameter 'model'",
     "type": "invalid_request_error",
-    "param": "model",
-    "code": "missing_parameter"
+    "message": "At least one user message is required in the input"
   }
 }
 ```
@@ -227,3 +230,6 @@ When an error occurs, the API returns a JSON object with details about what went
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

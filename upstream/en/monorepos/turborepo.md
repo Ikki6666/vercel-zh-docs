@@ -3,7 +3,7 @@ title: Deploying Turborepo to Vercel
 product: turborepo
 url: /docs/monorepos/turborepo
 canonical_url: "https://vercel.com/docs/monorepos/turborepo"
-last_updated: 2026-07-30
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/monorepos
@@ -27,18 +27,18 @@ Turborepo is a high-performance build system for JavaScript and TypeScript codeb
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [CI Build Caching](https://nextjs.org/docs/app/guides/ci-build-caching?from=related) — Learn how to configure CI to cache Next.js builds
-- [CI Build Caching](https://nextjs.org/docs/pages/guides/ci-build-caching?from=related) — Learn how to configure CI to cache Next.js builds
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching?from=related) — Share a single Turborepo cache across your team and CI to avoid duplicated work.
-- [Vercel](https://turborepo.dev/docs/guides/ci-vendors/vercel?from=related) — Deploy your Turborepo on Vercel with zero-config Remote Caching.
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching?from=related) — Configure task caching to avoid repeating work, using fingerprinting for inputs and restoring outputs from cache.
-- [Constructing CI](https://turborepo.dev/docs/crafting-your-repository/constructing-ci?from=related) — Set up CI pipelines with Remote Caching, task filtering, Docker support, and affected package detection for maximum spee
-- [Using environment variables](https://turborepo.dev/docs/crafting-your-repository/using-environment-variables?from=related) — Account for environment variables in task hashing, configure environment modes, and handle .env files.
-- [Troubleshoot Build Errors](https://vercel.com/docs/deployments/troubleshoot-a-build?from=related) — Learn how to resolve common scenarios you may encounter during the Build step, including build errors that cancel a depl
-- [External CI/CD](https://vercel.com/docs/monorepos/remote-caching/external-ci-cd?from=related) — Authenticate the Turborepo CLI to Vercel Remote Cache from your CI/CD provider using OpenID Connect \\(OIDC\\) or a Person
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
-- [Production Checklist](https://vercel.com/docs/production-checklist?from=related) — Ensure your application is ready for launch with this comprehensive production checklist by the Vercel engineering team.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Faster iteration with Turborepo and Vercel Remote Cache](https://vercel.com/blog/vercel-remote-cache-turbo)
+- [How to configure Continuous Integration (CI) build caching](https://nextjs.org/docs/app/guides/ci-build-caching) — Learn how to configure CI to cache Next.js builds
+- [How to configure Continuous Integration (CI) build caching](https://nextjs.org/docs/pages/guides/ci-build-caching) — Learn how to configure CI to cache Next.js builds
+- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) — Share a single Turborepo cache across your team and CI to avoid duplicated work.
+- [Vercel](https://turborepo.dev/docs/guides/ci-vendors/vercel) — Deploy your Turborepo on Vercel and run tasks with Vercel CI using zero-config Remote Caching.
+- [How to reduce build costs on Vercel](https://vercel.com/kb/guide/how-reduce-build-costs) — Find which projects drive your Build CPU Minutes, then lower them by skipping unneeded builds, shortening each build, an
+- [Technical audits: Finding the bottlenecks that cost performance, money, and velocity](https://vercel.com/kb/guide/technical-audits) — How Vercel's Forward Deployed Engineering team runs code review, web performance, and usage audits, the recurring patter
+- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching) — Configure task caching to avoid repeating work, using fingerprinting for inputs and restoring outputs from cache.
+- [Monorepos are changing how teams build software](https://vercel.com/blog/monorepos)
+- [Visualize time saved using Turborepo with Remote Caching](https://vercel.com/changelog/visualize-time-saved-using-turborepo-with-remote-caching)
+- [Turborepo Open-Source CLI and Remote Caching on Vercel](https://vercel.com/changelog/turborepo-open-source-cli-and-remote-caching-on-vercel)
+- [Turborepo Run Summary is now available](https://vercel.com/changelog/turborepo-run-summary-is-now-available)
 
 Full cross-link map for this page: [/docs/monorepos/turborepo.graph.md](/docs/monorepos/turborepo.graph.md)
 <!-- /docsgraph:related -->
@@ -64,11 +64,11 @@ Follow the steps below to deploy your Turborepo to Vercel:
   > **💡 Note:** `env` and `globalEnv` key support is available in Turborepo version 1.5 or
   > later. You should update your Turborepo version if you're using an older
   > version.
-  The following example shows a Turborepo configuration, that handles these suggestions:
+  The following example shows a Turborepo configuration that handles these suggestions. It uses the `tasks` key from Turborepo 2.0. Turborepo 1.x uses `pipeline` instead:
   ```json filename="turbo.json"
   {
     "$schema": "https://turborepo.com/schema.json",
-    "pipeline": {
+    "tasks": {
       "build": {
         "dependsOn": ["^build"],
         "env": [
@@ -103,7 +103,7 @@ Follow the steps below to deploy your Turborepo to Vercel:
   > the [quickstart](https://turborepo.com/docs) on the Turborepo docs to do so.
   [Create a new Project](/new) on the Vercel dashboard and [import](/docs/getting-started-with-vercel) your Turborepo project.
 
-  ![Image](`/docs-assets/static/docs/concepts/deployments/git/config-project-light.png`)
+  ![Configuring Project settings during import, with defaults already set.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/git/config-project-light.png)
 
   Vercel handles all aspects of configuring your monorepo, including setting [build commands](/docs/builds/configure-a-build#build-command), the [Output Directory](/docs/builds/configure-a-build#output-directory), the [Root Directory](/docs/builds/configure-a-build#root-directory), the correct directory for workspaces, and the [Ignored Build Step](/docs/project-configuration/project-settings#ignored-build-step).
 
@@ -160,51 +160,41 @@ You do not need to host your project on Vercel to use Vercel Remote Caching. For
 
 - ### Link your project to the Vercel Remote Cache
   First, authenticate with the Turborepo CLI **from the root of your monorepo**:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm dlx turbo login
+  ```
+  **yarn**
+  ```bash
+  yarn dlx turbo login
+  ```
+  **npm**
+  ```bash
+  npx turbo login
+  ```
+  **bun**
+  ```bash
+  bunx turbo login
+  ```
   Then, use [`turbo link`](https://turborepo.com/docs/reference/command-line-reference#turbo-link) to link your Turborepo to your [remote cache](/docs/monorepos/remote-caching#link-to-the-remote-cache). This command should be run **from the root of your monorepo**:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm dlx turbo link
+  ```
+  **yarn**
+  ```bash
+  yarn dlx turbo link
+  ```
+  **npm**
+  ```bash
+  npx turbo link
+  ```
+  **bun**
+  ```bash
+  bunx turbo link
+  ```
   Next, `cd` into each project in your Turborepo and run `vercel link` to link each directory within the monorepo to your Vercel Project.
 
   As a Team owner, you can also [enable caching within the Vercel Dashboard](/docs/monorepos/remote-caching#enable-and-disable-remote-caching-for-your-team).
@@ -229,18 +219,18 @@ For Vercel to deploy your application, the outputs need to be present for your [
 ```json filename="turbo.json"
 {
   "$schema": "https://turborepo.com/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": [
         // Next.js
-        ".next/**", "!.next/cache/**"
+        ".next/**", "!.next/cache/**",
         // SvelteKit
         ".svelte-kit/**", ".vercel/**",
         // Build Output API
-        ".vercel/output/**"
+        ".vercel/output/**",
         // Other frameworks
-        ".nuxt/**", "dist/**" "other-output-directory/**"
+        ".nuxt/**", "dist/**", "other-output-directory/**"
       ]
     }
   }
@@ -262,7 +252,7 @@ To view the Turborepo Run Summary for a deployment, use the following steps:
 2. Select a **Deployment** from the list to view the deployment details
 3. Select the **Run Summary** button to the right of the **Building** section, under the **Deployment Status** heading:
 
-![Image](`/docs-assets/static/docs/concepts/monorepos/turborepo/turbo-run-summary-cta.png`)
+![Open Turborepo Run Summary from the Deployment Details page](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/monorepos/turborepo/turbo-run-summary-cta.png)
 
 This opens a view containing a review of the build, including:
 
@@ -275,7 +265,7 @@ This opens a view containing a review of the build, including:
 > automatically displayed, highlighting the specific changes that caused the
 > cache miss.
 
-![Image](`/docs-assets/static/docs/concepts/monorepos/turborepo/turbo-run-summary.png`)
+![Turborepo Run Summary](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/monorepos/turborepo/turbo-run-summary.png)
 
 This information can be helpful in identifying exactly why a cache miss occurred, and can be used to determine if a cache miss is due to a change in the
 project, or a change in the environment.
@@ -297,3 +287,6 @@ If you are using a version of Turborepo below 2.4.1, you may encounter issues wi
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

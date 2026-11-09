@@ -1,20 +1,20 @@
 ---
-title: Structured Outputs
+title: OpenAI Chat Completions Structured Outputs with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
   - /docs/ai-gateway/sdks-and-apis
 related:
   []
-summary: Generate structured JSON responses that conform to a specific schema using the Chat Completions API.
+summary: Generate structured JSON responses that conform to a specific schema using the Chat Completions API through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Structured Outputs
+# OpenAI Chat Completions Structured Outputs with AI Gateway
 
 Generate structured JSON responses that conform to a specific schema, ensuring predictable and reliable data formats for your applications.
 
@@ -24,13 +24,12 @@ Generate structured JSON responses that conform to a specific schema, ensuring p
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Generating Structured Data](https://ai-sdk.dev/docs/ai-sdk-core/generating-structured-data?from=related)
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/structured-outputs?from=related) — Constrain OpenResponses API output to a JSON schema so every response parses.
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/structured-outputs?from=related) — Constrain a response to a JSON schema with the OpenAI Responses API.
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs?from=related) — Get JSON responses conforming to a JSON Schema from Anthropic models through AI Gateway.
-- [Output](https://ai-sdk.dev/docs/reference/ai-sdk-core/output?from=related)
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming?from=related) — Stream OpenAI Chat Completions responses token by token as they are generated.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
+- [Cat Jam is now available in stealth for free on AI Gateway](https://vercel.com/changelog/cat-jam-is-now-available-in-stealth-for-free-on-ai-gateway)
+- [GPT-6.1 Terra now available on AI Gateway](https://vercel.com/changelog/gpt-6-1-terra-now-available-on-ai-gateway)
+- [Reflection AI's Beam now available on AI Gateway for free](https://vercel.com/changelog/reflection-ai-beam-now-available-on-ai-gateway-for-free)
+- [Tencent Hy4 now available on AI Gateway](https://vercel.com/changelog/tencent-hy4-now-available-on-ai-gateway)
+- [Anthropic Messages Structured Outputs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/structured-outputs) — Get JSON responses conforming to a JSON Schema from Anthropic models through AI Gateway.
+- [OpenResponses Structured Outputs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/structured-outputs) — Request schema-constrained JSON with OpenResponses through AI Gateway, and handle provider support and response validati
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs.graph.md](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs.graph.md)
 <!-- /docsgraph:related -->
@@ -40,71 +39,6 @@ Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openai-chat-c
 Use the OpenAI standard `json_schema` response format for the most robust structured output experience. This follows the official [OpenAI Structured Outputs specification](https://platform.openai.com/docs/guides/structured-outputs).
 
 Example request
-
-#### cURL
-
-```bash filename="structured-output.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "openai/gpt-5.6-sol",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Create a product listing for a wireless gaming headset."
-      }
-    ],
-    "stream": false,
-    "response_format": {
-      "type": "json_schema",
-      "json_schema": {
-        "name": "product_listing",
-        "description": "A product listing with details and pricing",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "Product name"
-            },
-            "brand": {
-              "type": "string",
-              "description": "Brand name"
-            },
-            "price": {
-              "type": "number",
-              "description": "Price in USD"
-            },
-            "category": {
-              "type": "string",
-              "description": "Product category"
-            },
-            "description": {
-              "type": "string",
-              "description": "Product description"
-            },
-            "features": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "description": "Key product features"
-            }
-          },
-          "required": [
-            "name",
-            "brand",
-            "price",
-            "category",
-            "description"
-          ],
-          "additionalProperties": false
-        }
-      }
-    }
-  }'
-```
 
 #### TypeScript
 
@@ -119,7 +53,7 @@ const openai = new OpenAI({
 });
 
 const completion = await openai.chat.completions.create({
-  model: 'openai/gpt-5.6-sol',
+  model: 'openai/gpt-6-astra',
   messages: [
     {
       role: 'user',
@@ -171,7 +105,7 @@ const completion = await openai.chat.completions.create({
 console.log('Assistant:', completion.choices[0].message.content);
 
 // Parse the structured response
-const structuredData = JSON.parse(completion.choices[0].message.content);
+const structuredData = JSON.parse(completion.choices[0].message.content ?? 'null');
 console.log('Structured Data:', structuredData);
 ```
 
@@ -190,7 +124,7 @@ client = OpenAI(
 )
 
 completion = client.chat.completions.create(
-    model='openai/gpt-5.6-sol',
+    model='openai/gpt-6-astra',
     messages=[
         {
             'role': 'user',
@@ -246,6 +180,71 @@ structured_data = json.loads(completion.choices[0].message.content)
 print('Structured Data:', json.dumps(structured_data, indent=2))
 ```
 
+#### cURL
+
+```bash filename="structured-output.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-6-astra",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Create a product listing for a wireless gaming headset."
+      }
+    ],
+    "stream": false,
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "product_listing",
+        "description": "A product listing with details and pricing",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Product name"
+            },
+            "brand": {
+              "type": "string",
+              "description": "Brand name"
+            },
+            "price": {
+              "type": "number",
+              "description": "Price in USD"
+            },
+            "category": {
+              "type": "string",
+              "description": "Product category"
+            },
+            "description": {
+              "type": "string",
+              "description": "Product description"
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Key product features"
+            }
+          },
+          "required": [
+            "name",
+            "brand",
+            "price",
+            "category",
+            "description"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  }'
+```
+
 Response format
 
 The response contains structured JSON that conforms to your specified schema:
@@ -255,7 +254,7 @@ The response contains structured JSON that conforms to your specified schema:
   "id": "chatcmpl-123",
   "object": "chat.completion",
   "created": 1677652288,
-  "model": "openai/gpt-5.6-sol",
+  "model": "openai/gpt-6-astra",
   "choices": [
     {
       "index": 0,
@@ -281,11 +280,135 @@ The response contains structured JSON that conforms to your specified schema:
   - **`name`** (required): Name of the response schema
   - **`description`** (optional): Human-readable description of the expected output
   - **`schema`** (required): Valid JSON Schema object defining the structure
+  - **`strict`** (optional): Set to `true` to turn on strict schema adherence for OpenAI models. Defaults to `false`
 
 #### Legacy JSON format (alternative)
 
 > **💡 Note:** **Legacy format:** The following format is supported for backward
 > compatibility. For new implementations, use the `json_schema` format above.
+
+#### TypeScript
+
+```typescript filename="structured-output-legacy.ts"
+import OpenAI from 'openai';
+
+const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
+
+const openai = new OpenAI({
+  apiKey,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const completion = await openai.post<OpenAI.Chat.Completions.ChatCompletion>(
+  '/chat/completions',
+  {
+    body: {
+      model: 'openai/gpt-6-astra',
+      messages: [
+        {
+          role: 'user',
+          content: 'Create a product listing for a wireless gaming headset.',
+        },
+      ],
+      stream: false,
+
+      response_format: {
+        type: 'json',
+        name: 'product_listing',
+        description: 'A product listing with details and pricing',
+        schema: {
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              description: 'Product name',
+            },
+            brand: {
+              type: 'string',
+              description: 'Brand name',
+            },
+            price: {
+              type: 'number',
+              description: 'Price in USD',
+            },
+            category: {
+              type: 'string',
+              description: 'Product category',
+            },
+            description: {
+              type: 'string',
+              description: 'Product description',
+            },
+            features: {
+              type: 'array',
+              items: {
+                type: 'string',
+              },
+              description: 'Key product features',
+            },
+          },
+          required: ['name', 'brand', 'price', 'category', 'description'],
+        },
+      },
+    },
+  },
+);
+
+console.log('Assistant:', completion.choices[0].message.content);
+```
+
+#### Python
+
+```python filename="structured-output-legacy.py"
+import os
+import json
+from openai import OpenAI
+
+api_key = os.getenv('AI_GATEWAY_API_KEY') or os.getenv('VERCEL_OIDC_TOKEN')
+
+client = OpenAI(
+    api_key=api_key,
+    base_url='https://ai-gateway.vercel.sh/v1'
+)
+
+completion = client.chat.completions.create(
+    model='openai/gpt-6-astra',
+    messages=[
+        {
+            'role': 'user',
+            'content': 'Create a product listing for a wireless gaming headset.'
+        }
+    ],
+    stream=False,
+    response_format={
+        'type': 'json',
+        'name': 'product_listing',
+        'description': 'A product listing with details and pricing',
+        'schema': {
+            'type': 'object',
+            'properties': {
+                'name': {'type': 'string', 'description': 'Product name'},
+                'brand': {'type': 'string', 'description': 'Brand name'},
+                'price': {'type': 'number', 'description': 'Price in USD'},
+                'category': {'type': 'string', 'description': 'Product category'},
+                'description': {'type': 'string', 'description': 'Product description'},
+                'features': {
+                    'type': 'array',
+                    'items': {'type': 'string'},
+                    'description': 'Key product features'
+                }
+            },
+            'required': ['name', 'brand', 'price', 'category', 'description']
+        }
+    }
+)
+
+print('Assistant:', completion.choices[0].message.content)
+
+# Parse the structured response
+structured_data = json.loads(completion.choices[0].message.content)
+print('Structured Data:', json.dumps(structured_data, indent=2))
+```
 
 #### cURL
 
@@ -294,7 +417,7 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
   -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "openai/gpt-5.6-sol",
+    "model": "openai/gpt-6-astra",
     "messages": [
       {
         "role": "user",
@@ -349,175 +472,9 @@ curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
   }'
 ```
 
-#### TypeScript
-
-```typescript filename="structured-output-legacy.ts"
-import OpenAI from 'openai';
-
-const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
-
-const openai = new OpenAI({
-  apiKey,
-  baseURL: 'https://ai-gateway.vercel.sh/v1',
-});
-
-const completion = await openai.chat.completions.create({
-  model: 'openai/gpt-5.6-sol',
-  messages: [
-    {
-      role: 'user',
-      content: 'Create a product listing for a wireless gaming headset.',
-    },
-  ],
-  stream: false,
-  // @ts-expect-error - Legacy format not in OpenAI types
-  response_format: {
-    type: 'json',
-    name: 'product_listing',
-    description: 'A product listing with details and pricing',
-    schema: {
-      type: 'object',
-      properties: {
-        name: { type: 'string', description: 'Product name' },
-        brand: { type: 'string', description: 'Brand name' },
-        price: { type: 'number', description: 'Price in USD' },
-        category: { type: 'string', description: 'Product category' },
-        description: { type: 'string', description: 'Product description' },
-        features: {
-          type: 'array',
-          items: { type: 'string' },
-          description: 'Key product features',
-        },
-      },
-      required: ['name', 'brand', 'price', 'category', 'description'],
-    },
-  },
-});
-
-console.log('Assistant:', completion.choices[0].message.content);
-```
-
-#### Python
-
-```python filename="structured-output-legacy.py"
-import os
-import json
-from openai import OpenAI
-
-api_key = os.getenv('AI_GATEWAY_API_KEY') or os.getenv('VERCEL_OIDC_TOKEN')
-
-client = OpenAI(
-    api_key=api_key,
-    base_url='https://ai-gateway.vercel.sh/v1'
-)
-
-completion = client.chat.completions.create(
-    model='openai/gpt-5.6-sol',
-    messages=[
-        {
-            'role': 'user',
-            'content': 'Create a product listing for a wireless gaming headset.'
-        }
-    ],
-    stream=False,
-    response_format={
-        'type': 'json',
-        'name': 'product_listing',
-        'description': 'A product listing with details and pricing',
-        'schema': {
-            'type': 'object',
-            'properties': {
-                'name': {'type': 'string', 'description': 'Product name'},
-                'brand': {'type': 'string', 'description': 'Brand name'},
-                'price': {'type': 'number', 'description': 'Price in USD'},
-                'category': {'type': 'string', 'description': 'Product category'},
-                'description': {'type': 'string', 'description': 'Product description'},
-                'features': {
-                    'type': 'array',
-                    'items': {'type': 'string'},
-                    'description': 'Key product features'
-                }
-            },
-            'required': ['name', 'brand', 'price', 'category', 'description']
-        }
-    }
-)
-
-print('Assistant:', completion.choices[0].message.content)
-
-# Parse the structured response
-structured_data = json.loads(completion.choices[0].message.content)
-print('Structured Data:', json.dumps(structured_data, indent=2))
-```
-
 #### Streaming with structured outputs
 
 Both `json_schema` and legacy `json` formats work with streaming responses:
-
-#### cURL
-
-```bash filename="structured-streaming.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "openai/gpt-5.6-sol",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Create a product listing for a wireless gaming headset."
-      }
-    ],
-    "stream": true,
-    "response_format": {
-      "type": "json_schema",
-      "json_schema": {
-        "name": "product_listing",
-        "description": "A product listing with details and pricing",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "description": "Product name"
-            },
-            "brand": {
-              "type": "string",
-              "description": "Brand name"
-            },
-            "price": {
-              "type": "number",
-              "description": "Price in USD"
-            },
-            "category": {
-              "type": "string",
-              "description": "Product category"
-            },
-            "description": {
-              "type": "string",
-              "description": "Product description"
-            },
-            "features": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "description": "Key product features"
-            }
-          },
-          "required": [
-            "name",
-            "brand",
-            "price",
-            "category",
-            "description"
-          ],
-          "additionalProperties": false
-        }
-      }
-    }
-  }'
-```
 
 #### TypeScript
 
@@ -530,7 +487,7 @@ const openai = new OpenAI({
 });
 
 const stream = await openai.chat.completions.create({
-  model: 'openai/gpt-5.6-sol',
+  model: 'openai/gpt-6-astra',
   messages: [
     {
       role: 'user',
@@ -591,7 +548,7 @@ client = OpenAI(
 )
 
 stream = client.chat.completions.create(
-    model='openai/gpt-5.6-sol',
+    model='openai/gpt-6-astra',
     messages=[
         {
             'role': 'user',
@@ -637,6 +594,71 @@ structured_data = json.loads(complete_response)
 print('\nParsed Product:', json.dumps(structured_data, indent=2))
 ```
 
+#### cURL
+
+```bash filename="structured-streaming.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-6-astra",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Create a product listing for a wireless gaming headset."
+      }
+    ],
+    "stream": true,
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "product_listing",
+        "description": "A product listing with details and pricing",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Product name"
+            },
+            "brand": {
+              "type": "string",
+              "description": "Brand name"
+            },
+            "price": {
+              "type": "number",
+              "description": "Price in USD"
+            },
+            "category": {
+              "type": "string",
+              "description": "Product category"
+            },
+            "description": {
+              "type": "string",
+              "description": "Product description"
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Key product features"
+            }
+          },
+          "required": [
+            "name",
+            "brand",
+            "price",
+            "category",
+            "description"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  }'
+```
+
 > **💡 Note:** **Streaming assembly:** When using structured outputs with streaming, you'll
 > need to collect all the content chunks and parse the complete JSON response
 > once the stream is finished.
@@ -645,3 +667,6 @@ print('\nParsed Product:', json.dumps(structured_data, indent=2))
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

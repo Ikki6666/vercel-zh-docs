@@ -1,21 +1,20 @@
 ---
-title: Observability
+title: AI Gateway Observability
 product: vercel
 url: /docs/ai-gateway/observability-and-spend/observability
 canonical_url: "https://vercel.com/docs/ai-gateway/observability-and-spend/observability"
-last_updated: 2026-07-30
+last_updated: 2026-09-08
 type: reference
 prerequisites:
   - /docs/ai-gateway/observability-and-spend
   - /docs/ai-gateway
 related:
-  - /docs/observability/observability-plus
   - /docs/ai-gateway/observability-and-spend/logs
-summary: Learn how to monitor and debug your AI Gateway requests.
+summary: Monitor AI Gateway requests in the Vercel dashboard. Inspect token usage, latency, spend, and logs at team, project, and API key scopes.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Observability
+# AI Gateway Observability
 
 The AI Gateway logs spend, model usage, and observability metrics related to your requests, which you can use to monitor and debug.
 
@@ -25,13 +24,17 @@ The AI Gateway logs spend, model usage, and observability metrics related to you
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel?from=related) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
-- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router?from=related) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
-- [Usage & Billing](https://vercel.com/docs/ai-gateway/observability-and-spend/usage?from=related) — Monitor your AI Gateway credit balance, usage, and generation details.
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
+- [Set up coding agents in one command with AI Gateway](https://vercel.com/changelog/set-up-coding-agents-in-one-command-with-ai-gateway)
+- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
+- [Cost-aware model routing with Vercel AI Gateway](https://vercel.com/kb/guide/cost-aware-model-routing-with-ai-gateway) — Send easy requests to a lower-cost model and escalate only the complex ones to a frontier model through AI Gateway, with
+- [Build realtime voice agents on AI Gateway](https://vercel.com/blog/realtime-voice-agents-on-ai-gateway)
+- [AI Gateway logs now have a dedicated page](https://vercel.com/changelog/ai-gateway-logs)
+- [AI Gateway now supports team and project spend budgets](https://vercel.com/changelog/ai-gateway-spend-budgets-and-alerts)
+- [Chatbox with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/chatbox) — Connect Chatbox to AI Gateway. Configure your API key, endpoint, and models to use multiple AI providers and monitor cha
+- [Observability Insights](https://vercel.com/docs/observability/insights) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Aider with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/aider) — Connect Aider to AI Gateway with the Vercel CLI or an OpenAI-compatible base URL, API key, and model metadata.
+- [AI Gateway Framework Integrations](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations) — Connect Flue, LangChain, LiteLLM, LlamaIndex, Mastra, Pydantic AI, TanStack AI, and other frameworks to Vercel AI Gatewa
+- [Flue with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/flue) — Route Flue agent requests through Vercel AI Gateway with the built-in provider, using an API key or Vercel OIDC authenti
 
 Full cross-link map for this page: [/docs/ai-gateway/observability-and-spend/observability.graph.md](/docs/ai-gateway/observability-and-spend/observability.graph.md)
 <!-- /docsgraph:related -->
@@ -48,9 +51,9 @@ You can view these metrics in two ways:
 
 ## Usage
 
-The **Usage** section displays four metrics to help you monitor your AI Gateway activity. For extended timeframes and further retention, you need [Observability Plus](/docs/observability/observability-plus).
+The **Usage** section displays four metrics to help you monitor your AI Gateway activity. You can look back at most 36 days.
 
-![Image](https://vercel.com/docs-assets/static/docs/ai-gateway/overview-observability/graphs-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/ai-gateway/overview-observability/graphs-light.png)
 
 ### Requests by model
 
@@ -58,11 +61,11 @@ The **Requests by Model** chart shows the number of requests made to each model 
 
 ### Time to first token (TTFT)
 
-The **Time to First Token** chart shows the average time it takes for the AI Gateway to return the first token of a response. This can help you understand the latency of your requests and identify any performance issues.
+The **P50 TTFT** chart shows the median (P50) time it takes for the AI Gateway to return the first token of a response. This can help you understand the latency of your requests and identify any performance issues.
 
 ### Input/output token counts
 
-The **Input/Output Token Counts** chart shows the number of input and output tokens for each request. This can help you understand the size of the requests being made and the responses being returned.
+The **All Tokens** chart shows the number of input and output tokens for each request. This can help you understand the size of the requests being made and the responses being returned.
 
 ### Spend
 
@@ -70,19 +73,19 @@ The **Spend** chart shows the total amount spent on AI Gateway requests over tim
 
 ## Requests
 
-The **Requests** section displays summaries by project, API key, and a detailed log of all requests. Each summary includes request count, average tokens, P75 duration, P75 TTFT, and cost for the specified time frame.
+The **Requests** section displays summaries by project, API key, and a detailed log of all requests. Each summary includes request count, average tokens per second, P50 duration, P50 TTFT, and cost for the specified time frame.
 
 ### Projects
 
 View usage grouped by project. Use this view to associate usage and spend with specific projects. Click into a project for more detailed information.
 
-![Image](https://vercel.com/docs-assets/static/docs/ai-gateway/overview-observability/projects-summary-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/ai-gateway/overview-observability/projects-summary-light.png)
 
 ### API keys
 
 View usage grouped by API key. Use this view to track usage by a specific person or part of your organization. Click into an API key for more detailed information.
 
-![Image](https://vercel.com/docs-assets/static/docs/ai-gateway/overview-observability/apikeys-summary-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/ai-gateway/overview-observability/apikeys-summary-light.png)
 
 ### Logs
 
@@ -105,3 +108,6 @@ Once in project scope, you'll see the same metrics filtered to show only the act
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

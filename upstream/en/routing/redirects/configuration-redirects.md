@@ -3,13 +3,13 @@ title: Configuration Redirects
 product: vercel
 url: /docs/routing/redirects/configuration-redirects
 canonical_url: "https://vercel.com/docs/routing/redirects/configuration-redirects"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/routing/redirects
   - /docs/routing
 related:
-  - /docs/project-configuration
+  - /docs/project-configuration/vercel-json
   - /docs/regions
   - /docs/routing/redirects
 summary: Learn how to define static redirects in your framework configuration or vercel.json with support for wildcards, pattern matching, and geolocation.
@@ -26,21 +26,20 @@ Configuration redirects define routing rules that Vercel evaluates at build time
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How can I increase the limit of redirects or use dynamic redirects on Vercel?](https://vercel.com/kb/guide/how-can-i-increase-the-limit-of-redirects-or-use-dynamic-redirects-on-vercel?from=related) — Instructions on how to use Serverless Functions to handle redirects on Vercel.
-- [Does Vercel support permanent redirects?](https://vercel.com/kb/guide/does-vercel-support-permanent-redirects?from=related) — Information on Vercel's support for permanent redirects.
-- [Dynamic redirects with Global Config and Next.js proxy](https://vercel.com/kb/guide/dynamic-redirects-with-global-config-and-next-js-proxy?from=related) — Learn how to create redirects that update instantly without redeploying by storing rules in Global Config and reading th
-- [How do I perform Vercel redirects based on query strings?](https://vercel.com/kb/guide/how-do-i-perform-vercel-redirects-based-on-query-strings?from=related) — When using redirects with the \\`vercel.json\\` or \\`next.config.js\\` configuration file, your URL may contain query param
-- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
-- [Bulk Redirects](https://vercel.com/docs/routing/redirects/bulk-redirects?from=related) — Learn how to import thousands of simple redirects from CSV, JSON, or JSONL files.
-- [Manage Redirects at Scale](https://vercel.com/docs/routing/redirects/manage-redirects-at-scale?from=related) — Add, bulk upload, version, and roll back project-level redirects using the CLI.
-- [vercel redirects](https://vercel.com/docs/cli/redirects?from=related) — Learn how to manage project-level redirects using the vercel redirects CLI command.
-- [Getting Started](https://vercel.com/docs/routing/redirects/bulk-redirects/getting-started?from=related) — Learn how to import thousands of simple redirects from CSV, JSON, or JSONL files.
-- [Deploying & Redirecting Domains](https://vercel.com/docs/domains/working-with-domains/deploying-and-redirecting?from=related) — Learn how to deploy your domains and set up domain redirects with this guide.
+- [Dynamic redirects with Global Config and Next.js proxy](https://vercel.com/kb/guide/dynamic-redirects-with-global-config-and-next-js-proxy) — Learn how to create redirects that update instantly without redeploying by storing rules in Global Config and reading th
+- [redirects](https://nextjs.org/docs/pages/api-reference/config/next-config-js/redirects) — Add redirects to your Next.js app.
+- [redirects](https://nextjs.org/docs/app/api-reference/config/next-config-js/redirects) — Add redirects to your Next.js app.
+- [Emergency Redirect](https://vercel.com/kb/guide/emergency-redirect) — Learn how to implement an emergency redirect without re-deploying your site.
+- [Bulk Redirects](https://vercel.com/docs/routing/redirects/bulk-redirects) — Learn how to import thousands of simple redirects from CSV, JSON, or JSONL files.
+- [vercel redirects](https://vercel.com/docs/cli/redirects) — Learn how to manage project-level redirects using the vercel redirects CLI command.
+- [Managing redirects at scale](https://vercel.com/docs/routing/redirects/manage-redirects-at-scale) — Add, bulk upload, version, and roll back project-level redirects using the CLI.
+- [Getting Started](https://vercel.com/docs/routing/redirects/bulk-redirects/getting-started) — Learn how to import thousands of simple redirects from CSV, JSON, or JSONL files.
+- [Rewrites on Vercel](https://vercel.com/docs/routing/rewrites) — Learn how to use rewrites to send users to different URLs without modifying the visible URL.
 
 Full cross-link map for this page: [/docs/routing/redirects/configuration-redirects.graph.md](/docs/routing/redirects/configuration-redirects.graph.md)
 <!-- /docsgraph:related -->
 
-Define configuration redirects in your framework's config file or in the `vercel.json` file, which is located in the root of your application. The `vercel.json` should contain a `redirects` field, which is an array of redirect rules. For more information on all available properties, see the [project configuration](/docs/project-configuration#redirects) docs.
+Define configuration redirects in your framework's config file or in the `vercel.json` file, which is located in the root of your application. The `vercel.json` should contain a `redirects` field, which is an array of redirect rules. For more information on all available properties, see the [project configuration](/docs/project-configuration/vercel-json#redirects) docs.
 
 ```json filename="vercel.json"
 {
@@ -68,7 +67,7 @@ Define configuration redirects in your framework's config file or in the `vercel
 }
 ```
 
-View the full [API reference](/docs/project-configuration#redirects) for the `redirects` property.
+View the full [API reference](/docs/project-configuration/vercel-json#redirects) for the `redirects` property.
 
 > **💡 Note:** Using `has` does not yet work locally while using `vercel dev`, but does work
 > when deployed.
@@ -133,13 +132,37 @@ Use `vercel.json`, see above.
 
 When deployed, these redirect rules will be deployed to every [region](/docs/regions) in Vercel's CDN.
 
+## Redirect based on a query string
+
+The `source` pattern matches only the path, so you can't match a query string in `source`. To redirect based on a query parameter, add a `has` condition with `type` set to `query`:
+
+```json filename="vercel.json"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/specific/:path*",
+      "has": [{ "type": "query", "key": "page", "value": "home" }],
+      "destination": "/another/:path*",
+      "permanent": false
+    }
+  ]
+}
+```
+
+A request to `/specific/mypath?page=home&id=1000` redirects to `/another/mypath?page=home&id=1000` with a `307` status. A request to `/specific/mypath?page=about` doesn't match, so no redirect happens. Use `missing` instead of `has` to redirect only when a parameter is absent.
+
+The request's query string passes through to the destination. If the destination has its own query parameters, Vercel combines them. For example, a rule with `"source": "/"` and `"destination": "/new?path=foo"` redirects `/?baz=10` to `/new?baz=10&path=foo`.
+
+For all `has` and `missing` options, see the [redirects reference](/docs/project-configuration/vercel-json#redirects). In Next.js, `redirects()` in `next.config.js` accepts the same `has` syntax.
+
 ## Limits
 
-The [/.well-known](# "The /.well-known directory") path is reserved and cannot be redirected or rewritten. Only
+The [/.well-known/acme-challenge](# "The /.well-known directory") path is reserved and cannot be redirected or rewritten. Only
 Enterprise teams can configure custom SSL. [Contact sales](/contact/sales) to
 learn more.
 
-If you are exceeding the limits below, we recommend using Middleware and Global Config to [dynamically read redirect values](/docs/routing/redirects#edge-middleware).
+If you are exceeding the limits below, we recommend using Middleware and Global Config to [dynamically read redirect values](/docs/routing/redirects#middleware).
 
 | Limit                                        | Maximum |
 | -------------------------------------------- | ------- |
@@ -150,3 +173,6 @@ If you are exceeding the limits below, we recommend using Middleware and Global 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

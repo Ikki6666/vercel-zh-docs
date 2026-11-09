@@ -1,20 +1,20 @@
 ---
-title: Streaming
+title: OpenAI Responses Streaming with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/responses/streaming
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/responses
   - /docs/ai-gateway/sdks-and-apis
 related:
   []
-summary: Stream tokens as they are generated with the OpenAI Responses API.
+summary: Stream tokens as they are generated with the OpenAI Responses API through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Streaming
+# OpenAI Responses Streaming with AI Gateway
 
 Set `stream: true` to receive tokens as they're generated. The SDK returns an async iterator of server-sent events:
 
@@ -24,32 +24,18 @@ Set `stream: true` to receive tokens as they're generated. The SDK returns an as
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming?from=related) — Stream responses token by token using the OpenResponses API.
-- [Streaming responses from LLMs](https://vercel.com/kb/guide/streaming-from-llm?from=related) — Learn how to use the AI SDK to stream LLM responses.
-- [Streaming in web applications](https://vercel.com/kb/guide/what-is-streaming?from=related) — Learn how streaming works in web applications. Explore benefits, use cases, and implementation details with Vercel Funct
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming?from=related) — Stream Anthropic Messages API responses token by token as they are generated.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming?from=related) — Stream OpenAI Chat Completions responses token by token as they are generated.
-- [Processing Data Chunks](https://vercel.com/kb/guide/processing-data-chunks?from=related) — Learn how to create an API endpoint that processes data chunks.
-- [Streaming](https://vercel.com/docs/functions/streaming-functions?from=related) — Learn how to stream responses from Vercel Functions.
-- [Text Generation](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/text-generation?from=related) — Generate text responses with the OpenAI Responses API through AI Gateway.
+- [OpenResponses Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming) — Stream responses token by token using the OpenResponses API through AI Gateway.
+- [OpenResponses API now supported on Vercel AI Gateway](https://vercel.com/changelog/openresponses-api-now-supported-on-vercel-ai-gateway)
+- [AI Gateway supports OpenAI's Responses API](https://vercel.com/changelog/ai-gateway-supports-openais-responses-api)
+- [OpenAI Responses Text Generation with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/text-generation) — Generate text responses with the OpenAI Responses API through AI Gateway.
+- [OpenResponses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
+- [OpenAI Chat Completions Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming) — Stream OpenAI Chat Completions responses token by token as they are generated through AI Gateway.
+- [AI Gateway OIDC Authentication](https://vercel.com/docs/ai-gateway/authentication-and-byok/oidc) — Authenticate AI Gateway requests from Vercel deployments with OIDC tokens. Configure the AI SDK or send bearer tokens di
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/responses/streaming.graph.md](/docs/ai-gateway/sdks-and-apis/responses/streaming.graph.md)
 <!-- /docsgraph:related -->
 
-#### \['cURL'
-
-```bash filename="stream.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "openai/gpt-5.6-sol",
-    "input": "Write a haiku about programming.",
-    "stream": true
-  }'
-```
-
-#### 'TypeScript'
+#### TypeScript
 
 ```typescript filename="stream.ts"
 import OpenAI from 'openai';
@@ -60,7 +46,7 @@ const client = new OpenAI({
 });
 
 const stream = await client.responses.create({
-  model: 'openai/gpt-5.6-sol',
+  model: 'openai/gpt-6-astra',
   input: 'Write a haiku about programming.',
   stream: true,
 });
@@ -72,7 +58,7 @@ for await (const event of stream) {
 }
 ```
 
-#### 'Python']
+#### Python
 
 ```python filename="stream.py"
 import os
@@ -84,7 +70,7 @@ client = OpenAI(
 )
 
 stream = client.responses.create(
-    model='openai/gpt-5.6-sol',
+    model='openai/gpt-6-astra',
     input='Write a haiku about programming.',
     stream=True,
 )
@@ -94,7 +80,23 @@ for event in stream:
         print(event.delta, end='', flush=True)
 ```
 
+#### cURL
+
+```bash filename="stream.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/responses" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-6-astra",
+    "input": "Write a haiku about programming.",
+    "stream": true
+  }'
+```
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

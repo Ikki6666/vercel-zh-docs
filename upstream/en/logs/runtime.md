@@ -3,7 +3,7 @@ title: Runtime Logs
 product: vercel
 url: /docs/logs/runtime
 canonical_url: "https://vercel.com/docs/logs/runtime"
-last_updated: 2026-08-03
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/logs
@@ -12,14 +12,16 @@ related:
   - /docs/functions
   - /docs/deployments/environments
   - /docs/drains
-  - /docs/functions/streaming-functions
+  - /docs/cli/logs
 summary: Learn how to search, inspect, and share your runtime logs with the Logs tab.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Runtime Logs
 
-> **🔒 Permissions Required**: Runtime Logs
+> Runtime Logs are available on all plans
+
+The **Logs** section in the sidebar allows you to view, search, inspect, and [share](#log-sharing) your runtime logs without any third-party integration. You can also filter and group your [runtime logs](#what-are-runtime-logs) based on the relevant fields.
 
 
 <!-- docsgraph:related -->
@@ -27,20 +29,21 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions?from=related) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute?from=related) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
-- [Logs](https://vercel.com/docs/ai-gateway/observability-and-spend/logs?from=related) — Search, filter, and follow individual AI Gateway requests, inspect provider routing for one request, and export the resu
-- [Logs](https://vercel.com/docs/functions/logs?from=related) — Use runtime logs to debug and monitor your Vercel Functions.
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
-- [Limits](https://vercel.com/docs/limits?from=related) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
+- [30-day runtime log retention, now available in Observability Plus](https://vercel.com/changelog/30-day-runtime-log-retention-now-available-in-observability-plus)
+- [Agents can now access runtime logs with Vercel's MCP server](https://vercel.com/changelog/agents-can-now-access-runtime-logs-with-vercels-mcp-server)
+- [Caching details now available in Runtime Logs](https://vercel.com/changelog/caching-details-now-available-in-runtime-logs)
+- [Function start type now available in Runtime Logs](https://vercel.com/changelog/function-start-type-now-available-in-runtime-logs)
+- [Improved streaming runtime logs exports](https://vercel.com/changelog/improved-streaming-runtime-logs-exports)
+- [Add structured application logs to Vercel Functions](https://vercel.com/kb/guide/add-structured-application-logs-to-vercel-functions) — Learn how to add structured application logs to Vercel Functions to help troubleshoot function issues in real time.
+- [Building Ecommerce Sites with Next.js and Shopify](https://vercel.com/kb/guide/building-ecommerce-sites-with-next-js-and-shopify) — Learn how to integrate Next.js and Shopify together for the fastest storefronts using the Storefront GraphQL API.
+- [Migrate Fly.io worker processes to Vercel Daemons](https://vercel.com/kb/guide/migrate-fly-io-workers-to-vercel-daemons) — Migrate Fly.io workers to Vercel Daemons with your existing Dockerfile. Map process settings, preserve queue state, and
+- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
+- [How to deploy a Python backend with Vercel Services ](https://vercel.com/kb/guide/python-backend-on-vercel) — Deploy a Python backend with a Next.js frontend on Vercel. Learn how to configure both apps with Vercel Services, use a
+- [Vercel Function Logs](https://vercel.com/docs/functions/logs) — Use runtime logs to debug and monitor your Vercel Functions.
+- [AI Gateway Request Logs](https://vercel.com/docs/ai-gateway/observability-and-spend/logs) — Search, filter, and follow individual AI Gateway requests, inspect provider routing for one request, and export the resu
 
 Full cross-link map for this page: [/docs/logs/runtime.graph.md](/docs/logs/runtime.graph.md)
 <!-- /docsgraph:related -->
-
-The **Logs** section in the sidebar allows you to view, search, inspect, and [share](#log-sharing) your runtime logs without any third-party integration. You can also filter and group your [runtime logs](#what-are-runtime-logs) based on the relevant fields.
 
 > **💡 Note:** You can only view runtime logs from the Logs tab. [Build
 > logs](/docs/deployments/logs) can be accessed from the production deployment
@@ -70,13 +73,25 @@ You can view the following log types in the [Logs tab](#view-runtime-logs):
 
 ## View runtime logs
 
-To view runtime logs:
+View runtime logs from the dashboard or the Vercel CLI.
+
+#### Dashboard
 
 1. From the [dashboard](/dashboard), select the project that you wish to see the logs for
 2. Open [**Logs**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Flogs\&title=Go+to+Logs) in the sidebar from your project overview
 3. From here you can view, filter, and search through the runtime logs. Each log row shares [basic info](#log-details) about the request, like execution, domain name, HTTP status, function type, and RequestId.
 
-![Image](https://vercel.com/front/docs/observability/request-log-overview-light.png?lightbox)
+![Layout to visualize the runtime logs.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/observability/request-log-overview-light.png?lightbox)
+
+#### CLI
+
+Run [`vercel logs`](/docs/cli/logs) from your linked project directory. By default, it shows the latest 100 runtime log entries from the last 30 minutes. Use `--query` to filter entries and `--since` to look further back:
+
+```bash filename="terminal"
+vercel logs --environment production --query 'level:error' --since 1h
+```
+
+The CLI returns a bounded set of results and doesn't stream. To follow logs in real time, use **Live mode** in the dashboard, described in [Timeline](#timeline).
 
 ## Log filters
 
@@ -86,7 +101,7 @@ You can use the following filters from the sidebar to get a refined search exper
 
 You can filter runtime logs based on a specific timeline. It can vary from the past hour, last 3 days, or a custom timespan [depending on your account type](#limits). You can use the **Live mode** option to follow the logs in real-time.
 
-![Image](https://vercel.com/front/docs/observability/request-live-logs-light.png?lightbox)
+![Layout to visualize the runtime logs in live mode.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/observability/request-live-logs-light.png?lightbox)
 
 > **💡 Note:** All displayed dates and times are in UTC.
 
@@ -144,7 +159,7 @@ You can filter your logs based on the actual URL path requested by users. Reques
 
 ### Cache
 
-You can filter your logs based on the cache behavior such as `HIT` or `MISS`. See [`x-vercel-cache`](/docs/caching/cache-status) for the possible values. For [ISR](/docs/incremental-static-regeneration) and [Partial Prerendering](/docs/partial-prerendering) static shells that weren't a plain hit, the [log details](#log-details) also show a **Cache Reason** explaining why the request missed, bypassed, or served stale.
+You can filter your logs based on the cache behavior such as `HIT` or `MISS`. See [`x-vercel-cache`](/docs/caching/cache-status) for the possible values. For [ISR](/docs/incremental-static-regeneration) and [Partial Prerendering](/docs/partial-prerendering) static shells that weren't a plain hit, and for function responses the CDN declined to store, the [log details](#log-details) also show a **Cache Reason** explaining why the request missed, bypassed, or served stale.
 
 ### Status Code
 
@@ -193,7 +208,7 @@ You can use the main search field to filter logs by their messages. In the curre
 | **traceId**                      | The trace identifier for distributed tracing                       |
 | **invocationId**                 | The unique identifier for a specific function invocation           |
 
-> **💡 Note:** This  feature is limited to the
+> **💡 Note:** This **free text search** feature is limited to the
 > `message` and `requestPath`
 > field. Other fields can be filtered using the left sidebar or the filters in
 > the search bar.
@@ -215,7 +230,7 @@ You can view details for each request to analyze and improve your debugging expe
 | **Region**             | The edge region where the request was processed                                                                             |
 | **Firewall**           | If request was allowed through firewall                                                                                     |
 | **Vercel Cache**       | The Vercel CDN Cache status, see [`x-vercel-cache`](/docs/caching/cache-status) for the possible values. |
-| **Cache Reason**       | Why the response missed, bypassed, or served stale for static requests. See [Cache Status and Reasons](/docs/caching/cache-status). |
+| **Cache Reason**       | Why the response missed, bypassed, or served stale. Shown for static, ISR, and PPR requests, and for function responses the CDN declined to store. See [Cache Status and Reasons](/docs/caching/cache-status). |
 | **Cache Age**          | For ISR responses, how long ago the served cache entry was generated                                                        |
 | **Cache TTL**          | For ISR responses, how long the cache entry stays fresh before it revalidates                                               |
 | **PPR State**          | The [PPR state](/docs/partial-prerendering/ppr-state) for Partial Prerendering routes (`Static`, `Partial`, `Dynamic`)      |
@@ -261,3 +276,6 @@ With [Observability Plus](/docs/observability/observability-plus), you can view 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

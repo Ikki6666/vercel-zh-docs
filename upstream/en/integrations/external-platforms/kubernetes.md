@@ -3,7 +3,7 @@ title: Integrating Vercel and Kubernetes
 product: vercel
 url: /docs/integrations/external-platforms/kubernetes
 canonical_url: "https://vercel.com/docs/integrations/external-platforms/kubernetes"
-last_updated: 2026-05-12
+last_updated: 2026-09-15
 type: how-to
 prerequisites:
   - /docs/integrations
@@ -27,21 +27,21 @@ Kubernetes (K8s) is an open-source system for automating deployment, scaling, an
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Does Vercel support Kubernetes?](https://vercel.com/kb/guide/vercel-kubernetes-support?from=related) — Vercel doesn't run Kubernetes clusters. Learn how Kubernetes workloads like Deployments, Ingress, ConfigMaps, and CronJo
-- [Vercel vs Kubernetes](https://vercel.com/kb/guide/vercel-vs-kubernetes?from=related) — Compare Vercel and Kubernetes on operational ownership, deployment workflow, scaling, and cost model to decide which pla
-- [Does Vercel support Ruby on Rails applications?](https://vercel.com/kb/guide/does-vercel-support-ruby-on-rails-applications?from=related) — Learn how you can use Ruby on Rails with your frontend on Vercel.
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Build System](https://vercel.com/docs/fundamentals/builds?from=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Does Vercel support Kubernetes?](https://vercel.com/kb/guide/vercel-kubernetes-support) — Vercel doesn't run Kubernetes clusters. Learn how Kubernetes workloads like Deployments, Ingress, ConfigMaps, and CronJo
+- [Vercel vs Kubernetes](https://vercel.com/kb/guide/vercel-vs-kubernetes) — Compare Vercel and Kubernetes on operational ownership, deployment workflow, scaling, and cost model to decide which pla
+- [Behind the scenes of Vercel's infrastructure: Achieving optimal scalability and performance](https://vercel.com/blog/behind-the-scenes-of-vercels-infrastructure)
+- [Building secure and performant web applications on Vercel](https://vercel.com/blog/building-secure-and-performant-web-applications-on-vercel)
+- [Iterating from design to deploy: the shape of future builders](https://vercel.com/blog/iterating-from-design-to-deploy)
+- [Translate Kubernetes manifests to vercel.json](https://vercel.com/kb/guide/kubernetes-manifests-to-vercel-json) — Translate Kubernetes Deployments, Services, Ingress, ConfigMaps, and CronJobs into vercel.json configuration and Vercel
+- [Accelerating developer velocity and creating high-impact web teams](https://vercel.com/blog/accelerating-developer-velocity-and-creating-high-impact-web-teams)
+- [What does Vercel do? ](https://vercel.com/blog/what-is-vercel)
+- [Projects overview](https://vercel.com/docs/projects) — A project is where you deploy and operate frontend apps, APIs, backends, containers, and agent workloads on Vercel.
+- [Backends on Vercel](https://vercel.com/docs/frameworks/backend) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
 
 Full cross-link map for this page: [/docs/integrations/external-platforms/kubernetes.graph.md](/docs/integrations/external-platforms/kubernetes.graph.md)
 <!-- /docsgraph:related -->
 
-You can integrate Vercel with your existing Kubernetes infrastructure to optimize the delivery of your frontend applications—reducing the number of services your teams need to manage, while still taking advantage of Kubernetes for your backend and other containerized workloads.
+You can integrate Vercel with your existing Kubernetes infrastructure to optimize the delivery of your frontend applications. This reduces the number of services your teams need to manage, while still taking advantage of Kubernetes for your backend and other containerized workloads.
 
 Let’s look at key Kubernetes concepts and how Vercel’s [managed infrastructure](/products/managed-infrastructure) handles them:
 
@@ -92,7 +92,7 @@ With Vercel, you can securely configure [environment variables](/docs/environmen
 
 ## Observability
 
-A Kubernetes setup typically uses observability solutions to aid in troubleshooting, alerting, and monitoring of your applications. You could do this through third-party services like Splunk, DataDog, Grafana, and more.
+A Kubernetes setup typically uses observability solutions to aid in troubleshooting, alerting, and monitoring of your applications. You could do this through third-party services like Splunk, Datadog, Grafana, and more.
 
 Vercel provides built-in logging and monitoring capabilities through our [observability products](/docs/observability) with real-time logs and built-in traffic analytics. These are all accessible through the Vercel dashboard. If needed, Vercel has [one-click integrations with leading observability platforms](/integrations), so you can keep using your existing tools alongside your Kubernetes-based backend.
 
@@ -102,7 +102,7 @@ If you’re running backend services on Kubernetes (e.g., APIs, RPC layers, data
 
 - **Networking**: Vercel can securely connect to your Kubernetes-hosted backend services. You can keep your APIs behind load balancers or private networks. For stricter environments, [Vercel Secure Compute](/docs/networking/secure-compute) (available on Enterprise plans) ensures secure, private connectivity to internal services.
 - **Environment Variables and Secrets**: Your application’s environment variables (e.g., API keys, database credentials) can be configured securely in the [Vercel dashboard](/docs/environment-variables).
-- **Observability**: You can maintain your existing observability setup for Kubernetes (Grafana, DataDog, etc.) while also leveraging Vercel’s built-in logs and analytics for your frontend.
+- **Observability**: You can maintain your existing observability setup for Kubernetes (Grafana, Datadog, etc.) while also leveraging Vercel’s built-in logs and analytics for your frontend.
 
 ## Before/after comparison: Kubernetes vs. Vercel
 
@@ -117,7 +117,7 @@ Here's how managing frontend infrastructure compares between traditional, self-m
 | **Runtime & OS Security Patches**      | Manual and ongoing maintenance                                                          | Automatic and managed by Vercel                   |
 | **Multi-region Deployment & Failover** | Manual setup, configuration, and management                                             | Automatic global deployment and failover          |
 | **Version Skew Protection**            | Manual rolling deployments (possible downtime)                                          | Built-in Skew Protection                          |
-| **Observability & Logging**            | Requires third-party setup (Grafana, Splunk, DataDog)                                   | Built-in observability and one-click integrations |
+| **Observability & Logging**            | Requires third-party setup (Grafana, Splunk, Datadog)                                   | Built-in observability and one-click integrations |
 | **CI/CD & Deployment Management**      | Requires integration of multiple tools (Docker, Kubernetes, Terraform, CI/CD pipelines) | Built-in Git-integrated CI/CD system              |
 
 By migrating just your frontend to Vercel, you drastically reduce the operational overhead of managing and scaling web servers, pods, load balancers, ingress controllers, and more.
@@ -130,7 +130,7 @@ To incrementally move your frontend applications to Vercel:
   Start by [creating a Vercel account](/signup) and [team](/docs/accounts#creating-a-team), if needed.
 
 - ### Create two versions of your frontend codebase
-  Keep your current frontend running in Kubernetes for now. Create a fork or a branch of your frontend codebase and connect it to a [new Vercel project](/docs/projects#creating-a-project).
+  Keep your current frontend running in Kubernetes for now. Create a fork or a branch of your frontend codebase and connect it to a [new Vercel project](/docs/projects/managing-projects#creating-a-project).
 
   Once connected, Vercel will automatically build and deploy your application. It’s okay if the first deployment fails. [View the build logs](/docs/deployments/logs) and [troubleshoot the build](/docs/deployments/troubleshoot-a-build) failures. Changes might include:
   - Adjustments to build scripts
@@ -138,7 +138,7 @@ To incrementally move your frontend applications to Vercel:
   - Missing [environment variables](/docs/environment-variables)
   Continue addressing errors until you get a successful Preview Deployment.
 
-  Depending on how you have your Kubernetes environment configured, you may need to adjust firewall and security policies to allow the applications to talk to each other. Vercel [provides some options](/kb/guide/how-to-allowlist-deployment-ip-address), including [Vercel Secure Compute](/docs/networking/secure-compute) for Enterprise teams, which allows you to establish secure connections between Vercel and backend environments.
+  Depending on how you have your Kubernetes environment configured, you may need to adjust firewall and security policies to allow the applications to talk to each other. Vercel [provides some options](/docs/networking/static-ips), including [Vercel Secure Compute](/docs/networking/secure-compute) for Enterprise teams, which allows you to establish secure connections between Vercel and backend environments.
 
   The goal is to use the Preview Deployment to test the integration with your Kubernetes-hosted backends, ensuring that API calls and data flow work as expected.
 
@@ -157,7 +157,7 @@ To incrementally move your frontend applications to Vercel:
   - [A/B Testing on Vercel](/kb/guide/ab-testing-on-vercel)
   - [Implementing Blue-Green Deployments on Vercel](/kb/guide/blue_green_deployments_on_vercel)
   - [Transferring Domains to Vercel](/kb/guide/transferring-domains-to-vercel)
-  - [How to migrate a site to Vercel without downtime](/kb/guide/zero-downtime-migration)
+  - [Pre-generating SSL certificates for a migration without downtime](/docs/domains/pre-generating-ssl-certs)
 
 - ### Maintain the backend on Kubernetes
   Continue running your backend services on Kubernetes, taking advantage of its strengths in container orchestration for applications your company may not want to move or are unable to move. Examples could include:
@@ -168,7 +168,7 @@ To incrementally move your frontend applications to Vercel:
   Over time, you can evaluate whether specific backend services could also benefit from a serverless architecture and be migrated to Vercel.
 
 - ### Accelerate frontend iteration velocity on Vercel
-  With Vercel, your development processes become simpler and faster. Vercel combines all the tools you need for CI/CD, staging, testing, feedback, and QA into one streamlined [developer experience platform](/products/dx-platform) to optimize the delivery of high-quality frontend applications. Instant deployments, live previews, and comments accelerate your feedback cycle, while uniform testing environments ensure the quality of your work—letting you focus on what you do best: Building top-notch frontend applications.
+  With Vercel, your development processes become simpler and faster. Vercel combines all the tools you need for CI/CD, staging, testing, feedback, and QA into one streamlined [developer experience platform](/products/dx-platform) to optimize the delivery of high-quality frontend applications. Instant deployments, live previews, and comments accelerate your feedback cycle, while uniform testing environments ensure the quality of your work, letting you focus on what you do best: building top-notch frontend applications.
 
   A [recent study](/roi) found Vercel customers see:
   - Up to 90% increase in site performance
@@ -179,3 +179,6 @@ To incrementally move your frontend applications to Vercel:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

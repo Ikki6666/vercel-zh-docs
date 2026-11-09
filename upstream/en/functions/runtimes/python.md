@@ -3,7 +3,7 @@ title: Using the Python Runtime with Vercel Functions
 product: vercel
 url: /docs/functions/runtimes/python
 canonical_url: "https://vercel.com/docs/functions/runtimes/python"
-last_updated: 2026-07-22
+last_updated: 2026-08-12
 type: reference
 prerequisites:
   - /docs/functions/runtimes
@@ -30,16 +30,18 @@ supported Python frameworks and runs your application as Vercel Functions.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template?from=related) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
-- [How to debug 404 errors](https://vercel.com/kb/guide/how-to-debug-404-errors?from=related) — Learn the systematic steps to identify and resolve 404 issues.
-- [How to ship a FastAPI app on Vercel](https://vercel.com/kb/guide/ship-a-fastapi-app-on-vercel?from=related) — Deploy a FastAPI app to Vercel with zero configuration. Learn how the Python runtime, Vercel Functions, streaming, middl
-- [How to ship a Flask app on Vercel](https://vercel.com/kb/guide/ship-a-flask-app-on-vercel?from=related) — Deploy a Flask app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
-- [Deploy Python apps on Vercel using Docker ](https://vercel.com/kb/guide/vercel-docker-python-apps?from=related) — Deploy a Dockerized Python application that depends on native software, OCR engines, or small local models, plus a Next.
-- [Runtime](https://vercel.com/docs/functions/configuring-functions/runtime?from=related) — Learn how to configure the runtime for Vercel Functions.
-- [Celery](https://vercel.com/docs/frameworks/backend/celery?from=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
-- [Supported Frameworks](https://vercel.com/docs/frameworks?from=related) — Vercel supports a wide range of the most popular frameworks, optimizing how your application builds and runs no matter w
-- [Build Image](https://vercel.com/docs/builds/build-image?from=related) — Learn about the container image used for Vercel builds.
-- [Fluid Compute](https://vercel.com/docs/fluid-compute?from=related) — Learn about fluid compute, an execution model for Vercel Functions that provides a more flexible and efficient way to ru
+- [Python 3.13 and 3.14 are now available ](https://vercel.com/changelog/python-3-13-and-3-14-are-now-available)
+- [Python function bundles now include precompiled bytecode](https://vercel.com/changelog/python-function-bundles-now-include-precompiled-bytecode)
+- [Python on Vercel is now generally available](https://vercel.com/changelog/python-on-vercel-is-now-generally-available)
+- [Python package manager uv is now available for builds with zero configuration](https://vercel.com/changelog/python-package-manager-uv-is-now-available-for-builds-with-zero)
+- [Python support added to in-function concurrency beta](https://vercel.com/changelog/python-support-added-to-in-function-concurrency-beta)
+- [Build with a FastAPI starter template](https://vercel.com/kb/guide/build-with-a-fastapi-starter-template) — Browse FastAPI starter templates for Vercel and deploy one in a few steps. Compare minimal, AI, agent, and full-stack Fa
+- [Migrate from Railway to Vercel](https://vercel.com/kb/guide/migrate-railway-to-vercel) — Migrate an app from Railway to Vercel. Choose a deployment path, configure services, plan for stored data, and test befo
+- [Migrate from Render to Vercel](https://vercel.com/kb/guide/migrate-render-to-vercel) — Migrate from Render to Vercel: map web services, cron jobs, and containers to their equivalents, and handle what doesn't
+- [How to ship a FastAPI app on Vercel](https://vercel.com/kb/guide/ship-a-fastapi-app-on-vercel) — Deploy a FastAPI app to Vercel with zero configuration. Learn how the Python runtime, Vercel Functions, streaming, middl
+- [How to ship a Flask app on Vercel](https://vercel.com/kb/guide/ship-a-flask-app-on-vercel) — Deploy a Flask app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
+- [Python on Vercel is now generally available](https://vercel.com/blog/python-on-vercel-is-now-generally-available)
+- [Backends on Vercel: Python, containers, and Daemons](https://vercel.com/blog/backends-on-vercel-python-containers-and-daemons)
 
 Full cross-link map for this page: [/docs/functions/runtimes/python.graph.md](/docs/functions/runtimes/python.graph.md)
 <!-- /docsgraph:related -->
@@ -62,11 +64,32 @@ For framework-specific setup guides, see:
 - [Deploy a Flask app on Vercel](/docs/frameworks/backend/flask)
 - [Deploy a Django app on Vercel](/docs/frameworks/full-stack/django)
 
+## Migrate an existing Python API
+
+To move an existing FastAPI, Flask, or Django API to Vercel, follow the migration guide for your current platform:
+
+- [Migrate a Python API from Heroku to Vercel](/kb/guide/migrate-a-python-api-from-heroku-to-vercel)
+- [Migrate a Python API from Render to Vercel](/kb/guide/migrate-a-python-api-from-render-to-vercel)
+- [Migrate a Python API from Railway to Vercel](/kb/guide/migrate-a-python-api-from-railway-to-vercel)
+
 ## Combine Python with another framework
 
 To run a Python backend and a frontend together in one project, you can use
 [Services](/docs/services). Each part builds independently and routes to a
 shared domain.
+
+## Build with Vercel services
+
+Use these guides to add storage, background processing, and AI capabilities to a Python application. Each guide includes a FastAPI example and deployment steps.
+
+| Task                         | Guide                                                                                        |
+| ---------------------------- | -------------------------------------------------------------------------------------------- |
+| Process background jobs      | [Process background jobs in Python with Vercel Queues](/kb/guide/python-and-vercel-queues)   |
+| Store and serve files        | [Store and serve files from Python with Vercel Blob](/kb/guide/python-and-vercel-blob)       |
+| Call third-party APIs        | [Call third-party APIs from Python with Vercel Connect](/kb/guide/python-and-vercel-connect) |
+| Coordinate durable processes | [Build durable workflows in Python on Vercel](/kb/guide/python-and-durable-workflows)        |
+| Execute untrusted code       | [Run untrusted Python code safely with Vercel Sandbox](/kb/guide/python-and-vercel-sandbox)  |
+| Build AI agents              | [Build AI agents in Python with the AI SDK](/kb/guide/python-and-ai-sdk)                     |
 
 ## Python entrypoints
 
@@ -171,11 +194,11 @@ Make sure your `pyproject.toml` or `requirements.txt` only lists packages
 necessary at runtime. Explicitly exclude files you don't need to keep bundles
 small and avoid hitting size limits.
 
-> **💡 Note:** The standard Python bundle size limit is  uncompressed.
->
-> support Python bundles up to  on Fluid compute when enabled (public beta).
+> **💡 Note:** The standard Python bundle size limit is **500 MB** uncompressed.
+> [Large Functions](/docs/functions/limitations#large-functions-beta)
+> support Python bundles up to **5 GB** on Fluid compute when enabled (public beta).
 > See the
->
+> [bundle size limits](/docs/functions/limitations#bundle-size-limits)
 > for details.
 
 To exclude unnecessary files (tests, static assets, test data), configure
@@ -203,6 +226,21 @@ Python uses the current working directory when you pass a relative path to
 [open()](https://docs.python.org/3/library/functions.html#open). The working
 directory is the base of your project, not the directory containing the file.
 
+## Routing Middleware
+
+To redirect, rewrite, or answer requests before they reach your Python app, write [Routing Middleware](/docs/routing-middleware) in Python. Set `proxy` in `vercel.json` to a `module:attribute` entrypoint:
+
+```json filename="vercel.json"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "proxy": {
+    "entrypoint": "proxy:proxy"
+  }
+}
+```
+
+Your Routing Middleware runs separately from your app, with only the packages in the `vercel.proxy` dependency group installed. See the [Python reference](/docs/routing-middleware/python-reference).
+
 ## Existing projects using `/api`
 
 Vercel supports existing projects that define file-based Python functions in
@@ -214,3 +252,6 @@ and configuration.
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

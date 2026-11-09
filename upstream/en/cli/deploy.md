@@ -3,7 +3,7 @@ title: vercel deploy
 product: vercel
 url: /docs/cli/deploy
 canonical_url: "https://vercel.com/docs/cli/deploy"
-last_updated: 2026-07-23
+last_updated: 2026-09-18
 type: reference
 prerequisites:
   - /docs/cli
@@ -11,8 +11,8 @@ related:
   - /docs/cli/global-options
   - /docs/cli/build
   - /docs/build-output-api
+  - /docs/cli/redeploy
   - /docs/environment-variables/system-environment-variables
-  - /docs/skew-protection
 summary: Learn how to deploy your Vercel projects using the vercel deploy CLI command.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,13 +27,18 @@ The `vercel deploy` command deploys Vercel projects, executable from the project
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Why are my branch specific variables and domains not linked to my CLI deployments?](https://vercel.com/kb/guide/branch-variables-and-domains-not-linked-to-cli-deployments?from=related) — How to link CLI deployments to the correct branch for use with custom environments and branch specific domains and envir
-- [How to alias a preview deployment using the CLI](https://vercel.com/kb/guide/how-to-alias-a-preview-deployment-using-the-cli?from=related) — Learn how to automatically alias a Vercel preview deployment.
-- [Deploying from CLI](https://vercel.com/docs/cli/deploying-from-cli?from=related) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [vercel redeploy](https://vercel.com/docs/cli/redeploy?from=related) — Learn how to redeploy your project using the vercel redeploy CLI command.
-- [vercel curl](https://vercel.com/docs/cli/curl?from=related) — Learn how to make HTTP requests to your Vercel deployments with automatic deployment protection bypass using the vercel
+- [CLI archive deployments are now up to 30% faster with split-tgz archive option](https://vercel.com/changelog/cli-archive-deployments-are-now-up-to-30-faster-with-split-tgz-archive)
+- [Deploy without an account using Vercel CLI](https://vercel.com/changelog/deploy-without-an-account-using-vercel-cli)
+- [Dry-run deployments with Vercel CLI](https://vercel.com/changelog/dry-run-deployments-with-vercel-cli)
+- [Improvements to command line logs](https://vercel.com/changelog/improvements-to-command-line-logs)
+- [Split-tgz is now the default CLI archive deployment behavior](https://vercel.com/changelog/split-tgz-is-now-the-default-cli-archive-deployment-behavior)
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [Migrate a Python API from Railway to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-railway-to-vercel) — Move a FastAPI, Flask, or Django API from Railway to Vercel Functions. Replace railway.json start commands, volumes, Cel
+- [Migrate a Python API from Render to Vercel](https://vercel.com/kb/guide/migrate-a-python-api-from-render-to-vercel) — Move a FastAPI, Flask, or Django API from Render to Vercel Functions. Translate render.yaml and replace persistent disks
+- [Deploying safely on Vercel without merge queues](https://vercel.com/blog/deploy-safely-on-vercel-without-merge-queues)
+- [Deploying Projects from Vercel CLI](https://vercel.com/docs/cli/deploying-from-cli) — Learn how to deploy your Vercel Projects from Vercel CLI using the vercel or vercel deploy commands.
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [vercel curl](https://vercel.com/docs/cli/curl) — Learn how to make HTTP requests to your Vercel deployments with automatic deployment protection bypass using the vercel
 
 Full cross-link map for this page: [/docs/cli/deploy.graph.md](/docs/cli/deploy.graph.md)
 <!-- /docsgraph:related -->
@@ -46,6 +51,38 @@ vercel
 
 *Using the \`vercel\` command from the root of a Vercel
 project directory.*
+
+### Fast static deployments
+
+Vercel automatically detects eligible static deployments and makes them ready without a build step. This optimization supports deployments containing only HTML (`.html`, `.htm`) or Markdown (`.md`) files, with up to 100 files and a total size of up to 25 MB.
+
+Eligibility also depends on your project's build settings and deployment configuration. Other deployments automatically use the standard deployment flow.
+
+### Single-file deployments
+
+Deploy one static file by passing its path to `vercel` or `vercel deploy`. The CLI uploads only that file, using static settings:
+
+```bash filename="terminal"
+vercel index.html
+vercel deploy README.md
+```
+
+A single-file deployment doesn't use the project that the directory is linked to. By default, the file deploys to a project named after the file. To choose the project, pass [`--project`](#project).
+
+When you're logged in, single-file deployments accept any file extension. A single-file [temporary deployment](#temporary) supports only `.html` files. To deploy other files without logging in, run `vercel deploy --temporary` on a directory, which works for any project. Use `--dry` to preview the deployment without uploading:
+
+```bash filename="terminal"
+vercel index.html --dry
+vercel index.html --temporary
+```
+
+Single-file deployments have these constraints:
+
+- `--prebuilt`, `--archive`, and `--local-config` require a directory deployment.
+- The CLI refuses files excluded by `.vercelignore` or the default ignore list.
+- Hidden files require confirmation because the deployment serves the file publicly. In scripts, pass `--yes` to confirm explicitly.
+
+The [fast static deployment](#fast-static-deployments) eligibility rules still determine whether the deployment can skip the build step.
 
 ## Extended usage
 
@@ -67,14 +104,14 @@ Build Output API for more details.*
 
 ## Standard output usage
 
-When deploying, `stdout` is always the Deployment URL.
+When deploying, `stdout` is the Deployment URL. With the `--json` option or in [non-interactive mode](/docs/cli/global-options#non-interactive), `stdout` is a JSON document instead.
 
 ```bash filename="terminal"
 vercel > deployment-url.txt
 ```
 
 *Using the \`vercel\` command to deploy and write
-\`stdout\` to a text file. When deploying,
+\`stdout\` to a text file. Unless you use \`--json\` or non-interactive mode,
 \`stdout\` is always the Deployment URL.*
 
 ### Deploying to a custom domain
@@ -133,6 +170,8 @@ These are options that only apply to the `vercel` command.
 
 The `--prebuilt` option can be used to upload and deploy the results of a previous `vc build` execution located in the .vercel/output directory. See [vercel build](/docs/cli/build) and [Build Output API](/docs/build-output-api) for more details.
 
+If you run [`vercel redeploy`](/docs/cli/redeploy) on a prebuilt deployment, the redeploy reuses its prebuilt output and doesn't rebuild from source.
+
 #### When not to use --prebuilt
 
 When using the `--prebuilt` flag, [System Environment Variables](/docs/environment-variables/system-environment-variables) will be missing at build time, so frameworks that rely on them at build time may not function correctly.
@@ -159,7 +198,7 @@ This example uses the `vercel build` command to build your project locally. It t
 
 ### Build env
 
-The `--build-env` option, shorthand `-b`, can be used to provide environment variables to the [build step](/docs/builds/configure-a-build).
+The `--build-env` option can be used to provide environment variables to the [build step](/docs/builds/configure-a-build).
 
 ```bash filename="terminal"
 vercel --build-env KEY1=value1 --build-env KEY2=value2
@@ -171,7 +210,7 @@ vercel --build-env KEY1=value1 --build-env KEY2=value2
 ### Yes
 
 The `--yes` option can be used to skip questions you are asked when setting up a new Vercel project.
-The questions will be answered with the provided defaults, inferred from `vercel.json` and the folder name.
+The questions will be answered with the provided defaults, inferred from `vercel.json` and the folder name. The `--yes` option does not choose a team. If you belong to more than one team, also pass the [`--scope` option](/docs/cli/global-options#scope).
 
 ```bash filename="terminal"
 vercel --yes
@@ -182,7 +221,7 @@ vercel --yes
 
 ### Env
 
-The `--env` option, shorthand `-e`, can be used to provide [environment variables](/docs/environment-variables) at runtime.
+The `--env` option can be used to provide [environment variables](/docs/environment-variables) at runtime.
 
 ```bash filename="terminal"
 vercel --env KEY1=value1 --env KEY2=value2
@@ -191,21 +230,16 @@ vercel --env KEY1=value1 --env KEY2=value2
 *Using the \`vercel\` command with the
 \`--env\` option.*
 
-### Name
+### Project
 
-> **💡 Note:** The `--name` option has been deprecated in favor of
-> [Vercel project linking](/docs/cli/project-linking), which allows you to link
-> a Vercel project to your local codebase when you run
-> `vercel`.
-
-The `--name` option, shorthand `-n`, can be used to provide a Vercel project name for a deployment.
+By default, `vercel` deploys to the project that the current directory is [linked](/docs/cli/project-linking) to. To deploy to a specific project without linking the directory, pass the project's name or ID with the [`--project`](/docs/cli/global-options#project) option:
 
 ```bash filename="terminal"
-vercel --name foo
+vercel --project my-project
 ```
 
 *Using the \`vercel\` command with the
-\`--name\` option.*
+\`--project\` option.*
 
 ### Prod
 
@@ -237,17 +271,6 @@ vercel --prod --skip-domain
 *Using the \`vercel\` command with the
 \`--skip-domain\` option.*
 
-### Public
-
-The `--public` option can be used to ensure the source code is publicly available at the `/_src` path.
-
-```bash filename="terminal"
-vercel --public
-```
-
-*Using the \`vercel\` command with the
-\`--public\` option.*
-
 ### Regions
 
 The `--regions` option can be used to specify which [regions](/docs/regions) the deployments [Vercel functions](/docs/functions) should run in.
@@ -269,7 +292,7 @@ vercel --no-wait
 
 ### Force
 
-The `--force` option, shorthand `-f`, is used to force a new deployment without the [build cache](/docs/deployments/troubleshoot-a-build#what-is-cached).
+The `--force` option is used to force a new deployment without the [build cache](/docs/deployments/troubleshoot-a-build#what-is-cached).
 
 ```bash filename="terminal"
 vercel --force
@@ -281,6 +304,14 @@ The `--with-cache` option is used to retain the [build cache](/docs/deployments/
 
 ```bash filename="terminal"
 vercel --force --with-cache
+```
+
+### Turbo
+
+The `--turbo` option uses a Turbo [build machine](/docs/builds/managing-builds#selecting-a-build-machine-per-deployment) for one deployment without changing the project's build machine settings:
+
+```bash filename="terminal"
+vercel deploy --turbo
 ```
 
 ### Archive
@@ -295,7 +326,7 @@ vercel deploy --archive=tgz
 
 ### Logs
 
-The `--logs` option, shorthand `-l`, also prints the build logs.
+The `--logs` option also prints the build logs.
 
 ```bash filename="terminal"
 vercel deploy --logs
@@ -306,7 +337,7 @@ vercel deploy --logs
 
 ### Meta
 
-The `--meta` option, shorthand `-m`, is used to add metadata to the deployment.
+The `--meta` option is used to add metadata to the deployment.
 
 ```bash filename="terminal"
 vercel deploy --meta KEY1=value1
@@ -314,17 +345,67 @@ vercel deploy --meta KEY1=value1
 
 > **💡 Note:** Deployments can be filtered using this data with [`vercel list   --meta`](/docs/cli/list#meta).
 
-### target
+#### Associate a CLI deployment with a Git branch
 
-Use the `--target` option to define the environment you want to deploy to. This could be production, preview, or a [custom environment](/docs/deployments/environments#custom-environments).
+The CLI reads Git metadata from the local checkout. If the checkout has no Git metadata or uses a detached HEAD, a deployment can lack the branch association needed for branch-specific Preview variables and domains. Check the linked Vercel project, team, and branch shown on the deployment first.
+
+For a GitHub-linked project, supply the branch explicitly when deploying source files:
 
 ```bash filename="terminal"
-vercel deploy --target=staging
+vercel deploy --meta githubDeployment=1 --meta githubCommitRef=feature-checkout
 ```
+
+Use the keys for your project's Git provider:
+
+| Provider | Deployment marker | Branch key |
+| --- | --- | --- |
+| GitHub | `githubDeployment=1` | `githubCommitRef` |
+| GitLab | `gitlabDeployment=1` | `gitlabCommitRef` |
+| Bitbucket | `bitbucketDeployment=1` | `bitbucketCommitRef` |
+
+Use the branch name, such as `feature-checkout`, rather than a pull request merge ref. These values describe the deployment; they do not check out the branch or connect a Git repository. Other provider metadata keys are not interchangeable by changing their prefix.
+
+Confirm that the environment variable is assigned to **Preview** and the same branch, and that the [branch domain](/docs/domains/working-with-domains/assign-domain-to-a-git-branch) is configured on this project. A production deployment uses Production settings even if you attach branch metadata. A named [custom environment](/docs/deployments/environments#custom-environments) requires its own [`--environment`](#environment) value, such as `--environment=staging`.
+
+For a local or prebuilt deployment, fetch the branch's variables **before** building:
+
+```bash filename="terminal"
+vercel pull --environment=preview --git-branch=feature-checkout
+vercel build
+vercel deploy --prebuilt --meta githubDeployment=1 --meta githubCommitRef=feature-checkout
+```
+
+Adding metadata at upload time cannot change values already embedded in build output. For a custom environment, use matching commands: `vercel pull --environment=staging`, `vercel build --environment=staging`, and `vercel deploy --prebuilt --environment=staging`. After deploying, verify the environment and assigned domains in the dashboard.
+
+### Environment
+
+Use the `--environment` option to define the environment you want to deploy to. This could be production, preview, or a [custom environment](/docs/deployments/environments#custom-environments). For production, [`--prod`](#prod) does the same as `--environment=production`.
+
+The following example deploys to a custom environment named `staging`:
+
+```bash filename="terminal"
+vercel deploy --environment=staging
+```
+
+### Temporary
+
+The `--temporary` option creates a temporary deployment without logging in. It applies only when the CLI has no credentials. If you are logged in, the CLI prints a warning and creates a normal deployment. In [non-interactive mode](/docs/cli/global-options#non-interactive), the command fails instead, so remove the option when you are logged in.
+
+```bash filename="terminal"
+vercel deploy --temporary
+```
+
+The CLI builds the project locally first and deploys the prebuilt output, unless you pass [`--prebuilt`](#prebuilt) with an existing `.vercel/output` directory. Temporary deployments always target production, so passing [`--environment`](#environment) with any other value returns an error.
+
+After deploying, the CLI prints a claim URL and how long until the deployment expires. [Claim it](/docs/deployments/claim-deployments#claim-a-temporary-deployment) to keep it live, then run [`vercel login`](/docs/cli/login) to keep deploying that project.
+
+Until the temporary project expires, you can run `vercel deploy --temporary` again to redeploy it. Once it expires, you can't redeploy it as a temporary deployment. Create an account with [`vercel signup`](/docs/cli/signup), then run `vercel deploy` to deploy it again.
+
+> **💡 Note:** Temporary deployments are not available in CI environments or in a directory already linked to a Vercel project. In those cases, the CLI asks you to log in instead.
 
 ### Guidance
 
-The `--guidance` option displays suggested next steps and commands after deployment completes. This can help you discover relevant CLI commands for common post-deployment tasks.
+By default, `vercel deploy` displays suggested next steps and commands after a deployment completes. This can help you discover relevant CLI commands for common post-deployment tasks. Use the `--guidance` option to display them when you have turned guidance messages off.
 
 ```bash filename="terminal"
 vercel deploy --guidance
@@ -333,7 +414,27 @@ vercel deploy --guidance
 *Using the \`vercel deploy\` command with the
 \`--guidance\` option to receive command suggestions.*
 
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel deploy` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

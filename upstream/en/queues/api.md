@@ -3,13 +3,14 @@ title: API Reference
 product: vercel
 url: /docs/queues/api
 canonical_url: "https://vercel.com/docs/queues/api"
-last_updated: 2026-04-06
+last_updated: 2026-09-15
 type: reference
 prerequisites:
   - /docs/queues
 related:
   - /docs/regions
   - /docs/queues/concepts
+  - /docs/queues/poll-mode
 summary: HTTP API reference for Vercel Queues. Publish, consume, acknowledge, and manage messages.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -24,12 +25,11 @@ The Vercel Queues API is a REST API for publishing, consuming, and managing mess
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Messages](https://eve.dev/docs/guides/client/messages?from=related) — Send text, full turn payloads, client context, attachments, and HITL responses with eve/client.
-- [Pricing and Limits](https://vercel.com/docs/queues/pricing?from=related) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
-- [JS SDK Reference](https://vercel.com/docs/queues/sdk?from=related) — Publish and consume messages with the @vercel/queue SDK.
-- [Python SDK Reference](https://vercel.com/docs/queues/python-sdk?from=related) — Publish and consume messages with the Vercel Queues Python SDK.
-- [Observability](https://vercel.com/docs/queues/observability?from=related) — Monitor queue throughput, message age, and consumer performance to optimize your queue-based workflows.
-- [Poll Mode](https://vercel.com/docs/queues/poll-mode?from=related) — Consume messages from Vercel Queues by polling on your own schedule, from any environment.
+- [Vercel Queues: JS SDK Reference](https://vercel.com/docs/queues/sdk) — Publish and consume messages with the Vercel Queues SDK for JavaScript and TypeScript.
+- [Pricing and Limits](https://vercel.com/docs/queues/pricing) — Understand how Vercel Queues billing works, what's included, and which service limits apply.
+- [Quickstart](https://vercel.com/docs/queues/quickstart) — Set up Vercel Queues with the SDK.
+- [Vercel Schedules: API Reference](https://vercel.com/docs/schedules/http-api) — Reference for the Vercel Schedules HTTP API: authenticate, choose an environment, and create, list, update, enable, disa
+- [Queues Observability](https://vercel.com/docs/queues/observability) — Monitor queue throughput, message age, retries, and consumer performance to optimize your queue-based workflows.
 
 Full cross-link map for this page: [/docs/queues/api.graph.md](/docs/queues/api.graph.md)
 <!-- /docsgraph:related -->
@@ -55,7 +55,7 @@ The following headers are used across multiple endpoints:
 
 ## Naming constraints
 
-Topic names and consumer group names must match the pattern `^[A-Za-z0-9_\-]+$` (alphanumeric characters, hyphens, and underscores only).
+Topic names and consumer group names must match the pattern `^[A-Za-z0-9_\-]+$` (alphanumeric characters, hyphens, and underscores only). Topic names can be at most 256 characters.
 
 ## Region routing
 
@@ -82,7 +82,7 @@ Publishes a message to a topic. The request body is the raw message payload.
 | `Content-Type`          | `string`  | No       | -            | MIME type of the message payload. Preserved and returned to consumers                         |
 | `Vqs-Retention-Seconds` | `integer` | No       | 24 hours     | Message TTL. Minimum 60 seconds, maximum 7 days (604,800 seconds)                             |
 | `Vqs-Delay-Seconds`     | `integer` | No       | Zero seconds | Delay before message becomes visible. Maximum 7 days (604,800 seconds), capped at message TTL |
-| `Vqs-Idempotency-Key`   | `string`  | No       | -            | Deduplication key. Duplicate messages are silently dropped out-of-band                        |
+| `Vqs-Idempotency-Key`   | `string`  | No       | -            | Deduplication key. Maximum 256 characters. Duplicate messages are silently dropped out-of-band                        |
 
 #### Request body
 
@@ -90,7 +90,7 @@ Raw binary payload. The entire request body is stored as the message content.
 
 #### Response
 
-**`201 Created`** — Message stored and delivered to consumers:
+A **`201 Created`** response means the message was stored and delivered to consumers:
 
 ```json
 {
@@ -100,7 +100,7 @@ Raw binary payload. The entire request body is stored as the message content.
 
 The `Vqs-Message-Id` response header also contains the assigned message ID.
 
-**`202 Accepted`** — Message stored but delivery is deferred. This happens during [regional failover](/docs/queues/concepts#failover), when the message is temporarily stored in a neighboring region and will be relocated and delivered once the target region recovers:
+A **`202 Accepted`** response means the message was stored but delivery is deferred. This happens during [regional failover](/docs/queues/concepts#failover), when the message is temporarily stored in a neighboring region and will be relocated and delivered once the target region recovers:
 
 ```json
 {
@@ -140,8 +140,8 @@ Receives available messages from the topic for the specified consumer group. Ret
 | -------------------------------- | --------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
 | `Accept`                         | `string`  | **Yes**  | -          | Response format: `multipart/mixed` or `application/x-ndjson`                                                 |
 | `Vqs-Max-Messages`               | `integer` | No       | `1`        | Maximum messages to return. Min: `1`, max: `10`                                                              |
+| `Vqs-Cursor-Fallback`            | `string`  | No       | `earliest` | Starting position for a missing consumer group cursor: `earliest` or `latest`. See [cursor fallback behavior](/docs/queues/poll-mode#cursor-fallback-behavior) |
 | `Vqs-Visibility-Timeout-Seconds` | `integer` | No       | 60 seconds | Duration that received messages are hidden from other consumers. Set to zero seconds to peek without leasing |
-| `Vqs-Max-Concurrency`            | `integer` | No       | Unlimited  | Maximum messages in-flight simultaneously for this consumer group. Returns `429` when exceeded               |
 
 #### Response formats
 
@@ -201,7 +201,7 @@ Provided for clients that cannot parse multipart responses. Payloads are base64-
 | ------ | ---------------------------------------------------------- |
 | `400`  | Missing or unsupported `Accept` header, invalid parameters |
 | `401`  | Missing or invalid authentication token                    |
-| `429`  | Concurrency limit exceeded or rate limited                 |
+| `429`  | Rate limited                                               |
 
 ***
 
@@ -217,7 +217,6 @@ Receives a specific message by its ID and claims it for the consumer group. Usef
 | -------------------------------- | --------- | -------- | ---------- | ------------------------------------------------------------------------ |
 | `Accept`                         | `string`  | **Yes**  | -          | Response format: `multipart/mixed` or `application/x-ndjson`             |
 | `Vqs-Visibility-Timeout-Seconds` | `integer` | No       | 60 seconds | Lease duration. Minimum zero seconds, maximum 60 minutes (3,600 seconds) |
-| `Vqs-Max-Concurrency`            | `integer` | No       | Unlimited  | Maximum concurrent in-flight messages for this consumer group            |
 
 #### Response
 
@@ -232,7 +231,7 @@ Receives a specific message by its ID and claims it for the consumer group. Usef
 | `404`  | Message not found                                                                      |
 | `409`  | Message locked by another consumer, or duplicate message (returns `originalMessageId`) |
 | `410`  | Message already acknowledged                                                           |
-| `429`  | Concurrency limit exceeded or rate limited                                             |
+| `429`  | Rate limited                                                                           |
 
 ***
 
@@ -258,8 +257,7 @@ None.
 | ------ | ------------------------------------------- |
 | `400`  | Invalid topic name or receipt handle format |
 | `401`  | Missing or invalid authentication token     |
-| `404`  | Message not found or already acknowledged   |
-| `409`  | Lease expired or receipt handle mismatch    |
+| `409`  | Message is not in flight for this consumer group, lease expired, or receipt handle mismatch. A repeated acknowledgment with the same receipt handle succeeds with `204` |
 | `429`  | Rate limited                                |
 
 ***
@@ -306,8 +304,8 @@ The `receiptHandle` must be URL-encoded in the path.
 | ------ | ---------------------------------------------------------------------------------- |
 | `400`  | Invalid visibility timeout, exceeds max, or would extend beyond message expiration |
 | `401`  | Missing or invalid authentication token                                            |
-| `404`  | Message not found or already acknowledged                                          |
-| `409`  | Lease expired or receipt handle mismatch                                           |
+| `404`  | Message not found                                                                  |
+| `409`  | Message is not in flight (for example, already acknowledged), lease expired, or receipt handle mismatch |
 | `429`  | Rate limited                                                                       |
 
 ***
@@ -320,9 +318,11 @@ The `receiptHandle` must be URL-encoded in the path.
 | Delay before visible    | Zero seconds | 7 days (capped at TTL) | Zero seconds |
 | Visibility timeout      | Zero seconds | 60 minutes             | 60 seconds   |
 | Messages per receive    | 1            | 10                     | 1            |
-| Max concurrency         | 1            | Unlimited              | Unlimited    |
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

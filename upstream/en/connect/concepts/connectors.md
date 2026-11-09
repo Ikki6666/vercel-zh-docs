@@ -1,24 +1,24 @@
 ---
-title: Connectors
+title: Connectors in Vercel Connect
 product: vercel
 url: /docs/connect/concepts/connectors
 canonical_url: "https://vercel.com/docs/connect/concepts/connectors"
-last_updated: 2026-07-31
+last_updated: 2026-08-28
 type: conceptual
 prerequisites:
   - /docs/connect/concepts
   - /docs/connect
 related:
   - /docs/connect
-  - /docs/connect/legal
   - /docs/cli/connect
+  - /docs/networking/secure-compute
+  - /docs/connect/concepts/tokens
   - /docs/connect/concepts/installations
-  - /docs/connect/concepts/project-links
 summary: A connector is the team-owned record that represents one third-party service. Its type determines which capabilities are available.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Connectors
+# Connectors in Vercel Connect
 
 A **connector** is the team-owned record that represents one third-party service inside Vercel Connect. Each connector has a type that determines how Vercel Connect authenticates to the provider and which capabilities (installations, triggers, revocation) are available.
 
@@ -28,14 +28,16 @@ A **connector** is the team-owned record that represents one third-party service
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Give your agents secure access to third-party APIs](https://vercel.com/kb/guide/vercel-connect?from=related) — Use Vercel Connect to call provider APIs like Slack, GitHub, Linear, Discord, Notion, Figma, Snowflake, and Salesforce f
-- [Vercel Connect](https://chat-sdk.dev/docs/vercel-connect?from=related) — Authenticate Slack, Discord, GitHub, Linear, Notion, and Telegram adapters with Vercel Connect — short-lived runtime tok
-- [Vercel Connect](https://v0.app/docs/vercel-connect?from=related) — Connect your v0 apps and agents to third-party services – no API keys required.
-- [Build an integrations hub with Nuxt and Vercel Connect](https://vercel.com/kb/guide/nuxt-and-vercel-connect?from=related) — Build an Integrations Hub with Nuxt and Vercel Connect. Connect GitHub and Linear over OAuth and mint short-lived tokens
-- [Authentication](https://vercel.com/docs/connect/concepts/authentication?from=related) — Every Vercel Connect token request has two legs that both have to authenticate: the caller calling Vercel Connect, and V
-- [SDK Reference](https://vercel.com/docs/connect/ts-sdk-reference?from=related) — API reference for @vercel/connect, the TypeScript SDK for requesting runtime tokens from Vercel Connect.
-- [Tokens](https://vercel.com/docs/connect/concepts/tokens?from=related) — Short-lived provider credentials issued by Vercel Connect. Each token request specifies a subject, optional installation
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Connect now supports Microsoft Teams](https://vercel.com/changelog/vercel-connect-microsoft-teams)
+- [Vercel Connect now supports Linq](https://vercel.com/changelog/vercel-connect-now-supports-linq)
+- [Vercel Connect adds 100+ preset connectors](https://vercel.com/changelog/vercel-connect-preset-connectors)
+- [Vercel Connect now supports Secure Compute](https://vercel.com/changelog/vercel-connect-secure-compute)
+- [Vercel Connect now supports Microsoft](https://vercel.com/changelog/vercel-connect-supports-microsoft)
+- [Authentication in Vercel Connect](https://vercel.com/docs/connect/concepts/authentication) — Every Vercel Connect token request has two legs that both have to authenticate: the caller calling Vercel Connect, and V
+- [List connectors for a project](https://vercel.com/docs/rest-api/connect/list-connectors-for-a-project) — GET /v2/connect/projects/{projectId}/connectors — List the connectors connected to a project and the environments where
+- [Networking](https://vercel.com/docs/agent-resources/vercel-mcp/tools/networking) — Vercel MCP tools for networking.
+- [Get a connector project connection](https://vercel.com/docs/rest-api/connect/get-a-connector-project-connection) — GET /v1/connect/connectors/{connector}/projects/{projectId} — Get the configuration that connects a connector to a proje
+- [Webhook triggers for Vercel Connect](https://vercel.com/docs/connect/concepts/triggers) — Incoming webhooks from third-party services, verified by Vercel Connect and forwarded to your projects.
 
 Full cross-link map for this page: [/docs/connect/concepts/connectors.graph.md](/docs/connect/concepts/connectors.graph.md)
 <!-- /docsgraph:related -->
@@ -61,18 +63,34 @@ For [Vercel Managed Connectors](/docs/connect#connector-ownership-models), Verce
 
 - **Discover endpoints from a URL**: Enter a server URL, such as `mcp.linear.app`, and Vercel reads the provider's published OAuth metadata to fill in the authorization and token endpoints.
 - **Bring your own client**: Add the client ID and client secret from the OAuth app you registered with the provider.
-- **Let Vercel register the client**: When a provider supports automatic client registration, [Vercel Assisted Setup](/docs/connect/legal#4.-vercel-assisted-setup) creates the OAuth client for you, so you don't need to register an app or manage a client secret.
+- **Let Vercel register the client**: When a provider supports automatic client registration, [Vercel Assisted Setup](/legal/service-terms#connect) creates the OAuth client for you, so you don't need to register an app or manage a client secret.
 
 ## Connection methods
 
 Vercel already knows how to connect to many services. When you create a connector, search for the service by name. For a **known service**, Vercel fills in what it knows and you only supply what is specific to your account:
 
-- **OAuth**: Vercel fills in the authorization and token endpoints and the provider's default scopes. You add your client ID and secret, or let [Vercel Assisted Setup](/docs/connect/legal#4.-vercel-assisted-setup) register the client where the provider supports it.
+- **OAuth**: Vercel fills in the authorization and token endpoints and the provider's default scopes. You add your client ID and secret, or let [Vercel Assisted Setup](/legal/service-terms#connect) register the client where the provider supports it.
 - **API key**: Vercel links you to where the provider issues keys. Generate the key there, then paste it into the connector when you create it.
 
-A known service publishes one or more **connection methods**: the distinct ways you can connect to it. When a service publishes several, they differ in who registers the application (Vercel, through [Vercel Assisted Setup](/docs/connect/legal#4.-vercel-assisted-setup), or you) and in which product you connect to, such as a REST API or an MCP server.
+A known service publishes one or more **connection methods**: the distinct ways you can connect to it. When a service publishes several, they differ in who registers the application (Vercel, through [Vercel Assisted Setup](/legal/service-terms#connect), or you) and in which product you connect to, such as a REST API or an MCP server.
 
 Known services work in the dashboard and from the CLI. Running [`vercel connect create <service>`](/docs/cli/connect#vercel-connect-create) prompts you for the product, the connection method, and the credentials that method needs, so you can create a connector without leaving the terminal. Run `vercel connect create <service> --help` to see what a service supports.
+
+## Secure Compute routing
+
+Use Secure Compute routing when a provider requires requests from allowlisted IP addresses. Vercel Connect routes the connector's token requests and provider API calls through a dedicated [Secure Compute network](/docs/networking/secure-compute). This setting applies to requests Vercel Connect sends to the provider, not API calls your application makes directly.
+
+Secure Compute routing is available for supported team-owned connectors. API key connectors don't support this setting.
+
+Before configuring routing, [create a Secure Compute network for your team](/docs/networking/secure-compute#enabling-secure-compute) and wait for it to finish provisioning. Then configure the connector:
+
+1. Open the connector's settings in the Vercel dashboard.
+2. In **Secure Compute Routing**, select a network from **Secure Compute Network**.
+3. Click **Save**.
+
+The section displays the selected network's **IP addresses**. Click an address to copy it for your provider's allowlist. Click **View network** to open the network's settings in a new tab.
+
+To restore direct egress, select **None** and click **Save**. This removes routing from the connector without deleting the network.
 
 ## Branding
 
@@ -80,15 +98,31 @@ A connector carries a name, an icon, and accent and background colors. Slack pro
 
 ## Lifecycle
 
-Connectors are created, updated, and deleted by team members through the dashboard or the [`vercel connect`](/docs/cli/connect) CLI. A connector has no time-to-live: unless you delete it, it lives indefinitely. Deletion is soft by default; a deleted connector cannot serve new token requests, and you can permanently remove it with `vercel connect remove --disconnect-all`.
+Connectors are created, updated, and deleted by team members through the dashboard or the [`vercel connect`](/docs/cli/connect) CLI. A connector has no time-to-live: unless you delete it, it lives indefinitely.
+
+### Deleting a connector
+
+When you delete a connector from the dashboard or with `vercel connect delete`, it stops serving token requests right away. Vercel Connect also removes its project links and installations. You can't restore a deleted connector.
+
+After the delete, Vercel Connect:
+
+- **Deletes the tokens it stores.** It also asks the provider to revoke each token. Revocation is best-effort: if the provider has no revocation endpoint or the call fails, a token can keep working at the provider until it expires. See [Revocation](/docs/connect/concepts/tokens#revocation).
+- **Keeps the connector's encrypted configuration for 40 days.** This includes client secrets and private keys. Vercel Connect then deletes it permanently.
+- **Leaves your resources at the provider in place.** Deleting a connector doesn't delete the OAuth app, API key, or bot you registered with the provider. Grants that users or admins approved, such as a workspace install or tenant-wide admin consent, also stay. To remove them, use the provider's own settings.
+
+For some managed connectors, Vercel Connect also cleans up at the provider. For example, it releases a managed Linq phone number and expires the current managed Stripe key. Apps it created for you, such as a Slack app or a Microsoft Entra app, stay at the provider.
 
 ## Next steps
 
 - [Installations](/docs/connect/concepts/installations): How one connector serves many tenants.
 - [Project links](/docs/connect/concepts/project-links): How a connector is bound to projects and environments.
 - [Quickstart](/docs/connect/quickstart): Create your first connector end to end.
+- [For Service Providers](/docs/connect/providers): What a service needs to support for Vercel to discover and register a client automatically. Read this if you own a service you want Vercel teams to connect to.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

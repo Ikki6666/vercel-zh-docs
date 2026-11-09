@@ -3,7 +3,7 @@ title: Vercel Functions Limits
 product: vercel
 url: /docs/functions/limitations
 canonical_url: "https://vercel.com/docs/functions/limitations"
-last_updated: 2026-07-01
+last_updated: 2026-08-24
 type: reference
 prerequisites:
   - /docs/functions
@@ -27,16 +27,18 @@ The table below outlines the limits and restrictions of using Vercel Functions w
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I deploy Discord bots to Vercel?](https://vercel.com/kb/guide/can-i-deploy-discord-bots-to-vercel?from=related) — Learn about whether it's possible to deploy Discord Bots to Vercel.
-- [Can I get a fixed IP address for my Vercel deployments?](https://vercel.com/kb/guide/can-i-get-a-fixed-ip-address?from=related) — Vercel deployments use dynamic IPs by default. Learn how Static IPs, Secure Compute, and AWS PrivateLink give you a fixe
-- [Do Vercel Serverless Functions support WebSocket connections?](https://vercel.com/kb/guide/do-vercel-serverless-functions-support-websocket-connections?from=related) — Information on Vercel's support for WebSocket connections with Vercel Functions.
-- [Running Docker on Vercel vs Render](https://vercel.com/kb/guide/docker-on-vercel-vs-render?from=related) — Compare how Vercel and Render run Docker workloads, including deployment model, scaling, image sources, state, and netwo
-- [Does Vercel support Docker deployments?](https://vercel.com/kb/guide/does-vercel-support-docker-deployments?from=related) — Vercel supports deploying OCI-compatible container images through Vercel Functions and Vercel Container Registry, with A
-- [Legacy Usage & Pricing](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related) — Learn about legacy usage and pricing for Vercel Functions.
-- [Vercel Primitives](https://vercel.com/docs/build-output-api/primitives?from=related) — Learn about the Vercel platform primitives and how they work together to create a Vercel Deployment.
-- [Pricing and Limits](https://vercel.com/docs/eve/pricing?from=related) — Understand how eve usage maps to Vercel resources and inherited platform limits.
-- [Core](https://vercel.com/docs/flags/vercel-flags/sdks/core?from=related) — Use the Vercel Flags core evaluation library directly for custom setups.
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [Bun runtime now supports large functions and extended max duration](https://vercel.com/changelog/bun-runtime-now-supports-large-functions-and-extended-max-duration)
+- [Higher defaults and limits for Vercel Functions running Fluid compute](https://vercel.com/changelog/higher-defaults-and-limits-for-vercel-functions-running-fluid-compute)
+- [Python Vercel Functions bundle size limit increased to 500MB](https://vercel.com/changelog/python-vercel-functions-bundle-size-limit-increased-to-500mb)
+- [Vercel Functions can now be up to 5GB in package size](https://vercel.com/changelog/vercel-functions-can-now-be-up-to-5-gb-in-package-size)
+- [WebSocket support is now in Public Beta](https://vercel.com/changelog/websocket-support-is-now-in-public-beta)
+- [Deploy Go apps on Vercel using Docker](https://vercel.com/kb/guide/deploy-go-using-docker-vercel) — Deploy an existing Dockerized Go app to Vercel using Memos as a real-world example, with Neon Postgres for durable data.
+- [How to deploy Medusa on Vercel](https://vercel.com/kb/guide/deploy-medusa-on-vercel) — Deploy a Medusa storefront on Vercel, including where the backend runs, which environment variables the current starter
+- [Do Vercel Functions support WebSocket connections?](https://vercel.com/kb/guide/do-vercel-serverless-functions-support-websocket-connections) — Vercel Functions serve WebSocket connections natively, in public beta on all plans. Learn how connections pin to instanc
+- [Running Docker on Vercel](https://vercel.com/kb/guide/docker) — Run Docker on Vercel for HTTP apps and background workers, store images in Vercel Container Registry, and test container
+- [Running Docker on Vercel vs Render](https://vercel.com/kb/guide/docker-on-vercel-vs-render) — Compare how Vercel and Render run Docker workloads, including deployment model, scaling, image sources, state, and netwo
+- [Running Agent Harnesses Durably on Vercel](https://vercel.com/docs/agent-harnesses) — Run Pi, fx, OpenCode, eve, Claude Code, and Codex on Vercel so a crash, a function timeout, or a redeploy resumes the ag
+- [Running fx Durably on Vercel](https://vercel.com/docs/agent-harnesses/fx) — Deploy an fx agent with libfx so its sessions survive crashes, function timeouts, and redeploys on Vercel.
 
 Full cross-link map for this page: [/docs/functions/limitations.graph.md](/docs/functions/limitations.graph.md)
 <!-- /docsgraph:related -->
@@ -44,11 +46,11 @@ Full cross-link map for this page: [/docs/functions/limitations.graph.md](/docs/
 | Feature                                                                          | Limits                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Maximum memory](/docs/functions/limitations#memory-size-limits)                 | Hobby: 2 GB, Pro and Ent: 4 GB                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| [Maximum duration](/docs/functions/limitations#max-duration)                     | Hobby: 300s default and maximum. Pro and Enterprise: 300s default, 800s maximum, and 1800s extended maximum . See [max duration](/docs/functions/limitations#max-duration) for requirements and configuration.                                                                                                                                                                                                        |
-| [Size](/docs/functions/limitations#bundle-size-limits) (uncompressed)            | 250 MB, or 500 MB for [Python](/docs/functions/runtimes/python). [Large functions](/docs/functions/limitations#large-functions-beta) support up to 5 GB .                                                                                                                                                                                                                                                        |
+| [Maximum duration](/docs/functions/limitations#max-duration)                     | Hobby: 300s default and maximum. Pro and Enterprise: 300s default, 800s maximum, and 1800s extended maximum Beta. See [max duration](/docs/functions/limitations#max-duration) for requirements and configuration.                                                                                                                                                                                                        |
+| [Size](/docs/functions/limitations#bundle-size-limits) (uncompressed)            | 250 MB, or 500 MB for [Python](/docs/functions/runtimes/python). [Large functions](/docs/functions/limitations#large-functions-beta) support up to 5 GB Beta.                                                                                                                                                                                                                                                        |
 | [Concurrency](/docs/functions/concurrency-scaling#automatic-concurrency-scaling) | Auto-scales up to 30,000 (Hobby and Pro) or 100,000+ (Enterprise) concurrency                                                                                                                                                                                                                                                                                                                                                                                                         |
 | [Cost](/docs/functions/runtimes)                                                 | Pay for active CPU time and provisioned memory time                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| [Regions](/docs/functions/runtimes#location)                                     | Runs in a single region by default (`iad1`), which you can [change](/docs/functions/configuring-functions/region#setting-your-default-region). Pro and Enterprise teams can set [multiple regions](/docs/functions/configuring-functions/region#limits)                                                                                                                                                                                                                                                               |
+| [Regions](/docs/functions/runtimes#location)                                     | Runs in a single region by default (`iad1`), which you can [change](/docs/functions/configuring-functions/region#setting-your-default-region).<br /> Pro and Enterprise teams can set [multiple regions](/docs/functions/configuring-functions/region#limits)                                                                                                                                                                                                                                                               |
 | [API Coverage](/docs/functions/limitations#api-support)                          | Full Node.js coverage                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | [File descriptors](/docs/functions/limitations#file-descriptors)                 | 1,024 shared across concurrent executions (including runtime usage)                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
@@ -67,9 +69,48 @@ For Vercel Functions, the maximum uncompressed size is **250 MB** including laye
 
 You can use [`includeFiles` and `excludeFiles`](/docs/project-configuration/vercel-json#functions) to specify items which may affect the function size. These configurations are not supported in Next.js, instead use [`outputFileTracingIncludes`](https://nextjs.org/docs/app/api-reference/config/next-config-js/output).
 
-## Large functions&#x20;
+### Troubleshooting the 250 MB limit
 
-Large functions let you deploy uncompressed bundles up to **5 GB**. Use them for workloads that ship large dependencies, model files, or binaries. Large functions are supported on Node.js and Python runtimes.
+When a function exceeds the limit, the build fails with this error:
+
+```txt
+The Vercel Function "api/hello" is 300mb uncompressed which exceeds the maximum uncompressed size limit of 250mb.
+```
+
+If your project is eligible for [large functions](#large-functions-beta), the function can deploy without other changes once large functions are enabled. To find out what's making a function large, add the `VERCEL_ANALYZE_BUILD_OUTPUT` [environment variable](/docs/environment-variables) with the value `1` and redeploy. The build logs then list each function's uncompressed size and its largest files:
+
+```txt
+Function : /api
+Size     : 1991.54 MB
+  Large dependencies:
+    • _vendor/tensorflow/libtensorflow_cc.so.2: 972.15 MB
+    • _vendor/tensorflow/include: 307.87 MB
+```
+
+Common causes of large functions include:
+
+- **Heavy dependencies:** Packages that ship binaries, such as Puppeteer with its bundled Chromium, or machine learning libraries. Duplicate copies of the same package also add size. Run `npm ls <package>` to see why a package is installed, and `npm dedupe` to remove duplicates.
+- **Static assets traced into the function:** Images, videos, or large JSON files that server code imports or reads are packaged with the function. Serve them from the `public` directory or external storage instead.
+- **Dynamic imports with variable paths:** An import or `require` with a path built at runtime can make the bundler include every file in a directory. Use static import paths where you can.
+
+To exclude files a function doesn't need, use `excludeFiles` in `vercel.json`. This example keeps the `public` and `test` directories out of every function under `api`:
+
+```json filename="vercel.json"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/**": {
+      "excludeFiles": "{public,test}/**"
+    }
+  }
+}
+```
+
+In Next.js, use [`outputFileTracingExcludes`](https://nextjs.org/docs/app/api-reference/config/next-config-js/output) in `next.config.js` instead.
+
+## Large functions Beta
+
+Large functions let you deploy uncompressed bundles up to **5 GB**. Use them for workloads that ship large dependencies, model files, or binaries. Large functions are supported on Node.js, Bun, and Python runtimes.
 
 Large functions require [fluid compute](/docs/fluid-compute) with [Active CPU](/docs/functions/usage-and-pricing#active-cpu) enabled. Fluid compute is enabled by default for new projects.
 
@@ -88,11 +129,13 @@ In eligible projects, Vercel only uses the large functions beta for Functions th
 Large functions are supported on the following runtimes:
 
 - [`nodejs`](/docs/functions/runtimes/node-js)
+- [`bun`](/docs/functions/runtimes/bun)
 - [`python`](/docs/functions/runtimes/python)
 
-> **💡 Note:** Large functions are not yet supported for projects using
+> **💡 Note:** Large functions are supported for projects using
 > [Secure Compute](/docs/networking/secure-compute) or
-> [Static IPs](/docs/networking/static-ips).
+> [Static IPs](/docs/networking/static-ips). They are not yet supported with
+> [BYOC](/docs/networking/bring-your-own-cloud).
 
 ## Max duration
 
@@ -102,20 +145,21 @@ While Vercel Functions have a default duration, this duration can be extended us
 
 With [fluid compute](/docs/fluid-compute) enabled, Vercel Functions have the following defaults and maximum limits:
 
-### Node.js and Python runtimes
+### Node.js, Bun, and Python runtimes
 
 |            | Default          | Maximum | Extended maximum |
 | ---------- | ---------------- | ------- | ---------------- |
 | Hobby      | 300s (5 minutes) | 300s (5 minutes) | - |
-| Pro        | 300s (5 minutes) | 800s | 1800s (30 minutes)  |
-| Enterprise | 300s (5 minutes) | 800s | 1800s (30 minutes)  |
+| Pro        | 300s (5 minutes) | 800s | 1800s (30 minutes) Beta |
+| Enterprise | 300s (5 minutes) | 800s | 1800s (30 minutes) Beta |
 
 > **💡 Note:** The 800 second maximum is generally available for Pro and Enterprise teams.
 > The 1800 second extended maximum is in beta. Values above 800 seconds require
-> function-level configuration and are only supported for specific Node.js and
-> Python runtime versions. [Secure Compute](/docs/networking/secure-compute)
-> and [Static IPs](/docs/networking/static-ips) do not support durations above
-> 800 seconds during the beta. See [configuring maximum
+> function-level configuration and are only supported for specific Node.js,
+> Bun, and Python runtime versions. Durations above 800 seconds are supported
+> with [Secure Compute](/docs/networking/secure-compute) and
+> [Static IPs](/docs/networking/static-ips), but not with
+> [BYOC](/docs/networking/bring-your-own-cloud). See [configuring maximum
 > duration](/docs/functions/configuring-functions/duration#extended-max-duration-beta)
 > for the supported runtimes and examples.
 
@@ -148,7 +192,7 @@ check the size of a package and search for a smaller alternative.
 
 In Vercel, the request body size is the maximum amount of data that can be included in the body of a request to a function.
 
-The maximum payload size for the request body or the response body of a Vercel Function is **4.5 MB**. If a Vercel Function receives a payload in excess of the limit it will return an error [413: `FUNCTION_PAYLOAD_TOO_LARGE`](/docs/errors/function_payload_too_large). See [How do I bypass the 4.5MB body size limit of Vercel Functions](/kb/guide/how-to-bypass-vercel-body-size-limit-serverless-functions) for more information.
+The maximum payload size for the request body or the response body of a Vercel Function is **4.5 MB**. The response body limit doesn't apply to [streamed responses](/docs/functions/streaming-functions). If a Vercel Function receives a payload in excess of the limit it will return an error [413: `FUNCTION_PAYLOAD_TOO_LARGE`](/docs/errors/function_payload_too_large). See [How do I bypass the 4.5MB body size limit of Vercel Functions](/kb/guide/how-to-bypass-vercel-body-size-limit-serverless-functions) for more information.
 
 ## File descriptors
 
@@ -213,3 +257,6 @@ If you have [fluid compute](/docs/fluid-compute) enabled, the following environm
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

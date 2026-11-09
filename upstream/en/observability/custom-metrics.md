@@ -1,16 +1,16 @@
 ---
-title: Custom Metrics
+title: Emit Custom Metrics from Vercel Functions
 product: vercel
 url: /docs/observability/custom-metrics
 canonical_url: "https://vercel.com/docs/observability/custom-metrics"
-last_updated: 2018-10-20
-type: conceptual
+last_updated: 2026-09-10
+type: reference
 prerequisites:
   - /docs/observability
 related:
   - /docs/functions/functions-api-reference/vercel-functions-package
   - /docs/cli/metrics
-summary: Learn about custom metrics on Vercel.
+summary: Learn how to emit application-specific metrics from Vercel Functions and analyze them in Observability.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -24,11 +24,15 @@ Custom metrics let you record application-specific numeric values from your Verc
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Legacy Metrics](https://vercel.com/docs/pricing/legacy?from=related) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
-- [Using with CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Query](https://vercel.com/docs/query?from=related) — Query and visualize your Vercel usage, traffic, and more in observability.
+- [Custom metrics are now supported in Vercel Observability](https://vercel.com/changelog/custom-metrics-are-now-supported-in-vercel-observability)
+- [Query observability metrics using the Vercel CLI](https://vercel.com/changelog/vercel-metrics-in-cli)
+- [Metrics for outgoing requests](https://vercel.com/changelog/metrics-for-outgoing-requests)
+- [Understand the Cost Impact of Function Invocations](https://vercel.com/kb/guide/understand-cost-impact-of-function-invocations) — Learn how to use Observability to understand function invocations and their cost impact.
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
+- [Legacy Metrics](https://vercel.com/docs/pricing/legacy) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
+- [Query](https://vercel.com/docs/query) — Query and visualize your Vercel usage, traffic, and more in observability.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
 
 Full cross-link map for this page: [/docs/observability/custom-metrics.graph.md](/docs/observability/custom-metrics.graph.md)
 <!-- /docsgraph:related -->
@@ -39,28 +43,29 @@ For example, you could emit metrics to measure database queries latency, record 
 
 1. Install the `@vercel/functions` package:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i @vercel/functions
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i @vercel/functions
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i @vercel/functions
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i @vercel/functions
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i @vercel/functions
+```
+
+**yarn**
+
+```bash
+yarn add @vercel/functions
+```
+
+**npm**
+
+```bash
+npm i @vercel/functions
+```
+
+**bun**
+
+```bash
+bun add @vercel/functions
+```
 
 2. Import `metric` and call it from a Vercel Function with a metric name, numeric value, and optional attributes:
 
@@ -84,7 +89,7 @@ The `metric()` function accepts the following parameters:
 
 ## Metric and attribute requirements
 
-Metric names, attribute names, and attribute values must be non-empty and shorter than 64 bytes. They can contain ASCII letters (`A-Z`, `a-z`), digits (`0-9`), hyphens (`-`), underscores (`_`), periods (`.`), and slashes (`/`). Unsupported characters are automatically replaced with an underscore (`_`). For example, `data+summary` is stored as `data_summary`.
+Metric names, attribute names, and attribute values must be non-empty and shorter than 64 bytes. They can contain ASCII letters (`A-Z`, `a-z`), digits (`0-9`), hyphens (`-`), underscores (`_`), periods (`.`), and slashes (`/`). Unsupported characters are automatically replaced with an underscore (`_`). For example, `data+summary` is stored as `data_summary`. Metric names can't start with `vercel.`. Vercel reserves this prefix and doesn't record data points for metric names that use it.
 
 For example, this data point is valid:
 
@@ -120,13 +125,13 @@ After you deploy and invoke the Vercel Function, you can access custom metrics d
 List all available metrics:
 
 ```bash filename="terminal"
-vercel metrics list
+vercel metrics schema
 ```
 
 Query a custom metric and filter it by an attribute:
 
 ```bash filename="terminal"
-vercel metrics database.duration_ms --filter "plan:pro"
+vercel metrics database.duration_ms --query "plan:pro"
 ```
 
 ## Pricing
@@ -139,3 +144,6 @@ For example, emitting one custom metric during each of 1 million function invoca
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

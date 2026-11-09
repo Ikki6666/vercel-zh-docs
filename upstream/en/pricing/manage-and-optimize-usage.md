@@ -3,16 +3,16 @@ title: Manage and optimize usage
 product: vercel
 url: /docs/pricing/manage-and-optimize-usage
 canonical_url: "https://vercel.com/docs/pricing/manage-and-optimize-usage"
-last_updated: 2026-07-29
+last_updated: 2026-09-18
 type: reference
 prerequisites:
   - /docs/pricing
 related:
+  - /docs/cli/usage
+  - /docs/pricing/flex-commit
   - /docs/notifications
   - /docs/functions/usage-and-pricing
   - /docs/builds/managing-builds
-  - /docs/deployment-storage
-  - /docs/monorepos/remote-caching
 summary: Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize your usage to save costs.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -21,27 +21,37 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## What pricing plan am I on?
 
+There are three plans on Vercel: Hobby, Pro, and Enterprise. To see which plan you are on, select your team from the team switcher. Next to your team name, you will see the plan you are on.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute?from=related) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
-- [Plans](https://vercel.com/docs/plans?from=related) — Learn about the different plans available on Vercel.
-- [Limits and Pricing](https://vercel.com/docs/speed-insights/limits-and-pricing?from=related) — Learn about our limits and pricing when using Vercel Speed Insights. Different limitations are applied depending on your
-- [Pricing & Usage](https://vercel.com/docs/manage-cdn-usage?from=related) — Understand CDN pricing resources, monitor usage from your dashboard, and optimize Fast Data Transfer, Fast Origin Transf
-- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
-- [Legacy Usage & Pricing](https://vercel.com/docs/functions/usage-and-pricing/legacy-pricing?from=related) — Learn about legacy usage and pricing for Vercel Functions.
+- [Log Drains are now generally available](https://vercel.com/changelog/log-drains-are-now-generally-available)
+- [Lower pricing for Log Drains](https://vercel.com/changelog/lower-pricing-for-log-drains)
+- [One-click linking from Usage to Vercel Observability dashboards](https://vercel.com/changelog/one-click-linking-from-usage-to-vercel-observability-dashboards)
+- [Speed Insights usage can now be viewed by Project](https://vercel.com/changelog/speed-insights-usage-can-now-be-viewed-by-project)
+- [How to reduce build costs on Vercel](https://vercel.com/kb/guide/how-reduce-build-costs) — Find which projects drive your Build CPU Minutes, then lower them by skipping unneeded builds, shortening each build, an
+- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
+- [Optimize Runtime Cache on Vercel](https://vercel.com/kb/guide/optimize-runtime-cache-reads-on-vercel) — Diagnose rising Runtime Cache usage, trace reads to tags and code paths, and reduce avoidable reads while checking write
+- [Protecting your app (and wallet) against malicious traffic](https://vercel.com/blog/protecting-your-app-and-wallet-against-malicious-traffic)
+- [Vercel Pricing](https://vercel.com/pricing) — Choose a Vercel plan and compare features and usage pricing.
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing)
+- [Visualize Team Usage With Sophisticated Usage Dashboard](https://vercel.com/blog/sophisticated-usage-dashboard)
+- [CDN pricing and usage](https://vercel.com/docs/manage-cdn-usage) — Understand CDN pricing resources, monitor usage from your dashboard, and optimize Fast Data Transfer, Fast Origin Transf
 
 Full cross-link map for this page: [/docs/pricing/manage-and-optimize-usage.graph.md](/docs/pricing/manage-and-optimize-usage.graph.md)
 <!-- /docsgraph:related -->
 
-There are three plans on Vercel: Hobby, Pro, and Enterprise. To see which plan you are on, select your team from the team switcher. Next to your team name, you will see the plan you are on.
-
 ## Viewing usage
 
 The Usage page shows the usage of all projects in your Vercel account by default. To access it, open **Usage** in the sidebar from your Vercel [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard).
+
+Review usage from the dashboard or the Vercel CLI.
+
+#### Dashboard
 
 To use the usage page:
 
@@ -52,12 +62,22 @@ To use the usage page:
 5. In the overview, you'll see an allotment indicator. It shows how much of your usage you've consumed in the current cycle and the projected cost for each item
 6. Review the breakdown by project and region to understand the metrics causing the high usage
 
+#### CLI
+
+Run [`vercel billing usage`](/docs/cli/usage) to see usage for the last 30 days by project. Use `--group-by region` to group by region instead.
+
+```bash filename="terminal"
+vercel billing usage --since 30d --group-by project
+```
+
 ## Usage alerts, notification, and spend management
 
 The usage dashboard helps you understand and project your usage. You can also set up alerts to notify you when you're approaching usage limits. You can set up the following features:
 
-- **Spend Management**: Spend management is an opt-in feature. Pro teams can set up a spend amount for your team to trigger notifications or actions. For example a webhook or pausing your projects when you hit your set amount
+- **Spend Management**: Spend management is an opt-in feature. Pro teams and Enterprise teams on the [Flexible Commitment](/docs/pricing/flex-commit) plan can set up a spend amount for your team to trigger notifications or actions. For example a webhook or pausing your projects when you hit your set amount
 - **Usage Notifications**: Usage notifications are set up automatically. Pro teams can also [configure the threshold](/docs/notifications#on-demand-usage-notifications) for usage alerts to notify you when you're approaching your usage limits
+
+  **Interested in the Enterprise plan?**
 
 ## CDN
 
@@ -97,7 +117,9 @@ To view information on managing each resource, select the resource link in the *
 
 ## Data Cache
 
-The table below shows the metrics for the [**Data Cache**](/docs/caching/runtime-cache) section of the **Usage** dashboard.
+The table below shows the metrics for the [**Data Cache**](/docs/caching/runtime-cache/data-cache) section of the **Usage** dashboard.
+
+Vercel is unifying Data Cache with [Runtime Cache](/docs/caching/runtime-cache). Starting October 30, 2026, Runtime Cache serves `fetch` caching and `unstable_cache` for new teams, and Vercel bills that usage as Runtime Cache usage. Vercel will notify existing teams of their migration timeline. See [Data cache is unifying with Runtime Cache](/docs/caching/runtime-cache/data-cache#data-cache-is-unifying-with-runtime-cache).
 
 To view information on managing each resource, select the resource link in the **Metric** column. To jump straight to guidance on optimization, select the corresponding resource link in the **Optimize** column.
 
@@ -109,7 +131,7 @@ To view information on managing each resource, select the resource link in the *
 
 ## Observability
 
-The table below shows the metrics for the [Web Analytics](/docs/manage-and-optimize-observability#managing-web-analytics-events), [Speed Insights](/docs/manage-and-optimize-observability#managing-speed-insights-events), and [Monitoring](/docs/manage-and-optimize-observability#optimizing-monitoring-events) sections of the **Usage** dashboard.
+The table below shows the metrics for the [Web Analytics](/docs/manage-and-optimize-observability#managing-web-analytics-events), [Speed Insights](/docs/manage-and-optimize-observability#managing-speed-insights-events), and [Observability Plus](/docs/manage-and-optimize-observability#managing-observability-events) sections of the **Usage** dashboard.
 
 To view information on managing each resource, select the resource link in the **Metric** column. To jump straight to guidance on optimization, select the corresponding resource link in the **Optimize** column.
 
@@ -160,3 +182,6 @@ resources:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

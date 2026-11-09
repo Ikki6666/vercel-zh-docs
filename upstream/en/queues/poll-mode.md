@@ -3,16 +3,16 @@ title: Poll Mode
 product: vercel
 url: /docs/queues/poll-mode
 canonical_url: "https://vercel.com/docs/queues/poll-mode"
-last_updated: 2026-06-30
+last_updated: 2026-09-17
 type: conceptual
 prerequisites:
   - /docs/queues
 related:
   - /docs/queues/concepts
-  - /docs/cron-jobs
+  - /docs/schedules
+  - /docs/daemons
+  - /docs/frameworks/agents/eve
   - /docs/queues/python-sdk
-  - /docs/fluid-compute
-  - /docs/services
 summary: Consume messages from Vercel Queues by polling on your own schedule, from any environment.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,14 +27,17 @@ In poll mode, your application polls for messages from a queue on its own schedu
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
-- [Building an AI chat app with RAG and source citations on Vercel](https://vercel.com/kb/guide/building-ai-chat-app-with-rag-and-citations-on-vercel?from=related) — A production stack for AI chat with retrieval, reranking, source citations, and background ingestion on Vercel using Nex
-- [Sending Emails from an application on Vercel](https://vercel.com/kb/guide/sending-emails-from-an-application-on-vercel?from=related) — SMTP is the harder path inside Vercel Functions. Learn how to send emails over an HTTP API, which Next.js pattern fits y
-- [JS SDK Reference](https://vercel.com/docs/queues/sdk?from=related) — Publish and consume messages with the @vercel/queue SDK.
-- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related) — Set up Vercel Queues with the SDK.
-- [Observability](https://vercel.com/docs/queues/observability?from=related) — Monitor queue throughput, message age, and consumer performance to optimize your queue-based workflows.
-- [API Reference](https://vercel.com/docs/queues/api?from=related) — HTTP API reference for Vercel Queues. Publish, consume, acknowledge, and manage messages.
-- [Celery](https://vercel.com/docs/frameworks/backend/celery?from=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
+- [Vercel Daemons is now in public beta](https://vercel.com/changelog/vercel-daemons-is-now-in-public-beta)
+- [Running background workers on Vercel](https://vercel.com/kb/guide/background-workers-on-vercel) — Run background jobs on Vercel with waitUntil, Cron Jobs, Queues, Workflows, Daemons, or Sandbox. Compare the options and
+- [ Run a Docker monolith with workers on Vercel](https://vercel.com/kb/guide/docker-monolith-workers-vercel) — Run a Dockerized monolith on Vercel with Container Images, move long-running workers to Vercel Queues and Vercel Workflo
+- [Migrate from Google Cloud Run to Vercel](https://vercel.com/kb/guide/migrate-cloud-run-to-vercel) — Move a Cloud Run service or worker to Vercel. Compare runtimes, preserve Google Cloud access, and plan jobs, validation,
+- [Migrate Railway workers to Vercel Daemons](https://vercel.com/kb/guide/migrate-railway-workers-to-vercel-daemons) — Move Railway workers to Vercel Daemons with Docker configuration, broker migration, shutdown testing, a gradual queue ha
+- [Process background jobs in Python with Vercel Queues](https://vercel.com/kb/guide/python-and-vercel-queues) — Move slow and failure-prone work out of your Python request handlers, with typed topics, consumer groups, and built-in r
+- [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta)
+- [Vercel Queues is now in Limited Beta](https://vercel.com/changelog/vercel-queues-is-now-in-limited-beta)
+- [Queues Observability](https://vercel.com/docs/queues/observability) — Monitor queue throughput, message age, retries, and consumer performance to optimize your queue-based workflows.
+- [Run background tasks with Celery on Vercel](https://vercel.com/docs/frameworks/backend/celery) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
+- [Chat SDK with Vercel Daemons](https://vercel.com/docs/chat-sdk/integrations/daemons) — Process Chat SDK jobs with Vercel Queues and Daemons, using Vercel Connect for Slack credentials and event delivery.
 
 Full cross-link map for this page: [/docs/queues/poll-mode.graph.md](/docs/queues/poll-mode.graph.md)
 <!-- /docsgraph:related -->
@@ -55,10 +58,13 @@ On Vercel, [push mode](/docs/queues/concepts#delivery) is the default and handle
 
 Common patterns include:
 
-- **Cron-triggered processing**: Use a [Vercel Cron Job](/docs/cron-jobs) to invoke a function on a schedule that polls the queue and processes messages in batch.
+- **Schedule-triggered processing**: Use [Vercel Schedules](/docs/schedules) to invoke a function on a recurring cadence that polls the queue and processes messages in batch.
 - **Client-driven polling**: Have your client-side application poll a server endpoint, which then polls the queue on behalf of that client. This is useful for building real-time experiences without persistent connections.
+- **Long-running consumers**: Run a [daemon](/docs/daemons) that polls the queue continuously, with a fixed number of instances in each region.
 - **Rate-controlled consumption**: Poll for messages at a pace that matches a downstream dependency's rate limits.
 - **Mixed delivery**: Use push mode for latency-sensitive consumers and poll mode for batch workloads within the same application and even the same queue.
+
+For an agent workflow, a daemon can poll jobs, start an [eve](/docs/frameworks/agents/eve) session, and wait for its outcome before acknowledging the message. Follow [Use Vercel Daemons with eve agents](/kb/guide/vercel-daemons-eve-agents) for queue consumption, result handling, and safe retries.
 
 > **💡 Note:** Push and poll mode can be used together within the same queue. Each consumer group independently chooses its delivery mode, so a single topic can have some groups receiving pushes and others polling.
 
@@ -149,18 +155,55 @@ Vercel retries messages that aren't acknowledged according to the same [retry be
 ### Receive options
 
 ```typescript filename="lib/poll-worker.ts" framework=nextjs-app
+// Receive up to 10 messages from the consumer group
 await receive('orders', 'fulfillment', handler, {
   limit: 10,
   visibilityTimeoutSeconds: 300,
+});
+
+// Receive one message by ID. The SDK ignores `limit` and `cursorFallback` when you set `messageId`
+await receive('orders', 'fulfillment', handler, {
   messageId: 'specific-message-id',
+  visibilityTimeoutSeconds: 300,
 });
 ```
 
-| Option                     | Type     | Default   | Description                                                |
-| -------------------------- | -------- | --------- | ---------------------------------------------------------- |
-| `limit`                    | `number` | `1`       | Maximum messages to receive (max: `10`)                    |
-| `visibilityTimeoutSeconds` | `number` | 5 minutes | How long received messages are hidden from other consumers |
-| `messageId`                | `string` | -         | Receive a specific message by ID                           |
+| Option                     | Type                       | Default      | Description                                                |
+| -------------------------- | -------------------------- | ------------ | ---------------------------------------------------------- |
+| `limit`                    | `number`                   | `1`          | Maximum messages to receive (max: `10`)                    |
+| `visibilityTimeoutSeconds` | `number`                   | 5 minutes    | How long received messages are hidden from other consumers |
+| `messageId`                | `string`                   | -            | Receive a specific message by ID                           |
+| `cursorFallback`           | `"earliest" \| "latest"` | `"earliest"` | Starting position for a missing consumer group cursor      |
+
+### Cursor fallback behavior
+
+`cursorFallback` controls where polling starts when a source shard has no cursor for the consumer group. It does not move or reset an existing cursor.
+
+- `"earliest"` starts at the earliest retained message. This is the default and lets a new consumer group replay available backlog.
+- `"latest"` starts after each missing shard's committed head. Use this when a consumer should process new messages without replaying retained backlog.
+
+Vercel discovers source shards as it polls and initializes missing cursors when it encounters them. With `"latest"`, each cursor starts after that shard's feeder-committed head at the time the shard is observed. Active shards are typically encountered during the initial polling requests; once a shard has a cursor, later polls continue from that cursor rather than applying the fallback again. Messages buffered above an observed shard head remain eligible for delivery.
+
+This initialization is per shard rather than a single topic-wide cutoff.
+
+For example, use `"latest"` when a newly deployed worker should skip messages retained before each shard is first discovered:
+
+```typescript filename="lib/poll-worker.ts" framework=nextjs-app
+import { PollingQueueClient } from '@vercel/queue';
+
+const { receive } = new PollingQueueClient({ region: 'iad1' });
+
+const result = await receive(
+  'orders',
+  'fulfillment',
+  async (message) => {
+    await processOrder(message);
+  },
+  { cursorFallback: 'latest' },
+);
+```
+
+The option applies to the current receive request. If multiple workers share a consumer group, configure them to send the same `cursorFallback` value. Existing shard cursors continue from their current positions and are never moved, even if a later request uses a different value. During startup, a consumer group can briefly have some shards using existing positions while newly encountered shards are initialized at their latest committed heads.
 
 ## Versioning with deployment IDs
 
@@ -202,3 +245,6 @@ When consumers in different services poll the same topic, scope their consumer g
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

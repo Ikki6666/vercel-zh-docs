@@ -3,14 +3,14 @@ title: Restrict deployment access by IP address
 product: vercel
 url: /docs/deployment-protection/methods-to-protect-deployments/trusted-ips
 canonical_url: "https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/trusted-ips"
-last_updated: 2026-07-27
+last_updated: 2026-08-28
 type: how-to
 prerequisites:
   - /docs/deployment-protection/methods-to-protect-deployments
   - /docs/deployment-protection
 related:
   - /docs/project-configuration/project-settings
-  - /docs/errors
+  - /docs/errors/DEPLOYMENT_NOT_FOUND
   - /docs/deployment-protection
   - /docs/deployment-protection/methods-to-protect-deployments/vercel-authentication
   - /docs/deployment-protection/methods-to-protect-deployments/password-protection
@@ -20,7 +20,20 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Restrict deployment access by IP address
 
-> **🔒 Permissions Required**: Trusted IPs
+> Trusted IPs are available on Enterprise plans
+>
+> Those with the owner, member and admin roles can manage Trusted IPs
+
+> **⚠️ Warning:** Vercel recommends migrating from Trusted IPs to Vercel Firewall for
+> IP-based access control on protected URLs. Trusted IPs supports up to 20
+> addresses by default, while Firewall supports larger allowlists through
+> rules and reusable team Lists. Firewall also lets you test rules with the
+> Log action, inspect matching traffic, reuse policies, and control where
+> rules apply. Follow the [migration
+> guide](#migrate-trusted-ips-to-vercel-firewall) to move your existing
+> configuration.
+
+With Trusted IPs [enabled](/docs/deployment-protection/methods-to-protect-deployments/trusted-ips#manage-trusted-ips) at the level of your [project](/docs/project-configuration/project-settings), only visitors from an allowed IP address can access your deployment. The deployment URL will return `404` [No Deployment Found](/docs/errors/DEPLOYMENT_NOT_FOUND) for all other requests. Trusted IPs is configured by specifying a list of IPv4 addresses and IPv4 CIDR ranges.
 
 
 <!-- docsgraph:related -->
@@ -28,25 +41,22 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I get a fixed IP address for my Vercel deployments?](https://vercel.com/kb/guide/can-i-get-a-fixed-ip-address?from=related) — Vercel deployments use dynamic IPs by default. Learn how Static IPs, Secure Compute, and AWS PrivateLink give you a fixe
-- [How to Effectively Load Test Your Vercel Application](https://vercel.com/kb/guide/how-to-effectively-load-test-your-vercel-application?from=related) — Learn how to safely load test your Next.js app on Vercel. This guide covers realistic, policy-compliant testing of route
-- [Using Self-hosted & Reverse Proxies with Vercel](https://vercel.com/kb/guide/how-to-setup-verified-proxy?from=related) — Learn about using self-hosted or reverse proxies with Vercel deployments.
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly?from=related) — A detailed guide to Vercel vs Fastly: full-stack application platform vs edge infrastructure layer, covering framework s
-- [OPTIONS Allowlist](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/options-allowlist?from=related) — Learn how to disable Deployment Protection for CORS preflight requests for a list of paths.
-- [Security settings](https://vercel.com/docs/project-configuration/security-settings?from=related) — Configure security settings for your Vercel project, including Logs and Source Protection, Vercel Support Code Visibilit
-- [Security](https://vercel.com/docs/microfrontends/managing-microfrontends/security?from=related) — Learn about security on Vercel.
-- [Enterprise Plan](https://vercel.com/docs/plans/enterprise?from=related) — Learn about the Enterprise plan for Vercel, including features, pricing, and more.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [How to choose the right Vercel networking option](https://vercel.com/kb/guide/how-to-choose-the-right-vercel-networking-option) — Decide whether your project needs a networking option at all, then choose between Static IPs, AWS PrivateLink, Secure Co
+- [How to effectively load test your application on Vercel](https://vercel.com/kb/guide/how-to-effectively-load-test-your-vercel-application) — Learn how to safely load test your Next.js app on Vercel. This guide covers realistic, policy-compliant testing of route
+- [Choose between Vercel Passport and other Deployment Protection methods](https://vercel.com/kb/guide/vercel-passport-vs-deployment-protection) — Compare Vercel Passport with Vercel Authentication, Password Protection, and Trusted IPs to choose the right Deployment
+- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
+- [Vercel vs Fastly](https://vercel.com/kb/guide/vercel-vs-fastly) — A detailed guide to Vercel vs Fastly: full-stack application platform vs CDN infrastructure layer, covering framework su
+- [Trusted IPs for Deployment Protection is now Generally Available](https://vercel.com/changelog/trusted-ips-is-now-generally-available-for-enterprise-customers)
+- [Trusted Sources for Deployment Protection](https://vercel.com/changelog/trusted-sources-for-deployment-protection)
+- [Automated & Agent Access](https://vercel.com/docs/deployment-protection/automated-agent-access) — Grant AI agents, CI/CD pipelines, MCP servers, and testing tools access to Vercel deployments that have Deployment Prote
+- [Vercel Enterprise Plan](https://vercel.com/docs/plans/enterprise) — Learn about the Enterprise plan for Vercel, including features, pricing, and more.
 
 Full cross-link map for this page: [/docs/deployment-protection/methods-to-protect-deployments/trusted-ips.graph.md](/docs/deployment-protection/methods-to-protect-deployments/trusted-ips.graph.md)
 <!-- /docsgraph:related -->
 
-With Trusted IPs [enabled](/docs/deployment-protection/methods-to-protect-deployments/trusted-ips#manage-trusted-ips) at the level of your [project](/docs/project-configuration/project-settings), only visitors from an allowed IP address can access your deployment. The deployment URL will return `404` [No Deployment Found](/docs/errors#404:-deployment_not_found) for all other requests. Trusted IPs is configured by specifying a list of IPv4 addresses and IPv4 CIDR ranges.
-
 Trusted IPs works well if you access Vercel deployments through a specific IP address. For example, you can limit preview deployment access to your VPN. You can also enable Trusted IPs in production to restrict incoming access to only requests through your external proxy.
 
-![Image](https://vercel.com/front/docs/security/trusted-ips-dash-light.png)
+![Enabling Trusted IPs.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/security/trusted-ips-dash-light.png)
 
 ## What to know before enabling Trusted IPs
 
@@ -58,7 +68,7 @@ The tables below outline key considerations and security implications when using
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Environment Configuration | Can be enabled for different environments. See [Understanding Deployment Protection by environment](/docs/deployment-protection#choose-which-urls-to-protect)                                                                                           |
 | Compatibility             | Operates as a required layer on top of [Vercel Authentication](/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication) and [Password Protection](/docs/deployment-protection/methods-to-protect-deployments/password-protection).          |
-| Bypass Methods            | Can be bypassed using [Shareable Links](/docs/deployment-protection/methods-to-bypass-deployment-protection/sharable-links) and [Protection Bypass for Automation](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation) |
+| Bypass Methods            | Can be bypassed using [Shareable Links](/docs/deployment-protection/methods-to-bypass-deployment-protection/sharable-links) and [Protection Bypass for Automation](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation), or by callers listed in [Trusted Sources](/docs/deployment-protection/methods-to-bypass-deployment-protection/trusted-sources) |
 | IP Address Support        | Supports IPv4 addresses and IPv4 CIDR ranges                                                                                                                                                                                                                                           |
 
 ### Prerequisites
@@ -77,6 +87,41 @@ The tables below outline key considerations and security implications when using
 | DDoS Mitigation       | Trusted IPs do not bypass [DDoS Mitigation](/docs/vercel-firewall/ddos-mitigation) unless configured                             |
 | Deployment Impact     | Changing the Trusted IPs list affects all deployments                                                                     |
 | Disabling Trusted IPs | Disabling makes all existing deployments accessible from any IP                                                           |
+
+## Migrate Trusted IPs to Vercel Firewall
+
+Vercel Firewall provides observable and customizable IP-based access control. You can test rules with the Log action, inspect matching traffic, manage larger IP allowlists by adding addresses directly to rules or reusable team Lists, combine IP addresses with other request conditions, and reuse policies across teams and projects.
+
+Migration is optional.
+
+To move an existing Trusted IPs configuration to Vercel Firewall:
+
+1. Keep Trusted IPs enabled while you configure and test the Firewall rule.
+2. Record the IPv4 addresses and CIDR ranges in the project's **Trusted IPs** settings.
+3. Review [which IP address Vercel Firewall evaluates](/docs/vercel-firewall/vercel-waf/trusted-ip-access#check-which-ip-address-vercel-firewall-evaluates) before copying the allowlist. If an external proxy connects to Vercel, the behavior differs:
+   - **Trusted IPs:** Checks the IP that connects directly to Vercel. With an external proxy, this is the proxy IP, even when [Verified Proxy Advanced](/kb/guide/how-to-setup-verified-proxy) is configured.
+   - **Firewall with Verified Proxy Advanced:** Checks the forwarded end-user IP. If the Trusted IPs allowlist contains proxy IPs, copying it won't preserve the same access.
+   - **Firewall without Verified Proxy Advanced:** Checks the IP that connects directly to Vercel. With an external proxy, this is the proxy IP. Review the [full proxy behavior and forwarding-header alternative](/docs/vercel-firewall/vercel-waf/trusted-ip-access#check-which-ip-address-vercel-firewall-evaluates) before creating the rule.
+4. Follow [Set up trusted IP access with Vercel Firewall](/docs/vercel-firewall/vercel-waf/trusted-ip-access). Add the recorded addresses directly to a Shared Rule or Project Custom Rule, or store them in a reusable team List.
+5. Use the mapping in [Match the Trusted IPs deployment scope](#match-the-trusted-ips-deployment-scope) to add the Domain Environment condition.
+6. Complete the [Log and Deny tests](/docs/vercel-firewall/vercel-waf/trusted-ip-access#test-and-enforce-the-firewall-rule).
+7. Open the project's **Deployment Protection** settings and disable Trusted IPs.
+8. Select **Save**, then repeat the allowed and unlisted IP tests.
+
+Firewall Deny returns `403 Forbidden`, while Trusted IPs returns `404 No Deployment Found`.
+
+### Match the Trusted IPs deployment scope
+
+Use these Firewall conditions to reproduce the current Trusted IPs scope:
+
+| Trusted IPs scope | Firewall condition |
+| --- | --- |
+| All Deployments | Don't add a Domain Environment condition. |
+| Production Deployments | **Domain Environment** **Equals** **Production Domains**. |
+| Pre-Production Deployments | **Environment** **Equals** **Preview**. |
+| Standard Protection | **Domain Environment** **Equals** **Non-Production Domains**. |
+
+The **Environment** **Equals** **Preview** condition preserves the legacy **Pre-Production Deployments** scope. For new configurations, we recommend the **Standard Protection** mapping, which also protects past Production Deployments and Production Deployment URLs.
 
 ## Manage Trusted IPs
 
@@ -98,7 +143,7 @@ You can manage Trusted IPs through the dashboard, API, or Terraform.
   2. Select the [deployment environment](/docs/deployment-protection#choose-which-urls-to-protect) you want to protect
   3. Enter your list of IPv4 addresses and IPv4 CIDR ranges with an optional note describing the address
   4. Finally, select **Save**
-  All your existing and future deployments will be protected with Trusted IPs for that project. Visitors to your project deployments from IP addresses not included in your list will see a [No Deployment Found](/docs/errors#404:-deployment_not_found) error page.
+  All your existing and future deployments will be protected with Trusted IPs for that project. Visitors to your project deployments from IP addresses not included in your list will see a [No Deployment Found](/docs/errors/DEPLOYMENT_NOT_FOUND) error page.
 
 ### Manage using the API
 
@@ -106,22 +151,27 @@ You can manage Trusted IPs using the Vercel API endpoint to [update an existing 
 
 | Parameter           | Type   | Required | Description                                                                                                                                                                                              |
 | ------------------- | ------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `deploymentType`    | string | Yes      | The deployment scope. One of `prod_deployment_urls_and_all_previews` (Standard Protection), `all` (All Deployments), `preview` (Only Preview Deployments), or `production` (Only Production Deployments) |
+| `deploymentType`    | string | Yes      | The deployment scope. One of `all_except_custom_domains` (Standard Protection), `prod_deployment_urls_and_all_previews` (legacy Standard Protection), `all` (All Deployments), `preview` (legacy Pre-Production Deployments), or `production` (Only Production Deployments) |
 | `addresses`         | array  | Yes      | Array of address objects                                                                                                                                                                                 |
 | `addresses[].value` | string | Yes      | The IPv4 or IPv4 CIDR address                                                                                                                                                                            |
 | `addresses[].note`  | string | No       | Optional note about the address                                                                                                                                                                          |
 | `protectionMode`    | string | Yes      | Set to `additional` so the IP is required along with other enabled protection methods (recommended)                                                                                                      |
 
-```typescript
-// enable / update trusted ips
+To enable or update Trusted IPs, send the `trustedIps` object:
+
+```json
 {
   "trustedIps": {
-      "deploymentType": "all" | "preview" | "production" | "prod_deployment_urls_and_all_previews",
-      "addresses": { "value": "<value>"; "note": "<note>" | undefined }[],
-      "protectionMode": "additional"
+    "deploymentType": "all",
+    "addresses": [{ "value": "203.0.113.0/24", "note": "Office network" }],
+    "protectionMode": "additional"
   }
 }
-// disable trusted ips
+```
+
+To disable Trusted IPs, set `trustedIps` to `null`:
+
+```json
 {
   "trustedIps": null
 }
@@ -135,3 +185,6 @@ You can configure Trusted IPs using `trusted_ips` in the `vercel_project` data s
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,19 +3,20 @@ title: Uploading Custom SSL Certificates
 product: vercel
 url: /docs/domains/custom-SSL-certificate
 canonical_url: "https://vercel.com/docs/domains/custom-SSL-certificate"
-last_updated: 2026-02-26
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/domains
 related:
   - /docs/rest-api/certs/upload-a-cert
+  - /docs/cli/certs
 summary: By default, Vercel provides all domains with a custom SSL certificates. However, Enterprise teams can upload their own custom SSL certificate.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Uploading Custom SSL Certificates
 
-> **🔒 Permissions Required**: Uploading Custom SSL Certificates
+> Uploading Custom SSL Certificates are available on Enterprise plans
 
 By default, Vercel provides all domains with custom SSL certificates. However, Enterprise teams can upload a custom SSL certificate. This allows for Enterprise teams to serve their own SSL certificate on a **Custom Domain** on Vercel's global network, rather than the automatically generated certificate.
 
@@ -26,6 +27,10 @@ Uploading a custom certificate follows a three step process:
 1. Providing the private key for the certificate
 2. Providing the certificate itself
 3. Providing the Certificate Authority root certificate such as one of [Let's Encrypt's ISRG root certificates](https://letsencrypt.org/certificates/). This will be provided by your certificate issuer and is different to the core certificate. This may be included in their download process or available for download on their website.
+
+Upload the certificate from the dashboard or the Vercel CLI.
+
+#### Dashboard
 
 The content of each element must be copied and pasted into the input box directly. The certificate and private key can be extracted from the [PEM](https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail) files that are provided by your certificate issuer, and should be in the following format:
 
@@ -39,6 +44,14 @@ The content of each element must be copied and pasted into the input box directl
 -----BEGIN PRIVATE KEY-----
 <Private key body will be here>
 -----END PRIVATE KEY-----
+```
+
+#### CLI
+
+Run [`vercel certs add`](/docs/cli/certs) and pass the certificate, private key, and Certificate Authority files:
+
+```bash filename="terminal"
+vercel certs add --crt certificate.pem --key private-key.pem --ca ca.pem
 ```
 
 ## SSL best practices
@@ -64,9 +77,26 @@ openssl req -x509 -newkey rsa:4096 \
   -addext "subjectAltName=DNS:sub.example.com"
 ```
 
-This generates a `key.pem` file containing the private key and a `cert.pem` file containing the self-signed certificate. When uploading this certificate to Vercel, use `cert.pem` also for the Certificate Authority field.
+This generates a `key.pem` file containing the private key and a `cert.pem` file containing the self-signed certificate.
+
+Upload the self-signed certificate from the dashboard or the Vercel CLI.
+
+#### Dashboard
+
+When uploading this certificate to Vercel, use `cert.pem` also for the Certificate Authority field.
+
+#### CLI
+
+Run [`vercel certs add`](/docs/cli/certs) and pass `cert.pem` as both the certificate and the Certificate Authority:
+
+```bash filename="terminal"
+vercel certs add --crt cert.pem --key key.pem --ca cert.pem
+```
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

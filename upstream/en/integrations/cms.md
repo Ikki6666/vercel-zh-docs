@@ -3,7 +3,7 @@ title: Vercel CMS Integrations
 product: vercel
 url: /docs/integrations/cms
 canonical_url: "https://vercel.com/docs/integrations/cms"
-last_updated: 2026-04-07
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/integrations
@@ -27,12 +27,14 @@ Vercel Content Management System (CMS) Integrations allow you to connect your pr
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using a Headless CMS with Vercel](https://vercel.com/kb/guide/using-a-headless-cms-with-vercel?from=related) — Learn best practices for using databases in a serverless environment with Vercel
-- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
-- [Commerce and Payments](https://vercel.com/docs/integrations/ecommerce?from=related) — Learn how to integrate Vercel with payment processors and ecommerce platforms, including Stripe, Shopify, BigCommerce, a
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Marketplace Vercel API](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/vercel?from=related) — Learn about marketplace vercel api on Vercel.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Rendering strategies for retail: ISR vs SSR vs static](https://vercel.com/kb/guide/ssr-vs-ssg-vs-isr-vs-csr-for-ecommerce) — Choose between SSR, SSG, ISR, and CSR for each ecommerce surface. Compare rendering modes on freshness, personalization,
+- [Introducing new developer tools in the Vercel Toolbar](https://vercel.com/blog/introducing-new-developer-tools-in-the-vercel-toolbar)
+- [Supercharge your Vercel Projects with Integrations](https://vercel.com/blog/integrations-marketplace)
+- [Enhanced content management for your headless CMS](https://vercel.com/blog/enhanced-content-management-for-headless-cmses)
+- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
+- [Integrations](https://vercel.com/docs/agent-resources/vercel-mcp/tools/integrations) — Vercel MCP tools for integrations.
+- [Vercel Commerce and Payments Integrations](https://vercel.com/docs/integrations/ecommerce) — Learn how to integrate Vercel with payment processors and ecommerce platforms, including Stripe, Shopify, BigCommerce, a
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel) — Install the Vercel CLI, add the Vercel Plugin or agent skills, connect Vercel MCP, and deploy your first project.
 
 Full cross-link map for this page: [/docs/integrations/cms.graph.md](/docs/integrations/cms.graph.md)
 <!-- /docsgraph:related -->
@@ -51,35 +53,30 @@ The most common way to setup a CMS with Vercel is by installing an integration t
 Once a CMS has been installed, and a project linked you can pull in environment variables from the CMS to your Vercel project using the [Vercel CLI](/docs/cli/env).
 
 - ### Install the Vercel CLI
-  To pull in environment variables from  to your Vercel project, you need to install the [Vercel CLI](/docs/cli). Run the following command in your terminal:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i vercel
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i vercel
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i vercel
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i vercel
-      ```
-    </Code>
-  </CodeBlock>
+  To pull in environment variables from your CMS to your Vercel project, you need to install the [Vercel CLI](/docs/cli). Run the following command in your terminal:
+
+  **pnpm**
+  ```bash
+  pnpm i -g vercel@latest
+  ```
+  **yarn**
+  ```bash
+  yarn global add vercel@latest
+  ```
+  **npm**
+  ```bash
+  npm i -g vercel@latest
+  ```
+  **bun**
+  ```bash
+  bun add -g vercel@latest
+  ```
 
 - ### Install your CMS integration
-  Navigate to the  and follow the steps to install the integration.
+  Navigate to the CMS integration you want to install into your project, and follow the steps to install the integration.
 
 - ### Pull in environment variables
-  Once you've installed the  integration, you can pull in environment variables from  to your Vercel project. In your terminal, run:
+  Once you've installed the CMS integration, you can pull in environment variables from the CMS to your Vercel project. In your terminal, run:
   ```bash
   vercel env pull
   ```
@@ -130,3 +127,6 @@ This method is generally setup through webhooks or APIs that trigger a deploymen
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

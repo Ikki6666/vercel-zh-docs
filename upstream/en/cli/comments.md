@@ -3,7 +3,7 @@ title: vercel comments
 product: vercel
 url: /docs/cli/comments
 canonical_url: "https://vercel.com/docs/cli/comments"
-last_updated: 2018-10-20
+last_updated: 2026-08-19
 type: reference
 prerequisites:
   - /docs/cli
@@ -12,13 +12,16 @@ related:
   - /docs/vercel-toolbar
   - /docs/comments/using-comments
   - /docs/cli
-summary: Learn about vercel comments on Vercel.
+  - /docs/cli/global-options
+summary: Review and manage Vercel Toolbar comment threads from the terminal with the vercel comments CLI command.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # vercel comments
 
-> **🔒 Permissions Required**: The vercel comments command
+> The vercel comments command is available on all plans
+
+The `vercel comments` command lets you review and manage existing [Vercel Toolbar Comments](/docs/comments) from the terminal. You can list, inspect, reply to, resolve, reopen, and open threads, as well as update or delete their messages. Use the [Vercel Toolbar](/docs/vercel-toolbar) to create new comment threads.
 
 
 <!-- docsgraph:related -->
@@ -26,16 +29,15 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Integrations](https://vercel.com/docs/comments/integrations?from=related) — Learn how Comments integrates with Git providers like GitHub, GitLab, and BitBucket, as well as the Vercel app for Slack
-- [vercel api](https://vercel.com/docs/cli/api?from=related) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
-- [Managing Comments](https://vercel.com/docs/comments/managing-comments?from=related) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
-- [Enabling Comments](https://vercel.com/docs/comments/how-comments-work?from=related) — Learn when and where Comments are available, and how to enable and disable Comments at the account, project, and session
-- [vercel connect](https://vercel.com/docs/cli/connect?from=related) — Learn how to manage Vercel Connect connectors using the vercel connect CLI command.
+- [Manage Vercel Toolbar comments from the CLI](https://vercel.com/changelog/manage-vercel-toolbar-comments-from-the-cli)
+- [vercel api](https://vercel.com/docs/cli/api) — Learn how to make authenticated HTTP requests to the Vercel API using the vercel api CLI command.
+- [Integrations for Comments](https://vercel.com/docs/comments/integrations) — Learn how Comments integrates with Git providers like GitHub, GitLab, and Bitbucket, as well as the Vercel app for Slack
+- [vercel changelog](https://vercel.com/docs/cli/changelog) — Read recent Vercel product updates and search the changelog from your terminal using the Vercel CLI.
+- [vercel logs](https://vercel.com/docs/cli/logs) — View and filter runtime logs or CDN request records for your Vercel project.
+- [vercel list](https://vercel.com/docs/cli/list) — Learn how to list out all recent deployments for the current Vercel Project using the vercel list CLI command.
 
 Full cross-link map for this page: [/docs/cli/comments.graph.md](/docs/cli/comments.graph.md)
 <!-- /docsgraph:related -->
-
-The `vercel comments` command lets you review and manage existing [Vercel Toolbar Comments](/docs/comments) from the terminal. You can list, inspect, reply to, resolve, reopen, and open threads, as well as edit or delete their messages. Use the [Vercel Toolbar](/docs/vercel-toolbar) to create new comment threads.
 
 ## Usage
 
@@ -48,7 +50,7 @@ vercel comments [subcommand]
 
 ## Scope and thread identifiers
 
-The `list` command uses the linked project and filters by the current Git branch when it can infer one. Pass `--project` to select another project. Branch inference applies only when that project matches the current checkout. Use `--branch` or `--all-branches` to set the branch scope explicitly.
+The `list` command uses the linked project and filters by the current Git branch when it can infer one. Pass `--project` to select another project. Branch inference applies only when that project matches the current checkout. Use `--git-branch` or `--all-branches` to set the branch scope explicitly.
 
 Commands that act on a thread accept its ID or full `vercel.com` comment URL. The URL's team is used unless you pass `--scope` or `--project`.
 
@@ -56,22 +58,21 @@ Commands that act on a thread accept its ID or full `vercel.com` comment URL. Th
 
 These options apply across the `vercel comments` command:
 
-| Option                       | Type    | Description                                                                   |
-| ---------------------------- | ------- | ----------------------------------------------------------------------------- |
-| `-p, --project <NAME_OR_ID>` | String  | Select project and team context by project name or ID.                        |
-| `-F, --format <FORMAT>`      | String  | Set the output format to `json`. Available on every subcommand except `open`. |
-| `--json`                     | Boolean | Output JSON. Available on every subcommand except `open`.                     |
+| Option                       | Type    | Description                                               |
+| ---------------------------- | ------- | --------------------------------------------------------- |
+| `-p, --project <NAME_OR_ID>` | String  | Select project and team context by project name or ID.    |
+| `--json`                     | Boolean | Output JSON. Available on every subcommand except `open`. |
 
 ## Commands
 
-### list (ls)
+### list
 
-`vercel comments list` lists unresolved comments by default. Because `list` is the default subcommand, you can omit it. The `ls` alias is also supported.
+`vercel comments list` lists unresolved comments by default. Because `list` is the default subcommand, you can omit it.
 
 ```bash filename="terminal"
 vercel comments
 vercel comments --all-branches --status all
-vercel comments --scope my-team --project my-project --branch main
+vercel comments --scope my-team --project my-project --git-branch main
 ```
 
 *Vercel CLI prints each thread's ID, age, author, page path, excerpt, and reply
@@ -79,23 +80,23 @@ summary.*
 
 #### Options
 
-| Option                | Type    | Default                      | Description                                                                                                                             |
-| --------------------- | ------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `--branch <BRANCH>`   | String  | Current branch when inferred | Filter by a Git branch. Repeat for multiple branches.                                                                                   |
-| `--all-branches`      | Boolean | `false`                      | Include every branch. You can't combine this option with `--branch`.                                                                    |
-| `--status <STATUS>`   | String  | `unresolved`                 | Filter by `unresolved`, `resolved`, or `all`.                                                                                           |
-| `--page <PATH>`       | String  | None                         | Filter by a recorded page path or glob. Repeat for multiple paths. Rewrites can cause the recorded path to differ from the browser URL. |
-| `--author <USER>`     | String  | None                         | Filter by a user ID or `me`. Repeat for multiple authors. `me` requires user authentication, and usernames are not supported.           |
-| `--content-id <ID>`   | String  | None                         | Filter by a content management system (CMS) content ID. Repeat for multiple IDs.                                                        |
-| `--search <TEXT>`     | String  | None                         | Search comment content.                                                                                                                 |
-| `--limit <NUMBER>`    | Number  | `20`                         | Return 1 to 100 threads per page.                                                                                                       |
-| `-N, --next <CURSOR>` | String  | None                         | Show the next page using the cursor from the previous output.                                                                           |
+| Option                  | Type    | Default                      | Description                                                                                                                             |
+| ----------------------- | ------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `--git-branch <BRANCH>` | String  | Current branch when inferred | Filter by a Git branch. Repeat for multiple branches.                                                                                   |
+| `--all-branches`        | Boolean | `false`                      | Include every branch. You can't combine this option with `--git-branch`.                                                                |
+| `--status <STATUS>`     | String  | `unresolved`                 | Filter by `unresolved`, `resolved`, or `all`.                                                                                           |
+| `--page-path <PATH>`    | String  | None                         | Filter by a recorded page path or glob. Repeat for multiple paths. Rewrites can cause the recorded path to differ from the browser URL. |
+| `--author <USER>`       | String  | None                         | Filter by a user ID or `me`. Repeat for multiple authors. `me` requires user authentication, and usernames are not supported.           |
+| `--content <CONTENT>`   | String  | None                         | Filter by a content management system (CMS) content ID. Repeat for multiple IDs.                                                        |
+| `-q, --query <TEXT>`    | String  | None                         | Search comment content.                                                                                                                 |
+| `-n, --limit <NUMBER>`  | Number  | `20`                         | Return 1 to 100 threads per page.                                                                                                       |
+| `--next <CURSOR>`       | String  | None                         | Show the next page using the cursor from the previous output.                                                                           |
 
-When another page is available, text output includes the `--next` command with the next cursor. JSON output returns the cursor as `pagination.nextCursor`.
+When another page is available, text output includes the `--next` command with the next cursor. JSON output returns the cursor as `pagination.next`.
 
-### inspect (get)
+### inspect
 
-`vercel comments inspect` shows every message in a thread and its message ID. Pass the message ID to `edit` or `delete`.
+`vercel comments inspect` shows every message in a thread and its message ID. Pass the message ID to `update` or `delete`.
 
 ```bash filename="terminal"
 vercel comments inspect [thread]
@@ -117,7 +118,7 @@ vercel comments open <thread>
 `vercel comments reply` adds a Markdown reply to an existing thread. Provide the reply with `--message`, `--file`, or standard input.
 
 ```bash filename="terminal"
-vercel comments reply <thread> -m 'Fixed in **main**.'
+vercel comments reply <thread> --message 'Fixed in **main**.'
 vercel comments reply <thread> --file ./reply.md
 git log -1 --format=%s | vercel comments reply <thread>
 ```
@@ -127,11 +128,11 @@ returns the created message object.*
 
 #### Options
 
-| Option                 | Type   | Description                                                                                                    |
-| ---------------------- | ------ | -------------------------------------------------------------------------------------------------------------- |
-| `-m, --message <TEXT>` | String | Add Markdown message content.                                                                                  |
-| `--file <PATH>`        | String | Read Markdown content from a file. Use `-` for standard input. You can't combine this option with `--message`. |
-| `--attach <URL>`       | String | Attach a file by HTTPS URL. Repeat to attach up to 10 files. Local file uploads are not supported.             |
+| Option             | Type   | Description                                                                                                    |
+| ------------------ | ------ | -------------------------------------------------------------------------------------------------------------- |
+| `--message <TEXT>` | String | Add Markdown message content.                                                                                  |
+| `--file <PATH>`    | String | Read Markdown content from a file. Use `-` for standard input. You can't combine this option with `--message`. |
+| `--attach <URL>`   | String | Attach a file by HTTPS URL. Repeat to attach up to 10 files. Local file uploads are not supported.             |
 
 When an interactive terminal receives no content options or piped input, Vercel CLI prompts for a one-line message. Attachments can form a reply without message text.
 
@@ -144,7 +145,7 @@ When an interactive terminal receives no content options or piped input, Vercel 
 vercel comments resolve <thread>
 
 # Add a closing reply, then resolve the thread
-vercel comments resolve <thread> -m 'Fixed in the latest deployment.'
+vercel comments resolve <thread> --message 'Fixed in the latest deployment.'
 
 # Reopen multiple threads without a confirmation prompt
 vercel comments reopen <thread-1> <thread-2> --yes
@@ -154,23 +155,23 @@ For multiple threads, Vercel CLI asks for confirmation in an interactive termina
 
 #### Options
 
-| Option                 | Type    | Applies to | Description                                                                                     |
-| ---------------------- | ------- | ---------- | ----------------------------------------------------------------------------------------------- |
-| `-m, --message <TEXT>` | String  | `resolve`  | Add a closing reply before resolving one thread. This option does not support multiple threads. |
-| `-y, --yes`            | Boolean | Both       | Skip the confirmation prompt for multiple threads.                                              |
+| Option             | Type    | Applies to | Description                                                                                     |
+| ------------------ | ------- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `--message <TEXT>` | String  | `resolve`  | Add a closing reply before resolving one thread. This option does not support multiple threads. |
+| `-y, --yes`        | Boolean | Both       | Skip the confirmation prompt for multiple threads.                                              |
 
 Bulk operations continue after an individual thread fails and exit with a nonzero status if any operation fails.
 
-### edit
+### update
 
-`vercel comments edit` replaces the Markdown content of a message. Run `vercel comments inspect <thread>` to find message IDs.
+`vercel comments update` replaces the Markdown content of a message. Run `vercel comments inspect <thread>` to find message IDs.
 
 ```bash filename="terminal"
-vercel comments edit <thread> <message-id> -m 'Updated wording'
-vercel comments edit <thread> <message-id> --file ./updated-reply.md
+vercel comments update <thread> <message-id> --message 'Updated wording'
+vercel comments update <thread> <message-id> --file ./updated-reply.md
 ```
 
-Pass the new Markdown content with `--message` or `--file`. You can't combine these options. Editing message content preserves existing attachments.
+Pass the new Markdown content with `--message` or `--file`. You can't combine these options. Updating message content preserves existing attachments.
 
 ### delete
 
@@ -185,11 +186,11 @@ Deletion cannot be undone. The command asks for confirmation by default. Pass `-
 
 ## JSON output
 
-Use `--json` or `--format json` with any subcommand except `open`. JSON output does not prompt for missing input or confirmation.
+Use `--json` with any subcommand except `open`. JSON output does not prompt for missing input or confirmation.
 
 ```bash filename="terminal"
 vercel comments --json | jq '.threads[].id'
-vercel comments inspect <thread> --format json
+vercel comments inspect <thread> --json
 ```
 
 JSON responses use the following shapes:
@@ -198,7 +199,7 @@ JSON responses use the following shapes:
 | -------------------------------------------- | ----------------------------------------------------------------------- |
 | `list`                                       | An object with `scope`, `filters`, `pagination`, and `threads`.         |
 | `inspect`                                    | The thread object with the complete `messages` array.                   |
-| `reply` and `edit`                           | The created or updated message object.                                  |
+| `reply` and `update`                         | The created or updated message object.                                  |
 | `resolve` and `reopen` with one thread       | An object with `thread` and `replied`.                                  |
 | `resolve` and `reopen` with multiple threads | An object with a `results` array containing the result for each thread. |
 | `delete`                                     | An object containing the deleted message `id`.                          |
@@ -211,7 +212,27 @@ Validation and API errors in JSON mode return an `error` object with `code` and 
 - [Using Comments](/docs/comments/using-comments)
 - [Vercel CLI overview](/docs/cli)
 
+## Global Options
+
+The following [global options](/docs/cli/global-options) can be passed when using the `vercel comments` command:
+
+- [`--cwd`](/docs/cli/global-options#current-working-directory)
+- [`--debug`](/docs/cli/global-options#debug)
+- [`--global-config`](/docs/cli/global-options#global-config)
+- [`--help`](/docs/cli/global-options#help)
+- [`--local-config`](/docs/cli/global-options#local-config)
+- [`--no-color`](/docs/cli/global-options#no-color)
+- [`--non-interactive`](/docs/cli/global-options#non-interactive)
+- [`--scope`](/docs/cli/global-options#scope)
+- [`--token`](/docs/cli/global-options#token)
+- [`--version`](/docs/cli/global-options#version)
+
+For more information on global options and their usage, refer to the [options section](/docs/cli/global-options).
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: Project-Level Routing Rules
 product: vercel
 url: /docs/routing/project-routing-rules
 canonical_url: "https://vercel.com/docs/routing/project-routing-rules"
-last_updated: 2026-04-02
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/routing
@@ -26,12 +26,14 @@ Project-level routing rules let you add redirects, rewrites, response headers, a
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
-- [Stage routing rules](https://vercel.com/docs/rest-api/project-routes/stage-routing-rules?from=related)
-- [Add a routing rule](https://vercel.com/docs/rest-api/project-routes/add-a-routing-rule?from=related)
-- [vercel routes](https://vercel.com/docs/cli/routes?from=related) — Learn how to manage project-level routing rules using the vercel routes CLI command.
-- [Routing Rules](https://vercel.com/docs/ai-gateway/models-and-providers/routing-rules?from=related) — Define team-wide rules that rewrite requests from one model to another or deny specific models in AI Gateway.
-- [Edit a routing rule](https://vercel.com/docs/rest-api/project-routes/edit-a-routing-rule?from=related)
+- [Python projects now support routing rules](https://vercel.com/changelog/python-projects-now-support-routing-rules)
+- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
+- [Vercel's CDN now supports updating routing rules without a new deployment](https://vercel.com/changelog/vercels-cdn-now-supports-updating-routing-rules-without-a-new-deployment)
+- [Stage routing rules](https://vercel.com/docs/rest-api/project-routes/stage-routing-rules) — PUT /v1/projects/{projectId}/routes — Stage routing rules for a project. Set \\`overwrite\\` to true to replace all existi
+- [Add a routing rule](https://vercel.com/docs/rest-api/project-routes/add-a-routing-rule) — POST /v1/projects/{projectId}/routes — Add a single routing rule to a project at a specified position. Defaults to the e
+- [Edit a routing rule](https://vercel.com/docs/rest-api/project-routes/edit-a-routing-rule) — PATCH /v1/projects/{projectId}/routes/{routeId} — Replace a routing rule identified by its ID, or restore it from the cu
+- [vercel routes](https://vercel.com/docs/cli/routes) — Learn how to manage project-level routing rules using the vercel routes CLI command.
+- [Delete routing rules](https://vercel.com/docs/rest-api/project-routes/delete-routing-rules) — DELETE /v1/projects/{projectId}/routes — Delete one or more routing rules from a project by ID. Stages a new version wit
 
 Full cross-link map for this page: [/docs/routing/project-routing-rules.graph.md](/docs/routing/project-routing-rules.graph.md)
 <!-- /docsgraph:related -->
@@ -63,6 +65,19 @@ Every rule matches against the request path. You can choose from three syntax mo
 | **Exact match**  | Matches a specific path                      | `/blog`                      |
 | **Path pattern** | Express-style `:param` syntax with wildcards | `/blog/:slug`, `/api/:path*` |
 | **Regex**        | Full regular expression                      | `^/posts/[0-9]+$`            |
+
+### Case sensitivity
+
+By default, a rule matches paths with the same case sensitivity as the deployment that serves the request:
+
+| Deployment configuration                                    | How rules match  | Example with the path `^/about(.*)`                  |
+| ----------------------------------------------------------- | ---------------- | ---------------------------------------------------- |
+| `vercel.json` defines `rewrites`, `redirects`, or `headers` | Case-sensitive   | Matches `/about` and `/about/team`, but not `/About` |
+| None of those properties                                    | Case-insensitive | Also matches `/About` and `/ABOUT/team`              |
+
+To make a rule always match case-sensitively, turn on **Case Sensitive** under the path condition. With the API, set `caseSensitive: true` on the rule's `route`.
+
+Turn on **Case Sensitive** for any redirect that only changes the letter case of a path, such as `/About` to `/about`. If the rule matches case-insensitively, the destination matches the rule again, and the redirect loops.
 
 ### Additional conditions
 
@@ -138,3 +153,6 @@ A few other `vercel.json` fields are also deployment-only: `locale` for i18n rou
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

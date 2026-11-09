@@ -1,24 +1,24 @@
 ---
-title: Provider Options
+title: AI Gateway Provider Routing and Fallbacks
 product: vercel
 url: /docs/ai-gateway/models-and-providers/provider-options
 canonical_url: "https://vercel.com/docs/ai-gateway/models-and-providers/provider-options"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-10-02
+type: reference
 prerequisites:
   - /docs/ai-gateway/models-and-providers
   - /docs/ai-gateway
 related:
+  - /docs/ai-gateway/security-and-compliance/zdr
+  - /docs/ai-gateway/security-and-compliance/disallow-prompt-training
+  - /docs/ai-gateway/security-and-compliance/regional-inference
+  - /docs/ai-gateway/security-and-compliance/provider-allowlist
   - /docs/ai-gateway/models-and-providers/provider-filtering-and-ordering
-  - /docs/ai-gateway/models-and-providers/automatic-caching
-  - /docs/ai-gateway/sdks-and-apis/responses
-  - /docs/ai-gateway/models-and-providers/provider-timeouts
-  - /docs/ai-gateway/models-and-providers/model-fallbacks
-summary: Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
+summary: Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Provider Options
+# AI Gateway Provider Routing and Fallbacks
 
 AI Gateway can route your AI model requests across multiple AI providers. Each provider offers different models, pricing, and performance characteristics. By default, Vercel AI Gateway dynamically chooses the default providers to give you the best experience based on a combination of recent uptime and latency.
 
@@ -28,21 +28,23 @@ AI Gateway can route your AI model requests across multiple AI providers. Each p
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
-- [Provider Options](https://ai-sdk.dev/docs/foundations/provider-options?from=related)
-- [Choosing a Provider](https://ai-sdk.dev/docs/getting-started/choosing-a-provider?from=related)
-- [Provider & Model Management](https://ai-sdk.dev/docs/ai-sdk-core/provider-management?from=related)
-- [AI Gateway](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway?from=related)
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/advanced?from=related) — Configure provider routing, fallbacks, and restrictions using the OpenResponses API.
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced?from=related) — Configure provider options, model fallbacks, BYOK credentials, and prompt caching.
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced?from=related) — Advanced Anthropic API features including web search, provider timeouts, and automatic caching.
-- [Hermes](https://vercel.com/docs/ai-gateway/coding-agents/hermes?from=related) — Use the Hermes agent with the AI Gateway.
-- [OpenCode](https://vercel.com/docs/ai-gateway/coding-agents/opencode?from=related) — Use OpenCode with the AI Gateway.
+- [Alibaba](https://ai-sdk.dev/providers/ai-sdk-providers/alibaba) — Learn how to use Alibaba with AI Gateway and the direct provider.
+- [Black Forest Labs](https://ai-sdk.dev/providers/ai-sdk-providers/black-forest-labs) — Learn how to use Black Forest Labs with AI Gateway and the direct provider.
+- [ByteDance](https://ai-sdk.dev/providers/ai-sdk-providers/bytedance) — Learn how to use ByteDance with AI Gateway and the direct provider.
+- [Cohere](https://ai-sdk.dev/providers/ai-sdk-providers/cohere) — Learn how to use Cohere with AI Gateway and the direct provider.
+- [Fal](https://ai-sdk.dev/providers/ai-sdk-providers/fal) — Learn how to use Fal with AI Gateway and the direct provider.
+- [ Routing rules now available on AI Gateway](https://vercel.com/changelog/ai-gateway-routing-rules)
+- [Kimi K3.1 Pro now has more ZDR providers on AI Gateway](https://vercel.com/changelog/kimi-k3-1-pro-now-has-more-zdr-providers-on-ai-gateway)
+- [MiniMax M3.1 Flash now available on AI Gateway for free](https://vercel.com/changelog/minimax-m3-1-flash-now-available-on-ai-gateway-for-free)
+- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
+- [Model fallbacks now available in Vercel AI Gateway](https://vercel.com/changelog/model-fallbacks-now-available-in-vercel-ai-gateway)
+- [Hermes with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/hermes) — Connect Hermes to AI Gateway with the Vercel CLI or manual provider configuration. Set your API key, discover models, an
+- [AI Gateway Custom Reporting API](https://vercel.com/docs/ai-gateway/observability-and-spend/custom-reporting) — Query AI Gateway usage data grouped by model, user, tag, provider, or credential type using the Custom Reporting API.
 
 Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/provider-options.graph.md](/docs/ai-gateway/models-and-providers/provider-options.graph.md)
 <!-- /docsgraph:related -->
 
-With the Gateway Provider Options however, you have control over the routing order and fallback behavior of the models.
+Use `providerOptions.gateway` to control provider order and fallback behavior.
 
 > **💡 Note:** If you want to customize individual AI model provider settings rather than
 > general AI Gateway behavior, please refer to the model-specific provider
@@ -51,16 +53,19 @@ With the Gateway Provider Options however, you have control over the routing ord
 
 ## Provider filtering, ordering, and sorting
 
-You can use `order`, `only`, and `sort` in `providerOptions.gateway` to control which providers handle your requests, in what order, and how they are ranked.
+Default routing needs no configuration. AI Gateway orders providers by each model's default priority, adjusted for recent provider health, and fails over to other providers serving the same model when one is unavailable.
+
+To prefer specific providers without giving up that failover, set `order` in `providerOptions.gateway`. AI Gateway tries the listed providers first and can still fall back to others:
 
 ```typescript
 providerOptions: {
   gateway: {
     order: ['bedrock', 'anthropic'], // Try Bedrock first, then Anthropic
-    only: ['bedrock', 'anthropic'],  // Only allow these two providers
   },
 },
 ```
+
+`only` is a hard filter: AI Gateway routes only to the listed providers and never fails over outside the list. If none of the listed providers serve the model, or they are all unavailable or rate limited, the request fails instead of falling back. If your requirement is compliance rather than a specific provider, [zero data retention](/docs/ai-gateway/security-and-compliance/zdr), [disallow prompt training](/docs/ai-gateway/security-and-compliance/disallow-prompt-training), and [regional inference](/docs/ai-gateway/security-and-compliance/regional-inference) express it directly while keeping every qualifying provider eligible. The team [provider allowlist](/docs/ai-gateway/security-and-compliance/provider-allowlist) works like a team-wide `only`.
 
 You can also use `sort` to rank providers by a performance or cost metric. The gateway sorts providers by the chosen metric and tries them in that order:
 
@@ -95,13 +100,33 @@ Clients on the [Responses API](/docs/ai-gateway/sdks-and-apis/responses) can als
 
 These fields belong at the top level of the Responses API request, not inside `providerOptions.gateway`.
 
+## Session affinity
+
+AI Gateway keeps a conversation on the provider that holds its prompt cache. Two options in `providerOptions.gateway` control this:
+
+- `sessionId` groups related requests into one session. Use a stable, opaque value for each conversation or agent run.
+- `sessionAffinity` turns the behavior on or off. The default is `true`. Set it to `false` to stop AI Gateway from pinning and reordering providers for a request.
+
+```typescript
+providerOptions: {
+  gateway: {
+    sessionId: 'session_123',
+    sessionAffinity: true,
+  },
+},
+```
+
+You can also send the session ID in the `x-session-id` header. For the full lookup order, how AI Gateway fingerprints requests that have no session ID, and how it keeps caches warm across models, see [Session affinity](/docs/ai-gateway/models-and-providers/session-affinity).
+
 ## Provider timeouts
 
 You can set per-provider timeouts to trigger fast failover when a provider is slow to respond. See the dedicated [Provider Timeouts](/docs/ai-gateway/models-and-providers/provider-timeouts) documentation.
 
 ## Model fallbacks
 
-For model-level failover strategies that try backup models when your primary model fails or is unavailable, see the dedicated [Model Fallbacks](/docs/ai-gateway/models-and-providers/model-fallbacks) documentation.
+String model fallbacks try backup models when the primary model fails or is unavailable. See [Model Fallbacks](/docs/ai-gateway/models-and-providers/model-fallbacks) for failure-based routing.
+
+Decision requests can also add one conditional object to `providerOptions.gateway.models`. It reruns a successful decision when a confidence, Boolean probability, or compound condition matches. AI Gateway rejects a conditional object with a `400` error on any other request type, and when the conditional object names the primary model itself. See [Decision Fallbacks](/docs/ai-gateway/models-and-providers/decision-fallbacks) for the complete wire contract and provider-option behavior.
 
 ## Advanced configuration
 
@@ -109,35 +134,305 @@ For model-level failover strategies that try backup models when your primary mod
 
 You can combine AI Gateway provider options with provider-specific options. This allows you to control both the routing behavior and provider-specific settings in the same request:
 
-```typescript filename="app/api/chat/route.ts"
-import { streamText } from 'ai';
+These examples use AI SDK 7 and the AI SDK for Python beta. Set `AI_GATEWAY_API_KEY` before running them. See [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for setup, request fields, and response handling.
 
-export async function POST(request: Request) {
-  const { prompt } = await request.json();
+#### AI SDK
 
-  const result = streamText({
-    model: 'anthropic/claude-opus-5',
-    prompt,
-    providerOptions: {
-      anthropic: {
-        thinkingBudget: 0.001,
-      },
-      gateway: {
-        order: ['vertex'],
+#### TypeScript
+
+See the [AI SDK Gateway provider-options reference](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway#gateway-provider-options) for SDK configuration and usage.
+
+```typescript filename="provider-options.ts"
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: 'anthropic/claude-sonnet-5',
+  prompt: 'Explain quantum computing in two sentences.',
+  providerOptions: {
+    gateway: {
+      order: ['anthropic', 'bedrock'],
+    },
+    anthropic: {
+      thinking: {
+        type: 'adaptive',
       },
     },
-  });
+  },
+});
 
-  return result.toUIMessageStreamResponse();
+console.log(text);
+```
+
+#### Python (beta)
+
+```python filename="provider-options_ai.py"
+import asyncio
+import ai
+
+async def main():
+    model = ai.get_model("anthropic/claude-sonnet-5")
+    messages = [ai.user_message("Explain quantum computing in two sentences.")]
+    params = ai.InferenceRequestParams(
+        extra_body={"providerOptions": {"gateway": {"order": ["anthropic", "bedrock"]}, "anthropic": {"thinking": {"type": "adaptive"}}}}
+    )
+    async with ai.stream(model, messages, params=params) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
+
+asyncio.run(main())
+```
+
+#### Chat Completions
+
+#### TypeScript
+
+```typescript filename="provider-options-chat.ts"
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.chat.completions.create({
+  model: 'anthropic/claude-sonnet-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  // AI Gateway extension fields are not included in the upstream SDK types.
+  ...{
+    providerOptions: {
+      gateway: {
+        order: ['anthropic', 'bedrock'],
+      },
+      anthropic: {
+        thinking: {
+          type: 'adaptive',
+        },
+      },
+    },
+  },
+});
+
+console.log(response.choices[0]?.message.content);
+```
+
+#### Python
+
+```python filename="provider-options_chat.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.chat.completions.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    extra_body={"providerOptions": {"gateway": {"order": ["anthropic", "bedrock"]}, "anthropic": {"thinking": {"type": "adaptive"}}}},
+)
+
+print(response.choices[0].message.content)
+```
+
+#### cURL
+
+```bash filename="provider-options-chat.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "providerOptions": {
+    "anthropic": {"thinking": {"type": "adaptive"}},
+    "gateway": {
+      "order": [
+        "anthropic",
+        "bedrock"
+      ]
+    }
+  }
+}'
+```
+
+#### Messages API
+
+#### TypeScript
+
+```typescript filename="provider-options-messages.ts"
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh',
+});
+
+const response = await client.messages.create({
+  model: 'anthropic/claude-sonnet-5',
+  messages: [
+    {
+      role: 'user',
+      content: 'Explain quantum computing in two sentences.',
+    },
+  ],
+  max_tokens: 1024,
+  ...{
+    providerOptions: {
+      gateway: {
+        order: ['anthropic', 'bedrock'],
+      },
+      anthropic: {
+        thinking: {
+          type: 'adaptive',
+        },
+      },
+    },
+  },
+});
+
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
 }
 ```
 
-In this example:
+#### Python
 
-- We're using an Anthropic model (e.g. Claude 4 Sonnet) but accessing it through Vertex AI
-- The Anthropic-specific options still apply to the model:
-  - `thinkingBudget` sets a cost limit of $0.001 per request for the Claude model
-- You can read more about provider-specific options in the [AI SDK documentation](https://ai-sdk.dev/docs/foundations/prompts#provider-options)
+```python filename="provider-options_messages.py"
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh",
+)
+
+response = client.messages.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain quantum computing in two sentences."}],
+    max_tokens=1024,
+    extra_body={"providerOptions": {"gateway": {"order": ["anthropic", "bedrock"]}, "anthropic": {"thinking": {"type": "adaptive"}}}},
+)
+
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="provider-options-messages.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Explain quantum computing in two sentences."
+    }
+  ],
+  "max_tokens": 1024,
+  "providerOptions": {
+    "anthropic": {"thinking": {"type": "adaptive"}},
+    "gateway": {
+      "order": [
+        "anthropic",
+        "bedrock"
+      ]
+    }
+  }
+}'
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="provider-options-responses.ts"
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.responses.create({
+  model: 'anthropic/claude-sonnet-5',
+  input: 'Explain quantum computing in two sentences.',
+  ...{
+    providerOptions: {
+      gateway: {
+        order: ['anthropic', 'bedrock'],
+      },
+      anthropic: {
+        thinking: {
+          type: 'adaptive',
+        },
+      },
+    },
+  },
+});
+
+console.log(response.output_text);
+```
+
+#### Python
+
+```python filename="provider-options_responses.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.responses.create(
+    model="anthropic/claude-sonnet-5",
+    input="Explain quantum computing in two sentences.",
+    extra_body={"providerOptions": {"gateway": {"order": ["anthropic", "bedrock"]}, "anthropic": {"thinking": {"type": "adaptive"}}}},
+)
+
+print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="provider-options-responses.sh"
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-sonnet-5",
+  "input": "Explain quantum computing in two sentences.",
+  "providerOptions": {
+    "anthropic": {"thinking": {"type": "adaptive"}},
+    "gateway": {
+      "order": [
+        "anthropic",
+        "bedrock"
+      ]
+    }
+  }
+}'
+```
+
+The `gateway.order` option selects the provider sequence. The `anthropic.thinking` option requests adaptive thinking from Claude Sonnet 5. See [Anthropic reasoning](/docs/ai-gateway/models-and-providers/reasoning/anthropic) for supported models and [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for extension fields.
 
 ### Request-scoped BYOK
 
@@ -171,7 +466,7 @@ For detailed information about credential structures, multiple credentials, and 
 
 For models that support reasoning (also known as "thinking"), you can use
 `providerOptions` to configure reasoning behavior. The example below shows
-how to control the computational effort and summary detail level when using OpenAI's `gpt-oss-120b` model.
+how to request high reasoning effort and a detailed summary for OpenAI's `gpt-oss-120b` model. Providers can differ in which options they honor; setting `reasoningSummary` doesn't guarantee a summary. See [OpenAI reasoning](/docs/ai-gateway/models-and-providers/reasoning/openai) for model and provider differences.
 
 For more details on reasoning support across different models and providers, see the [AI SDK providers documentation](https://ai-sdk.dev/providers/ai-sdk-providers), including [OpenAI](https://ai-sdk.dev/providers/ai-sdk-providers/openai#reasoning), [DeepSeek](https://ai-sdk.dev/providers/ai-sdk-providers/deepseek#reasoning), and [Anthropic](https://ai-sdk.dev/providers/ai-sdk-providers/anthropic#reasoning).
 
@@ -196,12 +491,12 @@ export async function POST(request: Request) {
 }
 ```
 
-**Note:** For `openai/gpt-5.6-sol` models, you must set both `reasoningEffort` and `reasoningSummary` in `providerOptions` to receive reasoning output.
+For `openai/gpt-6-astra`, enable reasoning with a non-`none` effort and request a summary with `reasoningSummary`. Supported effort values and summary formats depend on the model. See [OpenAI reasoning](/docs/ai-gateway/models-and-providers/reasoning/openai) for model-specific options.
 
 ```typescript
 providerOptions: {
   openai: {
-    reasoningEffort: 'high', // or 'minimal', 'low', 'medium', 'none'
+    reasoningEffort: 'high', // or 'low', 'medium', 'xhigh', 'max'
     reasoningSummary: 'detailed', // or 'auto', 'concise'
   },
 }
@@ -214,11 +509,500 @@ in the [**Model List**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway
 the [**AI Gateway**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) section in your Vercel dashboard sidebar
 or in the public [models page](/ai-gateway/models).
 
+Slug
+
+Name
+
+Website
+
+alibaba
+
+Alibaba Cloud
+
+alibabacloud.com
+
+anthropic
+
+Anthropic
+
+anthropic.com
+
+azure
+
+Azure
+
+ai.azure.com
+
+baseten
+
+Baseten
+
+baseten.co
+
+bedrock
+
+Bedrock
+
+aws.amazon.com
+
+bfl
+
+Black Forest Labs
+
+bfl.ai
+
+boundless
+
+Boundless
+
+boundless.network
+
+browserbase
+
+Browserbase
+
+browserbase.com
+
+bytedance
+
+ByteDance
+
+byteplus.com
+
+callstack
+
+Callstack
+
+apex.callstack.com
+
+cerebras
+
+Cerebras
+
+cerebras.ai
+
+claudeaws
+
+Claude Platform on AWS
+
+aws.amazon.com
+
+cohere
+
+Cohere
+
+cohere.com
+
+crusoe
+
+Crusoe
+
+crusoe.ai
+
+deepinfra
+
+DeepInfra
+
+deepinfra.com
+
+deepseek
+
+DeepSeek
+
+deepseek.com
+
+digitalocean
+
+DigitalOcean
+
+digitalocean.com
+
+elevenlabs
+
+ElevenLabs
+
+elevenlabs.io
+
+elorian
+
+Elorian
+
+elorian.ai
+
+exa
+
+Exa
+
+exa.ai
+
+fireworks
+
+Fireworks
+
+fireworks.ai
+
+fish-audio
+
+Fish Audio
+
+fish.audio
+
+friendli
+
+FriendliAI
+
+friendli.ai
+
+gmicloud
+
+GMICloud
+
+gmicloud.ai
+
+google
+
+Google
+
+ai.google.dev
+
+groq
+
+Groq
+
+groq.com
+
+heygen
+
+HeyGen
+
+heygen.com
+
+humansand
+
+Humans&
+
+humansand.ai
+
+inception
+
+Inception
+
+inceptionlabs.ai
+
+inceptron
+
+Inceptron
+
+inceptron.io
+
+inference-net
+
+Inference.net
+
+inference.net
+
+interfaze
+
+Interfaze
+
+interfaze.ai
+
+klingai
+
+Kling AI
+
+klingai.com
+
+liquid
+
+Liquid AI
+
+liquid.ai
+
+meituan
+
+Meituan LongCat
+
+longcat.ai
+
+meta
+
+Meta
+
+meta.ai
+
+minimax
+
+MiniMax
+
+minimax.io
+
+mistral
+
+Mistral
+
+mistral.ai
+
+mixedbread
+
+Mixedbread
+
+mixedbread.com
+
+modal
+
+Modal
+
+modal.com
+
+moonshotai
+
+Moonshot AI
+
+moonshot.ai
+
+morph
+
+Morph
+
+morphllm.com
+
+nebius
+
+Nebius
+
+nebius.com
+
+novita
+
+Novita AI
+
+novita.ai
+
+nvidia
+
+NVIDIA
+
+build.nvidia.com
+
+openai
+
+OpenAI
+
+openai.com
+
+parallel
+
+Parallel AI
+
+parallel.ai
+
+parasail
+
+Parasail
+
+parasail.io
+
+pareto
+
+Pareto Inference
+
+paretoinference.com
+
+particle
+
+Particle.AI
+
+particle.ai
+
+perplexity
+
+Perplexity
+
+perplexity.ai
+
+poolside
+
+Poolside
+
+poolside.ai
+
+prodia
+
+Prodia
+
+prodia.com
+
+quiverai
+
+QuiverAI
+
+quiver.ai
+
+recraft
+
+Recraft
+
+recraft.ai
+
+reflection
+
+Reflection
+
+reflection.ai
+
+relace
+
+Relace
+
+relace.ai
+
+runinfra
+
+RunInfra
+
+runinfra.ai
+
+runware
+
+Runware
+
+runware.ai
+
+sail-research
+
+Sail Research
+
+sailresearch.com
+
+sakana
+
+Sakana AI
+
+sakana.ai
+
+scaledown
+
+ScaleDown
+
+scaledown.ai
+
+stealth
+
+Stealth
+
+vercel.com
+
+stepfun
+
+StepFun
+
+platform.stepfun.com
+
+streamlake
+
+StreamLake
+
+streamlake.ai
+
+subconscious
+
+Subconscious
+
+subconscious.dev
+
+tako
+
+Tako
+
+tako.com
+
+telnyx
+
+Telnyx
+
+telnyx.com
+
+tencent
+
+Tencent Cloud
+
+tencentcloud.com
+
+thinkingmachines
+
+Thinking Machines
+
+thinkingmachines.ai
+
+togetherai
+
+Together AI
+
+together.ai
+
+topaz
+
+Topaz Labs
+
+topazlabs.com
+
+typesafe-ai
+
+TypeSafe AI
+
+typesafe.ai
+
+vertex
+
+Google Vertex AI
+
+cloud.google.com
+
+voyage
+
+Voyage AI by MongoDB
+
+voyageai.com
+
+wafer
+
+Wafer
+
+wafer.ai
+
+xai
+
+xAI
+
+x.ai
+
+xiaomi
+
+Xiaomi
+
+mimo.xiaomi.com
+
+zai
+
+Z.AI
+
+z.ai
+
+Vercel Token Pass models are served through the `token-pass` provider. Token Pass currently serves its models through Wafer and follows Wafer's terms and conditions.
+
 > **💡 Note:** Provider availability may vary by model. Some models may only be available
 > through specific providers or may have different capabilities depending on the
 > provider used.
+
+## Provider options in virtual models
+
+A [virtual model](/docs/ai-gateway/models-and-providers/virtual-models) can pin provider options for all of its traffic. The virtual model's options for a provider merge with the request's, and the virtual model wins when both set the same key.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: Working with Checks
 product: vercel
 url: /docs/checks
 canonical_url: "https://vercel.com/docs/checks"
-last_updated: 2026-06-16
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   []
@@ -27,11 +27,13 @@ Checks are tests and assertions created and run after every successful deploymen
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
-- [Create a check](https://vercel.com/docs/rest-api/checks-v2/create-a-check?from=related)
-- [Integration Approval Checklist](https://vercel.com/docs/integrations/create-integration/approval-checklist?from=related) — Review this checklist before submitting your native or connectable account integration for approval on the Vercel Market
-- [Get a check](https://vercel.com/docs/rest-api/checks-v2/get-a-check?from=related)
-- [Create a check run](https://vercel.com/docs/rest-api/checks-v2/create-a-check-run?from=related)
+- [Checks API support added for Marketplace integration providers](https://vercel.com/changelog/checks-api-support-added-for-marketplace-integration-providers)
+- [Checkly Integration and Checks API now generally available](https://vercel.com/changelog/checkly-integration-and-checks-api-now-generally-available)
+- [Deployment Checks](https://vercel.com/docs/deployment-checks) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
+- [Create a check](https://vercel.com/docs/rest-api/checks-v2/create-a-check) — POST /v2/projects/{projectIdOrName}/checks — Creates a new check for a project.
+- [Get a check](https://vercel.com/docs/rest-api/checks-v2/get-a-check) — GET /v2/projects/{projectIdOrName}/checks/{checkId} — Return a detailed response for a single check.
+- [List all checks for a project](https://vercel.com/docs/rest-api/checks-v2/list-all-checks-for-a-project) — GET /v2/projects/{projectIdOrName}/checks — List all checks for a project, optionally filtered by target.
+- [Integration Approval Checklist](https://vercel.com/docs/integrations/create-integration/approval-checklist) — Review this checklist before submitting your native or connectable account integration for approval on the Vercel Market
 
 Full cross-link map for this page: [/docs/checks.graph.md](/docs/checks.graph.md)
 <!-- /docsgraph:related -->
@@ -49,7 +51,7 @@ Most testing and CI/CD flows occur in synthetic environments. This leads to fals
 
 ## Checks lifecycle
 
-![Image](https://vercel.com/docs-assets/static/docs/integrations/checks/checks-overview-light.png)
+![The depiction of how the Checks lifecycle works.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/integrations/checks/checks-overview-light.png)
 
 The diagram shows the complete lifecycle of how a check works:
 
@@ -82,3 +84,6 @@ Once you have [created your integration](/docs/integrations/create-integration/m
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

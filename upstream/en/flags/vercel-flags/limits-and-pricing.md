@@ -3,14 +3,14 @@ title: Limits and Pricing for Vercel Flags
 product: vercel
 url: /docs/flags/vercel-flags/limits-and-pricing
 canonical_url: "https://vercel.com/docs/flags/vercel-flags/limits-and-pricing"
-last_updated: 2026-04-30
+last_updated: 2026-08-26
 type: reference
 prerequisites:
   - /docs/flags/vercel-flags
   - /docs/flags
 related:
   []
-summary: Learn about limits and pricing for Vercel Flags.
+summary: Review Vercel Flags request pricing and limits for flags, segments, configuration size, and connected projects.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -18,22 +18,40 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Pricing
 
+### Flag requests
+
+A flag request is an application request that reads a source project's flag configuration. When you use the same Flags client, evaluating multiple flags from that source within one application request counts as one flag request. Repeated evaluations of the same flag within a request do not count.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Pricing](https://vercel.com/docs/flags/flags-explorer/limits-and-pricing?from=related) — Learn about pricing for Flags Explorer.
-- [Limits & Pricing](https://vercel.com/docs/container-registry/limits-and-pricing?from=related) — Storage pricing, size limits, plan limits, and compatibility limits for Vercel Container Registry.
-- [Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines?from=related) — Learn how Vercel applies fair use guidelines across plans and usage-based resources.
-- [Feature Flag](https://vercel.com/docs/flags/vercel-flags/dashboard/feature-flag?from=related) — Learn how to configure individual feature flags in the Vercel Dashboard.
-- [Create a flag](https://vercel.com/docs/rest-api/feature-flags/create-a-flag?from=related)
+- [Vercel Flags is now in public beta](https://vercel.com/changelog/vercel-flags-is-now-in-public-beta)
+- [Pricing for Flags Explorer](https://vercel.com/docs/flags/flags-explorer/limits-and-pricing) — Compare monthly Flags Explorer override limits and the price of unlimited overrides across Vercel plans.
+- [Feature Flag Configuration](https://vercel.com/docs/flags/vercel-flags/dashboard/feature-flag) — Learn how to configure individual feature flags in the Vercel Dashboard.
+- [Managing flags in the dashboard](https://vercel.com/docs/flags/vercel-flags/dashboard) — Learn how to manage your feature flags using the Vercel Dashboard.
+- [List segments](https://vercel.com/docs/rest-api/feature-flags/list-segments) — GET /v1/projects/{projectIdOrName}/feature-flags/segments — List all feature flag segments for a project.
+- [Get project flag settings](https://vercel.com/docs/rest-api/feature-flags/get-project-flag-settings) — GET /v1/projects/{projectIdOrName}/feature-flags/settings — Retrieve feature flag settings for a project.
 
 Full cross-link map for this page: [/docs/flags/vercel-flags/limits-and-pricing.graph.md](/docs/flags/vercel-flags/limits-and-pricing.graph.md)
 <!-- /docsgraph:related -->
 
-### Flag requests
+Reads from different source projects count separately. Reads of cached flag configuration also count.
+
+Reuse one Flags client per source project. Separate client instances track reads separately, even within the same application request.
+
+A page view can make several application requests. Each application request that reads flag configuration counts separately.
+
+These examples use one shared Flags client per source project.
+
+| Evaluations within one application request | Flag requests |
+| ----------------------------------------- | ------------- |
+| One flag from one source project          | 1             |
+| 10 flags from one source project          | 1             |
+| The same flag evaluated 10 times           | 1             |
+| Flags from two source projects            | 2             |
 
 Vercel Flags is priced at \*\*$0.03 per 1,000 flag requests\*\* for Pro teams. Enterprise pricing is custom.
 
@@ -42,12 +60,6 @@ Vercel Flags is priced at \*\*$0.03 per 1,000 flag requests\*\* for Pro teams. E
 | Maximum flag requests per month | 10,000 | N/A | Custom |
 | Additional flag requests | - | $0.03 per 1,000 requests | Custom |
 
-
-A **flag request** is any request to your application that reads the underlying flags configuration. A single request evaluating multiple feature flags of the same source project still counts as one flag request.
-
-For example, if a page request evaluates 10 different feature flags, that counts as 1 flag request.
-
-If a project reads feature flags from multiple sources, each source is counted separately.
 
 The Hobby plan includes up to 10,000 flag requests per billing cycle.
 
@@ -96,7 +108,7 @@ All variant IDs referenced in rules must exist in the flag's variants array. Seg
 | ---------------------------- | -------------- |
 | Entity types                 | 32             |
 | Attributes per entity        | 32             |
-| Labels per attribute         | 128            |
+| Labels per attribute         | 256            |
 | Entity kind string length    | 128 characters |
 | Entity label string length   | 128 characters |
 | Attribute key string length  | 128 characters |
@@ -107,3 +119,6 @@ All variant IDs referenced in rules must exist in the flag's variants array. Seg
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

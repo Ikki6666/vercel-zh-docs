@@ -1,21 +1,21 @@
 ---
-title: WordPress
+title: WordPress with AI Gateway
 product: vercel
 url: /docs/ai-gateway/ecosystem/framework-integrations/wordpress
 canonical_url: "https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/wordpress"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: how-to
 prerequisites:
   - /docs/ai-gateway/ecosystem/framework-integrations
   - /docs/ai-gateway/ecosystem
 related:
   - /docs/ai-gateway
   - /docs/ai-gateway/authentication-and-byok/api-keys
-summary: Learn how to integrate Vercel AI Gateway with WordPress to let your plugins access multiple AI models
+summary: Learn how to integrate Vercel AI Gateway with WordPress to let your plugins access multiple AI models.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# WordPress
+# WordPress with AI Gateway
 
 The [Vercel AI Gateway Provider plugin for WordPress](https://wordpress.org/plugins/vercel-ai-gateway-provider/)
 registers [AI Gateway](/docs/ai-gateway) as a provider for the
@@ -29,12 +29,13 @@ built on top of the WordPress AI Client will then benefit from these capabilitie
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using Headless WordPress with Next.js and Vercel](https://vercel.com/kb/guide/wordpress-with-vercel?from=related) — Learn how to use Headless WordPress with your Next.js application and deploy it to Vercel.
-- [Image Generation](https://vercel.com/docs/ai-gateway/modalities/image-generation?from=related) — Generate and edit images using AI models through Vercel AI Gateway with support for multiple providers and modalities.
-- [Integrations for Models](https://vercel.com/docs/agent-resources/integrations-for-models?from=related) — Integrate powerful AI services and models seamlessly into your Vercel projects.
-- [Adding a Model](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-model?from=related) — Learn how to add a new AI model to your Vercel projects
-- [Getting Started](https://vercel.com/docs/ai-gateway/getting-started?from=related) — Get started with AI Gateway by generating text, images, video, speech, or transcriptions, or by building realtime voice
-- [Adding a Provider](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-provider?from=related) — Learn how to add a new AI provider to your Vercel projects.
+- [Vercel AI Gateway plugin for WordPress](https://vercel.com/changelog/vercel-ai-gateway-plugin-for-wordpress)
+- [Using Headless WordPress with Next.js and Vercel](https://vercel.com/kb/guide/wordpress-with-vercel) — Learn how to use Headless WordPress with your Next.js application and deploy it to Vercel.
+- [Ecosystem](https://vercel.com/docs/sandbox/ecosystem) — Use Vercel Sandbox with the agent frameworks, model SDKs, and agents you already work with.
+- [Xcode with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/xcode) — Connect Xcode's AI chat to AI Gateway through the Chat Completions API. Configure the provider, API key, and models in X
+- [Vercel xAI Integration](https://vercel.com/docs/agent-resources/integrations-for-models/xai) — Learn how to add the xAI native integration with Vercel.
+- [Getting Started with AI Gateway](https://vercel.com/docs/ai-gateway/getting-started) — Set up AI Gateway with a coding agent, route the agent through AI Gateway, or make your first request with cURL, TypeScr
+- [Build with AI on Vercel](https://vercel.com/docs/agent-resources/integrations-for-models) — Integrate powerful AI services and models seamlessly into your Vercel projects.
 
 Full cross-link map for this page: [/docs/ai-gateway/ecosystem/framework-integrations/wordpress.graph.md](/docs/ai-gateway/ecosystem/framework-integrations/wordpress.graph.md)
 <!-- /docsgraph:related -->
@@ -59,7 +60,7 @@ Full cross-link map for this page: [/docs/ai-gateway/ecosystem/framework-integra
 
 ## Using the AI Gateway in your plugin
 
-Plugins built on top of the WordPress AI Client can leverage the AI Gateway for any
+Plugins built on top of the WordPress AI Client can use AI Gateway for any
 site where this plugin has been configured. Use code snippets like the following in
 your plugin code that runs after `init`:
 
@@ -218,3 +219,6 @@ Composer package and register it with the SDK's default registry.
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

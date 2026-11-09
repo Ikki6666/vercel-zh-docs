@@ -1,9 +1,9 @@
 ---
-title: REST API Reference
+title: AI Gateway REST API Reference
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/rest-api
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/rest-api"
-last_updated: 2026-07-28
+last_updated: 2026-09-11
 type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis
@@ -18,9 +18,9 @@ summary: "Reference for AI Gateway REST endpoints: models, usage, generations, a
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# REST API Reference
+# AI Gateway REST API Reference
 
-For sending inference requests, the [AI SDK](/docs/ai-gateway/sdks-and-apis/ai-sdk) is the easiest way to interact with AI Gateway. You can also send requests through the [chat completions](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions), [responses](/docs/ai-gateway/sdks-and-apis/responses), [Anthropic Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api), or [OpenResponses](/docs/ai-gateway/sdks-and-apis/openresponses) APIs.
+For sending inference requests, the [AI SDK](/docs/ai-gateway/sdks-and-apis/ai-sdk) lets you interact with AI Gateway from TypeScript or Python. You can also send requests through the [chat completions](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions), [responses](/docs/ai-gateway/sdks-and-apis/responses), [Anthropic Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api), or [OpenResponses](/docs/ai-gateway/sdks-and-apis/openresponses) APIs.
 
 
 <!-- docsgraph:related -->
@@ -28,14 +28,14 @@ For sending inference requests, the [AI SDK](/docs/ai-gateway/sdks-and-apis/ai-s
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Black Forest Labs](https://ai-sdk.dev/providers/ai-sdk-providers/black-forest-labs?from=related)
-- [List Usage Events](https://v0.app/docs/api/v2/reference/usage/list-usage-events?from=related) — Lists individual credit usage events. Each event includes the credits charged and, when available, associated token coun
-- [Video Generation](https://ai-sdk.dev/docs/ai-sdk-core/video-generation?from=related)
-- [Usage & Billing](https://vercel.com/docs/ai-gateway/observability-and-spend/usage?from=related) — Monitor your AI Gateway credit balance, usage, and generation details.
-- [Models & Providers](https://vercel.com/docs/ai-gateway/models-and-providers?from=related) — Work with models and providers in AI Gateway: provider routing and fallbacks, filtering, timeouts, caching, service tier
-- [Service Tiers](https://vercel.com/docs/ai-gateway/models-and-providers/service-tiers?from=related) — Control processing priority and cost for OpenAI, Google AI Studio, and Google Vertex AI models using service tiers throu
-- [Counts page views](https://vercel.com/docs/rest-api/web-analytics/counts-page-views?from=related)
-- [Filtering, Ordering & Sorting](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering?from=related) — Control which providers handle your requests, in what order, and how they are ranked using order, only, and sort options
+- [AI Gateway production index](https://vercel.com/blog/ai-gateway-production-index)
+- [Open weight takes 71.5% of tokens and 23% of spend](https://vercel.com/blog/ai-gateway-production-index-october-2026)
+- [DeepSeek enters the fight for token volume, Anthropic continues to dominate spend](https://vercel.com/blog/ai-gateway-production-index-june-2026)
+- [AI Gateway Pricing](https://vercel.com/docs/ai-gateway/pricing) — Understand AI Gateway token pricing, free and paid credits, BYOK costs, add-on charges, and payment fees. Manage credit
+- [AI Gateway FAQ](https://vercel.com/docs/ai-gateway/faq) — Answers to common questions about AI Gateway, including request errors, pricing and markup, SDK and API compatibility, m
+- [AI Gateway Models and Providers](https://vercel.com/docs/ai-gateway/models-and-providers) — Choose AI Gateway models and providers. Configure routing, fallbacks, timeouts, prompt caching, reasoning, and web searc
+- [AI Gateway Observability and Spend](https://vercel.com/docs/ai-gateway/observability-and-spend) — Monitor AI Gateway requests and control costs with logs, generation lookup, custom reporting, budgets, and OpenTelemetry
+- [AI Gateway Amazon Bedrock Reasoning](https://vercel.com/docs/ai-gateway/models-and-providers/reasoning/amazon-bedrock) — Configure reasoning for models hosted on Amazon Bedrock with the AI SDK and AI Gateway.
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/rest-api.graph.md](/docs/ai-gateway/sdks-and-apis/rest-api.graph.md)
 <!-- /docsgraph:related -->
@@ -54,7 +54,7 @@ Most endpoints require authentication. The exceptions are noted on each endpoint
 
 ### API key (Bearer token)
 
-Pass an [AI Gateway API key](/docs/ai-gateway/authentication-and-byok#api-key) in the `Authorization` header. AI Gateway infers the team from the key.
+Pass an [AI Gateway API key](/docs/ai-gateway/authentication-and-byok#api-keys) in the `Authorization` header. AI Gateway infers the team from the key.
 
 ```http filename="HTTP header"
 Authorization: Bearer <api_key>
@@ -62,7 +62,7 @@ Authorization: Bearer <api_key>
 
 ### Vercel OIDC token
 
-On Vercel deployments, you can pass the [Vercel OIDC token](/docs/ai-gateway/authentication-and-byok#oidc-token) in the `Authorization` header instead. The token is generated automatically per project.
+On Vercel deployments, you can pass the [Vercel OIDC token](/docs/ai-gateway/authentication-and-byok#oidc-tokens) in the `Authorization` header instead. The token is generated automatically per project.
 
 ## Supported endpoints
 
@@ -82,7 +82,7 @@ On Vercel deployments, you can pass the [Vercel OIDC token](/docs/ai-gateway/aut
 GET /v1/models
 ```
 
-Lists every model available through AI Gateway. Follows the OpenAI models API format. No authentication required.
+Lists every model available through AI Gateway, including reasoning controls, supported parameters, pricing, and modalities. Follows the OpenAI models API format. No authentication required.
 
 For the AI SDK equivalent, see [Dynamic Model Discovery](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway#dynamic-model-discovery).
 
@@ -90,12 +90,15 @@ For the AI SDK equivalent, see [Dynamic Model Discovery](https://ai-sdk.dev/prov
 
 ```typescript filename="list-models.ts"
 const response = await fetch('https://ai-gateway.vercel.sh/v1/models');
-const { data: models } = await response.json();
+const { data: models }: { data: Array<{ id: string; name: string }> } =
+  await response.json();
 
 models.forEach((model) => {
   console.log(`${model.id}: ${model.name}`);
 });
 ```
+
+For TypeScript, Python, and cURL examples that filter reasoning models and inspect their controls, see [Discover model reasoning support](/docs/ai-gateway/models-and-providers/reasoning#discover-model-reasoning-support).
 
 #### Sample response
 
@@ -115,6 +118,10 @@ models.forEach((model) => {
       "max_tokens": 64000,
       "type": "language",
       "tags": ["file-input", "tool-use", "reasoning", "vision"],
+      "modalities": {
+        "input": ["text", "image", "pdf"],
+        "output": ["text"]
+      },
       "pricing": {
         "input": "0.000002",
         "output": "0.000012",
@@ -132,17 +139,24 @@ models.forEach((model) => {
 | ---------------------------------------- | -------- | --------------------------------------------------------------------- |
 | `object`                                 | string   | Always `"list"`                                                       |
 | `data`                                   | array    | Array of available models                                             |
-| `data[].id`                              | string   | Model identifier (for example, `openai/gpt-5.6-sol`)                      |
+| `data[].id`                              | string   | Model identifier (for example, `openai/gpt-6-astra`)                      |
 | `data[].object`                          | string   | Always `"model"`                                                      |
-| `data[].created`                         | integer  | Unix timestamp when the model was added                               |
+| `data[].created`                         | integer  | Unix timestamp with the same value for every model in the public catalog. It doesn't show when a model was added. To sort or compare models by date, use `released`. |
 | `data[].released`                        | integer  | Unix timestamp when the model was released                            |
 | `data[].owned_by`                        | string   | Model provider or owner                                               |
 | `data[].name`                            | string   | Human-readable model name                                             |
 | `data[].description`                     | string   | Model description                                                     |
 | `data[].context_window`                  | integer  | Maximum context length in tokens                                      |
 | `data[].max_tokens`                      | integer  | Maximum output tokens                                                 |
-| `data[].type`                            | string   | Model type: `language`, `embedding`, `reranking`, `image`, or `video` |
+| `data[].type`                            | string   | Model type, such as `language`, `embedding`, `reranking`, `image`, `video`, `speech`, `transcription`, or `realtime` |
 | `data[].tags`                            | string\[] | Capability tags (for example, `reasoning`, `tool-use`, `vision`)      |
+| `data[].modalities` | object | Input and output modalities, as `input` and `output` arrays. Values are `text`, `image`, `pdf`, `audio`, and `video`. |
+| `data[].supported_parameters` | string\[] | Broad parameter support, such as `reasoning` and `include_reasoning`. Optional. |
+| `data[].reasoning_options` | array | Known reasoning controls. Optional; omission means the controls aren't specified. |
+| `data[].reasoning_options[].type` | string | `effort`, `budget_tokens`, or `toggle`. A model can support several controls. |
+| `data[].reasoning_options[].values` | string\[] | Allowed model effort values; present on an `effort` entry. Check client and format support before using a value. |
+| `data[].reasoning_options[].min` | number | Optional minimum thinking-token budget, on a `budget_tokens` entry. |
+| `data[].reasoning_options[].max` | number | Optional maximum thinking-token budget, on a `budget_tokens` entry. |
 | `data[].pricing`                         | object   | Pricing information (structure varies by model type)                  |
 | `data[].pricing.input`                   | string   | Base cost per input token                                             |
 | `data[].pricing.input_tiers`             | array    | Tiered pricing for input tokens (see [Tiered pricing](#tiered-pricing)) |
@@ -152,6 +166,53 @@ models.forEach((model) => {
 | `data[].pricing.input_cache_write`       | string   | Cost per input token (cache write)                                    |
 | `data[].pricing.image`                   | string   | Cost per generated image (image models only)                          |
 | `data[].pricing.web_search`              | string   | Cost per web search request                                           |
+
+The catalog doesn't expose a structured reasoning default. Missing controls or budget bounds mean unspecified metadata, not unsupported reasoning or an unlimited budget. The controls describe model capabilities; each [request format](/docs/ai-gateway/models-and-providers/reasoning#reasoning-levels) has its own fields and accepted values.
+
+#### Team availability annotations
+
+Pass `include_availability` with an [authenticated request](/docs/ai-gateway/authentication-and-byok) to annotate the catalog with each model's eligibility under your team's configuration:
+
+```http filename="Endpoint"
+GET /v1/models?include_availability
+```
+
+Eligibility reflects your team's stored defaults: model and provider allowlists, routing rules, stored BYOK credentials, virtual model configuration, plan restrictions, and rate-limit configuration. It does not evaluate request-supplied credentials, request-selected providers, live provider health, or account state beyond the request-level result below.
+
+```typescript filename="list-model-availability.ts"
+const response = await fetch(
+  'https://ai-gateway.vercel.sh/v1/models?include_availability',
+  { headers: { Authorization: `Bearer ${process.env.AI_GATEWAY_API_KEY}` } },
+);
+const { data: models } = await response.json();
+
+const eligible = models.filter(
+  (model) => model.model_eligibility?.status === 'eligible',
+);
+```
+
+Each model row gains a `model_eligibility` field, and the response adds request-level fields:
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `data[].model_eligibility.status` | string | `eligible`, `ineligible`, or `unknown` |
+| `data[].model_eligibility.evaluated_runtime` | string | The runtime the verdict applies to: `http` or `realtime_websocket` |
+| `data[].model_eligibility.category` | string | For `ineligible` rows: `configuration`, `policy`, or `transient` |
+| `data[].model_eligibility.reason` | string | Stable machine-readable reason for `ineligible` and `unknown` rows |
+| `request_context_availability` | object | Account admission per runtime (`available`, `unavailable`, or `unknown`): team blocking, verification, funds, quota |
+| `availability_status` | string | `complete`, or `partial` when any row is `unknown` |
+| `catalog_status` | string | `complete`, or `partial` when virtual model resolution was incomplete |
+| `evaluation_context` | object | The evaluation scope: `credential_mode: "runtime_default"` and `request_constraints: "default_only"` |
+
+A model can serve a request when its status is `eligible` and the matching `request_context_availability` runtime is `available`. Treat `unknown` as neither approval nor denial; it means a dependency could not be resolved.
+
+| Request | Response |
+| ------- | -------- |
+| No query parameter | Public catalog, edge-cached. Authenticated requests also include the team's virtual models. No annotations. |
+| `include_availability` with authentication | The same catalog with annotations. `Cache-Control: private, no-store`. |
+| `include_availability` without authentication | `401` |
+
+Annotated requests share a per-team rate limit. A blocked request returns `429` with `Retry-After: 60`.
 
 ### Get model endpoints
 
@@ -167,7 +228,14 @@ Returns every provider endpoint serving a specific model, along with per-endpoin
 const response = await fetch(
   'https://ai-gateway.vercel.sh/v1/models/google/gemini-3.1-pro-preview/endpoints',
 );
-const { data } = await response.json();
+const {
+  data,
+}: {
+  data: {
+    name: string;
+    endpoints: Array<{ provider_name: string; context_length: number }>;
+  };
+} = await response.json();
 
 console.log(`Model: ${data.name}`);
 data.endpoints.forEach((endpoint) => {
@@ -225,7 +293,7 @@ data.endpoints.forEach((endpoint) => {
 | -------------------------------------------------- | -------- | --------------------------------------------------------------- |
 | `data.id`                                          | string   | Model identifier                                                |
 | `data.name`                                        | string   | Human-readable model name                                       |
-| `data.created`                                     | integer  | Unix timestamp when the model was added                         |
+| `data.created`                                     | integer  | Unix timestamp with the same value for every model. It doesn't show when the model was added. For the model's release date, use `released`. |
 | `data.released`                                    | integer  | Unix timestamp when the model was released                      |
 | `data.description`                                 | string   | Model description                                               |
 | `data.architecture`                                | object   | Model architecture details                                      |
@@ -275,13 +343,6 @@ For the AI SDK equivalent, see [Credit Usage](https://ai-sdk.dev/providers/ai-sd
 
 #### Example request
 
-#### cURL
-
-```bash filename="credits.sh"
-curl -X GET "https://ai-gateway.vercel.sh/v1/credits" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY"
-```
-
 #### TypeScript
 
 ```typescript filename="credits.ts"
@@ -319,6 +380,13 @@ credits = response.json()
 print(credits)
 ```
 
+#### cURL
+
+```bash filename="credits.sh"
+curl -X GET "https://ai-gateway.vercel.sh/v1/credits" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY"
+```
+
 #### Sample response
 
 ```json filename="Response"
@@ -341,6 +409,8 @@ GET /v1/generation?id={generation_id}
 
 Returns detailed information about a specific generation, including cost, latency, and token usage. Much of this data is also returned in `providerMetadata` on the chat completion response.
 
+For a complete request-and-lookup example with the AI SDK, see [Look up a generation with the AI SDK](/docs/ai-gateway/observability-and-spend/usage#look-up-a-generation-with-the-ai-sdk).
+
 Usage events are ingested asynchronously, so a lookup issued immediately after the generation completes returns `Usage event not found` rather than the record. Allow a few seconds, and treat that response as "not yet" rather than "never" when polling.
 
 For the AI SDK equivalent, see [Generation Lookup](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway#generation-lookup).
@@ -350,13 +420,6 @@ For the AI SDK equivalent, see [Generation Lookup](https://ai-sdk.dev/providers/
 - `id` (required): The generation ID to look up. Format: `gen_<ulid>`.
 
 #### Example request
-
-#### cURL
-
-```bash filename="generation.sh"
-curl -X GET "https://ai-gateway.vercel.sh/v1/generation?id=gen_01ARZ3NDEKTSV4RRFFQ69G5FAV" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY"
-```
 
 #### TypeScript
 
@@ -398,6 +461,13 @@ generation = response.json()
 print(generation)
 ```
 
+#### cURL
+
+```bash filename="generation.sh"
+curl -X GET "https://ai-gateway.vercel.sh/v1/generation?id=gen_01ARZ3NDEKTSV4RRFFQ69G5FAV" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY"
+```
+
 #### Sample response
 
 ```json filename="Response"
@@ -405,6 +475,9 @@ print(generation)
   "data": {
     "id": "gen_01ARZ3NDEKTSV4RRFFQ69G5FAV",
     "total_cost": 0.00123,
+    "market_cost": 0.0011,
+    "surcharge_cost": 0.00013,
+    "gateway_cost": 0.00123,
     "upstream_inference_cost": 0,
     "usage": 0.00123,
     "created_at": "2026-05-22T00:00:00.000Z",
@@ -430,15 +503,18 @@ print(generation)
 #### Response fields
 
 - `id`: The generation ID
-- `total_cost`: Total cost in USD for this generation, including any surcharges (for example, Zero Data Retention or Custom Reporting writes)
-- `upstream_inference_cost`: Market price the provider would have charged for the inference. Non-zero only for BYOK generations, where `total_cost` does not include this amount; `0` otherwise.
-- `usage`: Same as `total_cost`. Kept for compatibility with the OpenRouter schema this endpoint mirrors.
+- `total_cost`: Total cost in USD for this generation debited from your gateway balance, including any surcharges (for example, Zero Data Retention or Custom Reporting writes). Does not include cost of BYOK requests.
+- `market_cost`: Cost of this generation at market list inference rates. Omitted when not recorded for the generation.
+- `surcharge_cost`: Total surcharges applied to this generation (for example, Zero Data Retention or Custom Reporting writes)
+- `gateway_cost`: Total amount debited from your AI Gateway balance for this generation. Same as `total_cost`.
+- `upstream_inference_cost`: Market list price for BYOK that the provider would have charged for the inference. Non-zero only for BYOK generations. `0` otherwise.
+- `usage`: Same as `total_cost`.
 - `created_at`: ISO 8601 timestamp when the generation was created
 - `model`: Model identifier used for this generation
 - `is_byok`: Whether this generation used Bring Your Own Key (BYOK) credentials
 - `provider_name`: The provider that served this generation
 - `streamed`: Whether this generation used streaming
-- `finish_reason`: Why the generation ended (for example, `stop`, `length`, `content_filter`, `tool_calls`)
+- `finish_reason`: Why the generation ended (for example, `stop`, `length`, `content-filter`, `tool-calls`)
 - `latency`: Time to first token in milliseconds
 - `generation_time`: Total generation time in milliseconds
 - `tokens_prompt`: Number of prompt tokens
@@ -531,3 +607,6 @@ Errors return a JSON body with an `error` field. Some endpoints additionally inc
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

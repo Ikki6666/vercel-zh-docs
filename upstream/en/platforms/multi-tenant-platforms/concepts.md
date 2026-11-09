@@ -3,13 +3,14 @@ title: Multi-Tenant Platform Concepts
 product: vercel
 url: /docs/platforms/multi-tenant-platforms/concepts
 canonical_url: "https://vercel.com/docs/platforms/multi-tenant-platforms/concepts"
-last_updated: 2026-07-29
+last_updated: 2026-08-20
 type: conceptual
 prerequisites:
   - /docs/platforms/multi-tenant-platforms
   - /docs/platforms
 related:
-  []
+  - /docs/platforms/multi-tenant-platforms/quickstart
+  - /docs/domains/working-with-domains/add-a-domain
 summary: Understand tenants, domains, routing, and architecture for building multi-tenant applications on Vercel for Platforms.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -18,25 +19,25 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Tenants
 
+### What is a tenant
+
+A tenant represents a customer, workspace, or organization within your multi-tenant application. Each tenant has its own data, configuration, and branding, but all tenants share the same codebase and deployment.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Build a multi-tenant app with Next.js and Vercel](https://vercel.com/kb/guide/nextjs-multi-tenant-application?from=related) — Create a Next.js application with multi-tenancy and custom domain support on Vercel.
-- [Multi-Tenant Template](https://vercel.com/docs/platforms/examples/multi-tenant-template?from=related) — Build SaaS applications that serve multiple domains from a single Next.js codebase.
-- [Proxy and Routing](https://vercel.com/docs/platforms/multi-tenant-platforms/middleware-and-routing?from=related) — Resolve tenants and route requests by subdomain, custom domain, or path using Next.js Proxy on Vercel.
-- [Quickstart](https://vercel.com/docs/platforms/multi-tenant-platforms/quickstart?from=related) — Set up wildcard domains, custom domains, domain verification, and redirects for a multi-tenant application on Vercel.
-- [Concepts](https://vercel.com/docs/platforms/multi-project-platforms/concepts?from=related) — Understand projects, deployments, domains, and architecture for multi-project platforms on Vercel.
-- [Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
+- [Introducing the Vercel Platforms Starter Kit](https://vercel.com/blog/platforms-starter-kit)
+- [Multi-Tenant Template](https://vercel.com/docs/platforms/examples/multi-tenant-template) — Build SaaS applications that serve multiple domains from a single Next.js codebase.
+- [Proxy and Routing](https://vercel.com/docs/platforms/multi-tenant-platforms/proxy-and-routing) — Resolve tenants and route requests by subdomain, custom domain, or path using Next.js Proxy on Vercel.
+- [Multi-Project Platforms Concepts](https://vercel.com/docs/platforms/multi-project-platforms/concepts) — Understand projects, deployments, domains, and architecture for multi-project platforms on Vercel.
+- [Multi-tenant Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
+- [Multi-Project Platforms Reference](https://vercel.com/docs/platforms/multi-project-platforms/reference) — API reference, error codes, troubleshooting, and FAQ for multi-project platforms on Vercel.
 
 Full cross-link map for this page: [/docs/platforms/multi-tenant-platforms/concepts.graph.md](/docs/platforms/multi-tenant-platforms/concepts.graph.md)
 <!-- /docsgraph:related -->
-
-### What is a tenant
-
-A tenant represents a customer, workspace, or organization within your multi-tenant application. Each tenant has its own data, configuration, and branding, but all tenants share the same codebase and deployment.
 
 **Examples**:
 
@@ -48,12 +49,19 @@ A tenant represents a customer, workspace, or organization within your multi-ten
 
 You can identify tenants using three approaches:
 
-**Subdomain-based**: Extract the tenant from the subdomain (`tenant1.yourapp.com`)
+**Subdomain-based**: Extract the tenant from the subdomain (`tenant1.yourapp.com`). Note that we compare the host with your root domain, so that `yourapp.com` itself and `localhost:3000` aren't treated as tenants:
 
 ```ts filename="proxy.ts"
-const hostname = request.headers.get('host');
-const subdomain = hostname.split('.')[0]; // "tenant1"
+const hostname = request.headers.get('host') ?? '';
+const rootDomain = process.env.ROOT_DOMAIN ?? 'localhost:3000';
+// For tenant1.yourapp.com, subdomain is "tenant1". For the root domain
+// itself, or any other host, subdomain is null.
+const subdomain = hostname.endsWith(`.${rootDomain}`)
+  ? hostname.slice(0, -(rootDomain.length + 1))
+  : null;
 ```
+
+**Test locally**: You can try subdomain routing on your own computer before you set up any domain. Chrome and Firefox resolve every `*.localhost` name to your computer, so `http://tenant1.localhost:3000` reaches your dev server. In other browsers, add the name to `/etc/hosts` first. The [quickstart](/docs/platforms/multi-tenant-platforms/quickstart) builds a working app step by step.
 
 **Custom domain-based**: Map custom domains to tenants (`tenant1.com` → Tenant 1)
 
@@ -95,10 +103,10 @@ Wildcard domains let you automatically serve all subdomains from a single Vercel
 
 - Add `*.yourapp.com` to your project
 - Point your domain to Vercel's nameservers
-- Any subdomain (`tenant1.yourapp.com`, `tenant2.yourapp.com`) automatically routes to your app
-- Vercel issues SSL certificates for each subdomain on the fly
+- Any first-level subdomain (`tenant1.yourapp.com`, `tenant2.yourapp.com`) automatically routes to your app
+- Vercel issues one wildcard SSL certificate for `*.yourapp.com` that covers every first-level subdomain
 
-**Requirements**: Must use Vercel's nameservers (`ns1.vercel-dns.com`, `ns2.vercel-dns.com`)
+**Requirements**: Vercel must be able to answer the DNS challenge for the wildcard certificate. Use Vercel's nameservers (`ns1.vercel-dns.com`, `ns2.vercel-dns.com`), or [delegate certificate validation](/docs/domains/working-with-domains/add-a-domain#use-wildcard-domains-with-an-external-dns-provider) if you can't change nameservers.
 
 ### Custom domains
 
@@ -113,8 +121,8 @@ Custom domains let tenants bring their own domain:
 
 Vercel automatically issues SSL certificates for all domains using Let's Encrypt:
 
-- Wildcard domains: Single wildcard certificate covers all subdomains
-- Custom domains: Individual certificate per domain
+- Wildcard domains: One wildcard certificate per wildcard domain, validated with a DNS challenge. `*.yourapp.com` covers `tenant1.yourapp.com` but not `docs.tenant1.yourapp.com`; add `*.tenant1.yourapp.com` for that level
+- Custom domains: Individual certificate per domain, validated with an HTTP challenge once the domain points to Vercel
 - Automatic renewal before expiration
 - No configuration required
 
@@ -135,14 +143,29 @@ For domains already in use on Vercel, ownership verification is required:
 Next.js Proxy runs on every request before your pages render:
 
 ```ts filename="proxy.ts"
-export async function proxy(request: NextRequest) {
-  const hostname = request.headers.get('host');
+import { NextRequest, NextResponse } from 'next/server';
 
-  // Get tenant from subdomain or custom domain
+export async function proxy(request: NextRequest) {
+  const hostname = request.headers.get('host') ?? '';
+
+  // First, we look up the tenant from the subdomain or custom domain.
+  // resolveTenant is your own lookup function, such as a database query.
   const tenant = await resolveTenant(hostname);
 
-  // Forward tenant context to your app on the request headers
+  // Strip the inbound tenant header; only the proxy sets it
   const requestHeaders = new Headers(request.headers);
+  requestHeaders.delete('x-tenant-id');
+
+  if (!tenant) {
+    // Note that we use rewrite instead of redirect here, since a redirect to
+    // /not-found would send the browser back through the proxy, which would
+    // redirect it again in an endless loop.
+    return NextResponse.rewrite(new URL('/not-found', request.url), {
+      request: { headers: requestHeaders },
+    });
+  }
+
+  // Forward tenant context to your app on the request headers
   requestHeaders.set('x-tenant-id', tenant.id);
 
   return NextResponse.next({
@@ -165,10 +188,14 @@ export async function proxy(request: NextRequest) {
 
 **Global Config**: Store tenant configuration at the edge for sub-10ms lookups
 
-```ts filename="edge-config.ts"
+```ts filename="global-config.ts"
 import { get } from '@vercel/global-config';
 
-const tenant = await get(`tenant_${hostname}`);
+// Global Config keys can contain only letters, digits, _ and -, so we
+// replace the . and : in the host name before we use it in a key.
+const tenant = await get(
+  `tenant_${hostname.replaceAll('.', '_').replaceAll(':', '_')}`,
+);
 ```
 
 **Caching**: Cache tenant lookups in the proxy to reduce database queries
@@ -223,3 +250,6 @@ const tenantId = request.headers.get('x-tenant-id');
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

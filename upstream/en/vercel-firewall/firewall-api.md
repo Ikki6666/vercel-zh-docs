@@ -3,7 +3,7 @@ title: Using the REST API with the Firewall
 product: vercel
 url: /docs/vercel-firewall/firewall-api
 canonical_url: "https://vercel.com/docs/vercel-firewall/firewall-api"
-last_updated: 2025-11-25
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/vercel-firewall
@@ -27,11 +27,13 @@ The security section of the [Vercel REST API](/docs/rest-api) allows you to prog
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Examples](https://vercel.com/docs/vercel-firewall/vercel-waf/examples?from=related) — Learn how to use Vercel WAF to protect your site in specific situations.
-- [Read Firewall Configuration](https://vercel.com/docs/rest-api/security/read-firewall-configuration?from=related)
-- [Web Application Firewall](https://vercel.com/docs/vercel-firewall/vercel-waf?from=related) — Learn how to secure your website with the Vercel Web Application Firewall \\(WAF\\)
-- [Put Firewall Configuration](https://vercel.com/docs/rest-api/security/put-firewall-configuration?from=related)
-- [Firewall Observability](https://vercel.com/docs/vercel-firewall/firewall-observability?from=related) — Learn how firewall traffic monitoring and alerts help you react quickly to potential security threats.
+- [REST API for the Vercel Firewall](https://vercel.com/changelog/rest-api-for-the-vercel-firewall)
+- [Vercel WAF upgrade brings persistent actions, rate limiting, and API control](https://vercel.com/blog/vercel-waf-upgrade-brings-persistent-actions-rate-limiting-and-api-control)
+- [WAF Examples](https://vercel.com/docs/vercel-firewall/vercel-waf/examples) — Learn how to use Vercel WAF to protect your site in specific situations.
+- [Firewall and Security](https://vercel.com/docs/agent-resources/vercel-mcp/tools/firewall) — Vercel MCP tools for firewall and security.
+- [Get conditional firewall bypasses](https://vercel.com/docs/rest-api/security/get-conditional-firewall-bypasses) — GET /v1/security/firewall/bypass/rules — Retrieve conditional firewall bypass rules for a project.
+- [Create conditional firewall bypass](https://vercel.com/docs/rest-api/security/create-conditional-firewall-bypass) — POST /v1/security/firewall/bypass/rules — Create a conditional firewall bypass rule for a project domain.
+- [Delete conditional firewall bypass](https://vercel.com/docs/rest-api/security/delete-conditional-firewall-bypass) — DELETE /v1/security/firewall/bypass/rules — Delete a conditional firewall bypass rule from a project domain.
 
 Full cross-link map for this page: [/docs/vercel-firewall/firewall-api.graph.md](/docs/vercel-firewall/firewall-api.graph.md)
 <!-- /docsgraph:related -->
@@ -62,3 +64,6 @@ Learn how to use some of these endpoints with specific examples for the Vercel W
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

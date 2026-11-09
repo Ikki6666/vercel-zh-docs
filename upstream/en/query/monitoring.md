@@ -3,7 +3,7 @@ title: Monitoring
 product: vercel
 url: /docs/query/monitoring
 canonical_url: "https://vercel.com/docs/query/monitoring"
-last_updated: 2026-02-27
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/query
@@ -19,7 +19,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Monitoring
 
-**Monitoring** allows you to visualize and quantify the performance and traffic of your projects on Vercel. You can use [example queries](/docs/query/monitoring/monitoring-reference#example-queries) or create [custom queries](/docs/query/monitoring/quickstart#create-a-new-query) to debug and optimize bandwidth, errors, performance, and bot traffic issues in a production or preview deployment.
+Monitoring is now
 
 
 <!-- docsgraph:related -->
@@ -27,16 +27,36 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Insights](https://vercel.com/docs/observability/insights?from=related) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Monitoring is now available to view traffic and performance data for improved observability ](https://vercel.com/changelog/monitoring-is-now-available-to-view-traffic-and-performance-data-for)
+- [Observability Plus replacing legacy Monitoring](https://vercel.com/changelog/observability-plus-replacing-legacy-monitoring)
+- [Introducing Vercel Monitoring](https://vercel.com/blog/introducing-monitoring)
+- [Create custom monitors in Vercel Observability](https://vercel.com/changelog/create-custom-monitors-in-vercel-observability)
+- [Monitoring is in public beta for Enterprise Teams](https://vercel.com/changelog/monitoring-is-in-public-beta-for-enterprise-teams)
+- [Monitoring pricing reduced up to 87%](https://vercel.com/changelog/monitoring-pricing-reduced-up-to-87)
+- [Observability](https://vercel.com/docs/observability) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
+- [Manage and optimize usage for Observability](https://vercel.com/docs/manage-and-optimize-observability) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Incremental Static Regeneration \\(ISR\\)](https://vercel.com/docs/incremental-static-regeneration) — ISR serves cached static pages while regenerating content in the background. Vercel\\\\
+- [Limits](https://vercel.com/docs/limits) — Look up account limits, usage summaries, rate limits, and resource constraints for every Vercel plan.
 
 Full cross-link map for this page: [/docs/query/monitoring.graph.md](/docs/query/monitoring.graph.md)
 <!-- /docsgraph:related -->
 
-> **🔒 Permissions Required**: Monitoring
+deprecated
+
+. It is no longer available for Pro users or Enterprise customers who subscribed to Observability Plus after June 2025.
+
+Observability Plus
+
+includes
+
+Observability Query
+
+for monitoring your project.
+
+**Monitoring** allows you to visualize and quantify the performance and traffic of your projects on Vercel. You can use [example queries](/docs/query/monitoring/monitoring-reference#example-queries) or create [custom queries](/docs/query/monitoring/quickstart#create-a-new-query) to debug and optimize bandwidth, errors, performance, and bot traffic issues in a production or preview deployment.
+
+> Monitoring is available on Enterprise plans
 
 ## Monitoring chart
 
@@ -80,7 +100,9 @@ Get the most comprehensive suite of tools, including queries, by enabling [Obser
 
 ## Manage IP Address visibility for Monitoring
 
-> **🔒 Permissions Required**: Managing IP Address visibility
+> Managing IP Address visibility is available on Enterprise and Pro plans
+>
+> Those with the owner, admin role can access this feature
 
 Vercel creates events each time a request is made to your website. These events include unique parameters such as execution time and bandwidth used.
 
@@ -88,7 +110,7 @@ Certain events such as `public_ip` may be considered personal information under 
 
 1. Go to the Vercel [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard) and ensure your team is selected in the team switcher.
 2. Open **Settings** in the sidebar and navigate to [**Security & Privacy**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fsecurity\&title=Go+to+Security).
-3. Under **IP Address Visibility**, toggle the switch next to off so the text reads **IP addresses are hidden in your Monitoring queries.**.
+3. Under **IP Address Visibility**, turn off **Show in Vercel Dashboard**.
 
 > **💡 Note:** For business purposes, such as DDoS mitigation, Vercel will still collect IP
 > addresses.
@@ -97,11 +119,11 @@ For a complete list of fields, see the [visualize clause](/docs/query/monitoring
 
 ## Monitoring sunset
 
-From the end of billing cycle in Nov 2025, Vercel will sunset Monitoring for pro plans. Pro users will no longer see the Monitoring tab. Current enterprise users with monitoring access will keep the deprecated version of monitoring.
+Vercel sunset Monitoring for Pro plans at the end of the November 2025 billing cycle. Pro users no longer see the Monitoring tab. Enterprise users who already had Monitoring access keep the deprecated version of Monitoring.
 If you want to continue using the full Monitoring capabilities or purchase a product similar to Monitoring, consider moving to [Query](/docs/query).
 
 - Enable [Observability Plus](/docs/observability/observability-plus) to continue using query features.
-- Save queries in **Observability** [Notebooks](/docs/query#save-query).
+- Save queries in **Observability** [Notebooks](/docs/query#save-and-share-query).
 
 ## More resources
 
@@ -116,3 +138,6 @@ For more information on what to do next, we recommend the following articles:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -1,0 +1,414 @@
+---
+title: Decision
+product: vercel
+url: /docs/ai-gateway/modalities/decision
+canonical_url: "https://vercel.com/docs/ai-gateway/modalities/decision"
+last_updated: 2026-10-07
+type: conceptual
+prerequisites:
+  - /docs/ai-gateway/modalities
+  - /docs/ai-gateway
+related:
+  - /docs/ai-gateway/getting-started/decision
+  - /docs/ai-gateway/sdks-and-apis/openai-decisions
+  - /docs/ai-gateway/sdks-and-apis/typesafe
+  - /docs/ai-gateway/models-and-providers/decision-fallbacks
+  - /docs/ai-gateway/authentication-and-byok/byok
+summary: Ask typed questions about shared state and get back structured choices, scores, and boolean probabilities through Vercel AI Gateway.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+---
+
+# Decision
+
+Ask typed questions about a piece of shared state and get structured answers back. Decision models return choices, scores, and boolean probabilities instead of free-form text, which makes them a fit for classification, routing, rubric-based assessment, and automated verification.
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Decisions](https://ai-sdk.dev/docs/ai-sdk-core/decisions) — Decide answers to Choice, Score, and Boolean questions against shared state.
+- [Baseten's Mammoth-1 and Elephant-1 now available on AI Gateway for free](https://vercel.com/changelog/basetens-mammoth-1-and-elephant-1-now-available-on-ai-gateway-for-free)
+- [Liquid AI's d1 is available on AI Gateway](https://vercel.com/changelog/liquid-ai-d1-is-available-on-ai-gateway)
+- [Liquid AI's d1-ultra now available on AI Gateway](https://vercel.com/changelog/liquid-ais-d1-ultra-now-available-on-ai-gateway)
+- [Microsoft Decision-1 now available on AI Gateway](https://vercel.com/changelog/microsoft-decision-1-now-available-on-ai-gateway)
+- [OpenAI Decisions API now available on AI Gateway](https://vercel.com/changelog/openai-decisions-api-now-available-on-ai-gateway)
+- [Automatic Model Selection](https://eve.dev/docs/guides/decide) — Choose agent models automatically or ask typed questions in your tools and application code.
+- [AI SDK with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 400+ models.
+
+Full cross-link map for this page: [/docs/ai-gateway/modalities/decision.graph.md](/docs/ai-gateway/modalities/decision.graph.md)
+<!-- /docsgraph:related -->
+
+Several questions can be answered in parallel within a single request, against the same state.
+
+To see which decision models AI Gateway supports, use the **Decision** filter at the [AI Gateway Models page](/ai-gateway/models?capabilities=decision).
+
+For a step-by-step setup, see the [Decision quickstart](/docs/ai-gateway/getting-started/decision).
+
+> **💡 Note:** Through the AI SDK, decisions require `ai` 7.0.128 or later, or
+> `experimental_evaluate` on earlier AI SDK 7 releases. Over HTTP, use the
+> [OpenAI-compatible Decisions API](/docs/ai-gateway/sdks-and-apis/openai-decisions)
+> described in [HTTP API](#http-api) below. Existing TypeSafe clients can use the
+> [TypeSafe-compatible API](/docs/ai-gateway/sdks-and-apis/typesafe).
+> They are not supported through Chat Completions, Responses, or the
+> Anthropic-compatible or Cohere-compatible endpoints.
+
+> **💡 Note:** Decision models were previously called evaluation models. The
+> `experimental_evaluate` export and `gateway.evaluationModel()` still work as
+> deprecated aliases with the same request and response shapes.
+
+## Basic usage
+
+```typescript filename="app/api/decide/route.ts" {5-13}
+import { experimental_decide as decide } from 'ai';
+
+export async function GET() {
+  const result = await decide({
+    model: 'typesafe-ai/jev',
+    state: 'The support agent issued a full refund to the customer.',
+    questions: {
+      refunded: {
+        type: 'boolean',
+        instructions: 'Was a refund issued?',
+      },
+    },
+  });
+
+  return Response.json(result.answers);
+}
+```
+
+Each key in `questions` becomes a key in `answers`:
+
+```typescript
+// result.answers
+{
+  refunded: { type: 'boolean', probability: 0.99 }
+}
+```
+
+For an application example, see [Using decision models in enterprise apps](/i/decision-models-enterprise-apps). The guide classifies purchase requests while keeping spending approvals, validated amounts, and routing rules in application code.
+
+## Question types
+
+### Boolean
+
+Returns a probability between 0 and 1. Supply `criteria` to define what the true and false cases mean.
+
+```typescript
+const result = await decide({
+  model: 'typesafe-ai/jev',
+  state: 'The build failed with exit code 1.',
+  questions: {
+    passed: {
+      type: 'boolean',
+      instructions: 'Did the build succeed?',
+      criteria: {
+        true: 'exit code 0',
+        false: 'any non-zero exit code',
+      },
+    },
+  },
+});
+
+// { passed: { type: 'boolean', probability: 0.01 } }
+```
+
+### Choice
+
+Picks one option from a named set. `criteria` is a record of option names to descriptions, and the answer carries both the selected `choice` and the probability of each option.
+
+```typescript
+const result = await decide({
+  model: 'typesafe-ai/jev',
+  state: 'My card was charged twice for one order.',
+  questions: {
+    route: {
+      type: 'choice',
+      instructions: 'Route this support ticket.',
+      criteria: {
+        billing: 'payment or charge problems',
+        shipping: 'delivery problems',
+        technical: 'application bugs',
+      },
+    },
+  },
+});
+
+// {
+//   route: {
+//     type: 'choice',
+//     choice: 'billing',
+//     probabilities: { billing: 1, shipping: 0, technical: 0 },
+//   },
+// }
+```
+
+### Score
+
+Rates the state along an ordered scale. `criteria` is an array of at least two labels, ordered lowest to highest. The answer is an interpolated `score` plus the probability of each rung.
+
+```typescript
+const result = await decide({
+  model: 'typesafe-ai/jev',
+  state: 'The PR adds tests, updates docs, and has a clear description.',
+  questions: {
+    quality: {
+      type: 'score',
+      instructions: 'Rate the quality of this pull request.',
+      criteria: [
+        'poor: no tests or docs',
+        'fair: partial coverage',
+        'good: tests and docs',
+        'excellent: tests, docs, and clear rationale',
+      ],
+    },
+  },
+});
+
+// {
+//   quality: {
+//     type: 'score',
+//     score: 2.97,
+//     probabilities: { '0': 0, '1': 0, '2': 0.02, '3': 0.98 },
+//   },
+// }
+```
+
+## Multiple questions in one request
+
+Questions of different types can share a single state, and are answered in one round trip.
+
+```typescript filename="app/api/triage/route.ts" {7-24}
+import { experimental_decide as decide } from 'ai';
+
+export async function GET() {
+  const result = await decide({
+    model: 'typesafe-ai/jev',
+    state: 'I cannot log in, and I also want a refund for last month.',
+    questions: {
+      authIssue: {
+        type: 'boolean',
+        instructions: 'Is there a login problem?',
+      },
+      wantsRefund: {
+        type: 'boolean',
+        instructions: 'Is a refund requested?',
+      },
+      urgency: {
+        type: 'score',
+        instructions: 'How urgent is this ticket?',
+        criteria: ['low', 'medium', 'high'],
+      },
+    },
+  });
+
+  return Response.json(result.answers);
+}
+```
+
+## Escalating uncertain decisions
+
+Decision fallbacks can rerun a successful decision with another model when a Choice or Score has low confidence, a Boolean probability falls inside an uncertain band, or a compound condition matches. Configure the policy under `providerOptions.gateway.models` for AI SDK `decide`, `POST /v1/decisions`, or the TypeSafe-compatible API.
+
+Decision fallbacks are opt-in and support one successful-response fallback stage. See [Decision Fallbacks](/docs/ai-gateway/models-and-providers/decision-fallbacks) for the condition contract, full-request rerun behavior, virtual model configuration, response metadata, and two-stage billing.
+
+## Structured state
+
+`state` accepts a string, an object, or an array of parts, so you can pass structured records directly without serializing them yourself. Pass a record as an object:
+
+```typescript
+const result = await decide({
+  model: 'typesafe-ai/jev',
+  state: {
+    order: { id: 'A-1', total: 42.5, status: 'refunded' },
+    agent: 'bot-7',
+  },
+  questions: {
+    refunded: {
+      type: 'boolean',
+      instructions: 'Is the order refunded?',
+    },
+  },
+});
+```
+
+In `ai` 7.0.133 and later, an array passed as `state` is an ordered list of parts, not JSON data. Use `{ type: 'text', text }` for a string and `{ type: 'json', value }` for any JSON value. To pass a JSON array, such as a message history, wrap it in an object (`state: { messages }`) or put it in a `json` part:
+
+```typescript
+const messages = [
+  { role: 'user', content: 'My order arrived damaged.' },
+  { role: 'assistant', content: 'I issued a full refund to your card.' },
+];
+
+const result = await decide({
+  model: 'typesafe-ai/jev',
+  state: [{ type: 'json', value: messages }],
+  questions: {
+    refunded: {
+      type: 'boolean',
+      instructions: 'Was a refund issued?',
+    },
+  },
+});
+```
+
+## AI Gateway provider instance
+
+When using an AI Gateway provider instance, specify decision models with `gateway.decisionModel(...)`.
+
+```typescript filename="app/api/decide/route.ts" {2,6}
+import { experimental_decide as decide } from 'ai';
+import { gateway } from '@ai-sdk/gateway';
+
+export async function GET() {
+  const result = await decide({
+    model: gateway.decisionModel('typesafe-ai/jev'),
+    state: 'The support agent issued a full refund to the customer.',
+    questions: {
+      refunded: {
+        type: 'boolean',
+        instructions: 'Was a refund issued?',
+      },
+    },
+  });
+
+  return Response.json(result.answers);
+}
+```
+
+## HTTP API
+
+If you are not using the AI SDK, post to `/v1/decisions`, AI Gateway's [OpenAI-compatible Decisions API](/docs/ai-gateway/sdks-and-apis/openai-decisions). It accepts OpenAI's Decisions request and response format, so you can use plain HTTP or point the OpenAI SDK at `https://ai-gateway.vercel.sh/v1`, with any decision model answering. Questions are an array of `predicate`, `choice`, and `score` questions, and each `name` keys its answer.
+
+```bash filename="decide.sh"
+curl https://ai-gateway.vercel.sh/v1/decisions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "typesafe-ai/jev",
+    "input": "I was charged twice for my subscription.",
+    "questions": [
+      {
+        "type": "predicate",
+        "name": "refund",
+        "instructions": "Is the customer asking for money back?"
+      }
+    ]
+  }'
+```
+
+The response lists the answers in question order and reports the model that ran, token usage, and AI Gateway routing and cost metadata:
+
+```json
+{
+  "answers": [{ "type": "predicate", "name": "refund", "probability": 0.98 }],
+  "model": "typesafe-ai/jev",
+  "provider_metadata": {
+    "gateway": {
+      "routing": {
+        "originalModelId": "typesafe-ai/jev",
+        "resolvedProvider": "typesafe-ai",
+        "canonicalSlug": "typesafe-ai/jev",
+        "finalProvider": "typesafe-ai"
+      },
+      "cost": "0.000011844",
+      "marketCost": "0.000011844",
+      "surchargeCost": "0",
+      "gatewayCost": "0.000011844",
+      "generationId": "gen_..."
+    }
+  },
+  "usage": { "input_tokens": 282, "output_tokens": 20, "total_tokens": 302 }
+}
+```
+
+Decision requests work with [BYOK](/docs/ai-gateway/authentication-and-byok/byok). If your team has added a key for the provider, it is used automatically.
+
+### Provider options
+
+`/v1/decisions` accepts the same [routing and compliance options](/docs/ai-gateway/models-and-providers/provider-options) as other AI Gateway endpoints under `providerOptions`. For example, you can require zero data retention for the request:
+
+```json
+{
+  "model": "typesafe-ai/jev",
+  "input": "...",
+  "questions": [{ "type": "predicate", "name": "refund", "instructions": "..." }],
+  "providerOptions": {
+    "gateway": { "zeroDataRetention": true }
+  }
+}
+```
+
+String entries in `providerOptions.gateway.models` can name native decision models or language models, and a language model answers through structured output. The array also accepts one conditional decision fallback object. Provider-specific namespaces, such as `providerOptions.openai`, carry to a matching fallback provider. See [Decision Fallbacks](/docs/ai-gateway/models-and-providers/decision-fallbacks#configure-a-choice-or-score-confidence-fallback) for complete requests.
+
+See [OpenAI-compatible Decisions API](/docs/ai-gateway/sdks-and-apis/openai-decisions) for images, JSON input, prompt caching, the OpenAI SDKs, and errors.
+
+### `/v1/evaluate` (deprecated)
+
+> **💡 Note:** `POST /v1/evaluate` is deprecated. It keeps working for existing integrations,
+> but new integrations should use `/v1/decisions`.
+
+To move a request from `/v1/evaluate`, move `state` into `input`, turn the `questions` object into an array with each key as `name`, and rename the question types and criteria:
+
+| `/v1/evaluate` | `/v1/decisions` |
+| --- | --- |
+| `state: 'text'` | `input: 'text'` |
+| `state` as an object or an array of objects | `input: [{ role: 'user', content: [{ type: 'input_json', data: state }] }]` |
+| `state` as any other JSON value | `input: JSON.stringify(state)` |
+| `questions: { refund: { ... } }` | `questions: [{ name: 'refund', ... }]` |
+| `instructions` as JSON | `instructions` as a string |
+| `boolean` | `predicate` |
+| `boolean` with `criteria: { true, false }` | `predicate` with the criteria written into `instructions` |
+| `choice` with `criteria: { billing: 'Charges and refunds' }` | `choice` with `choices: [{ value: 'billing', description: 'Charges and refunds' }]` |
+| `score` with `criteria: ['Low', 'High']` | `score` with `levels: [{ label: 'Low' }, { label: 'High' }]` |
+| `box` | `box` |
+| `answers` object keyed by question ID | `answers` array in question order, each with its `name` |
+| `providerMetadata` | `provider_metadata` |
+
+`providerOptions`, including decision fallbacks, carries over unchanged.
+
+## TypeSafe-compatible API
+
+If you already call TypeSafe with its SDK, you don't need to rewrite your requests. Point the client at `https://ai-gateway.vercel.sh/typesafe` and AI Gateway accepts TypeSafe's own request and response shapes, including `noul` for Boolean questions. Decision fallbacks work there too.
+
+See [TypeSafe API](/docs/ai-gateway/sdks-and-apis/typesafe) for authentication, supported endpoints, and response headers.
+
+## Usage and pricing
+
+Decision requests report token usage like any other model, and are billed from the model's per-token rates. Check the [AI Gateway Models page](/ai-gateway/models?capabilities=decision) for the rates on a specific model, since some decision models price input tokens only.
+
+When a decision fallback triggers, both stages are billed and the response usage totals both calls. The stages run sequentially, so the request also includes both model calls' latency. See [two-stage usage and latency](/docs/ai-gateway/models-and-providers/decision-fallbacks#account-for-two-stage-usage-and-latency) for details.
+
+```typescript
+const result = await decide({
+  model: 'typesafe-ai/jev',
+  state: 'The support agent issued a full refund.',
+  questions: {
+    refunded: { type: 'boolean', instructions: 'Was a refund issued?' },
+  },
+});
+
+console.log(result.usage);
+// { inputTokens: 283, outputTokens: 21 }
+```
+
+## Evaluate before automating
+
+Test both the model's answer and the action your application takes with it. Use representative cases with agreed outcomes, then measure incorrect actions and human review workload in a pilot before enabling automatic execution. Follow [Testing AI decisions before automating enterprise workflows](/i/testing-ai-decisions-enterprise-workflows) to define evaluation cases and rollout criteria.
+
+## Next steps
+
+- Explore [Jev guides and use cases](/kb/jev-from-typesafe-ai)
+- Learn how to [classify, route, and score with Jev and AI SDK](/kb/guide/typesafe-jev-and-ai-sdk) and [route form submissions](/kb/guide/jev-ai-sdk-form-router)
+- Learn how to [automatically approve tool calls in eve with Jev](/kb/guide/auto-approve-tool-calls-eve-jev)
+- Build a [product review moderation workflow with Jev and TanStack AI](/kb/guide/moderate-product-reviews-jev-tanstack-ai)
+
+
+---
+
+[View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

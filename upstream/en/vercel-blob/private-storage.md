@@ -3,23 +3,31 @@ title: Private Storage
 product: vercel
 url: /docs/vercel-blob/private-storage
 canonical_url: "https://vercel.com/docs/vercel-blob/private-storage"
-last_updated: 2026-07-15
+last_updated: 2026-09-15
 type: conceptual
 prerequisites:
   - /docs/vercel-blob
 related:
   - /docs/vercel-blob/using-blob-sdk
+  - /docs/vercel-blob/python-sdk-reference
   - /docs/cli
   - /docs/vercel-blob
   - /docs/cli/blob
-  - /docs/vercel-blob/server-upload
 summary: Learn how to use private Vercel Blob storage to serve files with authentication
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Private Storage
 
-> **🔒 Permissions Required**: Vercel Blob
+> Vercel Blob is available on all plans
+>
+> Those with the owner, member, developer role can access this feature
+
+> **💡 Note:** Private storage requires a private Blob store and is available starting with:* `@vercel/blob` [JS SDK](/docs/vercel-blob/using-blob-sdk) >= 2.3
+> * `vercel-blob` [Python SDK](/docs/vercel-blob/python-sdk-reference) >= 0.5.0
+> * `vc` [Vercel CLI](/docs/cli) >= 50.20.0
+
+Private Blob stores require authentication for all read and write operations, ensuring files are only accessible to authenticated requests. Use private storage for sensitive documents, user content, and applications with custom authentication.
 
 
 <!-- docsgraph:related -->
@@ -27,40 +35,46 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Vercel Blob vs Netlify Blobs](https://vercel.com/kb/guide/vercel-blob-vs-netlify-blobs?from=related) — Compare Vercel Blob and Netlify Blobs on storage model, public URLs, delivery, limits, and pricing to choose the right o
-- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob?from=related) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
-- [How to upload and store files with Vercel](https://vercel.com/kb/guide/how-to-upload-and-store-files-with-vercel?from=related) — Vercel file uploads done right cover Server Actions, client-direct upload, and multipart for 5 TB files, with auth and c
-- [Build with Vercel Blob on Next.js](https://vercel.com/kb/guide/vercel-blob-nextjs?from=related) — Deploy the Vercel Blob Next.js Starter and learn how client uploads store images securely in a private Blob store.
-- [Build Imgur-style image hosting with Nuxt and Vercel Blob](https://vercel.com/kb/guide/vercel-blob-nuxt-imgur-clone?from=related) — Learn how to build an Imgur-style paste-to-share image host using Nuxt and Vercel Blob, with direct-to-storage client up
-- [Examples](https://vercel.com/docs/vercel-blob/examples?from=related) — Examples on how to use Vercel Blob in your applications
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Blob now supports consistent reads on private storage](https://vercel.com/changelog/vercel-blob-now-supports-consistent-reads-on-private-storage)
+- [Vercel Private Blob is now generally available](https://vercel.com/changelog/vercel-private-blob-is-now-generally-available)
+- [Run a research workspace on Vercel](https://vercel.com/kb/guide/run-research-workspace-vercel) — Plan a durable research workspace on Vercel's Agentic Infrastructure with Workflows, internal API tools, Vercel Sandbox
+- [Vercel Blob vs Netlify Blobs](https://vercel.com/kb/guide/vercel-blob-vs-netlify-blobs) — Compare Vercel Blob and Netlify Blobs on storage model, public URLs, delivery, limits, and pricing to choose the right o
+- [Use Vercel Daemons with eve agents](https://vercel.com/kb/guide/vercel-daemons-eve-agents) — Connect eve agents to Vercel Daemons to process queued jobs, offload heavy work, and react to events. Includes code, aut
+- [The Complete Guide to Vercel Blob](https://vercel.com/kb/guide/vercel-blob) — Vercel Blob stores and serves files of any size through Vercel's global network. Learn how Blob works, what it costs, an
+- [How to upload and store files with Vercel](https://vercel.com/kb/guide/how-to-upload-and-store-files-with-vercel) — Vercel file uploads done right cover Server Actions, client-direct upload, and multipart for 5 TB files, with auth and c
+- [Private storage for Vercel Blob, now available in public beta](https://vercel.com/changelog/private-storage-for-vercel-blob-now-available-in-public-beta)
+- [Flue with Vercel](https://vercel.com/docs/frameworks/agents/flue) — Create a Flue agent that uses Vercel AI Gateway for model requests, then add Vercel Sandbox for isolated code execution.
 
 Full cross-link map for this page: [/docs/vercel-blob/private-storage.graph.md](/docs/vercel-blob/private-storage.graph.md)
 <!-- /docsgraph:related -->
-
-> **💡 Note:** Private storage requires a private Blob store and is available starting with:* `@vercel/blob` [TypeScript SDK](/docs/vercel-blob/using-blob-sdk) >= 2.3
-> * `vercel` [Python SDK](https://github.com/vercel/vercel-py) >= 0.5.0
-> * `vc` [Vercel CLI](/docs/cli) >= 50.20.0
-
-Private Blob stores require authentication for all read and write operations, ensuring files are only accessible to authenticated requests. Use private storage for sensitive documents, user content, and applications with custom authentication.
 
 See [differences with public storage](/docs/vercel-blob#private-and-public-storage).
 
 ## Creating a private Blob store
 
-You can create a private Blob store from the Vercel dashboard or the CLI:
+Create a private Blob store from the dashboard or the Vercel CLI.
 
-- **Dashboard**:
-  1. Go to your project's [**Storage** tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fstores\&title=Go+to+Storage)
-  2. Select **Create Database**, then choose **Blob**
-  3. Select **Continue**, then set the access to **Private**
-- **[CLI](/docs/cli/blob)**: Run `vercel blob create-store [name] --access private`
+#### Dashboard
 
-When your code runs on Vercel, the SDK authenticates using OIDC by default. Connect your store to a project so Vercel adds the OIDC token and `BLOB_STORE_ID` to your environment automatically. For team-level stores or code that runs outside Vercel, see [Authentication](/docs/vercel-blob/using-blob-sdk#authentication).
+1. Go to your project's [**Storage** tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fstores\&title=Go+to+Storage)
+2. Select **Create Storage**, then choose **Blob**
+3. Select **Continue**, then set the access to **Private**
+
+#### CLI
+
+Run [`vercel blob create-store`](/docs/cli/blob#create-store) from your linked project directory with `--access private`. The `--yes` flag connects the new store to the project in all environments:
+
+```bash filename="terminal"
+vercel blob create-store my-private-store --access private --yes
+```
+
+When your code runs on Vercel, the SDK authenticates using OIDC by default. Connect your store to a project so Vercel adds the OIDC token and `BLOB_STORE_ID` to your environment automatically. For team-level stores or code that runs outside Vercel, see Authentication in the [JS SDK](/docs/vercel-blob/using-blob-sdk#authentication) or [Python SDK](/docs/vercel-blob/python-sdk-reference#authentication) reference.
 
 ## Uploading files
 
-Upload files to a private Blob store using [`put()`](/docs/vercel-blob/using-blob-sdk#put) with `access: 'private'`:
+Upload files to a private Blob store by setting the upload's access to private:
+
+**app/api/upload/route.ts**
 
 ```ts filename="app/api/upload/route.ts"
 import { put } from '@vercel/blob';
@@ -77,13 +91,36 @@ export async function POST(request: Request) {
 }
 ```
 
+**main.py**
+
+```py filename="main.py"
+from fastapi import FastAPI, UploadFile
+
+from vercel import blob
+
+app = FastAPI()
+
+
+@app.post("/api/upload")
+async def upload(file: UploadFile) -> blob.PutResult:
+    return await blob.put_blob(
+        file.filename or "upload",
+        await file.read(),
+        access="private",
+    )
+```
+
 See the [server uploads](/docs/vercel-blob/server-upload) and [client uploads](/docs/vercel-blob/client-upload) guides for detailed instructions on uploading files.
 
 ## Delivering private blobs
 
-Every file uploaded to a private Blob store gets a URL in the form of `https://<store-id>.private.blob.vercel-storage.com/<pathname>`. This URL is not publicly accessible. Fetch its content with the [`get()`](/docs/vercel-blob/using-blob-sdk#get) SDK method. The SDK supports OpenID Connect (OIDC) and `BLOB_READ_WRITE_TOKEN` authentication. When your code runs on Vercel, it defaults to OIDC, which is preferred because its short-lived tokens rotate automatically. See [accessing without the SDK](#accessing-without-the-sdk).
+For a Python example, follow [Store and serve files from Python with Vercel Blob](/kb/guide/python-and-vercel-blob). The guide uses FastAPI to authenticate users and check file ownership before uploading, downloading, listing, or deleting private receipts.
 
-To serve private blobs to your users, create a route that authenticates the request, fetches the blob using `get()`, and streams the response. For example, a route like `https://example.com/api/file?pathname=documents/report.pdf`:
+Every file uploaded to a private Blob store gets a URL in the form of `https://<store-id>.private.blob.vercel-storage.com/<pathname>`. This URL is not publicly accessible. Fetch its content with the SDK, which supports OpenID Connect (OIDC) and `BLOB_READ_WRITE_TOKEN` authentication. When your code runs on Vercel, it defaults to OIDC, which is preferred because its short-lived tokens rotate automatically. See [accessing without the SDK](#accessing-without-the-sdk).
+
+To serve private blobs to your users, create a route that authenticates the request, fetches the blob with the SDK, and returns its content in the response. For example, a route like `https://example.com/api/file?pathname=documents/report.pdf`:
+
+**app/api/file/route.ts**
 
 ```ts filename="app/api/file/route.ts" framework=nextjs-app
 import { type NextRequest, NextResponse } from 'next/server';
@@ -113,6 +150,8 @@ export async function GET(request: NextRequest) {
 }
 ```
 
+**app/api/file/route.js**
+
 ```js filename="app/api/file/route.js" framework=nextjs-app
 import { NextResponse } from 'next/server';
 import { get } from '@vercel/blob';
@@ -140,6 +179,8 @@ export async function GET(request) {
   });
 }
 ```
+
+**pages/api/file.ts**
 
 ```ts filename="pages/api/file.ts" framework=nextjs
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -170,6 +211,8 @@ export default async function handler(
 }
 ```
 
+**pages/api/file.js**
+
 ```js filename="pages/api/file.js" framework=nextjs
 import { Readable } from 'node:stream';
 import { get } from '@vercel/blob';
@@ -194,6 +237,8 @@ export default async function handler(request, response) {
   Readable.fromWeb(result.stream).pipe(response);
 }
 ```
+
+**api/file.ts**
 
 ```ts filename="api/file.ts" framework=other
 import { get } from '@vercel/blob';
@@ -225,6 +270,8 @@ export default async function handler(request: Request) {
 }
 ```
 
+**api/file.js**
+
 ```js filename="api/file.js" framework=other
 import { get } from '@vercel/blob';
 
@@ -255,7 +302,33 @@ export default async function handler(request) {
 }
 ```
 
-See the [`get()` API reference](/docs/vercel-blob/using-blob-sdk#get) for full option details and return values.
+**main.py**
+
+```python filename="main.py" framework=fastapi
+from fastapi import FastAPI, HTTPException, Response
+
+from vercel import blob
+
+app = FastAPI()
+
+
+@app.get("/api/file")
+async def get_file(pathname: str) -> Response:
+    # Your auth goes here
+
+    try:
+        result = await blob.get_blob(pathname, access="private")
+    except blob.BlobNotFoundError:
+        raise HTTPException(status_code=404, detail="Not found") from None
+
+    return Response(
+        result.body,
+        media_type=result.metadata.content_type,
+        headers={"X-Content-Type-Options": "nosniff"},
+    )
+```
+
+See the [JS SDK](/docs/vercel-blob/using-blob-sdk#get) and [Python SDK](/docs/vercel-blob/python-sdk-reference#download-a-blob) references for full option details and return values. The Python SDK reference also shows how to [stream a blob](/docs/vercel-blob/python-sdk-reference#stream_blob) instead of reading it into memory.
 
 ## Accessing without the SDK
 
@@ -265,6 +338,10 @@ To access a private blob directly from code running on Vercel, pass the short-li
 curl https://my-store-id.private.blob.vercel-storage.com/my-file.png \
   -H "Authorization: Bearer $VERCEL_OIDC_TOKEN"
 ```
+
+> **💡 Note:** When you use the token directly like this, you handle expiry yourself:
+> requests fail with a `403` error once the token expires. The SDK refreshes
+> the token automatically, so prefer it when possible.
 
 When code runs outside Vercel or you need a static credential, pass `BLOB_READ_WRITE_TOKEN` instead:
 
@@ -277,14 +354,16 @@ curl https://my-store-id.private.blob.vercel-storage.com/my-file.png \
 
 Private blobs have two layers of caching:
 
-1. **CDN cache** (between your [Function](/docs/functions) and the blob store): When your Function fetches a private blob, the request goes through Vercel's [CDN cache](/docs/caching/cdn-cache). If the blob is already cached, no [Fast Origin Transfer](/docs/manage-cdn-usage#fast-origin-transfer) is charged. You control the CDN cache duration with the [`cacheControlMaxAge`](/docs/vercel-blob/using-blob-sdk#put) option when uploading (defaults to 1 month), the same way as [public blobs](/docs/vercel-blob/public-storage#caching).
+1. **CDN cache** (between your [Function](/docs/functions) and the blob store): When your Function fetches a private blob, the request goes through Vercel's [CDN cache](/docs/caching/cdn-cache). If the blob is already cached, no [Fast Origin Transfer](/docs/manage-cdn-usage#fast-origin-transfer) is charged. You control the CDN cache duration with the cache max age you set when uploading (defaults to 1 month), the same way as [public blobs](/docs/vercel-blob/public-storage#caching).
 2. **Browser cache** (between the browser and your Function): You control this through the `Cache-Control` header on your Function's response.
 
 If you don't set a `Cache-Control` header, Vercel sends `Cache-Control: public, max-age=0, must-revalidate` by default. The browser keeps the response on disk but always revalidates with your server before using it, so your auth logic runs on every request and the user always gets the correct content.
 
 Since you're serving private blobs, we recommend setting `Cache-Control: private, no-cache`. This restricts caching to the browser only while still allowing efficient `304` responses:
 
-```ts
+**app/api/file/route.ts**
+
+```ts filename="app/api/file/route.ts"
 const result = await get(pathname, { access: 'private' });
 
 return new NextResponse(result.stream, {
@@ -296,23 +375,40 @@ return new NextResponse(result.stream, {
 });
 ```
 
+**main.py**
+
+```py filename="main.py"
+result = await blob.get_blob(pathname, access="private")
+
+return Response(
+    result.body,
+    media_type=result.metadata.content_type,
+    headers={
+        "X-Content-Type-Options": "nosniff",
+        "Cache-Control": "private, no-cache",
+    },
+)
+```
+
 For sensitive data (tokens, banking, PII), use `Cache-Control: private, no-store` instead. Nothing is stored on disk and every request is a full fetch.
 
 ### Consistent reads
 
-Reads are served through Vercel's [CDN cache](/docs/vercel-blob#caching) by default. When you overwrite a blob at the same pathname, the changes may take up to 60 seconds to propagate through our cache. During that window, [`get()`](/docs/vercel-blob/using-blob-sdk#get) can return the previous version. When a read must reflect the latest write, such as fetching a file right after updating it, pass `useCache: false`:
+Reads are served through Vercel's [CDN cache](/docs/vercel-blob#caching) by default. When you overwrite a blob at the same pathname, the changes may take up to 60 seconds to propagate through our cache. During that window, a read can return the previous version. When a read must reflect the latest write, such as fetching a file right after updating it, bypass the cache for that read with the [`useCache`](/docs/vercel-blob/using-blob-sdk#get) option:
 
 ```ts
 const result = await get(pathname, { access: 'private', useCache: false });
 ```
 
-This serves the read directly from origin storage and guarantees the latest content. These reads are slower and incur [Fast Origin Transfer](/docs/manage-cdn-usage#fast-origin-transfer) on each request. Keep the default for content that doesn't change after upload, such as blobs uploaded with unique pathnames or with [`addRandomSuffix: true`](/docs/vercel-blob#alternatives-to-overwriting).
+This serves the read directly from origin storage and guarantees the latest content. These reads are slower and incur [Fast Origin Transfer](/docs/manage-cdn-usage#fast-origin-transfer) on each request. Keep the default for content that doesn't change after upload, such as blobs uploaded with unique pathnames or with a [random suffix](/docs/vercel-blob#alternatives-to-overwriting).
 
 [Presigned `GET` URLs](/docs/vercel-blob/vercel-signed-urls#get---get-a-blob) accept the same `useCache` option in [`presignUrl()`](/docs/vercel-blob/vercel-signed-urls#presignurl).
 
 ### Browser caching with conditional requests
 
-When you set `Cache-Control: private, no-cache`, the browser caches the response but revalidates on every request by sending an `If-None-Match` header with the ETag it received previously. You can forward this header to the blob store to get a `304 Not Modified` response when the blob hasn't changed, avoiding re-downloading the full file:
+When you set `Cache-Control: private, no-cache`, the browser caches the response but revalidates on every request by sending an `If-None-Match` header with the ETag it received previously. You can forward this header to the blob store to get a `304 Not Modified` response when the blob hasn't changed, avoiding re-downloading the full file. Pass the header's value with the [`ifNoneMatch`](/docs/vercel-blob/using-blob-sdk#get) option:
+
+**app/api/file/route.ts**
 
 ```ts filename="app/api/file/route.ts" framework=nextjs-app
 import { type NextRequest, NextResponse } from 'next/server';
@@ -357,6 +453,8 @@ export async function GET(request: NextRequest) {
 }
 ```
 
+**app/api/file/route.js**
+
 ```js filename="app/api/file/route.js" framework=nextjs-app
 import { NextResponse } from 'next/server';
 import { get } from '@vercel/blob';
@@ -399,6 +497,8 @@ export async function GET(request) {
   });
 }
 ```
+
+**pages/api/file.ts**
 
 ```ts filename="pages/api/file.ts" framework=nextjs
 import type { NextApiRequest, NextApiResponse } from 'next';
@@ -440,6 +540,8 @@ export default async function handler(
 }
 ```
 
+**pages/api/file.js**
+
 ```js filename="pages/api/file.js" framework=nextjs
 import { Readable } from 'node:stream';
 import { get } from '@vercel/blob';
@@ -475,6 +577,8 @@ export default async function handler(request, response) {
   Readable.fromWeb(result.stream).pipe(response);
 }
 ```
+
+**api/file.ts**
 
 ```ts filename="api/file.ts" framework=other
 import { get } from '@vercel/blob';
@@ -520,6 +624,8 @@ export default async function handler(request: Request) {
   });
 }
 ```
+
+**api/file.js**
 
 ```js filename="api/file.js" framework=other
 import { get } from '@vercel/blob';
@@ -568,14 +674,14 @@ export default async function handler(request) {
 
 How it works:
 
-1. **First request**: `get()` returns `statusCode: 200` with `stream` and an `ETag`. The browser caches the response.
-2. **Subsequent requests**: The browser sends `If-None-Match` with the cached ETag. When forwarded to the blob store, `get()` returns `statusCode: 304` with `stream: null` — no data is re-downloaded.
+1. **First request**: The blob store returns a `200` response with the content and an `ETag`. The browser caches the response.
+2. **Subsequent requests**: The browser sends `If-None-Match` with the cached ETag. When forwarded to the blob store, it returns a `304` response without content, so no data is re-downloaded.
 
 > **💡 Note:** Avoid caching private blob responses in Vercel's CDN cache (e.g. with
 > `s-maxage`) and avoid relying on middleware for auth. While both can work, a
 > middleware bug or misconfiguration could expose cached private content to the
 > wrong users.Instead, always verify auth directly in your route handler, right next to the
-> [`get()`](/docs/vercel-blob/using-blob-sdk#get) call.
+> code that reads the blob.
 
 See [Cache-Control headers](/docs/caching/cache-control-headers) for more details.
 
@@ -586,7 +692,7 @@ Learn more about [Vercel's CDN cache](/docs/caching/cdn-cache).
 Since private blobs are delivered through your own [Functions](/docs/functions), you can serve them from any custom domain. A common pattern is to create a dedicated Vercel project (e.g. "assets") for blob delivery:
 
 1. Create a new Vercel project with a route handler that serves private blobs (as shown in [delivering private blobs](#delivering-private-blobs))
-2. [Connect your private Blob store](/docs/storage#connect-a-store-to-a-project) to this project
+2. [Connect your private Blob store](/docs/vercel-blob#connecting-a-store-to-your-projects) to this project
 3. [Assign a custom domain](/docs/domains/working-with-domains) to the project (e.g. `content.mywebsite.com`)
 
 Requests to `content.mywebsite.com/api/file?pathname=documents/report.pdf` will then go through your auth logic and stream the blob to the user.
@@ -623,3 +729,6 @@ See [pricing documentation](/docs/vercel-blob/usage-and-pricing) for full detail
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,16 +3,16 @@ title: Pricing for Web Analytics
 product: vercel
 url: /docs/analytics/limits-and-pricing
 canonical_url: "https://vercel.com/docs/analytics/limits-and-pricing"
-last_updated: 2026-06-26
+last_updated: 2026-08-25
 type: reference
 prerequisites:
   - /docs/analytics
 related:
   - /docs/plans/hobby
   - /docs/manage-and-optimize-observability
-  - /docs/speed-insights/metrics
-  - /docs/manage-cdn-usage
   - /docs/notifications
+  - /docs/accounts
+  - /docs/plans/pro-plan
 summary: Learn about pricing for Vercel Web Analytics.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -21,24 +21,29 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Pricing
 
+Vercel prices Web Analytics by the number of [collected events](#what-is-an-event-in-vercel-web-analytics) across all projects in your team.
+After you enable Vercel Web Analytics, your plan determines which features you can use.
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The Complete Guide to Vercel Agent](https://vercel.com/kb/guide/vercel-agent?from=related) — Learn what Vercel Agent does, how to set up Code Review, Investigation, Chat, and Installation, and what each feature co
-- [Limits and Pricing](https://vercel.com/docs/speed-insights/limits-and-pricing?from=related) — Learn about our limits and pricing when using Vercel Speed Insights. Different limitations are applied depending on your
-- [Observability Plus](https://vercel.com/docs/observability/observability-plus?from=related) — Learn about using Observability Plus and its limits.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Using Web Analytics](https://vercel.com/docs/analytics/using-web-analytics?from=related) — Learn how to use Vercel's Web Analytics to understand how visitors are using your website.
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
+- [Split Web Analytics data by any dimension](https://vercel.com/changelog/split-web-analytics-data-by-any-dimension)
+- [Up to 80% pricing reduction for Web Analytics](https://vercel.com/changelog/up-to-80-pricing-reduction-for-web-analytics)
+- [UTM parameter support in Web Analytics](https://vercel.com/changelog/utm-parameter-support-in-web-analytics)
+- [The Complete Guide to Vercel Agent](https://vercel.com/kb/guide/vercel-agent) — Learn what Vercel Agent does, how to set up Code Review, Investigation, Chat, and Installation, and what each feature co
+- [Vercel Web Analytics is now generally available](https://vercel.com/blog/vercel-web-analytics-is-now-generally-available)
+- [Web Analytics is now generally available](https://vercel.com/changelog/web-analytics-is-now-generally-available)
+- [Observability Plus](https://vercel.com/docs/observability/observability-plus) — Learn about using Observability Plus and its limits.
+- [Web Analytics](https://vercel.com/docs/agent-resources/vercel-mcp/tools/web-analytics) — Vercel MCP tools for web analytics.
+- [Limits and Pricing for Speed Insights](https://vercel.com/docs/speed-insights/limits-and-pricing) — Learn about our limits and pricing when using Vercel Speed Insights. Different limitations are applied depending on your
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Query Web Analytics with the API](https://vercel.com/docs/analytics/web-analytics-api) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
 
 Full cross-link map for this page: [/docs/analytics/limits-and-pricing.graph.md](/docs/analytics/limits-and-pricing.graph.md)
 <!-- /docsgraph:related -->
-
-Vercel prices Web Analytics by the number of [collected events](#what-is-an-event-in-vercel-web-analytics) across all projects in your team.
-After you enable Vercel Web Analytics, your plan determines which features you can use.
 
 |  | Hobby | Pro | Pro with Web Analytics Plus | Enterprise |
 | --- | --- | --- | --- | --- |
@@ -58,7 +63,7 @@ On every billing cycle, Hobby teams receive the included event allowance listed 
 Vercel charges Pro teams for collected events based on usage, subject to the Pro monthly usage credit.
 If your team is on the Hobby plan, we will [pause](#hobby) the collection, as you cannot be charged for extra events.
 
-Pro teams can also purchase the [Web Analytics Plus add-on](#pro-with-web-analytics-plus) for an additional $10.00/month per team, which grants access to more features and an extended reporting window.
+Pro teams can also purchase the [Web Analytics Plus add-on](#pro-with-web-analytics-plus) for an additional $10/month per team, which grants access to more features and an extended reporting window.
 
 ## Usage
 
@@ -68,12 +73,6 @@ To view information on managing each resource, select the resource link in the *
 To jump straight to guidance on optimization, select the corresponding resource link in the **Optimize** column.
 
 See the [manage and optimize Observability usage](/docs/manage-and-optimize-observability) section for more information on how to optimize your usage.
-
-> **💡 Note:** Speed Insights and Web Analytics require scripts to do collection of [data
-> points](/docs/speed-insights/metrics#understanding-data-points). These scripts
-> are loaded on the client-side and therefore may incur additional usage and
-> costs for [Data Transfer](/docs/manage-cdn-usage#fast-data-transfer) and [Edge
-> Requests](/docs/manage-cdn-usage#edge-requests).
 
 ## Billing information
 
@@ -100,7 +99,7 @@ For Teams on a Pro trial, the [trial will end](/docs/plans/pro-plan/trials#post-
 > **💡 Note:** Note that while you will not be charged during the time of the trial, once the
 > trial ends, you will be charged for the events collected during the trial
 
-You will be charged $0.00. These numbers are based on a per-billing cycle basis. Vercel will [send you notifications](/docs/notifications#on-demand-usage-notifications) when you get closer to spending your included credit.
+You will be charged $0.03 per 1K events. These numbers are based on a per-billing cycle basis. Vercel will [send you notifications](/docs/notifications#on-demand-usage-notifications) when you get closer to spending your included credit.
 
 Pro teams can [set up Spend Management](/docs/spend-management#managing-your-spend-amount) to get notified or to automatically take action, such as [using a webhook](/docs/spend-management#configuring-a-webhook) or pausing your projects when your usage hits a set spend amount.
 
@@ -108,7 +107,7 @@ Analytics data is not collected while your project is paused, but becomes access
 
 ### Pro with Web Analytics Plus
 
-Teams on the Pro plan can optionally extend usage and capabilities through the Web Analytics Plus [add-on](/docs/pricing#pro-plan-add-ons) for an additional $10.00/month per team.
+Teams on the Pro plan can optionally extend usage and capabilities through the Web Analytics Plus [add-on](/docs/pricing#pro-plan-add-ons) for an additional $10/month per team.
 
 When enabled, all projects within the team have access to additional features.
 
@@ -146,3 +145,6 @@ While only the reporting window is guaranteed to be stored, Vercel may store you
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

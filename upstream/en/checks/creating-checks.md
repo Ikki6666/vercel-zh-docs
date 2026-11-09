@@ -3,7 +3,7 @@ title: Anatomy of the Checks API
 product: vercel
 url: /docs/checks/creating-checks
 canonical_url: "https://vercel.com/docs/checks/creating-checks"
-last_updated: 2026-03-17
+last_updated: 2026-09-16
 type: reference
 prerequisites:
   - /docs/checks
@@ -13,13 +13,13 @@ related:
   - /docs/speed-insights
   - /docs/speed-insights/metrics
   - /docs/rest-api
-summary: Learn how to create your own Checks with Vercel Integrations. You can build your own Integration in order to register any arbitrary Check for your...
+summary: Learn how to create your own Checks with Vercel Integrations. You can build your own Integration to register any arbitrary Check for your deployments.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Anatomy of the Checks API
 
-Checks API extends the build and deploy process once your deployment is ready. Each check behaves like a webhook that triggers specific events, such as `deployment.created`, `deployment.ready`, and `deployment.succeeded`. The test are verified before domains are assigned.
+Checks API extends the build and deploy process once your deployment is ready. Each check behaves like a webhook that triggers specific events, such as `deployment.created`, `deployment.ready`, and `deployment.succeeded`. The tests are verified before domains are assigned.
 
 
 <!-- docsgraph:related -->
@@ -27,11 +27,12 @@ Checks API extends the build and deploy process once your deployment is ready. E
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
-- [Get a check run](https://vercel.com/docs/rest-api/checks-v2/get-a-check-run?from=related)
-- [Create a check](https://vercel.com/docs/rest-api/checks-v2/create-a-check?from=related)
-- [Create a check run](https://vercel.com/docs/rest-api/checks-v2/create-a-check-run?from=related)
-- [Get a check](https://vercel.com/docs/rest-api/checks-v2/get-a-check?from=related)
+- [Checkly Integration and Checks API now generally available](https://vercel.com/changelog/checkly-integration-and-checks-api-now-generally-available)
+- [Checks API Reference](https://vercel.com/docs/checks/checks-api) — The Vercel Checks API lets you create tests and assertions that run after each deployment has been built, and are powere
+- [Get a check run](https://vercel.com/docs/rest-api/checks-v2/get-a-check-run) — GET /v2/deployments/{deploymentId}/check-runs/{checkRunId} — Return a detailed response for a single check run.
+- [Create a check](https://vercel.com/docs/rest-api/checks-v2/create-a-check) — POST /v2/projects/{projectIdOrName}/checks — Creates a new check for a project.
+- [Create a check run](https://vercel.com/docs/rest-api/checks-v2/create-a-check-run) — POST /v2/deployments/{deploymentId}/check-runs — Creates a new check run for a deployment.
+- [Deployment Checks](https://vercel.com/docs/deployment-checks) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
 
 Full cross-link map for this page: [/docs/checks/creating-checks.graph.md](/docs/checks/creating-checks.graph.md)
 <!-- /docsgraph:related -->
@@ -66,7 +67,7 @@ Checks are always associated with a specific deployment that is tested and valid
 | `blocking`      | Boolean            | Tells Vercel if this check needs to block the deployment                                                                                                                                             |
 | `name`          | String             | Name of the check                                                                                                                                                                                    |
 | `detailsUrl`    | String (optional)  | URL to display in the Vercel dashboard                                                                                                                                                               |
-| `externalID`    | String (optional)  | ID used for external use                                                                                                                                                                             |
+| `externalId`    | String (optional)  | ID used for external use                                                                                                                                                                             |
 | `path`          | String (optional)  | Path of the page that is being checked                                                                                                                                                               |
 | `rerequestable` | Boolean (optional) | Tells Vercel if the check can rerun. Users can trigger a `deployment.check-rerequested` [webhook](/docs/webhooks/webhooks-api#deployment.check-rerequested), through a button on the deployment page |
 | `conclusion`    | String (optional)  | The result of a running check. For [blocking checks](#types-of-checks) the values can be `canceled`, `failed`, `neutral`, `succeeded`, `skipped`. `canceled` and `failed`                            |
@@ -125,26 +126,25 @@ Each of these keys has the following properties:
   "path": "/",
   "output": {
     "metrics": {
-        "FCP": {
-          "value": 1200,
-          "previousValue": 1400,
-          "source": "web-vitals"
-        }
-        "LCP": {
-          "value": 1200,
-          "previousValue": 1400,
-          "source": "web-vitals"
-        },
-        "CLS": {
-          "value": 1200,
-          "previousValue": 1400,
-          "source": "web-vitals"
-        },
-        "TBT": {
-          "value": 1200,
-          "previousValue": 1400,
-          "source": "web-vitals"
-        }
+      "FCP": {
+        "value": 1200,
+        "previousValue": 1400,
+        "source": "web-vitals"
+      },
+      "LCP": {
+        "value": 1200,
+        "previousValue": 1400,
+        "source": "web-vitals"
+      },
+      "CLS": {
+        "value": 1200,
+        "previousValue": 1400,
+        "source": "web-vitals"
+      },
+      "TBT": {
+        "value": 1200,
+        "previousValue": 1400,
+        "source": "web-vitals"
       }
     }
   }
@@ -158,7 +158,7 @@ Each of these keys has the following properties:
 
 A check can be "rerequested" using the `deployment.check-rerequested` webhook. Add the `rerequestable` attribute, and you can rerequest failed checks.
 
-A rerequested check triggers the`deployment.check-rerequested` webhook. It updates the check `status` to `running` and resets the `conclusion`, `detailsUrl`, `externalId`, and `output` fields.
+A rerequested check triggers the `deployment.check-rerequested` webhook. It updates the check `status` to `running` and resets the `conclusion`, `detailsUrl`, `externalId`, and `output` fields.
 
 ### Skipping Checks
 
@@ -190,3 +190,6 @@ However, your deployment will fail if the `conclusion` updates to one of the fol
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: Build with AI agents on Vercel
 product: vercel
 url: /docs/agent-resources/integrations-for-agents
 canonical_url: "https://vercel.com/docs/agent-resources/integrations-for-agents"
-last_updated: 2026-02-10
+last_updated: 2026-08-27
 type: conceptual
 prerequisites:
   - /docs/agent-resources
@@ -26,13 +26,16 @@ Integrating AI agents in your application often means working with separate dash
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
-- [AI Agents on Vercel](https://vercel.com/kb/guide/ai-agents?from=related) — This guide provides an overview of how to build and deploy AI agents on Vercel.
-- [Integrations for Models](https://vercel.com/docs/agent-resources/integrations-for-models?from=related) — Integrate powerful AI services and models seamlessly into your Vercel projects.
-- [Adding a Provider](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-provider?from=related) — Learn how to add a new AI provider to your Vercel projects.
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [xAI](https://vercel.com/docs/agent-resources/integrations-for-models/xai?from=related) — Learn how to add the xAI native integration with Vercel.
-- [Vercel Agent](https://vercel.com/docs/agent?from=related) — Use Vercel Agent to investigate production issues, review code, and take approved actions.
+- [AI agents and services on the Vercel Marketplace](https://vercel.com/blog/ai-agents-and-services-on-the-vercel-marketplace)
+- [Introducing AI agents & services on the Vercel Marketplace](https://vercel.com/changelog/introducing-ai-agents-and-services-on-the-vercel-marketplace)
+- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
+- [Vercel Ship AI 2025 recap](https://vercel.com/blog/ship-ai-2025-recap)
+- [Build with OpenAI Agents API on Vercel](https://vercel.com/changelog/build-with-openai-agents-api-on-vercel)
+- [Build with AI on Vercel](https://vercel.com/docs/agent-resources/integrations-for-models) — Integrate powerful AI services and models seamlessly into your Vercel projects.
+- [Adding a Provider](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-provider) — Learn how to add a new AI provider to your Vercel projects.
+- [Vercel xAI Integration](https://vercel.com/docs/agent-resources/integrations-for-models/xai) — Learn how to add the xAI native integration with Vercel.
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel) — Install the Vercel CLI, add the Vercel Plugin or agent skills, connect Vercel MCP, and deploy your first project.
+- [Adding a Model](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-model) — Learn how to add a new AI model to your Vercel projects
 
 Full cross-link map for this page: [/docs/agent-resources/integrations-for-agents.graph.md](/docs/agent-resources/integrations-for-agents.graph.md)
 <!-- /docsgraph:related -->
@@ -85,8 +88,14 @@ These services plug into your Vercel workflows so you can build agents specific 
 - [AI agents and services on the Vercel Marketplace](https://vercel.com/marketplace/category/agents)
 - [Learn how to add and manage a native integration](/docs/integrations/install-an-integration/product-integration)
 - [Learn how to create a native integration](/docs/integrations/create-integration/marketplace-product)
+- [Build agentic applications with AI SDK](https://vercel.com/kb/ai-sdk)
+- [Explore templates for building agents with eve](https://vercel.com/templates/eve)
+- [Connect agents to third-party services with Vercel Connect](https://vercel.com/kb/guide/vercel-connect)
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

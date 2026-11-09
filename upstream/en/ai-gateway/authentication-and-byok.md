@@ -1,22 +1,23 @@
 ---
-title: Authentication & BYOK
+title: AI Gateway Authentication and BYOK
 product: vercel
 url: /docs/ai-gateway/authentication-and-byok
 canonical_url: "https://vercel.com/docs/ai-gateway/authentication-and-byok"
-last_updated: 2026-07-31
+last_updated: 2026-09-08
 type: conceptual
 prerequisites:
   - /docs/ai-gateway
 related:
+  - /docs/ai-gateway/authentication-and-byok/oidc
   - /docs/ai-gateway/authentication-and-byok/api-keys
   - /docs/ai-gateway/observability-and-spend/budgets
-  - /docs/ai-gateway/authentication-and-byok/oidc
+  - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway/authentication-and-byok/byok
-summary: Learn how to authenticate with the AI Gateway and configure your own provider keys.
+summary: Authenticate AI Gateway requests with API keys or OIDC tokens, and configure bring your own key (BYOK) credentials for model providers.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Authentication & BYOK
+# AI Gateway Authentication and BYOK
 
 Every request to AI Gateway requires Vercel authentication. Use an AI Gateway API key or OpenID Connect (OIDC) token. Bring Your Own Key (BYOK) provider credentials control how AI Gateway authenticates to a model provider, but they don't replace request authentication.
 
@@ -26,28 +27,36 @@ Every request to AI Gateway requires Vercel authentication. Use an AI Gateway AP
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel?from=related) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
-- [How to build an AI agent for Slack with Chat SDK and AI SDK](https://vercel.com/kb/guide/how-to-build-an-ai-agent-for-slack-with-chat-sdk-and-ai-sdk?from=related) — Build a Slack AI agent using Chat SDK, AI SDK's ToolLoopAgent, and Vercel AI Gateway. Covers project setup, tool definit
-- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router?from=related) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
-- [The complete guide to authentication on Vercel](https://vercel.com/kb/guide/complete-guide-authentication-vercel?from=related) — Learn how to implement authentication in your Vercel applications. Covers NextAuth/Auth.js setup, environment variable c
-- [Pricing](https://vercel.com/docs/ai-gateway/pricing?from=related) — Learn about pricing for AI Gateway.
-- [OIDC](https://vercel.com/docs/oidc?from=related) — Secure the access to your backend using OIDC Federation to enable auto-generated, short-lived, and non-persistent creden
-- [AI SDK for Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python?from=related) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 200+ models.
-- [Authentication](https://vercel.com/docs/kms/concepts/authentication?from=related) — How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel ac
-- [OpenAI](https://vercel.com/docs/agent-resources/integrations-for-models/openai?from=related) — Integrate your Vercel project with OpenAI's powerful suite of models.
+- [Get started with eve: durable AI agents in TypeScript](https://eve.dev/docs/getting-started) — Create an eve project, configure model credentials, and run your first agent.
+- [DeepSeek models now available via Azure on AI Gateway](https://vercel.com/changelog/deepseek-models-now-available-via-azure-on-ai-gateway)
+- [Vercel token scanning expands to more public sources](https://vercel.com/changelog/vercel-token-scanning-expands-to-more-public-sources)
+- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
+- [How to build an AI agent for Slack with Chat SDK and AI SDK](https://vercel.com/kb/guide/how-to-build-an-ai-agent-for-slack-with-chat-sdk-and-ai-sdk) — Build a Slack AI agent using Chat SDK, AI SDK's ToolLoopAgent, and Vercel AI Gateway. Covers project setup, tool definit
+- [How to build your own AI model router](https://vercel.com/kb/guide/how-to-build-your-own-ai-model-router) — Build an AI model router with Vercel AI Gateway. Keep routing, key, and retention decisions in your code while the gatew
+- [Using TanStack AI with Vercel AI Gateway](https://vercel.com/kb/guide/tanstack-ai-vercel-ai-gateway) — Connect TanStack AI to Vercel AI Gateway with the @tanstack/ai-vercel-gateway adapter to stream chat, route across provi
+- [Death to long-lived static credentials](https://vercel.com/blog/death-to-long-lived-static-credentials)
+- [Jev for Python engineers](https://vercel.com/blog/jev-for-python-engineers)
+- [Create a BYOK credential](https://vercel.com/docs/rest-api/ai-gateway/create-a-byok-credential) — POST /ai-gateway/byok-credentials — Create a new BYOK credential
+- [AI SDK for Python with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 400+ models.
+- [Get a BYOK credential](https://vercel.com/docs/rest-api/ai-gateway/get-a-byok-credential) — GET /ai-gateway/byok-credentials/{credentialId} — Get a BYOK credential by ID. The credential value is never returned.
 
 Full cross-link map for this page: [/docs/ai-gateway/authentication-and-byok.graph.md](/docs/ai-gateway/authentication-and-byok.graph.md)
 <!-- /docsgraph:related -->
+
+> **💡 Note:** If you deploy to Vercel and use the AI SDK, you don't need an API key. When
+> `AI_GATEWAY_API_KEY` isn't set, the AI SDK authenticates deployed code with
+> your project's [OIDC token](/docs/ai-gateway/authentication-and-byok/oidc)
+> automatically.
 
 ## Quick start
 
 Get authenticated in under a minute:
 
 1. Go to the [AI Gateway API Keys page](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fapi-keys\&title=AI+Gateway+API+Keys) in your Vercel dashboard
-2. Click **Create key** and follow the steps to generate a new API key.
+2. Click **Create API Key** and follow the steps to generate a new API key.
 3. Copy the API key and add it to your environment:
 
-```bash
+```bash {1}
 export AI_GATEWAY_API_KEY="your_api_key_here"
 ```
 
@@ -58,7 +67,7 @@ If you are using a different SDK, you may need to pass the API key manually.
 
 ### API keys
 
-API keys work anywhere, whether it's local development, external servers, or CI pipelines. They never expire unless you revoke them. To create, view, or delete keys, see [API keys](/docs/ai-gateway/authentication-and-byok/api-keys). To cap how much a key can spend, see [Budgets](/docs/ai-gateway/observability-and-spend/budgets#api-key-budgets).
+API keys work anywhere, whether it's local development, external servers, or CI pipelines. They don't expire unless you set an expiration date when you create them or you revoke them. To create, view, or delete keys, see [API keys](/docs/ai-gateway/authentication-and-byok/api-keys). To cap how much a key can spend, see [Budgets](/docs/ai-gateway/observability-and-spend/budgets#api-key-budgets).
 
 > **💡 Note:** When a team member leaves your team, Vercel deactivates any API keys
 > they created. If you need authentication that isn't tied to a
@@ -67,24 +76,220 @@ API keys work anywhere, whether it's local development, external servers, or CI 
 
 When you specify a model id as a plain string, the AI SDK automatically uses the Vercel AI Gateway provider and reads the API key from the `AI_GATEWAY_API_KEY` environment variable:
 
-```typescript filename="app/api/chat/route.ts" {5}
+These examples use AI SDK 7 and the AI SDK for Python beta. Set `AI_GATEWAY_API_KEY` before running them. See [API format differences](/docs/ai-gateway/sdks-and-apis#api-format-differences) for setup, request fields, and response handling.
+
+#### AI SDK
+
+#### TypeScript
+
+See the [AI SDK authentication reference](https://ai-sdk.dev/providers/ai-sdk-providers/ai-gateway#authentication) for SDK configuration and usage.
+
+```typescript filename="authentication.ts" {4}
 import { generateText } from 'ai';
 
-export async function GET() {
-  const result = await generateText({
-    model: 'xai/grok-4.5',
-    prompt: 'Why is the sky blue?',
-  });
-  return Response.json(result);
+const { text } = await generateText({
+  model: "anthropic/claude-sonnet-5",
+  prompt: "Why is the sky blue?",
+});
+
+console.log(text);
+```
+
+#### Python (beta)
+
+```python filename="authentication_ai.py" {5}
+import asyncio
+import ai
+
+async def main():
+    model = ai.get_model("anthropic/claude-sonnet-5")
+    messages = [ai.user_message("Why is the sky blue?")]
+    async with ai.stream(model, messages) as stream:
+        async for event in stream:
+            if isinstance(event, ai.events.TextDelta):
+                print(event.chunk, end="", flush=True)
+    print()
+
+asyncio.run(main())
+```
+
+#### Chat Completions
+
+#### TypeScript
+
+```typescript filename="authentication-chat.ts" {4}
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.chat.completions.create({
+  model: "anthropic/claude-sonnet-5",
+  messages: [{ "role": "user", "content": "Why is the sky blue?" }],
+});
+
+console.log(response.choices[0]?.message.content);
+```
+
+#### Python
+
+```python filename="authentication_chat.py" {5}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.chat.completions.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Why is the sky blue?"}],
+)
+
+print(response.choices[0].message.content)
+```
+
+#### cURL
+
+```bash filename="authentication-chat.sh" {2}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/chat/completions \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Why is the sky blue?"
+    }
+  ]
+}'
+```
+
+#### Messages API
+
+#### TypeScript
+
+```typescript filename="authentication-messages.ts" {4}
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh',
+});
+
+const response = await client.messages.create({
+  model: "anthropic/claude-sonnet-5",
+  messages: [{ "role": "user", "content": "Why is the sky blue?" }],
+  max_tokens: 1024,
+});
+
+for (const block of response.content) {
+  if (block.type === 'text') console.log(block.text);
 }
+```
+
+#### Python
+
+```python filename="authentication_messages.py" {5}
+import os
+from anthropic import Anthropic
+
+client = Anthropic(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh",
+)
+
+response = client.messages.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Why is the sky blue?"}],
+    max_tokens=1024,
+)
+
+for block in response.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### cURL
+
+```bash filename="authentication-messages.sh" {2}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/messages \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+  "model": "anthropic/claude-sonnet-5",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Why is the sky blue?"
+    }
+  ],
+  "max_tokens": 1024
+}'
+```
+
+#### Responses / OpenResponses
+
+#### TypeScript
+
+```typescript filename="authentication-responses.ts" {4}
+import OpenAI from 'openai';
+
+const client = new OpenAI({
+  apiKey: process.env.AI_GATEWAY_API_KEY,
+  baseURL: 'https://ai-gateway.vercel.sh/v1',
+});
+
+const response = await client.responses.create({
+  model: "anthropic/claude-sonnet-5",
+  input: "Why is the sky blue?",
+});
+
+console.log(response.output_text);
+```
+
+#### Python
+
+```python filename="authentication_responses.py" {5}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.responses.create(
+    model="anthropic/claude-sonnet-5",
+    input="Why is the sky blue?",
+)
+
+print(response.output_text)
+```
+
+#### cURL
+
+```bash filename="authentication-responses.sh" {2}
+curl --fail-with-body https://ai-gateway.vercel.sh/v1/responses \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "anthropic/claude-sonnet-5",
+  "input": "Why is the sky blue?"
+}'
 ```
 
 ### OIDC tokens
 
-For applications deployed on Vercel, OIDC tokens are automatically available as `VERCEL_OIDC_TOKEN`. No secrets to manage, no keys to rotate. It just works. See [OIDC](/docs/ai-gateway/authentication-and-byok/oidc) for setup.
+Vercel deployments receive an OIDC token as `VERCEL_OIDC_TOKEN`, so you can authenticate without creating an API key. See [OIDC](/docs/ai-gateway/authentication-and-byok/oidc) for setup.
 
-```typescript
-// Automatically uses OIDC on Vercel, falls back to API key locally
+```typescript {2}
+// An explicit API key takes precedence over the OIDC token.
 const apiKey = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
 ```
 
@@ -109,3 +314,6 @@ BYOK credentials are configured at the team level and work across all projects. 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

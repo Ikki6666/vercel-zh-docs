@@ -3,16 +3,16 @@ title: Troubleshooting domains
 product: vercel
 url: /docs/domains/troubleshooting
 canonical_url: "https://vercel.com/docs/domains/troubleshooting"
-last_updated: 2026-07-20
+last_updated: 2026-09-18
 type: reference
 prerequisites:
   - /docs/domains
 related:
   - /docs/domains/working-with-domains/add-a-domain
-  - /docs/domains/working-with-dns
   - /docs/domains/managing-dns-records
+  - /docs/domains/working-with-dns
   - /docs/domains/working-with-domains
-  - /docs/domains/working-with-ssl
+  - /docs/plans/pro-plan
 summary: Learn about common reasons for domain misconfigurations and how to troubleshoot your domain on Vercel.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,16 +27,13 @@ There are many common reasons why your domain configuration may not be working. 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I use my domain on Vercel with A records?](https://vercel.com/kb/guide/a-record-and-caa-with-vercel?from=related) — Point your apex domain to Vercel with an A record \\(76.76.21.21 or your domain card's value\\), pair it with a www CNAME,
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [How to resolve IP blocking issues ](https://vercel.com/kb/guide/how-to-resolve-ip-blocking-issues?from=related) — Learn to troubleshoot IP blocking issues for both shared and personal networks.
-- [Why is my Vercel domain not verified?](https://vercel.com/kb/guide/why-is-my-vercel-domain-unverified?from=related) — Information on why a Vercel domain may not be verified and how to verify it.
-- [How do I add a custom domain to my Vercel project?](https://vercel.com/kb/guide/how-do-i-add-a-custom-domain-to-my-vercel-project?from=related) — Learn how to add a custom domain to your Vercel project.
-- [Configuring Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
-- [Set Up Custom Domain](https://vercel.com/docs/domains/set-up-custom-domain?from=related) — Add and configure a custom domain for your Vercel project using the CLI.
-- [Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
-- [Working with Nameservers](https://vercel.com/docs/domains/working-with-nameservers?from=related) — Learn about nameservers and the benefits Vercel nameservers provide.
-- [Production Checklist](https://vercel.com/docs/production-checklist?from=related) — Ensure your application is ready for launch with this comprehensive production checklist by the Vercel engineering team.
+- [Using Cloudflare and other reverse proxies with Vercel](https://vercel.com/kb/guide/can-i-use-a-proxy-on-top-of-my-vercel-deployment) — General information about using an external proxy to serve a Vercel Deployment.
+- [How to resolve IP blocking issues ](https://vercel.com/kb/guide/how-to-resolve-ip-blocking-issues) — Learn to troubleshoot IP blocking issues for both shared and personal networks.
+- [Configuring Custom Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
+- [Setting up a custom domain](https://vercel.com/docs/domains/set-up-custom-domain) — Add and configure a custom domain for your Vercel project using the CLI.
+- [Claiming Domain Ownership](https://vercel.com/docs/domains/working-with-domains/claim-domain-ownership) — Learn how to claim ownership of a domain that is registered with another Vercel account by verifying DNS ownership.
+- [Multi-tenant Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
+- [Domains and DNS](https://vercel.com/docs/agent-resources/vercel-mcp/tools/domains) — Vercel MCP tools for domains and dns.
 
 Full cross-link map for this page: [/docs/domains/troubleshooting.graph.md](/docs/domains/troubleshooting.graph.md)
 <!-- /docsgraph:related -->
@@ -53,7 +50,7 @@ When you add a domain to Vercel that you have purchased from a third-party DNS p
 - You need to configure the [DNS](#common-dns-issues) records of your domain with your DNS provider so they can be used with your project. To resolve this, follow the steps to [configure your domain](/docs/domains/working-with-domains/add-a-domain#configure-the-domain).
 - If your domain is in use by another Vercel account, you may be prompted to [verify access to the domain](/docs/domains/working-with-domains/add-a-domain#verify-domain-access) by adding a TXT record. This will not move the domain into your account, but will allow you to use it in your project.
 - There was an issue generating the SSL certificate for your domain. The most common reason for this is [missing CAA records](#missing-caa-records). For information on other issues that may cause this, see the [common SSL certificate issues](#common-ssl-certificate-issues) section.
-- You have configured [wildcard subdomains](/docs/domains/working-with-domains/add-a-domain#using-wildcard-domain) on your project, but their nameservers aren’t with Vercel. When using a wildcard domain, you must use the [nameservers method](/docs/domains/troubleshooting#configuring-nameservers-for-wildcard-domains).
+- You have configured [wildcard subdomains](/docs/domains/working-with-domains/add-a-domain#using-wildcard-domain) on your project, but Vercel can't manage their DNS challenges. Check your [nameservers or certificate validation delegation](#configuring-nameservers-for-wildcard-domains).
 
 ## Common DNS issues
 
@@ -68,9 +65,9 @@ If you prefer a non-command-line interface, you can use a free online tool, such
 ### DNS record propagation times
 
 DNS changes can take a while to propagate across the globe, depending on the previous DNS record TTL length. This may mean that certain regions can access your site as intended, while others wait until the DNS changes have reached them. Please allow some time for these changes to take effect.
-Changes to standard DNS records (A, CNAME, TXT, etc.) typically propagate quicker, but changing a domain’s nameservers can take up to **24–48 hours** to fully propagate across the internet. During this time, different users may see different versions of your site depending on their local DNS caches. You can monitor this propagation using tools like [DNSChecker](https://dnschecker.org) or the [dig](/kb/guide/how-to-manage-vercel-dns-records#verifying-dns-records) command in your terminal.
+Changes to standard DNS records (A, CNAME, TXT, etc.) typically propagate quicker, but changing a domain’s nameservers can take up to **24–48 hours** to fully propagate across the internet. During this time, different users may see different versions of your site depending on their local DNS caches. You can monitor this propagation using tools like [DNSChecker](https://dnschecker.org) or the [dig](/docs/domains/managing-dns-records#verifying-dns-records) command in your terminal.
 
-For more information on [propagation times](/docs/domains/working-with-dns#dns-propagation) for nameservers and other DNS records, see "[How long will it take for my Vercel DNS records to update?](/kb/guide/how-long-to-update-dns-records)"
+For more information on propagation times for nameservers and other DNS records, see [DNS propagation](/docs/domains/working-with-dns#dns-propagation).
 
 > **💡 Note:** Before changing your DNS records to point to Vercel, we recommend updating
 > your existing DNS record to "lower" the TTL (for example 60 seconds) and
@@ -92,11 +89,11 @@ When working with DNS records, you may make minor errors in the syntax. These er
 
 When you add a new DNS record to a domain, the **Name** field should use the prefix or location of the record. For `www.example.com`, the name argument would be `www`.
 
-If you have already added a record with this, [remove the record](/docs/domains/managing-dns-records#removing-dns-records) from the **DNS Records** section of the **Domains** tab, and add the record again **without** the domain as the **Name** argument.
+If you enter the full hostname, for example `www.example.com`, Vercel removes the domain from the name and saves the record with the name `www`.
 
 #### Absolute CNAME records
 
-When you add a custom domain with a subdomain to your project, we'll prompt you to add a CNAME DNS record in order to configure the domain. This record *includes* a period (.) at the end of the **Value** field. This is intentional to denote that it is an absolute, fully qualified domain name.
+When you add a custom domain with a subdomain to your project, we'll prompt you to add a CNAME DNS record to configure the domain. This record *includes* a period (.) at the end of the **Value** field. This is intentional to denote that it is an absolute, fully qualified domain name.
 
 This means that when you add a new CNAME record to your DNS provider, you **must** copy the value exactly as it appears, **including** the period.
 
@@ -104,40 +101,52 @@ This means that when you add a new CNAME record to your DNS provider, you **must
 
 ### Configuring nameservers for wildcard domains
 
-When you add any custom domain to your Vercel project you must [configure](/docs/domains/working-with-domains/add-a-domain#configure-the-domain) the DNS records with your DNS provider so it can be used with your project. When you add a wildcard domain (such as `*.example.com`), you **must** [use the **Nameservers** method](/docs/domains/working-with-domains/add-a-domain#vercel-nameservers).
+Wildcard certificates require DNS-01 validation. Vercel must be able to create a DNS record each time it issues or renews the certificate. Using [Vercel's nameservers](/docs/domains/working-with-domains/add-a-domain#vercel-nameservers) lets Vercel manage this automatically.
 
-This is because Vercel needs to be able to set DNS records in order to generate the wildcard certificates. The service that Vercel uses to [generate the certificates](/docs/domains/working-with-ssl) requires us to verify the domain ownership by using the [DNS-01 challenge method](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge). By changing the nameservers, Vercel will handle the DNS-01 challenge for you automatically, and you don't need to update your verification DNS record upon your certificate renewal each time.
-
-For more information, see [Why must we use the Domain Nameservers method for Wildcard Domains on Vercel?](/kb/guide/why-use-domain-nameservers-method-wildcard-domains)
+If you can't switch nameservers, you can delegate the appropriate `_acme-challenge` subdomain to Vercel and add a wildcard CNAME for traffic. Follow [Use wildcard domains with an external DNS provider](/docs/domains/working-with-domains/add-a-domain#use-wildcard-domains-with-an-external-dns-provider), which covers both records and the **Enable Vercel DNS** step while your existing DNS provider manages the rest of your records. For `*.example.com`, the challenge name is `_acme-challenge.example.com`; for `*.preview.example.com`, it is `_acme-challenge.preview.example.com`. Delegation can prevent another provider from issuing certificates that need the same challenge name.
 
 ## Common domain issues
 
 ### Domains and emails
 
-When you buy a new domain, you may want to also set up an email address with this domain. Vercel **does not provide a mail service for domains purchased with or transferred into it**. To learn how to set up email, see [How do I send and receive emails with my Vercel purchased domain?](/kb/guide/using-email-with-your-vercel-domain)
+When you buy a new domain, you may want to also set up an email address with this domain. Vercel **does not provide a mail service for domains purchased with or transferred into it**. To learn how to set up email, see [setting up email for your domain](/docs/domains/managing-dns-records#setting-up-email-for-your-domain)
 
 When you add your custom domain to a project and use Vercel's nameservers, you will need to add `MX` records to continue receiving email. To learn how to add `MX` records, see
-[Why am I no longer receiving email after adding my domain to Vercel?](/kb/guide/why-has-email-stopped-working)
+[troubleshooting email delivery](/docs/domains/managing-dns-records#troubleshooting-email-delivery)
 
 ### Purchasing a domain through Vercel
 
-All domain purchases and renewals through Vercel are final once processed. For more information, see [Can I get a refund for a domain purchased or renewed with Vercel?](/kb/guide/can-i-get-a-refund-for-a-domain-purchased-or-renewed-with-vercel)
+For eligible domain purchases, request a refund through the [support form](/help) within **four calendar days of the purchase timestamp**.
+
+Some domain registries prohibit cancellations and refunds, even within the four-day window. Vercel Support can confirm whether your domain is eligible.
+
+**Domain renewals are never refundable, for any TLD.** Registry policies make renewals final once processed, and Vercel Support cannot grant exceptions.
 
 For a [free first-year domain](/docs/plans/pro-plan#free-first-year-domain-with-pro) claimed with a paid Pro plan, the domain renews at the standard rate after year one.
 
 ### Pending domain purchases
 
-When a domain purchase does not go through immediately, your payment method may show a **temporary authorization** — this is a pending hold, not a completed charge. It will be automatically released by your bank if the domain is not successfully registered.
+When a domain purchase does not go through immediately, your payment method may show a **temporary authorization**. This is a pending hold, not a completed charge. It will be automatically released by your bank if the domain is not successfully registered.
 
 If the purchase is processing, your domain will appear in the [Domains tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+page) with a **“Pending”** status. Most purchases complete within minutes, but some TLDs may take up to 5 days to finalize. There is no need to retry the purchase or contact support while the domain is pending. You will receive a confirmation email once the registration completes.
 
 ### Pending verification
 
-If verification is needed, you will receive an email with instructions from Vercel. You will also see an alert on your team's domain page, which you can access through the [Domain Dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains%2F\&title=). From there, you can resend the verification email or update your registrant information and email address.
+For domains registered through Vercel, open your team's **Domains** page, select the domain, and find **Registrant Information**. Update the contact details, select **Save**, and confirm that you can access the email address shown in the verification dialog. If this section is missing or the registry restricts changes, [contact support](/help).
+
+Registrant contact details are verified automatically when the registrant email matches the Vercel user account or team Owner email. When the emails differ, you must verify the registrant email within **15 calendar days**. This period starts when registration completes or when you save a change to the registrant email.
+
+Changing the registrant email sends a new verification email to the new address and starts a new 15-calendar-day verification period. If you no longer have access to the old address, update it here before requesting another email. Use **Resend** in the verification alert on the domain page, or the verification action in the project's **Settings** > **Domains** when shown.
+
+If you don't complete the required verification within 15 calendar days, the registrar places the domain on `clientHold`. This suspends DNS resolution and takes the site offline until you confirm the registrant email address. These requirements apply to initial registrations and subsequent registrant contact changes.
+
+Check the current domain status before dismissing an email. If the email and dashboard disagree, [contact support](/help).
 
 ### Emoji and ASCII support
 
-You will need to convert the domain to [punycode](https://www.punycoder.com) in order to add it to your project. For example, a user looking to add a domain such as `jérémie.fr` can do so in the form of `xn--jrmie-bsab.fr`.
+To use a custom domain containing Unicode characters, such as accented letters or emoji, convert it to [Punycode](https://www.punycoder.com) before adding it to Vercel. Punycode represents Unicode domain names using ASCII characters.
+
+If Vercel reports that the domain is not a fully qualified domain name, use the converted value in your project's [Domains settings](/docs/domains/working-with-domains/add-a-domain). For example, add `jérémie.fr` as `xn--jrmie-bsab.fr`.
 
 ### Unable to transfer-in a domain
 
@@ -153,6 +162,29 @@ If you transfer before this time, the transfer will fail. Besides this restricti
 When you add an [apex domain](/docs/domains/working-with-domains#subdomains-wildcard-domains-and-apex-domains) (e.g. `example.com`) to your project, Vercel provides you with details, including an IP address, to add as an `A` record in your DNS configuration, as opposed to a `CNAME` record.
 
 The main reason for that is the DNS [RFC1034](https://www.ietf.org/rfc/rfc1034.txt) (section 3.6.2) states that `If a CNAME RR is present at a node, no other data should be present`. Because an apex domain requires `NS` records and usually some other records, such as `MX` (for a mail service), adding a `CNAME` at the zone apex would violate this rule and likely cause an issue on your domain. Therefore, we encourage you to use an `A` record at your zone apex instead.
+
+#### Records for an apex domain and `www`
+
+Use the `A` record value shown in your project's **Settings** > **Domains**. Vercel assigns anycast IP addresses per project, so the value can differ between projects. Many projects show `76.76.21.21`, and newer projects can show an address such as `216.198.79.1`. A different Vercel address, such as one copied from another project or an older guide, can leave the domain with a **DNS Change Recommended**, **DNS Change Required**, or **Invalid Configuration** status.
+
+To serve both `example.com` and `www.example.com`, add both domains to your project and create these records at your DNS provider:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| `A` | `@`, or blank if your provider doesn't accept `@` | The `A` record value shown for the apex domain in **Settings** > **Domains** |
+| `CNAME` | `www` | The `CNAME` target shown for `www` in **Settings** > **Domains**, such as `d1d4fc829fe7bc7c.vercel-dns-017.com` |
+
+Remove any other `A` or `AAAA` records for the apex domain before you add the new record. Then [redirect](/docs/domains/working-with-domains/deploying-and-redirecting#redirecting-domains) one domain to the other. Making `www` the primary domain lets it use a `CNAME` record, which gives Vercel more flexibility to route traffic than a fixed `A` record.
+
+After the records propagate, check them from your terminal:
+
+```bash filename="terminal"
+dig A example.com +short
+dig CNAME www.example.com +short
+curl -IL https://example.com
+```
+
+The `dig` commands should return the values shown in **Settings** > **Domains**. The `curl` command should complete over HTTPS and end at your primary domain. If the `A` record is correct but you see `ERR_TOO_MANY_REDIRECTS` and the domain is proxied through Cloudflare, Cloudflare's **Flexible** SSL/TLS mode is a common cause. See [Cloudflare redirect loops](/docs/security/reverse-proxy#cloudflare-redirect-loops).
 
 ### Domain IP address and geographic regions
 
@@ -170,7 +202,7 @@ The following table shows errors that can be encountered when adding a domain to
 | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `This team has already registered this domain`                                              | The domain you are trying to add is already connected to the team you have selected.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `You have already registered this domain`                                                   | The domain you are trying to add is already connected to the Personal Account you have selected.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `The domain mydomain.com is not available` or `Another Vercel account is using this domain` | This domain is already linked to another Vercel account or team. **If you have access to that account:** Transfer the domain to your current account via the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard) by following [the working with domains guide](/docs/domains/working-with-domains/transfer-your-domain). **If you own the domain but not the other account:** Use the **Connect External** option on the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard). You'll receive a TXT record to add to your DNS to verify ownership. Once verified, the domain will automatically transfer to your account. |
+| `The domain mydomain.com is not available` or `Another Vercel account is using this domain` | This domain is already linked to another Vercel account or team. <br /><br />**If you have access to that account:** Transfer the domain to your current account via the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard) by following [the working with domains guide](/docs/domains/working-with-domains/transfer-your-domain). <br /><br />**If you own the domain but not the other account:** Use the **Connect External** option on the [**Domains** dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fdomains\&title=Domains+Dashboard). You'll receive a TXT record to add to your DNS to verify ownership. Once verified, the domain will automatically transfer to your account. |
 
 ## Common SSL certificate issues
 
@@ -181,21 +213,57 @@ There are many reasons why a certificate may not be generated. As the first star
 
 For non-wildcard domains, we use [HTTP-01](https://letsencrypt.org/docs/challenge-types/#http-01-challenge) challenge by default, which Vercel handles automatically by intercepting the challenge requests from Let's Encrypt to your domain as long as the domain points to Vercel.
 
-For wildcard domains, only [DNS-01](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) challenge is supported, which Vercel requires you to use the [nameservers method](/docs/domains/troubleshooting#configuring-nameservers-for-wildcard-domains) to handle DNS-01 challenge requests with Vercel's nameservers automatically.
+For wildcard domains, only [DNS-01](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) is supported. Use Vercel nameservers or [delegate certificate validation](#configuring-nameservers-for-wildcard-domains) so Vercel can manage issuance and renewal.
+
+### Check DNS and the HTTP challenge path
+
+Confirm the hostname is added to your project's **Settings > Domains**, then compare its DNS response with the recommended records shown there:
+
+```bash filename="terminal"
+dig A example.com +short
+dig AAAA example.com +short
+dig CNAME www.example.com +short
+curl -sS -D - -o /dev/null http://example.com/.well-known/acme-challenge/test-token
+```
+
+Unexpected DNS values can indicate stale or incorrect records, or a proxy in front of Vercel.
+
+A made-up challenge token normally returns **404** because no matching challenge exists. Headers such as `server: Vercel` and `x-vercel-id` are evidence that the request reached Vercel, but don't prove a real validation will succeed. Proxies can forward or replace headers. Redirects, access-denied responses, or cached pages warrant checking the entire request path.
+
+If you use a proxy, route `/.well-known/acme-challenge/*` to Vercel on port 80 without caching, authentication, rewrites, or proxy-level redirects. Alternatively, point DNS directly to Vercel; for Cloudflare, use **DNS only**. Follow the [reverse proxy requirements](/docs/security/reverse-proxy). Keep validation reachable for renewals as well as initial issuance.
+
+### Resolve `ERR_SSL_PROTOCOL_ERROR`
+
+Compare the failing custom hostname with the deployment's generated `vercel.app` URL in the same browser. Generated URLs support HTTPS, but this doesn't mean each deployment has a separate certificate. If the generated URL works, investigate the custom hostname's DNS, certificate, and proxy configuration.
+
+Try the same custom hostname on another device and network, such as a phone using cellular data. Success there suggests a network-specific issue, but DNS caches, IPv4/IPv6 routing, VPNs, and TLS inspection can also produce different results. Check the domain's status under **Settings > Domains** and resolve any certificate errors first.
+
+If only a corporate or school network fails, ask its administrator to investigate filtering and TLS inspection. For a home or mobile network, contact the internet provider. If the error persists across networks or the certificate remains unavailable, contact [Vercel Support](/help) with the hostname, timestamps, browser error, DNS results, and results of these comparisons. Remove cookies, authorization headers, and other secrets from diagnostics.
 
 ### Missing `CAA` records
 
-Since we use Let's Encrypt for our automatic SSL certificates, you must add a `CAA` record with the value `0 issue "letsencrypt.org"` if other `CAA` records already exist on your domain.
+CAA records restrict which certificate authorities can issue certificates. Having no applicable CAA records doesn't itself block issuance. If your policy restricts issuers, authorize Let's Encrypt with `0 issue "letsencrypt.org"`. For wildcard certificates, an `issuewild` policy takes precedence over `issue`; it must also permit Let's Encrypt.
 
-You can check if your domain currently has any `CAA` records by running the `dig -t CAA +noall +ans example.com` command on your terminal, or check with [Google Public DNS](https://dns.google/) (change the `RR Type` to `CAA` and resolve).
+Check the hostname you need a certificate for:
 
-For more information, see [Why is my domain not automatically generating an SSL certificate?](/kb/guide/domain-not-generating-ssl-certificate)
+```bash filename="terminal"
+dig CAA www.example.com +noall +answer
+dig CAA example.com +noall +answer
+```
+
+CAA lookups follow CNAME aliases. If a lookup returns no CAA records, the authority checks the parent of the original name, continuing upward until it finds a CAA policy. A closer policy takes precedence; policies at different levels aren't combined. See [RFC 8659](https://www.rfc-editor.org/rfc/rfc8659.html#section-3). An empty answer for one hostname doesn't rule out an applicable parent policy, and DNS errors aren't equivalent to an empty answer.
+
+#### Custom CAA with a Vercel CNAME
+
+A CNAME can't coexist with a CAA record at the same hostname. When a CAA lookup follows your alias to a Vercel CNAME target, Vercel's CAA policy can apply. You can't customize that target's CAA records, and Vercel can't add your custom issuers there.
+
+If you need a different authority for a multi-provider certificate or proxy, replace the CNAME with an **A record using the recommended IP address from your project's Settings > Domains**. Then add the required CAA records at that hostname or its applicable parent, including permission for Let's Encrypt if Vercel also issues certificates. Verify both A and CAA lookups after propagation. Changing CAA doesn't enable uploading custom certificates on plans that don't support it.
 
 ### Existing `_acme-challenge` record
 
 An `_acme-challenge` record allows Let's Encrypt to verify the domain ownership using [DNS-01](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge) challenge. This may exist on your apex or subdomains, so can be checked with `dig -t TXT _acme-challenge.example.com` or `dig -t TXT _acme-challenge.subdomain.example.com`
 
-If the domain was previously hosted on a different provider, and if the `_acme-challenge` record resolves to something, please consider [removing the DNS record](/docs/domains/managing-dns-records#removing-dns-records). This will prevent any provider (other than the one in the DNS record) from provisioning certificates for that domain.
+If a previous provider left records at the challenge name, check whether they redirect DNS-01 validation away from Vercel. Update stale records only after checking their purpose. Keep NS records that intentionally [delegate validation to Vercel](/docs/domains/working-with-domains/add-a-domain#use-wildcard-domains-with-an-external-dns-provider); deleting them breaks wildcard certificate renewal.
 
 ### Rewriting or redirecting `/.well-known`
 
@@ -205,3 +273,6 @@ The [/.well-known](# "The /.well-known directory") path is reserved and cannot b
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -1,20 +1,21 @@
 ---
-title: LangChain
+title: LangChain with AI Gateway
 product: vercel
 url: /docs/ai-gateway/ecosystem/framework-integrations/langchain
 canonical_url: "https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/langchain"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: how-to
 prerequisites:
   - /docs/ai-gateway/ecosystem/framework-integrations
   - /docs/ai-gateway/ecosystem
 related:
   - /docs/ai-gateway
-summary: Learn how to integrate Vercel AI Gateway with LangChain to access multiple AI models through a unified interface
+  - /docs/ai-gateway/authentication-and-byok
+summary: Learn how to integrate Vercel AI Gateway with LangChain to access multiple AI models through a unified interface.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# LangChain
+# LangChain with AI Gateway
 
 [LangChain](https://js.langchain.com) gives you tools
 for every step of the agent development lifecycle.
@@ -27,14 +28,12 @@ with LangChain to access various AI models and providers.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Building an AI chatbot with Next.js, Langchain, and OpenAI](https://vercel.com/kb/guide/nextjs-langchain-vercel-ai?from=related) — Dive into the world of LangChain.js and Next.js with our detailed guide. Learn how to set up a chatbot, structure output
-- [Deploying Chained OpenAI LLM Calls to Vercel with the Inngest SDK](https://vercel.com/kb/guide/chained-openai-llm-calls-vercel-inngest?from=related) — Discover how to deploy chained OpenAI LLMs \\(GPT-4\\) to Vercel using Inngest SDK for improved conversational AI, multi-t
-- [LangChain](https://vercel.com/docs/sandbox/ecosystem/langchain?from=related) — Give a LangChain agent a tool that executes model-generated code in an isolated Vercel Sandbox, with models served by AI
-- [LangDB](https://ai-sdk.dev/providers/community-providers/langdb?from=related)
-- [LangFuse](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/langfuse?from=related) — Learn how to integrate Vercel AI Gateway with LangFuse to access multiple AI models through a unified interface
-- [LiteLLM](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/litellm?from=related) — Learn how to integrate Vercel AI Gateway with LiteLLM to access multiple AI models through a unified interface
-- [OpenAI](https://vercel.com/docs/agent-resources/integrations-for-models/openai?from=related) — Integrate your Vercel project with OpenAI's powerful suite of models.
-- [OpenCode](https://vercel.com/docs/ai-gateway/coding-agents/opencode?from=related) — Use OpenCode with the AI Gateway.
+- [Deploying Chained OpenAI LLM Calls to Vercel with the Inngest SDK](https://vercel.com/kb/guide/chained-openai-llm-calls-vercel-inngest) — Discover how to deploy chained OpenAI LLMs \\(GPT-4\\) to Vercel using Inngest SDK for improved conversational AI, multi-t
+- [LangChain](https://vercel.com/docs/sandbox/ecosystem/langchain) — Give a LangChain agent a tool that executes model-generated code in an isolated Vercel Sandbox, with models served by AI
+- [Langfuse with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/langfuse) — Trace and monitor AI Gateway requests with Langfuse. Configure an OpenAI client and wrap it with observeOpenAI to log mo
+- [Ecosystem](https://vercel.com/docs/sandbox/ecosystem) — Use Vercel Sandbox with the agent frameworks, model SDKs, and agents you already work with.
+- [LiteLLM with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/litellm) — Learn how to integrate Vercel AI Gateway with LiteLLM to access multiple AI models through a unified interface.
+- [Deep Agents CLI with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/deepagents) — Connect Deep Agents CLI to AI Gateway with the Vercel CLI or a TOML provider and model profiles.
 
 Full cross-link map for this page: [/docs/ai-gateway/ecosystem/framework-integrations/langchain.graph.md](/docs/ai-gateway/ecosystem/framework-integrations/langchain.graph.md)
 <!-- /docsgraph:related -->
@@ -51,36 +50,31 @@ Full cross-link map for this page: [/docs/ai-gateway/ecosystem/framework-integra
 
 - ### Install dependencies
   Install the required LangChain packages along with the `dotenv` and `@types/node` packages:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i langchain @langchain/core @langchain/openai dotenv @types/node
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i langchain @langchain/core @langchain/openai dotenv @types/node
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i langchain @langchain/core @langchain/openai dotenv @types/node
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i langchain @langchain/core @langchain/openai dotenv @types/node
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm i langchain @langchain/core @langchain/openai dotenv @types/node
+  ```
+  **yarn**
+  ```bash
+  yarn add langchain @langchain/core @langchain/openai dotenv @types/node
+  ```
+  **npm**
+  ```bash
+  npm i langchain @langchain/core @langchain/openai dotenv @types/node
+  ```
+  **bun**
+  ```bash
+  bun add langchain @langchain/core @langchain/openai dotenv @types/node
+  ```
 
 - ### Configure environment variables
-  Create a `.env` file with your [Vercel AI Gateway API key](/docs/ai-gateway#using-the-ai-gateway-with-an-api-key):
+  Create a `.env` file with your [Vercel AI Gateway API key](/docs/ai-gateway/authentication-and-byok#api-keys):
   ```bash filename=".env"
   AI_GATEWAY_API_KEY=your-api-key-here
   ```
   > **💡 Note:** If you're using the [AI Gateway from within a Vercel
-  > deployment](/docs/ai-gateway#using-the-ai-gateway-with-a-vercel-oidc-token),
+  > deployment](/docs/ai-gateway/authentication-and-byok#oidc-tokens),
   > you can also use the `VERCEL_OIDC_TOKEN` environment variable which will be
   > automatically provided.
 
@@ -99,8 +93,7 @@ Full cross-link map for this page: [/docs/ai-gateway/ecosystem/framework-integra
 
     const chat = new ChatOpenAI({
       apiKey: apiKey,
-      modelName: 'openai/gpt-5.6-sol',
-      temperature: 0.7,
+      modelName: 'openai/gpt-6-astra',
       configuration: {
         baseURL: 'https://ai-gateway.vercel.sh/v1',
       },
@@ -121,37 +114,34 @@ Full cross-link map for this page: [/docs/ai-gateway/ecosystem/framework-integra
   ```
   The following code:
   - Initializes a `ChatOpenAI` instance configured to use the AI Gateway
-  - Sets the model `temperature` to `0.7`
   - Makes a chat completion request
   - Handles any potential errors
 
 - ### Running the application
   Run your application using Node.js:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm dlx tsx index.ts
+  ```
+  **yarn**
+  ```bash
+  yarn dlx tsx index.ts
+  ```
+  **npm**
+  ```bash
+  npx tsx index.ts
+  ```
+  **bun**
+  ```bash
+  bunx tsx index.ts
+  ```
   You should see a response from the AI model in your console.
 
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: @vercel/functions API Reference (Node.js)
 product: vercel
 url: /docs/functions/functions-api-reference/vercel-functions-package
 canonical_url: "https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package"
-last_updated: 2026-07-27
+last_updated: 2026-09-03
 type: reference
 prerequisites:
   - /docs/functions/functions-api-reference
@@ -22,52 +22,53 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 ## Install and use the package
 
+1. Install the `@vercel/functions` package:
+
+**pnpm**
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Version 15](https://nextjs.org/docs/app/guides/upgrading/version-15?from=related) — Upgrade your Next.js Application from Version 14 to 15.
-- [Efficiently manage database connection pools with Fluid compute](https://vercel.com/kb/guide/efficiently-manage-database-connection-pools-with-fluid-compute?from=related) — How to create high-performance database connection pools without leaking connections
-- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute?from=related) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
-- [Build a real-time chat app with WebSockets on Vercel](https://vercel.com/kb/guide/real-time-chat-websockets?from=related) — Build and deploy a single-room messaging app in Next.js with real-time chat, typing indicators, and live online user cou
-- [Sending Emails from an application on Vercel](https://vercel.com/kb/guide/sending-emails-from-an-application-on-vercel?from=related) — SMTP is the harder path inside Vercel Functions. Learn how to send emails over an HTTP API, which Next.js pattern fits y
-- [Can I use SMTP with Vercel?](https://vercel.com/kb/guide/serverless-functions-and-smtp?from=related) — Vercel Functions can open SMTP connections on the Node.js runtime. Learn which ports are open, why you must await the se
-- [Streaming](https://workflow-sdk.dev/docs/foundations/streaming?from=related) — Stream real-time data to clients without waiting for workflow completion.
-- [cacheHandlers](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandlers?from=related) — Configure custom cache handlers for use cache directives in Next.js.
-- [Migrating to Cache Components](https://nextjs.org/docs/app/guides/migrating-to-cache-components?from=related) — Learn how to migrate from route segment configs to Cache Components in Next.js.
-- [Data Cache](https://vercel.com/docs/caching/runtime-cache/data-cache?from=related) — Vercel Data Cache is a specialized cache that stores responses from data fetches in Next.js App Router
-- [CDN Cache](https://vercel.com/docs/caching/cdn-cache?from=related) — Learn how Vercel's CDN cache stores your content across a global network to reduce latency and origin load.
-- [Cache-Control Headers](https://vercel.com/docs/caching/cache-control-headers?from=related) — Learn about the cache-control headers sent to each Vercel deployment and how to use them to control the caching behavior
+- [How to upgrade to version 15](https://nextjs.org/docs/app/guides/upgrading/version-15) — Upgrade your Next.js Application from Version 14 to 15.
+- [How to upgrade to version 15](https://nextjs.org/docs/pages/guides/upgrading/version-15) — Upgrade your Next.js Application from Version 14 to 15.
+- [Add cache tags from Function responses, regardless of framework](https://vercel.com/changelog/add-cache-tags-from-function-responses-regardless-of-framework)
+- [IP geolocation now covers more visitors at higher resolution](https://vercel.com/changelog/improved-ip-geolocation-data)
+- [Introducing the Runtime Cache API](https://vercel.com/changelog/introducing-the-runtime-cache-api)
+- [Tag-based cache invalidation now available for all responses](https://vercel.com/changelog/tag-based-cache-invalidation-now-available-for-all-responses)
+- [Vercel Flags starts 7x faster and no longer extends function duration](https://vercel.com/changelog/vercel-flags-starts-7x-faster-and-no-longer-extends-function-duration)
+- [Do Vercel Functions support WebSocket connections?](https://vercel.com/kb/guide/do-vercel-serverless-functions-support-websocket-connections) — Vercel Functions serve WebSocket connections natively, in public beta on all plans. Learn how connections pin to instanc
+- [How to architect multi-location QSR menus on Vercel](https://vercel.com/kb/guide/multi-location-qsr-menus) — Multi-location QSR menus vary by price, hours, and availability. Learn how to model them on Vercel with ISR, Global Conf
+- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
+- [Optimize Runtime Cache on Vercel](https://vercel.com/kb/guide/optimize-runtime-cache-reads-on-vercel) — Diagnose rising Runtime Cache usage, trace reads to tags and code paths, and reduce avoidable reads while checking write
+- [Troubleshooting Inconsistent Logs in Vercel Functions](https://vercel.com/kb/guide/troubleshooting-inconsistent-logs-in-vercel-functions) — Learn how to troubleshoot and resolve logs that appear mixed in Vercel Functions. This guide explains why logs from diff
 
 Full cross-link map for this page: [/docs/functions/functions-api-reference/vercel-functions-package.graph.md](/docs/functions/functions-api-reference/vercel-functions-package.graph.md)
 <!-- /docsgraph:related -->
 
-1. Install the `@vercel/functions` package:
+```bash
+pnpm i @vercel/functions
+```
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i @vercel/functions
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i @vercel/functions
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i @vercel/functions
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i @vercel/functions
-    ```
-  </Code>
-</CodeBlock>
+**yarn**
+
+```bash
+yarn add @vercel/functions
+```
+
+**npm**
+
+```bash
+npm i @vercel/functions
+```
+
+**bun**
+
+```bash
+bun add @vercel/functions
+```
 
 2. Import the `@vercel/functions` package (non-Next.js frameworks or Next.js versions below 15.1):
 
@@ -139,7 +140,7 @@ Promises passed to `waitUntil()` will have the same timeout as the function itse
 | :-------- | :---------------------------------------------------------------------------------------------------- | :----------------------- |
 | `promise` | [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | The promise to wait for. |
 
-> **💡 Note:** If you're using Next.js 15.1 or above, use [`after()`](#using-after-in-nextjs)
+> **💡 Note:** If you're using Next.js 15.1 or above, use [`after()`](/docs/functions/functions-api-reference/vercel-functions-package#usage-with-next.js)
 > from `next/server` instead. Otherwise, see below.
 
 ```ts v0="build" {1,9} filename="api/hello.ts"
@@ -181,7 +182,7 @@ Returns `undefined` when the deadline is not available, for example when running
 
 | Returns   | Type                                                                                                  | Description                                                                 |
 | :-------- | :---------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
-| `deadline` | [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) | `undefined` | The invocation deadline, or `undefined` if it is unavailable or invalid. |
+| `deadline` | [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) \| `undefined` | The invocation deadline, or `undefined` if it is unavailable or invalid. |
 
 ```ts {1,9} filename="api/example.ts"
 import { getDeadline } from '@vercel/functions';
@@ -233,7 +234,7 @@ metric('query.duration_ms', 100, { plan: 'pro' });
 
 #### Name and attribute requirements
 
-Metric names, attribute names, and attribute values must be non-empty and shorter than 64 bytes. They can contain ASCII letters (`A-Z`, `a-z`), digits (`0-9`), hyphens (`-`), underscores (`_`), periods (`.`), and slashes (`/`). Unsupported characters are automatically replaced with an underscore (`_`). For example, `data+summary` is stored as `data_summary`.
+Metric names, attribute names, and attribute values must be non-empty and shorter than 64 bytes. They can contain ASCII letters (`A-Z`, `a-z`), digits (`0-9`), hyphens (`-`), underscores (`_`), periods (`.`), and slashes (`/`). Unsupported characters are automatically replaced with an underscore (`_`). For example, `data+summary` is stored as `data_summary`. Metric names can't start with `vercel.`. Vercel reserves this prefix and doesn't record data points for metric names that use it.
 
 #### Emission limits
 
@@ -340,9 +341,9 @@ export default {
 
 Learn more about [purging Vercel CDN cache](/docs/caching/cdn-cache/purge).
 
-| Name       | Type     | Description                     |
-| :--------- | :------- | :------------------------------ |
-| `srcImage` | `string` | The source image to invalidate. |
+| Name       | Type     | Description                                                                                                        |
+| :--------- | :------- | :----------------------------------------------------------------------------------------------------------------- |
+| `srcImage` | `string` or `string[]` | The source image (or multiple source images) to invalidate. Must exactly match how your app references the source image, including any query parameters. |
 
 ```ts filename="api/example.ts"
 import { invalidateBySrcImage } from '@vercel/functions';
@@ -363,7 +364,7 @@ Learn more about [purging Vercel CDN cache](/docs/caching/cdn-cache/purge).
 
 | Name       | Type                                      | Description                                                                                                                                                                                                |
 | :--------- | :---------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `srcImage` | `string`                                  | The source image to dangerously delete.                                                                                                                                                                    |
+| `srcImage` | `string` or `string[]`                    | The source image (or multiple source images) to dangerously delete. Must exactly match how your app references the source image, including any query parameters.                                                                                                                                                                    |
 | `options`  | `{ revalidationDeadlineSeconds: number }` | The time in seconds before the delete deadline. If a request is made before the deadline, it will revalidate in the background. Otherwise it will be dangerously deleted and revalidate in the foreground. |
 
 ```ts filename="api/example.ts"
@@ -395,7 +396,7 @@ export default {
     const id = new URL(request.url).searchParams.get('id');
     const res = await fetch(`https://api.example.com/${id}`);
     const product = await res.json();
-    await addCacheTag(`product-${id},products`);
+    await addCacheTag([`product-${id}`, 'products']);
     return Response.json(product, {
       headers: {
         'Vercel-CDN-Cache-Control': 'public, max-age=86400',
@@ -423,7 +424,7 @@ export default {
 | -------------------- | ------------------------- | -------------------------------------------------- |
 | `keyHashFunction`    | `(key: string) => string` | Optional custom hash function for generating keys. |
 | `namespace`          | `String`                  | Optional namespace to prefix cache keys.           |
-| `namespaceSeparator` | `String`                  | Optional separator string for the namespace.       |
+| `namespaceSeparator` | `String`                  | Optional separator between the namespace and key. Defaults to `$`. |
 
 #### Specification
 
@@ -431,8 +432,8 @@ export default {
 
 | Method      | Description                                                                                                                                                                                     | Parameters                                                                                                                                                                                                |
 | :---------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `get`       | Retrieves a value from the Vercel Runtime Cache.                                                                                                                                                | `key: string`: The cache key                                                                                                                                                                              |
-| `set`       | Stores a value in the Vercel Runtime Cache with optional `ttl` and/or `tags`. The `name` option allows a human-readable label to be associated with the cache entry for observability purposes. |  |
+| `get`       | Retrieves a value from the Vercel Runtime Cache. Resolves to `null` when the key is not found or has expired.                                                                                 | `key: string`: The cache key                                                                                                                                                                              |
+| `set`       | Stores a value in the Vercel Runtime Cache with optional `ttl` and/or `tags`. The `name` option allows a human-readable label to be associated with the cache entry for observability purposes. | `key: string`: The cache key`value: unknown`: The value to store`options?: { name?: string; tags?: string[]; ttl?: number }`<br /> Configuration object (not required) |
 | `delete`    | Removes a value from the Vercel Runtime Cache by key                                                                                                                                            | `key: string`: The cache key to delete                                                                                                                                                                    |
 | `expireTag` | Expires all cache entries associated with one or more tags                                                                                                                                      | `tag: string \| string[]`: Tag or array of tags to expire                                                                                                                                                 |
 
@@ -446,7 +447,7 @@ export default {
     // Get a value from cache
     const value = await cache.get('somekey');
 
-    if (value) {
+    if (value !== null) {
       return new Response(JSON.stringify(value));
     }
 
@@ -483,8 +484,8 @@ The Runtime Cache is isolated per deployment environment (`preview` and `product
 The Runtime Cache API does not have first class integration with [Incremental Static Regeneration](/docs/incremental-static-regeneration). This means that:
 
 - Runtime Cache entry tags will not apply to ISR pages, so you cannot use expireTag to invalidate both caches.
-- Runtime Cache entry TTLs will have no effect on the ISR revalidation time and
-- Next.js's `revalidatePath` and `revalidateTag`API does not invalidate the Runtime Cache.
+- Runtime Cache entry TTLs will have no effect on the ISR revalidation time.
+- Next.js's `revalidatePath` and `revalidateTag` APIs do not invalidate the Runtime Cache.
 
 The following Runtime Cache limits apply:
 
@@ -494,34 +495,35 @@ The following Runtime Cache limits apply:
 
 Usage of the Vercel Runtime Cache is charged, learn more about pricing in the [regional pricing docs](/docs/pricing/regional-pricing).
 
-### `experimental_upgradeWebSocket`
+### `upgradeWebSocket`
 
 **Description**: Upgrades an incoming HTTP GET request to a WebSocket connection.
 
-`experimental_upgradeWebSocket()` requires the `ws` package in your project. Install `ws` and import the API from `@vercel/functions`.
+`upgradeWebSocket()` requires `@vercel/functions` version 3.10.0 or later and the `ws` package in your project. Install `ws` and import the API from `@vercel/functions`.
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i ws
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i ws
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i ws
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i ws
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i ws
+```
+
+**yarn**
+
+```bash
+yarn add ws
+```
+
+**npm**
+
+```bash
+npm i ws
+```
+
+**bun**
+
+```bash
+bun add ws
+```
 
 | Name      | Type                                                            | Description                                      |
 | :-------- | :-------------------------------------------------------------- | :----------------------------------------------- |
@@ -536,12 +538,12 @@ The `UpgradeWebSocketOptions` object accepts the following properties:
 
 ```ts filename="app/api/ws/route.ts"
 import {
-  experimental_upgradeWebSocket,
+  upgradeWebSocket,
   type WebSocketData,
 } from '@vercel/functions';
 
 export async function GET() {
-  return experimental_upgradeWebSocket((ws) => {
+  return upgradeWebSocket((ws) => {
     ws.on('message', (data: WebSocketData) => {
       ws.send(data);
     });
@@ -551,22 +553,22 @@ export async function GET() {
 }
 ```
 
-When using `experimental_upgradeWebSocket()` in a Next.js app with Cache
+When using `upgradeWebSocket()` in a Next.js app with Cache
 Components enabled, call [`connection()`](https://nextjs.org/docs/app/api-reference/functions/connection)
-before `experimental_upgradeWebSocket()`. This opts the route handler out of
+before `upgradeWebSocket()`. This opts the route handler out of
 static prerendering, so the WebSocket upgrade runs only at request time.
 
 ```ts {1,8} filename="app/api/ws/route.ts"
 import { connection } from 'next/server';
 import {
-  experimental_upgradeWebSocket,
+  upgradeWebSocket,
   type WebSocketData,
 } from '@vercel/functions';
 
 export async function GET() {
   await connection();
 
-  return experimental_upgradeWebSocket((ws) => {
+  return upgradeWebSocket((ws) => {
     ws.on('message', (data: WebSocketData) => {
       ws.send(data);
     });
@@ -578,13 +580,13 @@ Learn more about [using WebSockets on Vercel Functions](/docs/functions/websocke
 
 #### Limits and usage
 
-You can use `experimental_upgradeWebSocket()` to handle incoming WebSocket connections in any Vercel Function, including Next.js Route Handlers and other frameworks’ equivalents. However, this API only works on the Vercel platform and gives you less control over the request lifecycle; when possible, you should handle WebSocket connections using native Node.js APIs instead.
+You can use `upgradeWebSocket()` to handle incoming WebSocket connections in any Vercel Function, including Next.js Route Handlers and other frameworks’ equivalents. However, this API only works on the Vercel platform and gives you less control over the request lifecycle; when possible, you should handle WebSocket connections using native Node.js APIs instead.
 
 #### Local development
 
-When developing a Next.js app that uses `experimental_upgradeWebSocket()` locally, you must run the development server using `vc dev` with [Vercel CLI 54.14.2 or above](/docs/cli#updating-vercel-cli) instead of `next dev`.
+When developing a Next.js app that uses `upgradeWebSocket()` locally, you must run the development server using `vc dev` with [Vercel CLI 54.14.2 or above](/docs/cli#updating-vercel-cli) instead of `next dev`.
 
-Next.js is the only framework that supports local development with `experimental_upgradeWebSocket()`. No other instances of this API run in a local development environment.
+Next.js is the only framework that supports local development with `upgradeWebSocket()`. No other instances of this API run in a local development environment.
 
 ### Database Connection Pool Management
 
@@ -659,8 +661,7 @@ const s3Client = new s3.S3Client({
 
 > **💡 Note:** This function has moved from `@vercel/functions/oidc` to `@vercel/oidc`.
 
-**Description**: Returns the OIDC token from the request context or the environment variable. This function first checks if the OIDC token is available in the environment variable
-`VERCEL_OIDC_TOKEN`. If it is not found there, it retrieves the token from the request context headers.
+**Description**: Returns the OIDC token from the request context, a token file, or the `VERCEL_OIDC_TOKEN` environment variable. This function first checks the request context headers for the OIDC token. If the token is not there, `@vercel/oidc` 4.0.0 and later reads the file at the path in the `VERCEL_OIDC_TOKEN_FILE` environment variable, when set. Otherwise, it reads the `VERCEL_OIDC_TOKEN` environment variable. You don't need to set `VERCEL_OIDC_TOKEN_FILE` for Vercel Functions. Vercel sets it on [Daemons](/docs/daemons#environment-variables-and-oidc), which receive the token in a [rotating token file](/docs/oidc#reading-a-rotated-token-file). For how the function reads each source, see the [OIDC reference](/docs/oidc/reference#other-cloud-providers).
 
 ```ts filename="api/example.ts"
 import { ClientAssertionCredential } from '@azure/identity';
@@ -678,7 +679,7 @@ const cosmosClient = new CosmosClient({
   aadCredentials: credentialsProvider,
 });
 
-export const GET = () => {
+export const GET = async () => {
   const container = cosmosClient
     .database(process.env.COSMOS_DB_NAME)
     .container(process.env.COSMOS_DB_CONTAINER);
@@ -691,3 +692,6 @@ export const GET = () => {
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

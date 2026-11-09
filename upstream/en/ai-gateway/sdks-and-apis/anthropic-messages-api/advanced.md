@@ -1,10 +1,10 @@
 ---
-title: Advanced Features
+title: Anthropic Messages Configuration with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api
   - /docs/ai-gateway/sdks-and-apis
@@ -12,11 +12,11 @@ related:
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/reasoning
   - /docs/ai-gateway/models-and-providers/provider-timeouts
   - /docs/ai-gateway/models-and-providers/automatic-caching
-summary: Advanced Anthropic API features including web search, provider timeouts, and automatic caching.
+summary: Advanced Anthropic API features including web search, provider timeouts, and automatic caching through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Advanced Features
+# Anthropic Messages Configuration with AI Gateway
 
 Give Claude access to the web, bound how long a provider may take, and cache prompt prefixes between calls. For controlling how much Claude thinks before answering, see [Extended thinking](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/reasoning).
 
@@ -26,11 +26,12 @@ Give Claude access to the web, bound how long a provider may take, and cache pro
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/advanced?from=related) — Configure provider routing, fallbacks, and restrictions using the OpenResponses API.
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [REST API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/rest-api?from=related) — Use the AI Gateway API directly without client libraries using curl and fetch.
-- [Models & Providers](https://vercel.com/docs/ai-gateway/models-and-providers?from=related) — Work with models and providers in AI Gateway: provider routing and fallbacks, filtering, timeouts, caching, service tier
-- [AI SDK](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
+- [Claude Opus 4.5 now available in Vercel AI Gateway](https://vercel.com/changelog/claude-opus-4-5-now-available-in-vercel-ai-gateway)
+- [OpenResponses Configuration with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/advanced) — Configure provider routing, fallbacks, and restrictions using the OpenResponses API through AI Gateway.
+- [Anthropic Messages Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming) — Stream Anthropic Messages API responses token by token as they are generated through AI Gateway.
+- [AI Gateway Models and Providers](https://vercel.com/docs/ai-gateway/models-and-providers) — Choose AI Gateway models and providers. Configure routing, fallbacks, timeouts, prompt caching, reasoning, and web searc
+- [Anthropic Messages Requests with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/messages) — Create messages using the Anthropic Messages API format with support for streaming through AI Gateway.
+- [Anthropic Messages Tool Calling with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/tool-calling) — Use function calling with the Anthropic Messages API to allow models to call tools and functions through AI Gateway.
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced.graph.md](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced.graph.md)
 <!-- /docsgraph:related -->
@@ -40,30 +41,6 @@ Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/anthropic-mes
 Use the built-in web search tool to give the model access to current information from the web.
 
 Example request
-
-#### cURL
-
-```bash filename="web-search.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "max_tokens": 2048,
-    "tools": [
-      {
-        "type": "web_search_20250305",
-        "name": "web_search"
-      }
-    ],
-    "messages": [
-      {
-        "role": "user",
-        "content": "What are the latest developments in quantum computing?"
-      }
-    ]
-  }'
-```
 
 #### TypeScript
 
@@ -140,6 +117,30 @@ for block in message.content:
         print('Search results received')
 ```
 
+#### cURL
+
+```bash filename="web-search.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "max_tokens": 2048,
+    "tools": [
+      {
+        "type": "web_search_20250305",
+        "name": "web_search"
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the latest developments in quantum computing?"
+      }
+    ]
+  }'
+```
+
 ## Provider timeouts
 
 You can set per-provider timeouts for BYOK credentials to trigger fast failover when a provider is slow to respond. Pass `providerTimeouts` in `providerOptions.gateway`:
@@ -166,3 +167,6 @@ For full details, supported providers, and examples, see [Automatic Caching](/do
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

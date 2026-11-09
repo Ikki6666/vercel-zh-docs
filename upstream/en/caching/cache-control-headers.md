@@ -3,7 +3,7 @@ title: Cache-Control headers
 product: vercel
 url: /docs/caching/cache-control-headers
 canonical_url: "https://vercel.com/docs/caching/cache-control-headers"
-last_updated: 2026-07-01
+last_updated: 2026-09-14
 type: reference
 prerequisites:
   - /docs/caching
@@ -26,15 +26,17 @@ You can control how Vercel's CDN caches your Function responses by setting a [Ca
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Set cache control headers for functions](https://vercel.com/kb/guide/set-cache-control-headers?from=related) — Learn how to set headers to cache your function's responses.
-- [How to Configure the Cache-Control Response Header in Vercel Projects](https://vercel.com/kb/guide/how-to-configure-the-cache-control-response-header-in-vercel-projects?from=related) — After reviewing this guide, you will be able to set a cache-control header of any value to be returned when a specific p
-- [Manage cache tags for external origins](https://vercel.com/kb/guide/how-to-manage-cache-tags-for-external-origins?from=related) — Learn how to use cache tags to optimally serve fresh content on Vercel when content from your external origin changes
-- [headers](https://nextjs.org/docs/pages/api-reference/config/next-config-js/headers?from=related) — Add custom HTTP headers to your Next.js app.
-- [Response Headers](https://vercel.com/docs/headers/response-headers?from=related) — Learn about the response headers sent to each Vercel deployment and how to use them to process responses before sending
-- [System Headers](https://vercel.com/docs/headers?from=related) — This reference covers the list of request, response, cache-control, and custom response headers included with deployment
-- [Node.js](https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package?from=related) — Learn about available APIs when working with Vercel Functions.
-- [Data Cache](https://vercel.com/docs/caching/runtime-cache/data-cache?from=related) — Vercel Data Cache is a specialized cache that stores responses from data fetches in Next.js App Router
-- [Cache Status](https://vercel.com/docs/caching/cache-status?from=related) — Understand the cache status and reason shown for each request in Vercel logs, and what causes a response to miss, bypass
+- [Vercel CDN now respects Cache-Control headers from external origins by default](https://vercel.com/changelog/vercels-cdn-now-respects-cache-control-headers-from-external-origins-by-default)
+- [Control CDN caching for shared and personalized pages on Vercel](https://vercel.com/kb/guide/cdn-cache-personalized-pages) — Control CDN caching for shared and personalized Next.js pages. Set cache headers, separate per-user content, and verify
+- [ Sitemap lastmod should track content, not deployments](https://vercel.com/kb/guide/correct-lastmod-nextjs-sitemap) — Set accurate sitemap lastmod dates in Next.js using stored content timestamps, targeted revalidation, and checks that di
+- [Proxied responses now cacheable via CDN-Cache-Control headers](https://vercel.com/changelog/proxied-responses-now-cacheable-via-cdn-cache-control-headers)
+- [Manage cache tags for external origins](https://vercel.com/kb/guide/how-to-manage-cache-tags-for-external-origins) — Learn how to use cache tags to optimally serve fresh content on Vercel when content from your external origin changes
+- [Vercel Data Cache: A progressive cache, integrated with Next.js](https://vercel.com/blog/vercel-cache-api-nextjs-cache)
+- [Response headers](https://vercel.com/docs/headers/response-headers) — Learn about the response headers sent to each Vercel deployment and how to use them to process responses before sending
+- [Cache Status and Reasons](https://vercel.com/docs/caching/cache-status) — Understand the cache status and reason shown for each request in Vercel logs, and what causes a response to miss, bypass
+- [Purging Vercel CDN Cache](https://vercel.com/docs/caching/cdn-cache/purge) — Learn how to invalidate and delete cached content on Vercel's CDN, including cache keys and manual purging options.
+- [System Headers](https://vercel.com/docs/headers) — This reference covers the list of request, response, cache-control, and custom response headers included with deployment
+- [@vercel/functions API Reference \\(Node.js\\)](https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package) — Learn about available APIs when working with Vercel Functions.
 
 Full cross-link map for this page: [/docs/caching/cache-control-headers.graph.md](/docs/caching/cache-control-headers.graph.md)
 <!-- /docsgraph:related -->
@@ -49,22 +51,22 @@ The right `Cache-Control` value depends on what you're caching and how fresh it 
 
 | Content type                                    | Recommended header            | When to use                                                                                                                                                 |
 | ----------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Server-rendered, same for all visitors          | `max-age=0, s-maxage=86400`   | Pages where every visitor sees the same content. Don't use `s-maxage` for per-user responses unless you set a [`Vary`](/docs/caching/cdn-cache#vary-header) header. |
-| Semi-static (product pages, blogs, marketing)   | `max-age=120, s-maxage=86400` | Content that tolerates short staleness. A 60-120s browser TTL reduces [edge requests](/docs/manage-cdn-usage#edge-requests) for return visitors.            |
+| Server-rendered, same for all visitors          | `max-age=0, s-maxage=86400`   | Pages where every visitor sees the same content. For per-user responses use `private` instead, because a [`Vary`](/docs/caching/cdn-cache#vary-header) on `Cookie` [isn't cacheable](/docs/caching/cdn-cache#high-cardinality-headers). |
+| Semi-static (product pages, blogs, marketing)   | `max-age=120, s-maxage=86400` | Content that tolerates short staleness. A 60-120s browser TTL reduces [CDN requests](/docs/manage-cdn-usage#cdn-requests) for return visitors.            |
 | Personalized or per-user                        | `private, max-age=0`          | Responses that vary by cookie, session, or auth. `private` prevents CDN caching.                                                                            |
 | Immutable static assets (hashed JS, CSS, fonts) | `max-age=31536000, immutable` | Content-hashed assets. Frameworks like Next.js set this automatically.                                                                                      |
 
 For most server-rendered pages where the response is the same for every visitor, `max-age=0, s-maxage=86400` is a safe starting point. It lets Vercel's CDN cache and invalidate responses on deploy, and the browser always gets the latest version.
 
-If you want to reduce edge requests and improve performance for return visitors, set a short `max-age` (for example, 60-120s) alongside `s-maxage`. Visitors within the browser cache window won't trigger an edge request, which lowers both latency and [CDN usage costs](/docs/manage-cdn-usage). The trade-off is that those visitors may see content up to `max-age` seconds old.
+If you want to reduce CDN requests and improve performance for return visitors, set a short `max-age` (for example, 60-120s) alongside `s-maxage`. Visitors within the browser cache window won't trigger a CDN request, which lowers both latency and [CDN usage costs](/docs/manage-cdn-usage). The trade-off is that those visitors may see content up to `max-age` seconds old.
 
 For content that must never be cached, use `no-store`. Use this for responses containing sensitive data or real-time information that's stale the moment it's generated.
 
 ## `s-maxage`
 
-This directive sets the number of seconds a response is considered "fresh" by the CDN. After this period ends, Vercel's CDN will serve the "stale" response from the edge until the response is asynchronously revalidated with a "fresh" response to your Vercel Function.
+This directive sets the number of seconds a response is considered "fresh" by the CDN. After this period ends, the cached response expires. The next request invokes your Vercel Function and waits for the new response. To serve the previous response while the CDN revalidates it in the background, add [`stale-while-revalidate`](#stale-while-revalidate).
 
-Vercel's proxy consumes `s-maxage` for all requests. After processing it, the CDN does not include it in the final HTTP response to the client.
+When `Cache-Control` is the only cache header on the response, Vercel's proxy consumes `s-maxage`. After processing it, the CDN does not include it in the final HTTP response to the client. If you also set `CDN-Cache-Control` or `Vercel-CDN-Cache-Control`, Vercel forwards `Cache-Control` to the client as is, including `s-maxage`. See [Behavior](#behavior).
 
 ### `s-maxage` example
 
@@ -81,7 +83,7 @@ This `cache-control` directive allows you to serve content from the Vercel CDN c
 - Your content changes frequently, but regeneration is slow, such as content that relies on an expensive database query or upstream API request
 - Your content changes infrequently but you want to have the flexibility to update it without waiting for the cache to expire
 
-Vercel's proxy consumes `stale-while-revalidate` for all requests. After processing it, the CDN does not include it in the final HTTP response to the client. This allows you to deliver the latest content to your visitors right after creating a new deployment (as opposed to waiting for browser cache to expire). It also prevents content-flash.
+When `Cache-Control` is the only cache header on the response, Vercel's proxy consumes `stale-while-revalidate`. After processing it, the CDN does not include it in the final HTTP response to the client. This allows you to deliver the latest content to your visitors right after creating a new deployment (as opposed to waiting for browser cache to expire). It also prevents content-flash. If you also set `CDN-Cache-Control` or `Vercel-CDN-Cache-Control`, Vercel forwards `Cache-Control` to the client as is, including `stale-while-revalidate`. See [Behavior](#behavior).
 
 ### SWR example
 
@@ -97,11 +99,6 @@ Cache-Control: s-maxage=1, stale-while-revalidate=59
 
 The first request is served synchronously. Subsequent requests are served from the cache and revalidated asynchronously if the cache is "stale".
 
-If you need to do a *synchronous* revalidation you can set the `pragma: no-cache` header along with the `cache-control` header. This can be used to understand how long the background revalidation took. It sets the `x-vercel-cache` header to `REVALIDATED`.
-
-> **💡 Note:** Many browser developer tools set `pragma: no-cache` by default, which reveals
-> the true load time of the page with the synchronous update to the cache.
-
 ## `stale-if-error`
 
 When you set the `stale-if-error` HTTP Cache-Control extension, the CDN serves a stale response when an error is encountered instead of returning the error to the client. Examples of errors are: 500 Internal Server Error, a network failure, or a DNS error.
@@ -109,14 +106,14 @@ When you set the `stale-if-error` HTTP Cache-Control extension, the CDN serves a
 The following example instructs the CDN to:
 
 ```
-Cache-Control: max-age=604800, stale-if-error=86400
+Cache-Control: s-maxage=604800, stale-if-error=86400
 ```
 
 1. Cache and serve a successful response fresh for 7 days (604800 seconds). The CDN will not attempt to revalidate during this period.
 2. Attempt revalidation after 7 days. The CDN will not cache any error from the origin and instead serve the stale response for up to 1 additional day (86400 seconds).
 3. If the origin never returns a successful response after that 1 day (86400 seconds) period, the CDN will stop serving the stale response and users will see the error from the origin.
 
-Vercel's proxy consumes `stale-if-error` for all requests. After processing it, the CDN does not include it in the final HTTP response to the client.
+When `Cache-Control` is the only cache header on the response, Vercel's proxy consumes `stale-if-error`. After processing it, the CDN does not include it in the final HTTP response to the client. If you also set `CDN-Cache-Control` or `Vercel-CDN-Cache-Control`, Vercel forwards `Cache-Control` to the client as is, including `stale-if-error`. See [Behavior](#behavior).
 
 ## `proxy-revalidate`
 
@@ -128,7 +125,7 @@ Using the `private` directive specifies that the response can only be cached by 
 
 ## `Pragma: no-cache`
 
-When Vercel's CDN receives a request with `Pragma: no-cache` (such as when the browser devtools are open), it will revalidate any stale resource synchronously, instead of in the background.
+Vercel's CDN doesn't change its caching behavior when a request includes `Pragma: no-cache` (such as when the browser devtools are open). When a cached response is stale, the CDN serves it and revalidates it in the background.
 
 ## CDN-Cache-Control Header
 
@@ -178,9 +175,9 @@ The following tables demonstrate how Vercel's Cache behaves in different scenari
 | Parameter                                 | Value                               |
 | ----------------------------------------- | ----------------------------------- |
 | Vercel Function response headers          | `Cache-Control: s-maxage=60`        |
-| `vercel.json` or `next.config.js` headers | `Cache-Control: s-maxage: 120`      |
+| `vercel.json` or `next.config.js` headers | `Cache-Control: s-maxage=120`       |
 | Cache behavior                            | 60s TTL                             |
-| Headers sent to the client                | `Cache-Control: public, max-age: 0` |
+| Headers sent to the client                | `Cache-Control: public, max-age=0`  |
 
 ### `CDN-Cache-Control` priority
 
@@ -219,6 +216,8 @@ The following example demonstrates `Cache-Control` headers that instruct:
 - Downstream CDNs to have a TTL of `60` seconds
 - Clients to have a TTL of `10` seconds
 
+**app/api/cache-control-headers/route.js**
+
 ```js filename="app/api/cache-control-headers/route.js" framework=nextjs
 export async function GET() {
   return new Response('Cache Control example', {
@@ -231,6 +230,8 @@ export async function GET() {
   });
 }
 ```
+
+**app/api/cache-control-headers/route.ts**
 
 ```ts filename="app/api/cache-control-headers/route.ts" framework=nextjs
 export async function GET() {
@@ -245,6 +246,8 @@ export async function GET() {
 }
 ```
 
+**app/api/cache-control-headers/route.js**
+
 ```js filename="app/api/cache-control-headers/route.js" framework=nextjs-app
 export async function GET() {
   return new Response('Cache Control example', {
@@ -257,6 +260,8 @@ export async function GET() {
   });
 }
 ```
+
+**app/api/cache-control-headers/route.ts**
 
 ```ts filename="app/api/cache-control-headers/route.ts" framework=nextjs-app
 export async function GET() {
@@ -271,6 +276,8 @@ export async function GET() {
 }
 ```
 
+**api/cache-control-headers.js**
+
 ```js filename="api/cache-control-headers.js" framework=other
 export default function handler(request, response) {
   response.setHeader('Vercel-CDN-Cache-Control', 'max-age=3600');
@@ -281,10 +288,15 @@ export default function handler(request, response) {
 }
 ```
 
-```ts filename="api/cache-control-headers.ts" framework=other
-import type { VercelResponse } from '@vercel/node';
+**api/cache-control-headers.ts**
 
-export default function handler(response: VercelResponse) {
+```ts filename="api/cache-control-headers.ts" framework=other
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+export default function handler(
+  request: VercelRequest,
+  response: VercelResponse,
+) {
   response.setHeader('Vercel-CDN-Cache-Control', 'max-age=3600');
   response.setHeader('CDN-Cache-Control', 'max-age=60');
   response.setHeader('Cache-Control', 'max-age=10');
@@ -301,6 +313,75 @@ Custom headers can be configured with the `headers` property in [`next.config.js
 
 Alternatively, a [Vercel Function](/docs/functions) can assign headers to the [Response](https://nodejs.org/api/http.html#http_response_setheader_name_value) object.
 
+### Set `Cache-Control` for a page
+
+The following examples return `Cache-Control: s-maxage=1, stale-while-revalidate=59` for the `/about` page. The `source` value is the request path, such as `/about`, not the file name of the page.
+
+For projects that don't use Next.js, add the header in `vercel.json`:
+
+```json filename="vercel.json"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/about",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=1, stale-while-revalidate=59"
+        }
+      ]
+    }
+  ]
+}
+```
+
+For Next.js projects, return the header from `headers()` in `next.config.js`:
+
+```js filename="next.config.js"
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: '/about',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 's-maxage=1, stale-while-revalidate=59',
+          },
+        ],
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;
+```
+
+To set the header from a function, add it to the response. A `Cache-Control` header from a function [takes priority](#functions-have-priority-over-config-files) over one from `vercel.json` or `next.config.js`:
+
+```ts filename="app/api/about/route.ts"
+export async function GET() {
+  return Response.json(
+    { name: 'Mary Lamb' },
+    {
+      headers: {
+        'Cache-Control': 's-maxage=1, stale-while-revalidate=59',
+      },
+    },
+  );
+}
+```
+
+After you deploy, check the response with `curl`. Vercel [consumes `s-maxage`](#s-maxage), so the browser receives `cache-control: public, max-age=0, must-revalidate` instead of your value. Request the page twice and check that `x-vercel-cache` changes from `MISS` to `HIT`, or to `STALE` once the 1-second freshness window has passed:
+
+```bash filename="terminal"
+curl -I https://your-project.vercel.app/about
+```
+
+For the function example, request `/api/about` instead.
+
 > **💡 Note:** Response headers `x-matched-path`, `server`, and `content-length` are reserved
 > and cannot be modified.
 
@@ -308,3 +389,6 @@ Alternatively, a [Vercel Function](/docs/functions) can assign headers to the [R
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

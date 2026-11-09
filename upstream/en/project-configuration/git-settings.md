@@ -3,7 +3,7 @@ title: Git settings
 product: vercel
 url: /docs/project-configuration/git-settings
 canonical_url: "https://vercel.com/docs/project-configuration/git-settings"
-last_updated: 2026-03-10
+last_updated: 2026-08-25
 type: reference
 prerequisites:
   - /docs/project-configuration
@@ -26,13 +26,16 @@ Once you have [connected a Git repository](/docs/git#deploying-a-git-repository)
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How can I use GitLab Pipelines with Vercel?](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel?from=related) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
-- [How do I disable Git Notifications from Deployments?](https://vercel.com/kb/guide/how-do-i-disable-git-notifications-from-deployments?from=related) — If your project is connected via a Git account to your deployment, you will receive email notifications whenever the dep
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration?from=related) — Learn how to configure Git for your project through vercel.json or vercel.ts.
-- [vercel git](https://vercel.com/docs/cli/git?from=related) — Learn how to manage your Git provider connections using the vercel git CLI command.
-- [Bitbucket](https://vercel.com/docs/git/vercel-for-bitbucket?from=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
-- [Security settings](https://vercel.com/docs/project-configuration/security-settings?from=related) — Configure security settings for your Vercel project, including Logs and Source Protection, Vercel Support Code Visibilit
+- [Deployments can now require cryptographically-verified commits](https://vercel.com/changelog/deployments-can-now-require-cryptographically-verified-commits)
+- [Edit Git settings for all projects in a repo](https://vercel.com/changelog/edit-git-settings-for-all-projects-in-a-repo)
+- [Git LFS support](https://vercel.com/changelog/git-lfs-support)
+- [Repository checkout and Git LFS downloads are now faster](https://vercel.com/changelog/repository-checkout-and-git-lfs-downloads-are-now-faster)
+- [New Git Integration Settings](https://vercel.com/blog/new-git-integration-settings)
+- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [Deploying GitLab Projects with Vercel](https://vercel.com/docs/git/vercel-for-gitlab) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
+- [vercel git](https://vercel.com/docs/cli/git) — Learn how to manage your Git provider connections using the vercel git CLI command.
+- [Security settings](https://vercel.com/docs/project-configuration/security-settings) — Configure security settings for your Vercel project, including Vercel Support Code Visibility, Git Fork Protection, and
+- [vercel deploy-hooks](https://vercel.com/docs/cli/deploy-hooks) — Manage Deploy Hooks for Git-triggered builds from the Vercel CLI: list, create, and delete deploy hook URLs that trigger
 
 Full cross-link map for this page: [/docs/project-configuration/git-settings.graph.md](/docs/project-configuration/git-settings.graph.md)
 <!-- /docsgraph:related -->
@@ -69,7 +72,7 @@ To enable verified commits:
 
 1. From the Vercel dashboard, select your project
 2. Open **Settings** in the sidebar and select [**Git**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fgit\&title=Go+to+Git+settings)
-3. Under **Require Verified Commits**, select the **Enable** checkbox
+3. In the **Git Commits** section, set **Require Verified Commits** to **Enabled**
 
 When enabled, Vercel will only create deployments for commits that have been verified by GitHub. For all other commits, the deployment will be automatically canceled.
 
@@ -77,3 +80,6 @@ When enabled, Vercel will only create deployments for commits that have been ver
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

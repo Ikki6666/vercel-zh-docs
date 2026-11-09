@@ -1,25 +1,25 @@
 ---
-title: Modalities
+title: AI Gateway Model Modalities
 product: vercel
 url: /docs/ai-gateway/modalities
 canonical_url: "https://vercel.com/docs/ai-gateway/modalities"
-last_updated: 2026-07-28
+last_updated: 2026-10-05
 type: conceptual
 prerequisites:
   - /docs/ai-gateway
 related:
   - /docs/ai-gateway/models-and-providers
+  - /docs/ai-gateway/inputs-and-tools
   - /docs/ai-gateway/modalities/text-generation
   - /docs/ai-gateway/modalities/image-generation
   - /docs/ai-gateway/modalities/video-generation
-  - /docs/ai-gateway/modalities/realtime
 summary: "The inputs and outputs AI Gateway models work with: text, image, and video generation, speech to text, text to speech, realtime voice, embeddings,..."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Modalities
+# AI Gateway Model Modalities
 
-Modalities are the kinds of input and output models work with. Through AI Gateway you can generate text, images, and video, transcribe and synthesize speech, hold realtime voice conversations, create embeddings, and rerank documents, all through a unified API so you don't need separate integrations for each provider. For cross-cutting abilities like reasoning and web search, see [Models & Providers](/docs/ai-gateway/models-and-providers).
+Modalities are the kinds of input and output models work with. Through AI Gateway you can generate text, images, and video, transcribe and synthesize speech, hold realtime voice conversations, create embeddings, rerank documents, and answer typed questions about state, all through a unified API so you don't need separate integrations for each provider. For cross-cutting abilities like reasoning and web search, see [Models & Providers](/docs/ai-gateway/models-and-providers).
 
 
 <!-- docsgraph:related -->
@@ -27,16 +27,19 @@ Modalities are the kinds of input and output models work with. Through AI Gatewa
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation?from=related) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
-- [Building AI apps on Vercel: an overview](https://vercel.com/kb/guide/how-to-build-ai-app?from=related) — Learn the key AI concepts and tools for building and scaling AI apps.
-- [AI SDK](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
-- [SDKs & APIs](https://vercel.com/docs/ai-gateway/sdks-and-apis?from=related) — Use the AI Gateway with various SDKs and API specifications including OpenAI, Anthropic, and OpenResponses.
-- [Image Generation](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/image-generation?from=related) — Generate images using AI models that support multimodal output through the Chat Completions API.
-- [Getting Started](https://vercel.com/docs/ai-gateway/getting-started?from=related) — Get started with AI Gateway by generating text, images, video, speech, or transcriptions, or by building realtime voice
-- [Text](https://vercel.com/docs/ai-gateway/getting-started/text?from=related) — Generate and stream text responses using AI Gateway.
+- [Build realtime voice agents on AI Gateway](https://vercel.com/blog/realtime-voice-agents-on-ai-gateway)
+- [ElevenLabs on AI Gateway](https://vercel.com/blog/elevenlabs-on-ai-gateway)
+- [Building AI apps on Vercel: an overview](https://vercel.com/kb/guide/how-to-build-ai-app) — Learn the key AI concepts and tools for building and scaling AI apps.
+- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
+- [AI SDK with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 400+ models.
+- [AI Gateway Chat Completions Image Generation Reference](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/image-generation) — Generate images using AI models that support multimodal output through the Chat Completions API through AI Gateway.
+- [AI Gateway SDKs and APIs](https://vercel.com/docs/ai-gateway/sdks-and-apis) — Connect to AI Gateway with the AI SDK, Python, REST, or compatible OpenAI, Anthropic Messages, OpenResponses, and Cohere
+- [AI SDK for Python with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 400+ models.
 
 Full cross-link map for this page: [/docs/ai-gateway/modalities.graph.md](/docs/ai-gateway/modalities.graph.md)
 <!-- /docsgraph:related -->
+
+For image understanding, documents, recorded audio, video analysis, and function calling, see [Inputs & Tools](/docs/ai-gateway/inputs-and-tools).
 
 ## What you can build
 
@@ -48,29 +51,31 @@ Full cross-link map for this page: [/docs/ai-gateway/modalities.graph.md](/docs/
 - **Spoken audio**: Generate voiceovers and spoken responses from text with [Text to Speech](/docs/ai-gateway/modalities/text-to-speech)
 - **Semantic search**: Generate vector embeddings for search, similarity matching, and RAG with [Embeddings](/docs/ai-gateway/modalities/embeddings)
 - **Improved retrieval**: Re-score candidate documents by relevance for better RAG results with [Reranking](/docs/ai-gateway/modalities/reranking)
+- **Structured decisions**: Answer typed questions about shared state with [Decision](/docs/ai-gateway/modalities/decision)
 
 ## Modalities overview
 
 | Modality                                                          | What it does                              | Key features                                                                   |
 | ----------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
-| [Text Generation](/docs/ai-gateway/modalities/text-generation)    | Generate and stream text                  | Hundreds of models, streaming, tool calling, structured output                 |
+| [Text Generation](/docs/ai-gateway/modalities/text-generation)    | Generate and stream text                  | 300+ models, streaming, tool calling, structured output                        |
 | [Image Generation](/docs/ai-gateway/modalities/image-generation)  | Create images from text prompts           | Multi-provider support, edit existing images, multiple output formats          |
 | [Video Generation](/docs/ai-gateway/modalities/video-generation)  | Create videos from text, images, or video | Text-to-video, image-to-video, video-to-video, resolution and duration control |
 | [Realtime](/docs/ai-gateway/modalities/realtime)                  | Hold live, two-way voice conversations    | Low-latency speech-to-speech, browser and Node.js, session config and limits   |
-| [Speech to Text](/docs/ai-gateway/modalities/speech-to-text)      | Transcribe recorded audio into text       | OpenAI transcription models, timestamped segments, language detection          |
-| [Text to Speech](/docs/ai-gateway/modalities/text-to-speech)      | Generate spoken audio from text           | OpenAI speech models, multiple voices and formats, speed and tone control      |
+| [Speech to Text](/docs/ai-gateway/modalities/speech-to-text)      | Transcribe recorded audio into text       | Batch and streaming transcription, timestamped segments, language detection    |
+| [Text to Speech](/docs/ai-gateway/modalities/text-to-speech)      | Generate spoken audio from text           | Google, Microsoft, and OpenAI voices, multiple formats, speed and tone control |
 | [Embeddings](/docs/ai-gateway/modalities/embeddings)              | Generate vector representations of text   | Semantic search, similarity matching, RAG pipelines                            |
 | [Reranking](/docs/ai-gateway/modalities/reranking)                | Re-score documents by relevance           | Improve RAG retrieval accuracy, multi-provider support                         |
+| [Decision](/docs/ai-gateway/modalities/decision)                  | Answer typed questions about state        | Boolean, choice, and score answers, many questions per request                 |
 
 ## Text generation
 
-Generate and stream text from hundreds of models through a single API. Text is the default modality, with support for tool calling and structured output.
+Generate and stream text from 300+ models through a single API. Text is the default modality, with support for tool calling and structured output.
 
 ```typescript
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'openai/gpt-5.6-sol',
+  model: 'openai/gpt-6-astra',
   prompt: 'What is the capital of France?',
 });
 ```
@@ -82,16 +87,15 @@ See the [Text Generation docs](/docs/ai-gateway/modalities/text-generation) for 
 Generate images using AI models through a single API. Requests route to the best available provider, with authentication and response formatting handled automatically.
 
 ```typescript
-import { gateway } from '@ai-sdk/gateway';
 import { generateImage } from 'ai';
 
 const { image } = await generateImage({
-  model: gateway.imageModel('openai/gpt-image-2'),
+  model: 'openai/gpt-image-2',
   prompt: 'A serene mountain landscape at sunset',
 });
 ```
 
-Supported providers include OpenAI (GPT Image), Google (Imagen), and multimodal LLMs with image capabilities. See the [Image Generation docs](/docs/ai-gateway/modalities/image-generation) for implementation details.
+Supported providers include OpenAI (GPT Image), Google (Nano Banana), and multimodal LLMs with image capabilities. See the [Image Generation docs](/docs/ai-gateway/modalities/image-generation) for implementation details.
 
 ## Video generation
 
@@ -113,19 +117,25 @@ Supported providers include Google (Veo 3.1), KlingAI (motion control), and Wan.
 
 ## Audio: speech and voice
 
-AI Gateway works with audio three ways, and they do different jobs. Use this table to pick the one that matches what you have and what you want to produce:
+AI Gateway supports audio understanding, transcription, speech generation, music and sound effect generation, and realtime voice. Use this table to pick the one that matches what you have and what you want to produce:
 
 | Capability                                                   | Input and output            | Use it for                                                                              | Mode                           |
 | ------------------------------------------------------------ | --------------------------- | --------------------------------------------------------------------------------------- | ------------------------------ |
-| [Speech to Text](/docs/ai-gateway/modalities/speech-to-text) | Recorded audio in, text out | Transcribing files you already have, such as voice notes, call recordings, and podcasts | Batch, single response         |
-| [Text to Speech](/docs/ai-gateway/modalities/text-to-speech) | Text in, audio file out     | Voiceovers, audio versions of written content, and spoken responses                     | Batch, single response         |
+| [Audio Input](/docs/ai-gateway/inputs-and-tools/audio-input) | Recorded audio and a question in, text out | Summarizing speech or asking questions about a recording | Single response or streamed text |
+| [Speech to Text](/docs/ai-gateway/modalities/speech-to-text) | Recorded audio in, text out | Transcribing files you already have, such as voice notes, call recordings, and podcasts | Batch, single response, streaming |
+| [Text to Speech](/docs/ai-gateway/modalities/text-to-speech) | Text in, audio file out     | Voiceovers, audio versions of written content, and spoken responses                     | Batch, single response, streaming |
+| [Music and sound effects](/docs/ai-gateway/modalities/text-to-speech#generate-music-and-sound-effects-with-elevenlabs) | Text description in, audio file out | Soundtracks, jingles, and game or interface sounds | Batch, single response |
 | [Realtime](/docs/ai-gateway/modalities/realtime)             | Live audio in and out       | Two-way voice agents and live conversation                                              | Streaming, low-latency session |
 
-Speech to Text and Text to Speech process recorded or generated audio in a single request. Realtime handles live conversation, so reach for it when you need a back-and-forth voice session rather than a transcript or a finished audio file.
+Speech to Text and Text to Speech return a complete transcript or audio file, or stream results as they're produced. Realtime handles live conversation, so reach for it when you need a back-and-forth voice session rather than a transcript or a finished audio file.
 
 ## Embeddings and reranking
 
 Generate vector embeddings for semantic search, similarity matching, and RAG, then re-score candidate documents by relevance to improve retrieval accuracy. See the [Embeddings docs](/docs/ai-gateway/modalities/embeddings) and [Reranking docs](/docs/ai-gateway/modalities/reranking) for implementation details.
+
+## Decision
+
+Ask typed questions about shared state and get structured answers back: boolean probabilities, a choice from a named set, or a score along an ordered scale. Many questions can be answered in one request. See the [Decision docs](/docs/ai-gateway/modalities/decision) for implementation details.
 
 ## Next steps
 
@@ -137,6 +147,7 @@ Generate vector embeddings for semantic search, similarity matching, and RAG, th
 - [Generate speech](/docs/ai-gateway/modalities/text-to-speech) with Text to Speech
 - [Generate embeddings](/docs/ai-gateway/modalities/embeddings) for semantic search and RAG
 - [Rerank documents](/docs/ai-gateway/modalities/reranking) to improve retrieval accuracy
+- [Make decisions](/docs/ai-gateway/modalities/decision) to get structured answers to typed questions
 
 For cross-cutting abilities, see [Models & Providers](/docs/ai-gateway/models-and-providers). For monitoring and spend, see [Observability and Spend](/docs/ai-gateway/observability-and-spend). For data privacy and governance, see [Security and Compliance](/docs/ai-gateway/security-and-compliance).
 
@@ -144,3 +155,6 @@ For cross-cutting abilities, see [Models & Providers](/docs/ai-gateway/models-an
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

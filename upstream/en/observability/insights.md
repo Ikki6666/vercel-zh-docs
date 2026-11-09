@@ -3,16 +3,16 @@ title: Observability Insights
 product: vercel
 url: /docs/observability/insights
 canonical_url: "https://vercel.com/docs/observability/insights"
-last_updated: 2026-06-26
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/observability
 related:
   - /docs/functions
+  - /docs/cli/metrics
   - /docs/manage-cdn-usage
   - /docs/image-optimization
   - /docs/incremental-static-regeneration
-  - /docs/vercel-blob
 summary: List of available data sources that you can view and monitor with Observability on Vercel.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
@@ -27,12 +27,18 @@ Vercel organizes Observability through sections that correspond to different fea
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute?from=related) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Observability and Spend](https://vercel.com/docs/ai-gateway/observability-and-spend?from=related) — Monitor AI Gateway requests and manage spend: observability, custom reporting, usage and billing APIs, and spending budg
-- [Query](https://vercel.com/docs/query?from=related) — Query and visualize your Vercel usage, traffic, and more in observability.
+- [AI traffic insights now available in Vercel Observability](https://vercel.com/changelog/ai-traffic-insights-now-available-in-vercel-observability)
+- [Troubleshoot and optimize Active CPU usage on Fluid compute](https://vercel.com/kb/guide/optimize-active-cpu-on-fluid-compute) — Diagnose which routes drive Active CPU usage and learn to optimize it. Separate traffic growth from per-request CPU work
+- [Troubleshoot and optimize Function Invocations on Vercel](https://vercel.com/kb/guide/optimize-function-invocations) — Diagnose which routes drive Function Invocations and learn to optimize them. Separate necessary dynamic traffic from div
+- [Anyone can build agents, but it takes a platform to run them](https://vercel.com/blog/anyone-can-build-agents-but-it-takes-a-platform-to-run-them)
+- [Overview page in Observability](https://vercel.com/changelog/overview-page-in-observability)
+- [Vercel Observability is now generally available](https://vercel.com/changelog/vercel-observability-is-now-generally-available)
+- [How we made the Vercel Dashboard twice as fast](https://vercel.com/blog/how-we-made-the-vercel-dashboard-twice-as-fast)
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Manage and optimize usage for Observability](https://vercel.com/docs/manage-and-optimize-observability) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
+- [How requests flow through Vercel](https://vercel.com/docs/fundamentals/infrastructure) — Learn how Vercel routes, secures, and serves requests from your users to your application.
+- [Observability](https://vercel.com/docs/agent-resources/vercel-mcp/tools/observability) — Vercel MCP tools for observability.
+- [Query](https://vercel.com/docs/query) — Query and visualize your Vercel usage, traffic, and more in observability.
 
 Full cross-link map for this page: [/docs/observability/insights.graph.md](/docs/observability/insights.graph.md)
 <!-- /docsgraph:related -->
@@ -70,9 +76,9 @@ Observability Plus users receive additional insights and tooling:
 - View rewrite targets and frequency
 - Query middleware invocations using the query builder
 
-## Edge Requests
+## CDN Requests
 
-You can use the **Edge Requests** tab to understand the requests to each of static and dynamic routes through the global network. This includes the number of requests, the regions, and the requests that have been cached for each route.
+You can use the **CDN Requests** tab to understand the requests to each of static and dynamic routes through the global network. This includes the number of requests, the regions, and the requests that have been cached for each route.
 
 It also provides detailed breakdowns for individual bots and bot categories, including AI crawlers and search engines.
 
@@ -83,6 +89,19 @@ Additionally, Observability Plus users can:
 - Break down traffic by bot or category in the query builder
 - Filter traffic by redirect location
 - Break down traffic by redirect location in the query builder
+
+## AI Traffic
+
+The **AI Traffic** tab shows how AI bots interact with your site. You can see requests from AI bots over time, broken down by AI crawlers that index or train on your content and AI assistants that fetch pages on behalf of a user.
+
+It also shows:
+
+- Paths that AI crawlers request the most
+- Paths that AI assistants request the most from user-initiated sessions
+- Paths that AI bots requested but received an error
+- Paths that AI bots request as Markdown
+
+You can also query AI crawler, assistant, and failed-request counts with the [AI traffic metrics in the Vercel CLI](/docs/cli/metrics#ai-traffic).
 
 ## Fast Data Transfer
 
@@ -133,7 +152,7 @@ To learn more, see [Builds](/docs/builds).
 
 ## AI Gateway
 
-With the AI Gateway you can switch between ~100 AI models without needing to manage API keys, rate limits, or provider accounts.
+With the AI Gateway you can switch between 400+ AI models without needing to manage API keys, rate limits, or provider accounts.
 
 The **AI Gateway** tab surfaces metrics related to the AI Gateway, and provides visibility into:
 
@@ -151,19 +170,21 @@ For more information, see [the AI Gateway announcement](/blog/ai-gateway).
 
 With [Vercel Sandbox](/docs/sandbox), you can safely run untrusted or user-generated code on Vercel in isolated, persistent Linux microVMs using the `@vercel/sandbox` SDK.
 
-You can view a list of sandboxes that were started for this project. For each sandbox, you can see:
+The **Sandboxes** tab in Observability shows charts of sandbox creations, running sandboxes, CPU usage, memory usage, and data transfer.
 
-- Time started
-- Status such as pending or stopped
-- Runtime such as `node24`
-- Resources such as `4x CPU 8.19 KB`
-- Duration it ran for
+To view a list of your project's sandboxes, open the **Sandboxes** page from your project's sidebar. For each sandbox, you can see:
+
+- Name
+- Status such as running or stopped
+- Resources such as `4x CPU · 8 GiB`
+- Time it was last used
+- Time it was created
 
 Clicking on a sandbox item from the list takes you to the detail page that provides detailed information, including the URL and port of the sandbox.
 
-## External Rewrites
+## External Origins
 
-The **External Rewrites** tab gives you visibility into how your external rewrites are performing at both the team and project levels. For each external rewrite, you can see:
+The **External Origins** tab gives you visibility into how your [rewrites to external origins](/docs/routing/rewrites#rewrites-to-external-origins), also called external rewrites, are performing at both the team and project levels. For each external rewrite, you can see:
 
 - Total external rewrites
 - External rewrites by hostnames
@@ -173,7 +194,7 @@ Additionally, Observability Plus users can view:
 - External rewrite connection latency
 - External rewrites by source/destination paths
 
-To learn more, see [External Rewrites](/docs/routing/rewrites#external-rewrites).
+To learn more, see [External Rewrites](/docs/routing/rewrites#rewrites-to-external-origins).
 
 ## Microfrontends
 
@@ -205,3 +226,6 @@ For more information, see [Queues Observability](/docs/queues/observability).
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

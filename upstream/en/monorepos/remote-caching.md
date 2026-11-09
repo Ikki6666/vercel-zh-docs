@@ -3,23 +3,25 @@ title: Remote Caching
 product: vercel
 url: /docs/monorepos/remote-caching
 canonical_url: "https://vercel.com/docs/monorepos/remote-caching"
-last_updated: 2026-07-30
+last_updated: 2026-08-13
 type: tutorial
 prerequisites:
   - /docs/monorepos
 related:
   - /docs/monorepos/turborepo
   - /docs/monorepos/remote-caching/external-ci-cd
+  - /docs/ci
   - /docs/builds/configure-a-build
   - /docs/rbac
-  - /docs/monorepos/nx
 summary: Vercel Remote Cache allows you to share build outputs and artifacts across distributed teams.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
 # Remote Caching
 
-> **🔒 Permissions Required**: Remote Cache
+> Remote Cache is available on all plans
+
+Remote Caching saves you time by ensuring you never repeat the same task twice, by automatically sharing a cache across your entire Vercel team.
 
 
 <!-- docsgraph:related -->
@@ -27,22 +29,21 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching?from=related) — Share a single Turborepo cache across your team and CI to avoid duplicated work.
-- [Constructing CI](https://turborepo.dev/docs/crafting-your-repository/constructing-ci?from=related) — Set up CI pipelines with Remote Caching, task filtering, Docker support, and affected package detection for maximum spee
-- [Buildkite](https://turborepo.dev/docs/guides/ci-vendors/buildkite?from=related) — Configure Buildkite pipelines to run Turborepo tasks with Remote Caching.
-- [CircleCI](https://turborepo.dev/docs/guides/ci-vendors/circleci?from=related) — Configure CircleCI workflows to run Turborepo tasks with Remote Caching.
-- [GitHub Actions](https://turborepo.dev/docs/guides/ci-vendors/github-actions?from=related) — Configure GitHub Actions workflows to run Turborepo tasks with Remote Caching.
-- [Deploy a headless BigCommerce storefront with Vercel](https://vercel.com/kb/guide/deploy-headless-bigcommerce-storefront-with-vercel?from=related) — Deploy a headless BigCommerce storefront using Catalyst and Next.js on Vercel
-- [Data Cache](https://vercel.com/docs/caching/runtime-cache/data-cache?from=related) — Vercel Data Cache is a specialized cache that stores responses from data fetches in Next.js App Router
-- [Troubleshoot Build Errors](https://vercel.com/docs/deployments/troubleshoot-a-build?from=related) — Learn how to resolve common scenarios you may encounter during the Build step, including build errors that cancel a depl
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [CDN Cache](https://vercel.com/docs/caching/cdn-cache?from=related) — Learn how Vercel's CDN cache stores your content across a global network to reduce latency and origin load.
-- [Runtime Cache](https://vercel.com/docs/caching/runtime-cache?from=related) — Vercel Runtime Cache is a specialized cache that stores responses from data fetches in Vercel functions
+- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) — Share a single Turborepo cache across your team and CI to avoid duplicated work.
+- [Faster iteration with Turborepo and Vercel Remote Cache](https://vercel.com/blog/vercel-remote-cache-turbo)
+- [Constructing CI](https://turborepo.dev/docs/crafting-your-repository/constructing-ci) — Set up CI pipelines with Remote Caching, task filtering, Docker support, and affected package detection for maximum spee
+- [Buildkite](https://turborepo.dev/docs/guides/ci-vendors/buildkite) — Configure Buildkite pipelines to run Turborepo tasks with Remote Caching.
+- [CircleCI](https://turborepo.dev/docs/guides/ci-vendors/circleci) — Configure CircleCI workflows to run Turborepo tasks with Remote Caching.
+- [GitHub Actions](https://turborepo.dev/docs/guides/ci-vendors/github-actions) — Configure GitHub Actions workflows to run Turborepo tasks with Remote Caching.
+- [Vercel Remote Cache is now free](https://vercel.com/changelog/free-vercel-remote-cache)
+- [Purge your Remote Cache's build and CI artifacts](https://vercel.com/changelog/purge-your-remote-caches-build-and-ci-artifacts)
+- [Turborepo and Vercel Remote Cache now support OpenID Connect (OIDC)](https://vercel.com/changelog/turborepo-and-remote-cache-now-support-openid-connect-oidc)
+- [Vercel CI is now in beta](https://vercel.com/changelog/vercel-ci-is-now-in-beta)
+- [Deploy a headless BigCommerce storefront with Vercel](https://vercel.com/kb/guide/deploy-headless-bigcommerce-storefront-with-vercel) — Deploy a headless BigCommerce storefront using Catalyst and Next.js on Vercel
+- [How to reduce build costs on Vercel](https://vercel.com/kb/guide/how-reduce-build-costs) — Find which projects drive your Build CPU Minutes, then lower them by skipping unneeded builds, shortening each build, an
 
 Full cross-link map for this page: [/docs/monorepos/remote-caching.graph.md](/docs/monorepos/remote-caching.graph.md)
 <!-- /docsgraph:related -->
-
-Remote Caching saves you time by ensuring you never repeat the same task twice, by automatically sharing a cache across your entire Vercel team.
 
 When a team is working on the same PR, Remote Caching identifies the necessary artifacts (such as build and log outputs) and recycles them across machines in [external CI/CD](#use-remote-caching-from-external-ci/cd) and [during the Vercel Build process](#use-remote-caching-during-vercel-build).
 
@@ -59,7 +60,7 @@ With Remote Caching, you can share the Turborepo cache across your entire team a
 > **💡 Note:** Remote Caching is a powerful feature of Turborepo, but with great power comes
 > great responsibility. Make sure you are caching correctly first and
 > double-check the [handling of environment
-> variables](/docs/monorepos/turborepo#step-0:-cache-environment-variables). You
+> variables](/docs/monorepos/turborepo#handling-environment-variables). You
 > should also remember that Turborepo treats logs as artifacts, so be aware of
 > what you are printing to the console.
 
@@ -75,113 +76,93 @@ For this guide, your monorepo should be using [Turborepo](/docs/monorepos/turbor
 
   As an Owner, you can enable or disable Remote Caching from your team settings.
   1. From the [Vercel Dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard), select your team from the team switcher.
-  2. Open **Settings** in the sidebar and go to the **Billing** section
+  2. Open **Settings** in the sidebar and go to the **Build and Deployment** section
   3. From the **Remote Caching** section, toggle the switch to enable or disable the feature.
 
 - ### Authenticate with Vercel
   Once your Vercel project is using Turborepo, authenticate the Turborepo CLI with your Vercel account:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm dlx turbo login
+  ```
+  **yarn**
+  ```bash
+  yarn dlx turbo login
+  ```
+  **npm**
+  ```bash
+  npx turbo login
+  ```
+  **bun**
+  ```bash
+  bunx turbo login
+  ```
   If you are connecting to an SSO-enabled Vercel team, you should provide your Team slug as an argument:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm dlx turbo login --sso-team=team-slug
+  ```
+  **yarn**
+  ```bash
+  yarn dlx turbo login --sso-team=team-slug
+  ```
+  **npm**
+  ```bash
+  npx turbo login --sso-team=team-slug
+  ```
+  **bun**
+  ```bash
+  bunx turbo login --sso-team=team-slug
+  ```
 
 - ### Link to the remote cache
   **To enable Remote Caching and connect to the Vercel Remote Cache**, every member of that team that wants to use Remote Caching should run the following in the root of the monorepo:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm dlx turbo link
+  ```
+  **yarn**
+  ```bash
+  yarn dlx turbo link
+  ```
+  **npm**
+  ```bash
+  npx turbo link
+  ```
+  **bun**
+  ```bash
+  bunx turbo link
+  ```
   You will be prompted to enable Remote Caching for the current repo. Enter `Y` for yes to enable Remote Caching.
 
   Next, select the team scope you'd like to connect to. Selecting the scope tells Vercel who the cache should be shared with and allows for ease of [billing](#billing-information). Once completed, Turborepo will use Vercel Remote Caching to store your team's cache artifacts.
   > **💡 Note:** If you run these commands but the owner has [disabled Remote
-  > Caching](#enabling-and-disabling-remote-caching-for-your-team) for your team,
+  > Caching](/docs/monorepos/remote-caching#enable-and-disable-remote-caching-for-your-team) for your team,
   > Turborepo will present you with an error message: "Please contact your account
   > owner to enable Remote Caching on Vercel."
 
 - ### Unlink the remote cache
   To disable Remote Caching and unlink the current directory from the Vercel Remote Cache, run:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i 
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i 
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i 
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i 
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm dlx turbo unlink
+  ```
+  **yarn**
+  ```bash
+  yarn dlx turbo unlink
+  ```
+  **npm**
+  ```bash
+  npx turbo unlink
+  ```
+  **bun**
+  ```bash
+  bunx turbo unlink
+  ```
   This is run on a per-developer basis, so each developer that wants to unlink the remote cache must run this command locally.
 
 - ### Test the cache
@@ -192,11 +173,68 @@ For this guide, your monorepo should be using [Turborepo](/docs/monorepos/turbor
 
 ## Use Remote Caching during Vercel Build
 
-When you run `turbo` commands during a Vercel Build, Remote Caching will be automatically enabled. No additional configuration is required. Your `turbo` task artifacts will be shared with all of your Vercel projects (and your Team Members). For more information on how to deploy applications using Turborepo on Vercel, see the [Turborepo](/docs/monorepos/turborepo) guide.
+When you run `turbo` commands during a Vercel Build, Remote Caching is enabled automatically and needs no configuration. Vercel shares your `turbo` task artifacts between builds according to [cache policies](#how-cache-policies-isolate-artifacts), which scope artifacts by repository, branch, and deployment type. For more information on how to deploy applications using Turborepo on Vercel, see the [Turborepo](/docs/monorepos/turborepo) guide.
 
 ## Use Remote Caching from external CI/CD
 
 You can access the Vercel Remote Cache from external CI/CD using OpenID Connect (OIDC) or a Personal Access Token. See [Use Remote Caching from external CI/CD](/docs/monorepos/remote-caching/external-ci-cd) for step-by-step setup.
+
+## How cache policies isolate artifacts
+
+Cache policies control which Remote Cache artifacts a build can read and where it can upload new ones. Vercel assigns a cache policy to each Vercel Build and [Vercel CI](/docs/ci) run based on how the build started. This way, a feature branch, fork, or redeploy can't overwrite the artifacts that your default branch builds reuse.
+
+### Cache namespaces
+
+A cache policy sorts artifacts into separate storage areas called namespaces. A build reads the namespaces in its policy in order and uses the first matching artifact. Each build can upload to one namespace at most, and Vercel never copies artifacts between namespaces.
+
+| Namespace         | What it contains                                                                                            | Which builds can upload                                  |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| Repository shared | Artifacts from one Git repository's default branch, scoped to your team                                     | Verified pushes to the default branch of that repository |
+| Branch            | Artifacts from one branch of one source repository. Forks with the same branch name get separate namespaces. | Verified builds of that branch                           |
+| CLI production    | Artifacts from production deployments of one project created with the Vercel CLI or REST API                | CLI and API production deployments of that project       |
+| CLI preview       | Artifacts from preview deployments of one project created with the Vercel CLI or REST API                   | CLI and API preview deployments of that project          |
+
+[Clearing the Remote Cache](#clear-the-remote-cache) deletes artifacts in every namespace.
+
+### Git builds
+
+Vercel assigns a Git build its cache policy from the Git event that triggered it. Vercel verifies that event when the build is triggered:
+
+| Build                                                                     | Reads, in order               | Uploads to        |
+| ------------------------------------------------------------------------- | ----------------------------- | ----------------- |
+| Verified push to the repository's default branch                          | Repository shared             | Repository shared |
+| Verified push to another branch, a fork, or a pull request                | Repository shared, own branch | Own branch        |
+| Tag, unsupported Git event, or build whose Git origin Vercel can't verify | Repository shared             | Nothing           |
+
+These rules decide which builds can upload to the repository shared namespace:
+
+- **Default branch**: Vercel uses the default branch recorded when the build was triggered. A branch name, the Production environment, an environment variable, or a later change to the default branch doesn't grant access to the repository shared namespace.
+- **Forks and pull requests**: A fork's default branch and a pull request that targets your default branch only upload to their own branch namespace.
+- **Retries**: A retried build keeps the cache policy from its original run.
+- **Vercel Git repositories**: Builds of repositories hosted on Vercel Git currently upload to branch namespaces, including builds of the default branch.
+
+The repository shared namespace fills only from builds of your default branch. After you connect a repository, run a build on your default branch so that other branches get cache hits.
+
+Cache policies support repositories on GitHub, GitLab, Bitbucket, Cursor Origin, and Vercel Git.
+
+### Redeploys and builds without a repository
+
+Redeploys rebuild the source of another deployment, so they never upload artifacts and can't read repository, branch, or CLI artifacts. Git builds that Vercel can't associate with a team-owned repository follow the same rule.
+
+### CLI and API deployments
+
+Deployments created with the Vercel CLI or REST API aren't verified Git builds, so they never read from or upload to repository or branch namespaces. Instead, they share a cache with other CLI and API deployments of the same project:
+
+| Deployment environment | Reads, in order             | Uploads to     |
+| ---------------------- | --------------------------- | -------------- |
+| Production             | CLI production              | CLI production |
+| Preview or custom      | CLI preview                 | CLI preview    |
+
+Production deployments never read CLI preview artifacts. Creating a production deployment requires a permission that preview deployments don't, so preview builds can't put artifacts in front of production builds.
+
+### Read-only uploads
+
+When a build's cache policy doesn't allow uploads, or a token can read artifacts but not create them, the Remote Cache API accepts uploads with a `202` response and then discards the artifact. Vercel doesn't store the artifact or record usage for it. Your build continues normally, and Turborepo doesn't report an error. For standard tokens without upload access, the `GET /v8/artifacts/status` endpoint returns `"readOnly": true`.
 
 ## Clear the Remote Cache
 
@@ -261,3 +299,6 @@ Remote Caching can only be enabled by [team owners](/docs/rbac/access-roles#owne
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

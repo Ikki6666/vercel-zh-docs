@@ -3,7 +3,7 @@ title: Images
 product: vercel
 url: /docs/sandbox/concepts/images
 canonical_url: "https://vercel.com/docs/sandbox/concepts/images"
-last_updated: 2026-08-03
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/sandbox/concepts
@@ -11,8 +11,10 @@ prerequisites:
 related:
   - /docs/container-registry
   - /docs/container-registry/public-and-shared-repositories
-  - /docs/container-registry/getting-started
-summary: Start sandboxes from custom OCI images stored in Vercel Container Registry to ship your own system packages, tooling, and filesystem layout.
+  - /docs/sandbox/concepts/snapshots
+  - /docs/security/shared-responsibility
+  - /docs/container-registry/limits-and-pricing
+summary: "Start sandboxes from Vercel's Managed Images, or custom OCI images stored in Vercel Container Registry to ship your own system packages, tooling, and..."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
@@ -26,15 +28,16 @@ Custom images give you full control over the sandbox environment. Define the Lin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Running Docker on Vercel](https://vercel.com/kb/guide/docker?from=related) — Learn how to run Docker on Vercel by deploying OCI container images as Vercel Functions, storing them in Vercel Containe
-- [How to use Vercel Container Registry](https://vercel.com/kb/guide/how-to-use-vercel-container-registry?from=related) — Push, store, and pull OCI container images with Vercel Container Registry, then deploy them to Vercel Functions and Verc
-- [How to migrate from GHCR to Vercel Container Registry](https://vercel.com/kb/guide/migrate-ghcr-to-vcr?from=related) — Migrate container images from GitHub Container Registry \\(GHCR\\) to Vercel Container Registry \\(VCR\\), including authent
-- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox?from=related) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
-- [Examples](https://vercel.com/docs/sandbox/working-with-sandbox?from=related) — Task-oriented examples for common Vercel Sandbox operations in TypeScript and Python.
-- [JS SDK Reference](https://vercel.com/docs/sandbox/sdk-reference?from=related) — A comprehensive reference for the Vercel Sandbox JavaScript SDK, which lets you run code in a secure, isolated environme
-- [Persistence](https://vercel.com/docs/sandbox/concepts/persistent-sandboxes?from=related) — Sandboxes automatically save their filesystem state when stopped and restore it when resumed. No manual snapshot managem
-- [vercel sandbox](https://vercel.com/docs/cli/sandbox?from=related) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Sandbox now runs on Vercel Managed Images](https://vercel.com/changelog/vercel-sandbox-managed-images)
+- [Share Vercel Container Registry repositories across teams](https://vercel.com/changelog/share-vercel-container-registry-repositories-across-teams)
+- [Push images to Vercel Container Registry from GitHub Actions](https://vercel.com/changelog/vcr-login-github-action)
+- [Vercel Container Registry now supports 2 GB compressed image layers](https://vercel.com/changelog/vercel-container-registry-now-supports-2-gb-compressed-image-layers-new)
+- [Vercel Container Registry repositories can now be made public](https://vercel.com/changelog/vercel-container-registry-repositories-can-now-be-made-public)
+- [Run Cursor Cloud Agents on Vercel Sandbox](https://vercel.com/kb/guide/cursor-vercel-sandbox) — Learn how to run Cursor Cloud Agents on Vercel Sandbox with self-hosted worker pools, durable workflows, isolated microV
+- [Running Docker on Vercel](https://vercel.com/kb/guide/docker) — Run Docker on Vercel for HTTP apps and background workers, store images in Vercel Container Registry, and test container
+- [How to migrate from GHCR to Vercel Container Registry](https://vercel.com/kb/guide/migrate-ghcr-to-vcr) — Migrate container images from GitHub Container Registry \\(GHCR\\) to Vercel Container Registry \\(VCR\\), including authent
+- [Drives](https://vercel.com/docs/sandbox/concepts/drives) — Persistent storage that can be mounted into sandboxes and shared across runs.
+- [Hermes](https://vercel.com/docs/sandbox/ecosystem/hermes) — Run Hermes Agent terminal commands in isolated Vercel Sandbox microVMs, with models served through Vercel AI Gateway.
 
 Full cross-link map for this page: [/docs/sandbox/concepts/images.graph.md](/docs/sandbox/concepts/images.graph.md)
 <!-- /docsgraph:related -->
@@ -77,6 +80,12 @@ Every managed image gets a nightly release. Rolling tags (e.g. `universal:latest
 
 Images are open source, with their source code [available on GitHub](https://github.com/vercel/sandbox/tree/main/images). To propose changes, open a pull request.
 
+## Security responsibilities for images and snapshots
+
+Vercel publishes nightly Vercel Managed Image releases and updates rolling or major-version tags with operating system patches and dependency releases. You are responsible for software you add, including packages installed in a sandbox and software in custom images. If you pin a managed image to a digest, update that pinned reference when you want a newer image release.
+
+[Snapshots](/docs/sandbox/concepts/snapshots) preserve the filesystem and installed packages from an earlier session. A new managed image release does not change the contents of an existing snapshot. When you restore an older snapshot, check its installed software and update it as needed. For the broader division of responsibilities, see [Vercel's shared responsibility model](/docs/security/shared-responsibility).
+
 ## Custom images
 
 To avoid repeated work in every sandbox, or if you require a specific set of tools, libraries, or system packages, you can build your own custom image and push it to VCR. Custom images can also be [shared with other teams](#use-a-shared-image) or [marked public](#use-a-public-image) for any team to use.
@@ -88,6 +97,7 @@ VCR only serves an image to Sandbox once it has prepared an optimized `linux/amd
 | `Ready`       | VCR prepared the image and Sandbox can use it.                                             |
 | `Preparing`   | VCR is preparing a `linux/amd64` image.                                                    |
 | `Unoptimized` | The image is pullable from VCR, but it is not `linux/amd64` and cannot be used in Sandbox. |
+| `Error`       | Preparation failed, for example because the image exceeds the [optimization limits](/docs/container-registry/limits-and-pricing#optimization-limits). You can still pull the image, but Sandbox can't use it. |
 
 If `Sandbox.create()` returns `image_not_ready`, retry after preparation finishes.
 
@@ -182,3 +192,6 @@ A team-scoped reference resolves against the referenced team and project. It wor
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

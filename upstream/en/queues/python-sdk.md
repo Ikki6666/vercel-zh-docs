@@ -1,9 +1,9 @@
 ---
-title: Python SDK Reference
+title: "Vercel Queues: Python SDK Reference"
 product: vercel
 url: /docs/queues/python-sdk
 canonical_url: "https://vercel.com/docs/queues/python-sdk"
-last_updated: 2026-07-07
+last_updated: 2026-08-24
 type: reference
 prerequisites:
   - /docs/queues
@@ -17,7 +17,7 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Vercel Queues: Python SDK Reference
 
-The `vercel-queue` package lets Python apps publish and consume Vercel Queues messages. It includes async and sync clients, typed topics, push delivery helpers, automatic polling loops, manual polling, and transports for JSON, text, binary, and streaming payloads.
+The official Vercel Python SDK lets Python apps publish and consume Vercel Queues messages. It includes async and sync clients, typed topics, push delivery helpers, automatic polling loops, manual polling, and transports for JSON, text, binary, and streaming payloads.
 
 
 <!-- docsgraph:related -->
@@ -25,70 +25,53 @@ The `vercel-queue` package lets Python apps publish and consume Vercel Queues me
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Concepts](https://vercel.com/docs/queues/concepts?from=related) — Learn delivery, retries, visibility timeouts, and deployment isolation in Vercel Queues.
-- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel?from=related) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
-- [Sending Emails from an application on Vercel](https://vercel.com/kb/guide/sending-emails-from-an-application-on-vercel?from=related) — SMTP is the harder path inside Vercel Functions. Learn how to send emails over an HTTP API, which Next.js pattern fits y
-- [Quickstart](https://vercel.com/docs/queues/quickstart?from=related) — Set up Vercel Queues with the SDK.
-- [How to ship a FastAPI app on Vercel](https://vercel.com/kb/guide/ship-a-fastapi-app-on-vercel?from=related) — Deploy a FastAPI app to Vercel with zero configuration. Learn how the Python runtime, Vercel Functions, streaming, middl
-- [How to build a Slack bot that manages files in Vercel Blob](https://vercel.com/kb/guide/slack-bot-vercel-blob?from=related) — Build a Slack bot using Chat SDK, AI SDK, and Files SDK that can list, read, upload, and delete files in Vercel Blob thr
-- [Observability](https://vercel.com/docs/queues/observability?from=related) — Monitor queue throughput, message age, and consumer performance to optimize your queue-based workflows.
-- [Workflows](https://vercel.com/docs/workflows?from=related) — Vercel Workflows is a fully managed platform for building durable, reliable, and observable applications and AI agents w
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Python on Vercel is now generally available](https://vercel.com/changelog/python-on-vercel-is-now-generally-available)
+- [Vercel Python Queues SDK is now available in beta](https://vercel.com/changelog/vercel-python-queues-sdk-is-now-available-in-beta)
+- [Store and serve files from Python with Vercel Blob](https://vercel.com/kb/guide/python-and-vercel-blob) — Upload, list, stream, and protect files from a Python app with Vercel Blob, including private per-user storage in FastAP
+- [Python on Vercel is now generally available](https://vercel.com/blog/python-on-vercel-is-now-generally-available)
+- [Running background workers on Vercel](https://vercel.com/kb/guide/background-workers-on-vercel) — Run background jobs on Vercel with waitUntil, Cron Jobs, Queues, Workflows, Daemons, or Sandbox. Compare the options and
+- [Vercel Queues now in public beta](https://vercel.com/changelog/vercel-queues-now-in-public-beta)
+- [Publish and subscribe to realtime data on Vercel](https://vercel.com/kb/guide/publish-and-subscribe-to-realtime-data-on-vercel) — Learn how to publish and subscribe to realtime data on Vercel with WebSockets, SSE, Redis, and Queues, and when a manage
+- [ Run a Docker monolith with workers on Vercel](https://vercel.com/kb/guide/docker-monolith-workers-vercel) — Run a Dockerized monolith on Vercel with Container Images, move long-running workers to Vercel Queues and Vercel Workflo
+- [Run background tasks with Celery on Vercel](https://vercel.com/docs/frameworks/backend/celery) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
+- [Chat SDK with Vercel Daemons](https://vercel.com/docs/chat-sdk/integrations/daemons) — Process Chat SDK jobs with Vercel Queues and Daemons, using Vercel Connect for Slack credentials and event delivery.
 
 Full cross-link map for this page: [/docs/queues/python-sdk.graph.md](/docs/queues/python-sdk.graph.md)
 <!-- /docsgraph:related -->
 
 For JavaScript and TypeScript, see the [JS SDK Reference](/docs/queues/sdk).
 
+Follow [Process background jobs in Python with Vercel Queues](/kb/guide/python-and-vercel-queues) to publish checkout events, process them with subscribers, and handle retries in a FastAPI application.
+
 ## Installation
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i vercel-queue
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i vercel-queue
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i vercel-queue
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i vercel-queue
-    ```
-  </Code>
-</CodeBlock>
+**uv**
 
-For Pydantic-backed typed payloads, install the `typed` extra.
+```bash
+uv add vercel
+```
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i vercel-queue
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i vercel-queue
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i vercel-queue
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i vercel-queue
-    ```
-  </Code>
-</CodeBlock>
+**pip**
+
+```bash
+pip install vercel
+```
+
+This installs the full Vercel SDK and is recommended when you use other Vercel products. For a minimalist installation that includes only the Queues SDK, use `vercel-queue` instead.
+
+**uv**
+
+```bash
+uv add vercel-queue
+```
+
+**pip**
+
+```bash
+pip install vercel-queue
+```
+
+The above command installs just the Queues SDK with optional features disabled.  If your application relies Pydantic-backed typed message payloads, install `vercel-queue[typed]`.
 
 ## Top-level exports
 
@@ -699,3 +682,6 @@ The SDK reads these variables when you don't pass the matching option explicitly
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

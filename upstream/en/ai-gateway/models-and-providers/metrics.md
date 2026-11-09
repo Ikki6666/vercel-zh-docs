@@ -1,9 +1,9 @@
 ---
-title: Metrics
+title: AI Gateway Provider Latency and Throughput Metrics
 product: vercel
 url: /docs/ai-gateway/models-and-providers/metrics
 canonical_url: "https://vercel.com/docs/ai-gateway/models-and-providers/metrics"
-last_updated: 2026-07-28
+last_updated: 2026-09-08
 type: conceptual
 prerequisites:
   - /docs/ai-gateway/models-and-providers
@@ -11,12 +11,11 @@ prerequisites:
 related:
   - /docs/ai-gateway/models-and-providers/uptime
   - /docs/ai-gateway/sdks-and-apis/rest-api
-  - /docs/ai-gateway/authentication-and-byok
 summary: Understand how AI Gateway measures throughput and latency per provider.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Metrics
+# AI Gateway Provider Latency and Throughput Metrics
 
 AI Gateway tracks **throughput** and **latency** for each model and provider, measured from live AI Gateway traffic. For provider availability, see [uptime](/docs/ai-gateway/models-and-providers/uptime).
 
@@ -26,11 +25,13 @@ AI Gateway tracks **throughput** and **latency** for each model and provider, me
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Observability](https://vercel.com/docs/ai-gateway/observability-and-spend/observability?from=related) — Learn how to monitor and debug your AI Gateway requests.
-- [Leaderboards](https://vercel.com/docs/ai-gateway/leaderboards?from=related) — See which AI models, labs, apps, and providers are most used on AI Gateway, share a chart as an image, and download the
-- [Legacy Metrics](https://vercel.com/docs/pricing/legacy?from=related) — Learn about legacy usage metrics, including Bandwidth, Requests, Vercel Function Invocations, and Vercel Function Execut
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [Pricing](https://vercel.com/docs/ai-gateway/pricing?from=related) — Learn about pricing for AI Gateway.
+- [Live model performance metrics accessible via AI Gateway](https://vercel.com/changelog/live-model-performance-metrics-accessible-via-ai-gateway)
+- [Open weight takes 71.5% of tokens and 23% of spend](https://vercel.com/blog/ai-gateway-production-index-october-2026)
+- [AI Gateway production index](https://vercel.com/blog/ai-gateway-production-index)
+- [Access and share AI Gateway leaderboard data](https://vercel.com/changelog/open-data-and-shareable-charts-for-ai-gateway-leaderboards)
+- [Sort providers by cost, latency, or throughput on AI Gateway](https://vercel.com/changelog/sort-providers-by-cost-latency-or-throughput-on-ai-gateway)
+- [Open-weight models surge to 29% of volume, price per token flattens](https://vercel.com/blog/ai-gateway-production-index-july-2026)
+- [AI Gateway Observability and Spend](https://vercel.com/docs/ai-gateway/observability-and-spend) — Monitor AI Gateway requests and control costs with logs, generation lookup, custom reporting, budgets, and OpenTelemetry
 
 Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/metrics.graph.md](/docs/ai-gateway/models-and-providers/metrics.graph.md)
 <!-- /docsgraph:related -->
@@ -39,20 +40,20 @@ Full cross-link map for this page: [/docs/ai-gateway/models-and-providers/metric
 
 Throughput is the rate at which a provider returns output tokens, measured in tokens per second. Higher throughput means a provider returns output tokens faster.
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-throughput)
+![1-day throughput for openai/gpt-oss-120b](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-throughput)
 
 ## Latency
 
 Latency is time to first token (TTFT), measured in milliseconds. It's the duration between the request reaching the provider and the first response token arriving. Lower latency means a faster perceived response.
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-latency)
+![1-day latency for openai/gpt-oss-120b](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/light-gpt-oss-120b-latency)
 
 ## Where to find metrics
 
 You can find metrics in the following places:
 
 - The [AI Gateway model catalog](/ai-gateway/models): each model row shows the best metrics across all providers (highest throughput, lowest latency).
-- The [**AI Gateway** > **Models**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fmodels\&title=Go+to+AI+Gateway+Models) tab in your project: same view as the catalog, scoped to your team.
+- The [**AI Gateway** tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) in your project: go to **Model List** to open the same catalog.
 
 To see metrics broken down by provider, click any model to open its detail page. For each provider, the detail page shows the live values from the last hour and a chart of how each metric has trended over time.
 
@@ -60,20 +61,19 @@ To see metrics broken down by provider, click any model to open its detail page.
 
 Select **Share** in the top-right corner to export the current view as an image. The export captures the selected model, metric, and time range so you can share a snapshot in tickets, postmortems, or status updates.
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-throughput-1d.png)
+![Example share output for the Throughput view (1-day range)](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-throughput-1d.png)
 
-![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-latency-1d.png)
+![Example share output for the Latency view (1-day range)](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/gpt-oss-120b-latency-1d.png)
 
 ## Accessing metrics via the API
 
 Each endpoint returned by the [model endpoints API](/docs/ai-gateway/sdks-and-apis/rest-api#get-model-endpoints) includes rolling one-hour metrics for that provider:
 
 ```bash
-curl -i https://ai-gateway.vercel.sh/v1/models/anthropic/claude-opus-5/endpoints \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY"
+curl -i https://ai-gateway.vercel.sh/v1/models/anthropic/claude-opus-5/endpoints
 ```
 
-Replace `anthropic/claude-opus-5` with the model ID you want to inspect, and set `AI_GATEWAY_API_KEY` to a valid [AI Gateway API key](/docs/ai-gateway/authentication-and-byok#api-keys). Each endpoint object includes:
+Replace `anthropic/claude-opus-5` with the model ID you want to inspect. This request doesn't require authentication. Each endpoint object includes:
 
 | Field                    | Type   | Description                                         |
 | ------------------------ | ------ | --------------------------------------------------- |
@@ -109,3 +109,6 @@ These numbers reflect what AI Gateway observes when serving live traffic. They m
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

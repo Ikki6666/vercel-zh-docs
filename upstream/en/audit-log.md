@@ -3,7 +3,7 @@ title: Audit Logs
 product: vercel
 url: /docs/audit-log
 canonical_url: "https://vercel.com/docs/audit-log"
-last_updated: 2026-07-29
+last_updated: 2026-08-26
 type: reference
 prerequisites:
   []
@@ -19,7 +19,11 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 # Audit Logs
 
-> **🔒 Permissions Required**: Audit Logs
+> Audit Logs are available on Enterprise plans
+>
+> Those with the owner and security roles can access this feature
+
+Audit logs help you track and analyze your [team members'](/docs/rbac/managing-team-members) activity. They can be accessed by team members with the [owner](/docs/rbac/access-roles#owner-role) or [security](/docs/rbac/access-roles#security-role) role, and are available to customers on [enterprise](/docs/plans/enterprise) plans.
 
 
 <!-- docsgraph:related -->
@@ -27,21 +31,23 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to build and maintain HIPAA-compliant applications on Vercel](https://vercel.com/kb/guide/hipaa-compliance-guide-vercel?from=related) — Deploy HIPAA-compliant healthcare apps on Vercel with built-in security, BAAs, and scalable serverless infrastructure.
-- [Encryption](https://workflow-sdk.dev/docs/how-it-works/encryption?from=related) — Understand how workflow and step data is encrypted at rest.
-- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [CLI](https://vercel.com/docs/cli?from=related) — Learn how to use the Vercel command-line interface \\(CLI\\) to manage and configure your Vercel Projects from the command
-- [System Environment Variables](https://vercel.com/docs/environment-variables/system-environment-variables?from=related) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
-- [vercel project](https://vercel.com/docs/cli/project?from=related) — Perform the following commands from the terminal for your Vercel Projects: list, add, inspect, update settings, rename,
-- [Activity Log](https://vercel.com/docs/activity-log?from=related) — Learn how to use the Activity Log, which provides a list of all events on a team, chronologically organized since its cr
+- [Audit Log Drains now support Datadog, Splunk, and Panther](https://vercel.com/changelog/audit-log-drains-now-support-datadog-splunk-and-panther)
+- [Expanded Audit Log coverage, now delivered through Vercel Drains](https://vercel.com/changelog/expanded-audit-log-coverage-now-delivered-through-vercel-drains)
+- [Vercel MCP now supports purchases](https://vercel.com/changelog/vercel-mcp-now-supports-purchases)
+- [Vercel Passport is now generally available](https://vercel.com/changelog/vercel-passport-generally-available)
+- [End-to-end encryption for Vercel Workflow](https://vercel.com/changelog/workflow-encryption)
+- [How to build and maintain HIPAA-compliant applications on Vercel](https://vercel.com/kb/guide/hipaa-compliance-guide-vercel) — Deploy HIPAA-compliant healthcare apps on Vercel with built-in security, BAAs, and scalable serverless infrastructure.
+- [A new programming model for durable execution](https://vercel.com/blog/a-new-programming-model-for-durable-execution)
+- [Vercel for Enterprise](https://vercel.com/blog/vercel-for-enterprise)
+- [Encryption](https://workflow-sdk.dev/docs/how-it-works/encryption) — Understand how workflow and step data is encrypted at rest.
+- [Vercel Pricing](https://vercel.com/pricing) — Choose a Vercel plan and compare features and usage pricing.
+- [Deployment Protection: Added security controls now available on all plans](https://vercel.com/blog/protecting-deployments)
+- [June 2020](https://vercel.com/blog/changelog-june-2020)
 
 Full cross-link map for this page: [/docs/audit-log.graph.md](/docs/audit-log.graph.md)
 <!-- /docsgraph:related -->
 
-Audit logs help you track and analyze your [team members'](/docs/rbac/managing-team-members) activity. They can be accessed by team members with the [owner](/docs/rbac/access-roles#owner-role) role, and are available to customers on [enterprise](/docs/plans/enterprise) plans.
-
-![Image](`/docs-assets/static/docs/concepts/teams/audit-logs-section-light.png`)
+![Select a timeframe to export audit logs for your team.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/teams/audit-logs-section-light.png)
 
 ## Export audit logs
 
@@ -51,13 +57,13 @@ To export and download audit logs:
 - Select a timeframe to export a Comma Separated Value ([CSV](#audit-logs-csv-file-structure)) file containing all events occurred during that time period
 - Click the **Export CSV** button to download the file
 
-The team owner requesting an export will then receive an email with a link containing the report. This link is used to access the report and is valid for 24 hours.
+The team member who requests an export then receives an email with a link to the report. This link is used to access the report and is valid for 24 hours.
 
-Reports generated for the last 90 days (three months) will not impact your billing.
+You can export audit logs for the last 90 days (three months). These reports will not impact your billing.
 
 ## Custom SIEM Log Streaming
 
-> **🔒 Permissions Required**: Custom SIEM Log Streaming
+> Custom SIEM Log Streaming is available for purchase on Enterprise plans
 
 > **⚠️ Warning:** Vercel is replacing Custom SIEM Log Streaming with [Audit Log
 > Drains](/docs/drains/reference/audit-logs). If you stream audit logs to a SIEM,
@@ -98,7 +104,7 @@ To set up custom log streaming to your SIEM:
 - Click the **Configure** button
 - Select one of the supported SIEM providers and follow the step-by-step guide
 
-![Image](`/docs-assets/static/docs/concepts/teams/audit-log-streams-light.png`)
+![Select one of the supported SIEM providers](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/teams/audit-log-streams-light.png)
 
 The HTTP POST provider is generic solution to stream audit logs to any configured endpoint. To set this up, you need to provide:
 
@@ -118,7 +124,7 @@ The CSV file can be opened using any spreadsheet-compatible software, and includ
 | **Property**        | **Description**                                                                                                                                                                                                  |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **timestamp**       | Time and date at which the event occurred                                                                                                                                                                        |
-| **action**          | Name for the specific event. E.g, `project.created`, `team.member.left`, `project.transfer_out.completed`, `auditlog.export.downloaded`, `auditlog.export.requested`, etc. [Learn more about it here](#actions). |
+| **action**          | Name for the specific event. E.g, `project.deleted`, `team.member.left`, `project.transfer_out.completed`, `auditlog.export.downloaded`, `auditlog.export.requested`, etc. [Learn more about it here](#actions). |
 | **actor\_vercel\_id** | User ID of the team member responsible for an event                                                                                                                                                              |
 | **actor\_name**      | Account responsible for the action. For example, username of the team member                                                                                                                                     |
 | **actor\_email**     | Email address of the team member responsible for a specific event                                                                                                                                                |
@@ -136,11 +142,14 @@ Vercel logs the following list of `actions` performed by team members.
 
 Maps a custom domain or subdomain to a specific deployment or URL of a project. To learn more, see the `vercel alias` [docs](/docs/cli/alias).
 
-| **Action Name**                                      | **Description**                                                       |
-| ---------------------------------------------------- | --------------------------------------------------------------------- |
-| **`alias.created`**                                  | Indicates that a new alias was created                                |
-| **`alias.deleted`**                                  | Indicates that an alias was deleted                                   |
-| **`alias.protection-user-access-request-requested`** | An external user requested access to a protected deployment alias URL |
+| **Action Name**                                      | **Description**                                                                      |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **`alias.created`**                                  | Indicates that a new alias was created                                               |
+| **`alias.deleted`**                                  | Indicates that an alias was deleted                                                  |
+| **`alias.protection_user_access_request.denied`**    | An external user's request for access to a protected deployment alias URL was denied |
+| **`alias.protection_user_access_request.granted`**   | An external user was granted access to a protected deployment alias URL              |
+| **`alias.protection_user_access_request.requested`** | An external user requested access to a protected deployment alias URL                |
+| **`alias.protection_user_access_request.revoked`**   | An external user's access to a protected deployment alias URL was revoked            |
 
 ### `auditlog`
 
@@ -161,13 +170,14 @@ A digital certificate to manage SSL/TLS certificates for your custom domains thr
 | **`cert.deleted`** | Indicates that a new certificate was deleted |
 | **`cert.renewed`** | Indicates that a new certificate was renewed |
 
-### `deploy_hook`
+### `compliance`
 
-Create URLs that accept HTTP POST requests to trigger deployments and rerun the build step. To learn more, see the [Deploy Hooks](/docs/deploy-hooks) docs.
+Tracks when team members access [compliance documents](/docs/security/attestations-and-compliance-report). Bulk downloads create one audit log action for each document in the archive.
 
-| **Action Name**           | **Description**                                                                                                 |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| **`deploy_hook.deduped`** | A deploy hook is de-duplicated which means that multiple instances of the same hook have been combined into one |
+| **Action Name**                      | **Description**                                  |
+| ------------------------------------ | ------------------------------------------------ |
+| **`compliance.document.downloaded`** | A team member downloaded a compliance document.  |
+| **`compliance.document.previewed`**  | A team member previewed a compliance document.   |
 
 ### `deployment`
 
@@ -177,6 +187,8 @@ Refers to a successful build of your application. To learn more, see the [deploy
 | ---------------------------- | ------------------------------------------------------------- |
 | **`deployment.deleted`**     | Indicates that a deployment was deleted                       |
 | **`deployment.job.errored`** | Indicates that a job in a deployment has failed with an error |
+| **`deployment.pruned`**      | Indicates that a deployment was permanently deleted           |
+| **`deployment.undeleted`**   | Indicates that a deleted deployment was restored              |
 
 ### `domain`
 
@@ -187,7 +199,6 @@ A unique name that identifies your website. To learn more, see the [domains](/do
 | **`domain.auto_renew.changed`**    | Indicates that the auto-renew setting for a domain was changed                      |
 | **`domain.buy`**                   | Indicates that a domain was purchased                                               |
 | **`domain.created`**               | Indicates that a new domain was created                                             |
-| **`domain.delegated`**             | Indicates that a domain was delegated to another account                            |
 | **`domain.deleted`**               | Indicates that a domain was deleted                                                 |
 | **`domain.move_out.requested`**    | Indicates that a request was made to move a domain out of the current account       |
 | **`domain.moved_in`**              | Indicates that a domain was moved into the current account                          |
@@ -196,8 +207,6 @@ A unique name that identifies your website. To learn more, see the [domains](/do
 | **`domain.record.deleted`**        | Indicates that a new domain record was deleted                                      |
 | **`domain.record.updated`**        | Indicates that a new domain record was updated                                      |
 | **`domain.transfer_in`**           | Indicates that a request was made to transfer a domain into the current account     |
-| **`domain.transfer_in.canceled`**  | Indicates that a request to transfer a domain into the current account was canceled |
-| **`domain.transfer_in.completed`** | Indicates that a domain was transferred into the current account                    |
 
 ### `edge_config`
 
@@ -247,7 +256,6 @@ Refers to actions performed on your Vercel [projects](/docs/projects).
 | **`project.analytics.disabled`**   | Indicates that analytics were disabled for the project                |
 | **`project.analytics.enabled`**    | Indicates that analytics were enabled for the project                 |
 | **`project.deleted`**              | Indicates that a project was deleted                                  |
-| **`project.env_variable`**         | This field refers to an environment variable within a project         |
 | **`project.env_variable.created`** | Indicates that a new environment variable was created for the project |
 | **`project.env_variable.deleted`** | Indicates that a new environment variable was deleted for the project |
 | **`project.env_variable.updated`** | Indicates that a new environment variable was updated for the project |
@@ -337,14 +345,25 @@ Refers to actions performed by any [team member](/docs/rbac).
 | ------------------------------------------ | --------------------------------------------------------------- |
 | **`team.member.access_request.confirmed`** | Indicates that an access request by a team member was confirmed |
 | **`team.member.access_request.declined`**  | Indicates that an access request by a team member was declined  |
-| **`team.member.access_request.requested`** | Indicates that a team member has requested access to the team   |
+| **`team.member.access_requested`**         | Indicates that a team member has requested access to the team   |
 | **`team.member.added`**                    | Indicates that a new member was added to the team               |
 | **`team.member.deleted`**                  | Indicates that a member was removed from the team               |
 | **`team.member.joined`**                   | Indicates that a member has joined the team                     |
 | **`team.member.left`**                     | Indicates that a new member has left the team                   |
 | **`team.member.role.updated`**             | Indicates that the role of a team member was updated            |
 
+### `vercel-agent-security`
+
+Refers to findings recorded by [Security Review](/docs/agent/security-review). These action names aren't scoped to a resource like the ones above, so match them exactly when you filter your audit log.
+
+| **Action Name**                             | **Description**                                           |
+| ------------------------------------------- | --------------------------------------------------------- |
+| **`vercel-agent-security-finding-created`** | Indicates that a security review recorded a new finding    |
+
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

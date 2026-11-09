@@ -3,7 +3,7 @@ title: ISR Usage and Pricing
 product: vercel
 url: /docs/incremental-static-regeneration/limits-and-pricing
 canonical_url: "https://vercel.com/docs/incremental-static-regeneration/limits-and-pricing"
-last_updated: 2026-07-14
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/incremental-static-regeneration
@@ -27,14 +27,18 @@ This page covers ISR costs, usage metrics, and optimization strategies. To decid
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to reduce ISR Writes by shrinking cached output](https://vercel.com/kb/guide/how-to-reduce-isr-writes?from=related) — Reduce ISR Write units by finding large changed routes and removing unnecessary data from their cached output.
-- [ISR](https://nextjs.org/docs/app/guides/incremental-static-regeneration?from=related) — Learn how to create or update static pages at runtime with Incremental Static Regeneration.
-- [How can I reduce my Vercel Functions usage on Vercel?](https://vercel.com/kb/guide/how-can-i-reduce-my-serverless-execution-usage-on-vercel?from=related) — Reduce Vercel Functions usage and cost under Fluid compute pricing with caching, rendering strategies, and function conf
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Calculating Usage of Resources](https://vercel.com/docs/pricing/how-does-vercel-calculate-usage-of-resources?from=related) — Understand how Vercel measures and calculates your resource usage based on a typical user journey.
-- [Pricing & Usage](https://vercel.com/docs/manage-cdn-usage?from=related) — Understand CDN pricing resources, monitor usage from your dashboard, and optimize Fast Data Transfer, Fast Origin Transf
-- [Limits and Pricing](https://vercel.com/docs/image-optimization/limits-and-pricing?from=related) — This page outlines information on the limits that are applicable when using Image Optimization, and the costs they can i
-- [Stockholm, Sweden \\(arn1\\)](https://vercel.com/docs/pricing/regional-pricing/arn1?from=related) — Vercel pricing for the Stockholm, Sweden \\(arn1\\) region.
+- [How to reduce ISR Writes by shrinking cached output](https://vercel.com/kb/guide/how-to-reduce-isr-writes) — Reduce ISR Write units by finding large changed routes and removing unnecessary data from their cached output.
+- [Optimize Runtime Cache on Vercel](https://vercel.com/kb/guide/optimize-runtime-cache-reads-on-vercel) — Diagnose rising Runtime Cache usage, trace reads to tags and code paths, and reduce avoidable reads while checking write
+- [How to revalidate Sitecore pages on publish with Next.js](https://vercel.com/kb/guide/update-sitecore-content-manually) — Learn how to use a Sitecore Experience Edge webhook and Next.js revalidatePath to refresh cached Sitecore Content SDK pa
+- [Preventing the stampede: Request collapsing in the Vercel CDN ](https://vercel.com/blog/cdn-request-collapsing)
+- [ISR on Vercel is now faster and more cost-efficient](https://vercel.com/blog/isr-on-vercel-is-now-faster-and-more-cost-efficient)
+- [ISR: A flexible way to cache dynamic content](https://vercel.com/blog/isr-a-flexible-way-to-cache-dynamic-content)
+- [Write utilization now available in ISR Observability](https://vercel.com/changelog/write-utilization-now-available-in-isr-observability)
+- [Incremental Static Regeneration (ISR) is now faster and more cost-efficient](https://vercel.com/changelog/incremental-static-regeneration-is-now-faster-and-cheaper)
+- [Improved infrastructure pricing](https://vercel.com/blog/improved-infrastructure-pricing)
+- [Calculating usage of resources](https://vercel.com/docs/pricing/how-does-vercel-calculate-usage-of-resources) — Understand how Vercel measures and calculates your resource usage based on a typical user journey.
+- [Pricing on Vercel](https://vercel.com/docs/pricing) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [Limits and Pricing for Image Optimization](https://vercel.com/docs/image-optimization/limits-and-pricing) — This page outlines information on the limits that are applicable when using Image Optimization, and the costs they can i
 
 Full cross-link map for this page: [/docs/incremental-static-regeneration/limits-and-pricing.graph.md](/docs/incremental-static-regeneration/limits-and-pricing.graph.md)
 <!-- /docsgraph:related -->
@@ -49,7 +53,7 @@ Full cross-link map for this page: [/docs/incremental-static-regeneration/limits
 
 The table below shows the metrics for the [**ISR**](/docs/incremental-static-regeneration/limits-and-pricing) section of the [**Usage** dashboard](/docs/pricing/manage-and-optimize-usage#viewing-usage).
 
-To view information on managing each resource, select the resource link in the **Metric** column. To jump straight to guidance on optimization, select the corresponding resource link in the **Optimize** column. The cost for each metric is based on the request location. See the [pricing section](/docs/incremental-static-regeneration/limits-and-pricing#pricing) and choose the region from the dropdown for specific information.
+To view information on managing each resource, select the resource link in the **Metric** column. To jump straight to guidance on optimization, select the corresponding resource link in the **Optimize** column. The cost for each metric is based on your [ISR cache region](#isr-cache-region), which follows your project's default Function region. See the [pricing section](/docs/incremental-static-regeneration/limits-and-pricing#pricing) and choose the region from the dropdown for specific information.
 
 ### Storage
 
@@ -126,3 +130,6 @@ When viewing your ISR writes chart, you can group by sum of units to see a total
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

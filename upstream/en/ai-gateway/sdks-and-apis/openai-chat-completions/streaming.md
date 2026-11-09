@@ -1,10 +1,10 @@
 ---
-title: Streaming
+title: OpenAI Chat Completions Streaming with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
   - /docs/ai-gateway/sdks-and-apis
@@ -13,11 +13,11 @@ related:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/tool-calling
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/reasoning
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions/advanced
-summary: Stream OpenAI Chat Completions responses token by token as they are generated.
+summary: Stream OpenAI Chat Completions responses token by token as they are generated through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
 ---
 
-# Streaming
+# OpenAI Chat Completions Streaming with AI Gateway
 
 Set `stream: true` on a [chat completion](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions) request to receive tokens as the model produces them, instead of waiting for the complete response.
 
@@ -27,39 +27,17 @@ Set `stream: true` on a [chat completion](/docs/ai-gateway/sdks-and-apis/openai-
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Streaming responses from LLMs](https://vercel.com/kb/guide/streaming-from-llm?from=related) — Learn how to use the AI SDK to stream LLM responses.
-- [Streaming in web applications](https://vercel.com/kb/guide/what-is-streaming?from=related) — Learn how streaming works in web applications. Explore benefits, use cases, and implementation details with Vercel Funct
-- [Create Chat (Streaming)](https://v0.app/docs/api/v2/reference/chats/create-chat-streaming?from=related) — Creates a new chat with a user message and returns a Server-Sent Events stream. Events include initial chat state, title
-- [Streaming](https://chat-sdk.dev/docs/streaming?from=related) — Stream real-time text responses from AI models and other async sources to chat platforms.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming?from=related) — Stream Anthropic Messages API responses token by token as they are generated.
-- [Stream Protocols](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol?from=related)
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming?from=related) — Stream responses token by token using the OpenResponses API.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming?from=related) — Stream tokens as they are generated with the OpenAI Responses API.
-- [Streaming](https://vercel.com/docs/functions/streaming-functions?from=related) — Learn how to stream responses from Vercel Functions.
-- [Structured Outputs](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs?from=related) — Generate structured JSON responses that conform to a specific schema using the Chat Completions API.
+- [An Introduction to Streaming on the Web](https://vercel.com/blog/an-introduction-to-streaming-on-the-web)
+- [OpenAI Responses Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming) — Stream tokens as they are generated with the OpenAI Responses API through AI Gateway.
+- [OpenAI Chat Completions Images and PDFs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/images) — Send images and PDF documents to a model using the OpenAI Chat Completions API through AI Gateway.
+- [OpenResponses Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming) — Stream responses token by token using the OpenResponses API through AI Gateway.
+- [Anthropic Messages Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming) — Stream Anthropic Messages API responses token by token as they are generated through AI Gateway.
+- [OpenAI Chat Completions Structured Outputs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/structured-outputs) — Generate structured JSON responses that conform to a specific schema using the Chat Completions API through AI Gateway.
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming.graph.md](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming.graph.md)
 <!-- /docsgraph:related -->
 
 Create a streaming chat completion that streams tokens as they are generated.
-
-#### cURL
-
-```bash filename="stream.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Write a one-sentence bedtime story about a unicorn."
-      }
-    ],
-    "stream": true
-  }'
-```
 
 #### TypeScript
 
@@ -122,9 +100,27 @@ for chunk in stream:
         print(content, end='', flush=True)
 ```
 
+#### cURL
+
+```bash filename="stream.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/chat/completions" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a one-sentence bedtime story about a unicorn."
+      }
+    ],
+    "stream": true
+  }'
+```
+
 ## Streaming response format
 
-Streaming responses are sent as [Server-Sent Events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events), a web standard for real-time data streaming over HTTP. Each event contains a JSON object with the partial response data.
+Streaming responses are sent as [Server-Sent Events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events), a web standard for real-time data streaming over HTTP. Each event, except the final `[DONE]` sentinel, contains a JSON object with the partial response data.
 
 The response format follows the OpenAI streaming specification:
 
@@ -138,7 +134,8 @@ data: [DONE]
 
 **Key characteristics:**
 
-- Each line starts with `data:` followed by JSON
+- Each data line starts with `data:` followed by JSON, except the final `data: [DONE]` line
+- AI Gateway can send SSE comment lines that start with `:` (for example, `: heartbeat`) to keep the connection open while no data flows. If you parse the stream yourself, ignore these lines
 - Content is delivered incrementally in the `delta.content` field
 - The stream ends with `data: [DONE]`
 - Empty lines separate events
@@ -162,3 +159,6 @@ For more details about the SSE specification, see the [W3C specification](https:
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.
