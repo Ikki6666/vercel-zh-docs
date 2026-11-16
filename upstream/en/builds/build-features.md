@@ -3,7 +3,7 @@ title: Build Features for Customizing Deployments
 product: vercel
 url: /docs/builds/build-features
 canonical_url: "https://vercel.com/docs/builds/build-features"
-last_updated: 2026-06-09
+last_updated: 2026-09-16
 type: reference
 prerequisites:
   - /docs/builds
@@ -15,6 +15,7 @@ related:
   - /docs/builds/configure-a-build
 summary: "Learn how to customize your deployments using Vercel's build features."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Build Features for Customizing Deployments
@@ -27,11 +28,12 @@ Vercel provides the following features to customize your deployments:
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [Bitbucket](https://vercel.com/docs/git/vercel-for-bitbucket?from=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [Private Dependencies](https://v0.app/docs/private-dependencies) — Install private npm packages in v0 by configuring NPM_TOKEN or NPM_RC as environment variables.
+- [Troubleshooting Build Errors](https://vercel.com/docs/deployments/troubleshoot-a-build) — Learn how to resolve common scenarios you may encounter during the Build step, including build errors that cancel a depl
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [vercel deploy](https://vercel.com/docs/cli/deploy) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [How Vercel builds your application](https://vercel.com/docs/fundamentals/builds) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
 
 Full cross-link map for this page: [/docs/builds/build-features.graph.md](/docs/builds/build-features.graph.md)
 <!-- /docsgraph:related -->
@@ -45,13 +47,13 @@ Full cross-link map for this page: [/docs/builds/build-features.graph.md](/docs/
 
 When your project's code is using private `npm` modules that require authentication, you need to perform an additional step to install private modules.
 
-To install private `npm` modules, define `NPM_TOKEN` as an [Environment Variable](/docs/environment-variables) in your project. Alternatively, define `NPM_RC` as an [Environment Variable](/docs/environment-variables) in the contents of the project's npmrc config file that resides at the root of the project folder and is named `~/.npmrc`. This file defines the config settings of `npm` at the level of the project.
+To install private `npm` modules, define `NPM_TOKEN` as an [Environment Variable](/docs/environment-variables) in your project. Alternatively, define `NPM_RC` as an [Environment Variable](/docs/environment-variables) in the contents of the project's npmrc config file that resides at the root of the project folder and is named `.npmrc`. This file defines the config settings of `npm` at the level of the project.
 
 To learn more, check out the [guide here](/kb/guide/using-private-dependencies-with-vercel) if you need help configuring private dependencies.
 
 ## Ignored files and folders
 
-Vercel ignores certain files and folders by default and prevents them from being uploaded during the deployment process for security and performance reasons. Please note that these ignored files are only relevant when using Vercel CLI.
+Vercel ignores certain files and folders by default and prevents them from being uploaded during the deployment process for security and performance reasons. These ignored files are only relevant when using Vercel CLI.
 
 ```bash filename="ignored-files"
 .hg
@@ -73,6 +75,7 @@ Vercel ignores certain files and folders by default and prevents them from being
 .env.*.local
 .venv
 .yarn/cache
+.pnp*
 npm-debug.log
 config.gypi
 node_modules
@@ -84,7 +87,11 @@ CVS
 *A complete list of files and folders ignored by Vercel during the Deployment
 process.*
 
+If the directory that you deploy has a `Cargo.toml` file at its root, Vercel CLI also ignores the `target` directory at that root. To upload it, add `!/target` to your `.vercelignore` file.
+
 The `.vercel/output` directory is **not** ignored when [`vercel deploy --prebuilt`](/docs/cli/deploying-from-cli#deploying-from-local-build-prebuilt) is used to deploy a prebuilt Vercel Project, according to the [Build Output API](/docs/build-output-api) specification.
+
+During a prebuilt deploy, Vercel excludes a required function file from the upload if it also matches a rule in your `.vercelignore` (or `.nowignore`). The exceptions are files that match `.pnp*` and files in the `node_modules`, `.next`, `.yarn/cache`, `.venv`, `venv`, `__pycache__`, and root `target` directories. Vercel uploads these files when a prebuilt function needs them, even if your ignore file lists them.
 
 > **💡 Note:** You do not need to add any of the above files and folders to your
 > `.vercelignore` file because it is done automatically
@@ -101,7 +108,7 @@ All deployment URLs have two special pathnames to access the source code and the
 
 By default, these routes are protected so that they can only be accessed by you and the members of your Vercel Team.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/build-step/logs-and-sources-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/build-step/logs-and-sources-light.png)
 
 *Build Logs and Source Protection is enabled by default.*
 
@@ -113,6 +120,8 @@ By appending `/_src` to a Deployment URL or [Custom Domain](/docs/domains/workin
 
 By appending `/_logs` to a Deployment URL or [Custom Domain](/docs/domains/working-with-domains/add-a-domain) in your web browser, you can see a real-time stream of logs from your deployment build processes by clicking on the **Build Logs** accordion.
 
+If your project's [Framework Preset](/docs/builds/configure-a-build#framework-preset) is **Other**, this accordion is labeled **Deploy Logs** instead.
+
 ### Security considerations
 
 The pathnames `/_src` and `/_logs` redirect to `https://vercel.com` and **require logging into your Vercel account** to access any sensitive information. A third-party cannot access your source or build logs anonymously by crafting a deployment URL with one of these paths.
@@ -121,7 +130,22 @@ The pathnames `/_src` and `/_logs` redirect to `https://vercel.com` and **requir
 
 On Vercel, you can deploy [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) with a [Git provider](/docs/git) as long as the submodule is publicly accessible through the HTTP protocol. Git submodules that are private or requested over SSH will fail during the Build step. However, you can reference private repositories formatted as npm packages in your `package.json` file dependencies. Private repository modules require a special link syntax that varies according to the Git provider. For more information on this syntax, see "[How do I use private dependencies with Vercel?](/kb/guide/using-private-dependencies-with-vercel)".
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

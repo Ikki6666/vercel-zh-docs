@@ -3,7 +3,7 @@ title: Access tokens
 product: vercel
 url: /docs/accounts/access-tokens
 canonical_url: "https://vercel.com/docs/accounts/access-tokens"
-last_updated: 2026-08-03
+last_updated: 2026-11-14
 type: how-to
 prerequisites:
   - /docs/accounts
@@ -11,9 +11,11 @@ related:
   - /docs/rest-api
   - /docs/cli/tokens
   - /docs/rest-api/authentication/create-an-auth-token
-  - /docs/accounts
+  - /docs/cli/deploy
+  - /docs/deployments/deploy-without-logging-in
 summary: Create and scope Vercel access tokens to your full account, a team, or a single project, then use them to authenticate API and CLI requests.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Access tokens
@@ -26,17 +28,20 @@ Vercel access tokens authenticate requests to the [Vercel REST API](/docs/rest-a
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I use a Vercel API Access Token?](https://vercel.com/kb/guide/how-do-i-use-a-vercel-api-access-token?from=related) — An Access Token is required in order to use the Vercel API. Tokens can be created and managed at the level of your accou
-- [Tokens](https://vercel.com/docs/sign-in-with-vercel/tokens?from=related) — Learn how to Sign in with Vercel
-- [Scopes & Permissions](https://vercel.com/docs/sign-in-with-vercel/scopes-and-permissions?from=related) — Learn how to manage scopes and permissions for Sign in with Vercel
-- [Building Integrations with Vercel REST API](https://vercel.com/docs/integrations/create-integration/vercel-api-integrations?from=related) — Learn how to use Vercel REST API to build your integrations and work with redirect URLs.
-- [Authentication](https://vercel.com/docs/connect/concepts/authentication?from=related) — Every Vercel Connect token request has two legs that both have to authenticate: the caller calling Vercel Connect, and V
-- [Create an access group project](https://vercel.com/docs/rest-api/access-groups/create-an-access-group-project?from=related)
+- [Vercel token scanning expands to more public sources](https://vercel.com/changelog/vercel-token-scanning-expands-to-more-public-sources)
+- [Project-scoped Tokens](https://vercel.com/changelog/project-scoped-tokens)
+- [Make Your First Vercel API Request](https://vercel.com/docs/rest-api/getting-started) — Create a scoped Vercel access token, make a read-only REST API request, and call the same operation with the Vercel SDK.
+- [Tokens](https://vercel.com/docs/sign-in-with-vercel/tokens) — Learn how to Sign in with Vercel
+- [Scopes and Permissions](https://vercel.com/docs/sign-in-with-vercel/scopes-and-permissions) — Learn how to manage scopes and permissions for Sign in with Vercel
+- [Authentication in Vercel Connect](https://vercel.com/docs/connect/concepts/authentication) — Every Vercel Connect token request has two legs that both have to authenticate: the caller calling Vercel Connect, and V
+- [Generate a project OIDC token](https://vercel.com/docs/rest-api/projects/generate-a-project-oidc-token) — POST /v1/projects/{idOrName}/token — Generates an OIDC token for the project and returns it.
 
 Full cross-link map for this page: [/docs/accounts/access-tokens.graph.md](/docs/accounts/access-tokens.graph.md)
 <!-- /docsgraph:related -->
 
 A token's value appears only once, at creation, so copy it then and store it somewhere secure because you cannot retrieve it again afterward. Every token carries a scope that determines which resources it can reach. This page explains the three scoping levels and walks through [creating a **project-scoped token**](#project-scoped-access-token), which limits a token to a single project.
+
+If you're looking for a token so you can deploy, and you don't have a Vercel account yet, you don't need one. Run [`vercel deploy --temporary`](/docs/cli/deploy#temporary) to deploy without credentials, then claim the project. See [Deploying without logging in](/docs/deployments/deploy-without-logging-in).
 
 ## Token scoping levels
 
@@ -53,6 +58,17 @@ A project-scoped token denies any request to another project, to a user-level re
 > **💡 Note:** Some teams require you to enable two-factor authentication or SAML before you
 > can create tokens scoped to them. If a team enforces this, the dashboard tells
 > you so when you select it.
+
+## Create an access token
+
+Create a Vercel API access token from your personal account's [**Account Tokens** page](https://vercel.com/account/tokens):
+
+1. Enter a descriptive token name.
+2. Open **Scope** and choose the resources the token needs. Select **Full Account** for personal account access, or select a team to limit access to that team. If the team opens a project list, select **All Projects** for team access or an individual project for project access.
+3. Choose an expiration and select **Create**.
+4. Copy the token and store it securely. Vercel shows the value only once.
+
+Choose the narrowest [scope](#token-scoping-levels) that supports your task. For a walkthrough of project access, see [Project-scoped access token](#project-scoped-access-token).
 
 ## Project-scoped access token
 
@@ -97,15 +113,104 @@ curl "https://api.vercel.com/v9/projects" \
 
 Team- and project-scoped tokens do not require the `teamId` query parameter or the team `slug` on API requests. Vercel infers the team and project from the token's scope, so you can omit those parameters. Full-account tokens still need `?teamId=` when targeting a specific team's resources.
 
+### List deployments with an access token
+
+To [list deployments](/docs/rest-api/deployments/list-deployments), send a request to `GET /v7/deployments`. Store your token in the `VERCEL_ACCESS_TOKEN` environment variable, then run:
+
+```bash filename="terminal"
+curl "https://api.vercel.com/v7/deployments" \
+  -H "Authorization: Bearer $VERCEL_ACCESS_TOKEN"
+```
+
+The response contains a `deployments` array and pagination information. A full-account token targets your [default team](/docs/accounts#default-team) by default. A team- or project-scoped token targets the resources in its scope.
+
+For a full-account token targeting a team, set `VERCEL_TEAM_ID` to the team's ID from [team settings](/docs/accounts#find-your-team-id), then include `teamId` in the request:
+
+```bash filename="terminal"
+curl "https://api.vercel.com/v7/deployments?teamId=$VERCEL_TEAM_ID" \
+  -H "Authorization: Bearer $VERCEL_ACCESS_TOKEN"
+```
+
+You can also make the request from server-side JavaScript:
+
+```js filename="list-deployments.mjs"
+const url = new URL('https://api.vercel.com/v7/deployments');
+if (process.env.VERCEL_TEAM_ID) {
+  url.searchParams.set('teamId', process.env.VERCEL_TEAM_ID);
+}
+
+const response = await fetch(url, {
+  headers: {
+    Authorization: `Bearer ${process.env.VERCEL_ACCESS_TOKEN}`,
+  },
+});
+
+if (!response.ok) {
+  throw new Error(`Vercel API request failed: ${response.status}`);
+}
+
+const { deployments } = await response.json();
+console.log(deployments);
+```
+
+This prints the deployments accessible to the token and selected team. Keep the token in server-side environment variables rather than client-side code.
+
+### Troubleshoot authentication errors
+
+If a request with a token fails, read the `error` object in the response body to find the cause:
+
+| Response | Cause | Fix |
+| --- | --- | --- |
+| `403` with `"invalidToken": true` | The token is wrong, expired, or deleted. | Check that the header reads `Authorization: Bearer <token>` and that the token still appears on the [Account Tokens page](/account/tokens). If you've lost the token, create a new one. |
+| `403` with `"missingToken": true` | The request has no `Authorization` header, or the header isn't in the form `Bearer <token>`. A common cause is an environment variable that's empty in the current shell. | Check that the header reads `Authorization: Bearer <token>`. Run `echo "${VERCEL_ACCESS_TOKEN:+set}"` to confirm the variable is set, then send the request from the same shell. |
+| A team's resources are missing, or the request is denied, with a full-account token | A full-account token targets your default team unless you specify a team. | Add `teamId` or `slug` to the request. |
+| A project-scoped token is denied | Project-scoped tokens can't access other projects, team-level resources, or user-level resources. | Use a team-scoped token, or a project-scoped token for the project you're requesting. |
+| `429` | The request exceeded a [REST API rate limit](/docs/limits#rate-limits). | Reduce your request rate and retry after the limit resets. |
+
 ## Create and manage tokens programmatically
 
 You can create tokens without the dashboard through two paths.
 
 - **REST API**, where the [create an auth token](/docs/rest-api/authentication/create-an-auth-token) endpoint accepts an optional `projectId` in the request body to scope the token to a project.
-- **Vercel CLI**, where [`vercel tokens`](/docs/cli/tokens) manages tokens from the command line. Use `vercel tokens add --project <PROJECT_ID>` to create a project-scoped token.
+- **Vercel CLI**, where [`vercel tokens`](/docs/cli/tokens) manages tokens from the command line. A [`vercel login`](/docs/cli/login) session can't create tokens, so pass an existing access token to the CLI with the [`--token` option or the `VERCEL_TOKEN` environment variable](/docs/cli/global-options#token). To create a project-scoped token, pass a [team-scoped token](#create-an-access-token) for the team that owns the project and run `vercel tokens create <TOKEN_NAME> --project <PROJECT_ID>`. The command takes the team from the token's scope, so a full-account token doesn't work with `--project`.
 
-> **💡 Note:** Creating tokens through the CLI or API requires a full-account token. A
+> **💡 Note:** Creating a full-account token through the CLI or API, or a team-scoped token through the API, requires a full-account token. A team-scoped token can create only project-scoped tokens for projects in its team. A
 > project-scoped token cannot mint new tokens.
+
+## Review a token's use
+
+The Vercel REST API returns when a request last used a token, and your team's Activity Log shows which events happened on the team and the user involved in each one.
+
+### Read a token's last-used timestamp with the REST API
+
+The [Get Auth Token Metadata](/docs/rest-api/authentication/get-auth-token-metadata) endpoint, `GET /v5/user/tokens/{tokenId}`, returns the token's `activeAt` field, the timestamp in milliseconds of the most recent request that used the token. Pass `current` as the `tokenId` to read the metadata for the token that authenticates the request. With your token in the `VERCEL_ACCESS_TOKEN` environment variable, run:
+
+```bash filename="terminal"
+curl "https://api.vercel.com/v5/user/tokens/current" \
+  -H "Authorization: Bearer $VERCEL_ACCESS_TOKEN"
+```
+
+The response contains a `token` object with `activeAt` alongside the token's other metadata:
+
+```json
+{
+  "token": {
+    "activeAt": 1234567890123,
+    "createdAt": 1234567890123,
+    "id": "your_token_id_here",
+    "name": "your_token_name_here",
+    "type": "token"
+  }
+}
+```
+
+To check all of your tokens, call the [List Auth Tokens](/docs/rest-api/authentication/list-auth-tokens) endpoint, `GET /v6/user/tokens`, which returns `activeAt` for each token in its `tokens` array. This endpoint requires a Full Account token. It returns tokens in pages. When `pagination.next` isn't `null`, pass its value as the `until` query parameter to request the next page.
+
+### Review team events in the Activity Log or Audit Logs
+
+The [Activity Log](/docs/activity-log), available on all plans, lists the events on a team with the user involved, the type of event, and the time it happened. See [Events logged](/docs/activity-log#events-logged) for the events the Activity Log records, or query the same events from the command line with [`vercel activity`](/docs/cli/activity).
+
+On Enterprise plans, team members with the owner or security role can use [Audit Logs](/docs/audit-log) for security review. Audit Logs include Activity Log events and additional audit metadata. You can export Audit Logs as a CSV file for the last 90 days, or forward them to an external destination with [Audit Log Drains](/docs/drains/reference/audit-logs).
 
 ## Related
 
@@ -113,8 +218,26 @@ You can create tokens without the dashboard through two paths.
 - [Managing tokens with the Vercel CLI](/docs/cli/tokens)
 - [Create an auth token API endpoint](/docs/rest-api/authentication/create-an-auth-token)
 - [Account Management](/docs/accounts)
+- [Get Auth Token Metadata API endpoint](/docs/rest-api/authentication/get-auth-token-metadata)
+- [Activity Log](/docs/activity-log)
+- [Audit Logs](/docs/audit-log)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

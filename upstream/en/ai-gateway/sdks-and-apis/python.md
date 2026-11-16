@@ -1,10 +1,10 @@
 ---
-title: Python
+title: "Python with AI Gateway: OpenAI and Anthropic SDKs"
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/python
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/python"
-last_updated: 2026-07-30
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis
   - /docs/ai-gateway
@@ -14,11 +14,12 @@ related:
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api
   - /docs/ai-gateway/sdks-and-apis/ai-sdk-python
   - /docs/ai-gateway/authentication-and-byok/api-keys
-summary: Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
+summary: Use AI Gateway from any Python application with the OpenAI or Anthropic SDKs, including streaming, tool calling, async, model fallbacks, cost...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
-# Python
+# Python with AI Gateway: OpenAI and Anthropic SDKs
 
 To get started with Python and AI Gateway, you can either call the
 [OpenAI Chat Completions](/docs/ai-gateway/sdks-and-apis/openai-chat-completions), [OpenAI Responses](/docs/ai-gateway/sdks-and-apis/responses), or [Anthropic Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api) API directly, or use the
@@ -31,14 +32,18 @@ which are covered below.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [AI SDK](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk?from=related) — Build AI-powered TypeScript applications using the AI SDK with AI Gateway for unified access to 200+ models.
-- [OpenResponses API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses?from=related) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
-- [AI SDK for Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python?from=related) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 200+ models.
-- [Chat Completions](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/chat-completions?from=related) — Create chat completions using the Chat Completions API with support for streaming, image attachments, and PDF documents.
-- [Text](https://vercel.com/docs/ai-gateway/getting-started/text?from=related) — Generate and stream text responses using AI Gateway.
+- [Build AI agents in Python with the AI SDK](https://vercel.com/kb/guide/python-and-ai-sdk) — Stream model responses, get typed output, and build tool-using agents in Python on Vercel.
+- [Claude Fable 5.2 now available on AI Gateway](https://vercel.com/changelog/claude-fable-5-2-now-available-on-ai-gateway)
+- [Elorian AI's Glimpse now available on AI Gateway](https://vercel.com/changelog/elorian-ai-glimpse-now-available-on-ai-gateway)
+- [Muse Ember now available on AI Gateway](https://vercel.com/changelog/muse-ember-now-available-on-ai-gateway)
+- [Go with AI Gateway: OpenAI and Anthropic SDKs](https://vercel.com/docs/ai-gateway/sdks-and-apis/go) — Use AI Gateway from any Go application with the OpenAI or Anthropic Go SDKs, including model fallbacks, cost tracking, a
+- [AI SDK for Python with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 400+ models.
+- [AI Gateway Ecosystem and Integrations](https://vercel.com/docs/ai-gateway/ecosystem) — Connect frameworks, coding tools, and billing integrations to AI Gateway. Configure app attribution and explore integrat
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/python.graph.md](/docs/ai-gateway/sdks-and-apis/python.graph.md)
 <!-- /docsgraph:related -->
+
+Your Python application can run on any host or cloud and doesn't need to deploy to Vercel.
 
 > **💡 Note:** You can also use the [AI SDK for
 > Python](/docs/ai-gateway/sdks-and-apis/ai-sdk-python). It's currently in public beta.
@@ -53,16 +58,16 @@ Install your preferred SDK:
 pip install openai
 ```
 
-#### OpenAI Responses
-
-```bash
-pip install openai
-```
-
 #### Anthropic Messages
 
 ```bash
 pip install anthropic
+```
+
+#### OpenAI Responses
+
+```bash
+pip install openai
 ```
 
 ## Quick start
@@ -88,25 +93,6 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-#### OpenAI Responses
-
-```python filename="quickstart.py"
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.getenv('AI_GATEWAY_API_KEY'),
-    base_url='https://ai-gateway.vercel.sh/v1',
-)
-
-response = client.responses.create(
-    model='anthropic/claude-opus-5',
-    input='Explain quantum computing in one paragraph.',
-)
-
-print(response.output_text)
-```
-
 #### Anthropic Messages
 
 ```python filename="quickstart.py"
@@ -126,17 +112,38 @@ message = client.messages.create(
     ]
 )
 
-print(message.content[0].text)
+for block in message.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### OpenAI Responses
+
+```python filename="quickstart.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.getenv('AI_GATEWAY_API_KEY'),
+    base_url='https://ai-gateway.vercel.sh/v1',
+)
+
+response = client.responses.create(
+    model='anthropic/claude-opus-5',
+    input='Explain quantum computing in one paragraph.',
+)
+
+print(response.output_text)
 ```
 
 ## Authentication
 
-All SDKs support the same authentication methods. Use an [API key](/docs/ai-gateway/authentication-and-byok/api-keys#create-a-key) for local development or [OIDC tokens](/docs/ai-gateway/authentication-and-byok/oidc) for Vercel deployments.
+All SDKs support the same authentication methods. Use an [API key](/docs/ai-gateway/authentication-and-byok/api-keys#create-a-key) in any environment, including production on other clouds. Applications deployed on Vercel can use [OIDC tokens](/docs/ai-gateway/authentication-and-byok/oidc) instead.
 
 ```python filename="auth.py"
 import os
 
-# Option 1: API key (recommended for local development)
+# Option 1: API key (works in any environment)
 api_key = os.getenv('AI_GATEWAY_API_KEY')
 
 # Option 2: OIDC token (automatic on Vercel deployments)
@@ -174,28 +181,6 @@ for chunk in stream:
         print(chunk.choices[0].delta.content, end='', flush=True)
 ```
 
-#### OpenAI Responses
-
-```python filename="streaming.py"
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.getenv('AI_GATEWAY_API_KEY'),
-    base_url='https://ai-gateway.vercel.sh/v1',
-)
-
-stream = client.responses.create(
-    model='anthropic/claude-opus-5',
-    input='Write a short story about a robot.',
-    stream=True,
-)
-
-for event in stream:
-    if event.type == 'response.output_text.delta':
-        print(event.delta, end='', flush=True)
-```
-
 #### Anthropic Messages
 
 ```python filename="streaming.py"
@@ -216,6 +201,28 @@ with client.messages.stream(
 ) as stream:
     for text in stream.text_stream:
         print(text, end='', flush=True)
+```
+
+#### OpenAI Responses
+
+```python filename="streaming.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.getenv('AI_GATEWAY_API_KEY'),
+    base_url='https://ai-gateway.vercel.sh/v1',
+)
+
+stream = client.responses.create(
+    model='anthropic/claude-opus-5',
+    input='Write a short story about a robot.',
+    stream=True,
+)
+
+for event in stream:
+    if event.type == 'response.output_text.delta':
+        print(event.delta, end='', flush=True)
 ```
 
 ## Async support
@@ -246,28 +253,6 @@ async def main():
 asyncio.run(main())
 ```
 
-#### OpenAI Responses
-
-```python filename="async_client.py"
-import os
-import asyncio
-from openai import AsyncOpenAI
-
-client = AsyncOpenAI(
-    api_key=os.getenv('AI_GATEWAY_API_KEY'),
-    base_url='https://ai-gateway.vercel.sh/v1',
-)
-
-async def main():
-    response = await client.responses.create(
-        model='anthropic/claude-opus-5',
-        input='Hello!',
-    )
-    print(response.output_text)
-
-asyncio.run(main())
-```
-
 #### Anthropic Messages
 
 ```python filename="async_client.py"
@@ -288,7 +273,31 @@ async def main():
             {'role': 'user', 'content': 'Hello!'}
         ]
     )
-    print(message.content[0].text)
+    for block in message.content:
+        if block.type == "text":
+            print(block.text)
+
+asyncio.run(main())
+```
+
+#### OpenAI Responses
+
+```python filename="async_client.py"
+import os
+import asyncio
+from openai import AsyncOpenAI
+
+client = AsyncOpenAI(
+    api_key=os.getenv('AI_GATEWAY_API_KEY'),
+    base_url='https://ai-gateway.vercel.sh/v1',
+)
+
+async def main():
+    response = await client.responses.create(
+        model='anthropic/claude-opus-5',
+        input='Hello!',
+    )
+    print(response.output_text)
 
 asyncio.run(main())
 ```
@@ -343,41 +352,6 @@ if response.choices[0].message.tool_calls:
     print(f"With arguments: {args}")
 ```
 
-#### OpenAI Responses
-
-```python filename="tools.py"
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.getenv('AI_GATEWAY_API_KEY'),
-    base_url='https://ai-gateway.vercel.sh/v1',
-)
-
-response = client.responses.create(
-    model='openai/gpt-5.6-sol',
-    input='What is the weather in Tokyo?',
-    tools=[
-        {
-            'type': 'function',
-            'name': 'get_weather',
-            'description': 'Get the current weather for a location',
-            'parameters': {
-                'type': 'object',
-                'properties': {
-                    'location': {'type': 'string'},
-                },
-                'required': ['location'],
-            },
-        },
-    ],
-)
-
-for item in response.output:
-    if item.type == 'function_call':
-        print(f'Call: {item.name}({item.arguments})')
-```
-
 #### Anthropic Messages
 
 ```python filename="tools.py"
@@ -418,6 +392,41 @@ for block in message.content:
     if block.type == 'tool_use':
         print(f"Model wants to call: {block.name}")
         print(f"With arguments: {block.input}")
+```
+
+#### OpenAI Responses
+
+```python filename="tools.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.getenv('AI_GATEWAY_API_KEY'),
+    base_url='https://ai-gateway.vercel.sh/v1',
+)
+
+response = client.responses.create(
+    model='openai/gpt-6-astra',
+    input='What is the weather in Tokyo?',
+    tools=[
+        {
+            'type': 'function',
+            'name': 'get_weather',
+            'description': 'Get the current weather for a location',
+            'parameters': {
+                'type': 'object',
+                'properties': {
+                    'location': {'type': 'string'},
+                },
+                'required': ['location'],
+            },
+        },
+    ],
+)
+
+for item in response.output:
+    if item.type == 'function_call':
+        print(f'Call: {item.name}({item.arguments})')
 ```
 
 See [Chat Completions tool calls](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/tool-calling), [OpenAI Responses API tool calling](/docs/ai-gateway/sdks-and-apis/responses/tool-calling), or [Anthropic Messages tool calls](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/tool-calling) for more examples.
@@ -502,40 +511,6 @@ completion = client.chat.completions.create(
 print(completion.choices[0].message.content)
 ```
 
-#### OpenAI Responses
-
-```python filename="vision.py"
-import base64
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.getenv('AI_GATEWAY_API_KEY'),
-    base_url='https://ai-gateway.vercel.sh/v1'
-)
-
-with open('diagram.png', 'rb') as f:
-    image_base64 = base64.b64encode(f.read()).decode()
-
-response = client.responses.create(
-    model='anthropic/claude-opus-5',
-    input=[
-        {
-            'role': 'user',
-            'content': [
-                {'type': 'input_text', 'text': 'Describe this image in one sentence.'},
-                {
-                    'type': 'input_image',
-                    'image_url': f'data:image/png;base64,{image_base64}'
-                }
-            ]
-        }
-    ]
-)
-
-print(response.output_text)
-```
-
 #### Anthropic Messages
 
 ```python filename="vision.py"
@@ -572,7 +547,43 @@ message = client.messages.create(
     ]
 )
 
-print(message.content[0].text)
+for block in message.content:
+    if block.type == "text":
+        print(block.text)
+```
+
+#### OpenAI Responses
+
+```python filename="vision.py"
+import base64
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.getenv('AI_GATEWAY_API_KEY'),
+    base_url='https://ai-gateway.vercel.sh/v1'
+)
+
+with open('diagram.png', 'rb') as f:
+    image_base64 = base64.b64encode(f.read()).decode()
+
+response = client.responses.create(
+    model='anthropic/claude-opus-5',
+    input=[
+        {
+            'role': 'user',
+            'content': [
+                {'type': 'input_text', 'text': 'Describe this image in one sentence.'},
+                {
+                    'type': 'input_image',
+                    'image_url': f'data:image/png;base64,{image_base64}'
+                }
+            ]
+        }
+    ]
+)
+
+print(response.output_text)
 ```
 
 PDFs work the same way with a different part type. On Anthropic Messages that is a `document` part:
@@ -628,7 +639,7 @@ client = OpenAI(
 )
 
 response = client.responses.create(
-    model='openai/gpt-5.6-sol',
+    model='openai/gpt-6-astra',
     input='Explain the Monty Hall problem step by step.',
     reasoning={'effort': 'medium'},
     max_output_tokens=2048,
@@ -649,7 +660,7 @@ client = OpenAI(
 )
 
 completion = client.chat.completions.create(
-    model='openai/gpt-5.6-sol',
+    model='openai/gpt-6-astra',
     messages=[{'role': 'user', 'content': 'Explain the Monty Hall problem.'}],
     extra_body={'reasoning': {'effort': 'medium'}},
 )
@@ -659,6 +670,43 @@ print(completion.choices[0].message.content)
 ```
 
 Each surface names and shapes this differently, and Anthropic models have their own constraints. See [Responses reasoning](/docs/ai-gateway/sdks-and-apis/responses/reasoning), [Chat Completions reasoning](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/reasoning), and [Anthropic extended thinking](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/reasoning).
+
+## Use fallbacks, cost tracking, and caching from Python
+
+Pass AI Gateway options in `extra_body`. This example tries a [fallback model](/docs/ai-gateway/models-and-providers/model-fallbacks) if the primary model fails, attributes the request to a user and a tag for [Custom Reporting](/docs/ai-gateway/observability-and-spend/custom-reporting), and turns on [automatic prompt caching](/docs/ai-gateway/models-and-providers/automatic-caching):
+
+```python filename="gateway_options.py"
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
+
+response = client.chat.completions.create(
+    model="anthropic/claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain model fallbacks in one sentence."}],
+    extra_body={
+        "providerOptions": {
+            "gateway": {
+                "models": ["openai/gpt-6-astra"],
+                "user": "user-123",
+                "tags": ["feature:summaries"],
+                "caching": "auto",
+            }
+        }
+    },
+)
+
+print(response.choices[0].message.content)
+```
+
+The Anthropic SDK accepts the same `extra_body` argument on `client.messages.create`.
+
+Each `user` value and tag counts as a Custom Reporting write. See [Custom Reporting pricing](/docs/ai-gateway/observability-and-spend/custom-reporting#pricing).
+
+The same `gateway` object accepts [provider ordering and filtering](/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering), [`zeroDataRetention`](/docs/ai-gateway/security-and-compliance/zdr), and the other [provider options](/docs/ai-gateway/models-and-providers/provider-options). To cap spend, set a [budget](/docs/ai-gateway/observability-and-spend/budgets) on the API key. To use your own provider accounts, configure [BYOK](/docs/ai-gateway/authentication-and-byok/byok).
 
 ## Framework integrations
 
@@ -677,11 +725,26 @@ See [Framework Integrations](/docs/ai-gateway/ecosystem/framework-integrations) 
 
 For complete API documentation, see:
 
-- **[OpenAI Chat Completions API](/docs/ai-gateway/sdks-and-apis/openai-chat-completions)** — Chat completions, embeddings, streaming, tool calls, structured outputs, image inputs, and provider routing
-- **[OpenAI Responses API](/docs/ai-gateway/sdks-and-apis/responses)** — Streaming, tool calling, structured output, and reasoning
-- **[Anthropic Messages API](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api)** — Streaming, tool calls, extended thinking, web search, and file attachments
+- **[OpenAI Chat Completions API](/docs/ai-gateway/sdks-and-apis/openai-chat-completions)**: Chat completions, embeddings, streaming, tool calls, structured outputs, image inputs, and provider routing
+- **[OpenAI Responses API](/docs/ai-gateway/sdks-and-apis/responses)**: Streaming, tool calling, structured output, and reasoning
+- **[Anthropic Messages API](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api)**: Streaming, tool calls, extended thinking, web search, and file attachments
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

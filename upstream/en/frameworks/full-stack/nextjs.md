@@ -3,19 +3,20 @@ title: Next.js on Vercel
 product: vercel
 url: /docs/frameworks/full-stack/nextjs
 canonical_url: "https://vercel.com/docs/frameworks/full-stack/nextjs"
-last_updated: 2026-06-26
+last_updated: 2026-11-14
 type: conceptual
 prerequisites:
   - /docs/frameworks/full-stack
   - /docs/frameworks
 related:
+  - /docs/cli
+  - /docs/deployments/deploy-without-logging-in
   - /docs/incremental-static-regeneration
   - /docs/cdn
   - /docs/functions
-  - /docs/caching/cdn-cache
-  - /docs/functions/streaming-functions
 summary: Vercel is the native Next.js platform, designed to enhance the Next.js experience.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Next.js on Vercel
@@ -28,18 +29,18 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Deploying](https://nextjs.org/docs/app/getting-started/deploying?from=related) — Learn how to deploy your Next.js application.
-- [Deploying](https://nextjs.org/docs/pages/getting-started/deploying?from=related) — Learn how to deploy your Next.js application.
-- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel?from=related) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Next.js on Vercel vs Cloudflare](https://vercel.com/kb/guide/next-js-on-vercel-vs-cloudflare?from=related) — Compare running Next.js on Vercel Functions with Fluid compute against Cloudflare Workers with the OpenNext Cloudflare a
-- [Next.js on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/next-js-on-vercel-vs-webflow-cloud?from=related) — Compare running Next.js on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Ne
-- [Vercel vs Akamai](https://vercel.com/kb/guide/vercel-vs-akamai?from=related) — A detailed guide to Vercel vs Akamai: compute models, AI infrastructure, framework support, media streaming, CDN capabil
-- [Glossary](https://nextjs.org/docs/app/glossary?from=related) — A glossary of common terms used in Next.js.
-- [Metadata and OG images](https://nextjs.org/docs/app/getting-started/metadata-and-og-images?from=related) — Learn how to add metadata to your pages and create dynamic OG images.
-- [Nuxt](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related) — Learn how to use Vercel's features with Nuxt.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
-- [Astro](https://vercel.com/docs/frameworks/frontend/astro?from=related) — Learn how to use Vercel's features with Astro
+- [Deploying](https://nextjs.org/docs/app/getting-started/deploying) — Learn how to deploy your Next.js application.
+- [How to deploy your Next.js application](https://nextjs.org/docs/pages/getting-started/deploying) — Learn how to deploy your Next.js application.
+- [How to set up local HTTPS for Next.js and other dev servers](https://vercel.com/kb/guide/access-nextjs-localhost-https-certificate-self-signed) — Learn when you need local HTTPS, how to enable it with next dev --experimental-https, and how to clear certificate warni
+- [Adding keyboard shortcuts to React apps with TanStack Hotkeys](https://vercel.com/kb/guide/adding-keyboard-shortcuts-to-react-apps-with-tanstack-hotkeys) — Add cross-platform keyboard shortcuts to your React app with TanStack Hotkeys. Install, register, scope, and display sho
+- [Making your catalog discoverable to AI agents](https://vercel.com/kb/guide/agentic-commerce-readiness) — Agentic commerce readiness starts with the initial HTML response. Server-render your product catalog, ship JSON-LD, and
+- [How to architect an AI evaluation dashboard on Vercel](https://vercel.com/kb/guide/ai-evaluation-dashboard-architecture-on-vercel) — Map eval orchestration, traces, and run storage to AI Gateway, Observability, and Marketplace Postgres, and learn when s
+- [What are the best practices for hosting videos on Vercel?](https://vercel.com/kb/guide/best-practices-for-hosting-videos-on-vercel-nextjs-mp4-gif) — Learn the ideal solutions for using video files like .mp4 and .gif on Vercel to prevent excess bandwidth consumption.
+- [Fetching Data](https://nextjs.org/docs/app/getting-started/fetching-data) — Learn how to fetch data and stream content that depends on data.
+- [opengraph-image and twitter-image](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image) — API Reference for the Open Graph Image and Twitter Image file conventions.
+- [Introducing OG Image Generation: Fast, dynamic social card images at the Edge](https://vercel.com/blog/introducing-vercel-og-image-generation-fast-dynamic-social-card-images)
+- [SvelteKit on Vercel](https://vercel.com/docs/frameworks/full-stack/sveltekit) — Deploy SvelteKit applications to Vercel and configure the adapter, rendering, streaming, ISR, analytics, and Routing Mid
+- [Advanced Web Analytics Config with @vercel/analytics](https://vercel.com/docs/analytics/package) — With the @vercel/analytics npm package, you are able to configure your application to send analytics data to Vercel.
 
 Full cross-link map for this page: [/docs/frameworks/full-stack/nextjs.graph.md](/docs/frameworks/full-stack/nextjs.graph.md)
 <!-- /docsgraph:related -->
@@ -47,6 +48,25 @@ Full cross-link map for this page: [/docs/frameworks/full-stack/nextjs.graph.md]
 While Next.js works when self-hosting, deploying to Vercel is zero-configuration and provides additional enhancements for **scalability, availability, and performance globally**.
 
 ## Getting started
+
+To get started with Next.js on Vercel:
+
+- If you already have a project with Next.js, install [Vercel CLI](/docs/cli) and run the vercel command from your project's root directory
+- Clone one of our Next.js example repos to your favorite git provider and deploy it on Vercel with the button below:
+
+\- Or, choose a template from Vercel's marketplace:
+
+Vercel deployments can \[integrate with your git provider]\(/docs/git) to \[generate preview URLs]\(/docs/deployments/environments#preview-environment-pre-production) for each pull request you make to your Next.js project.
+
+## Deploy without an account
+
+To deploy an existing Next.js project without an account or login, run this command in the project root:
+
+```bash filename="terminal"
+vercel deploy --temporary
+```
+
+The CLI builds the project, deploys it to production, and prints a claim URL. Claim the project to keep it live. See [Deploying without logging in](/docs/deployments/deploy-without-logging-in).
 
 ## Incremental Static Regeneration
 
@@ -248,6 +268,8 @@ When a user visits a route:
 
 This approach is useful for pages like dashboards, where unique, per-request data coexists with static elements such as sidebars or layouts. For example, this page caches its product list into the static shell with `use cache`, and streams the personalized greeting in at request time:
 
+**app/page.tsx**
+
 ```tsx filename="app/page.tsx" framework=nextjs
 import { Suspense } from 'react';
 import { cacheTag } from 'next/cache';
@@ -292,6 +314,8 @@ export default function Page() {
   );
 }
 ```
+
+**app/page.js**
 
 ```jsx filename="app/page.js" framework=nextjs
 import { Suspense } from 'react';
@@ -664,7 +688,7 @@ To see your generated image, run `npm run dev` in your terminal and visit the `/
 
 When deploying middleware with Next.js on Vercel, you get access to built-in helpers that expose each request's geolocation information. You also get access to the `NextRequest` and `NextResponse` objects, which enable rewrites, continuing the middleware chain, and more.
 
-See [the Middleware API docs](/docs/routing-middleware/api) for more information.
+See [the Middleware API docs](/docs/routing-middleware/js-reference) for more information.
 
 **To summarize, Middleware with Next.js on Vercel:**
 
@@ -673,6 +697,18 @@ See [the Middleware API docs](/docs/routing-middleware/api) for more information
 - Helps you achieve the best performance for serving content globally
 
 [Learn more about Middleware](/docs/routing-middleware)
+
+## Build a bot with Chat SDK
+
+Use [Chat SDK](/docs/chat-sdk) to build bots that respond to messages and interactions in chat platforms. A Next.js Route Handler receives platform webhooks, while `after` lets the bot finish processing after acknowledging each event.
+
+Follow the [Chat SDK quickstart](/docs/chat-sdk/quickstart) to build a Slack bot with persistent Redis state and deploy it on Vercel.
+
+## Protect an internal app with Passport
+
+Use [Vercel Passport](/docs/passport) to require sign-in through your company's identity provider before requests reach your Next.js app. Passport requires an Enterprise plan. Your app can use the verified visitor identity to personalize pages and authorize access to sensitive operations.
+
+Follow [Identify users and control access in Next.js with Vercel Passport](/kb/guide/vercel-passport-nextjs) to read identity with `getIdentity()` from `@vercel/passport` in an App Router project. The guide covers group-based access checks in Server Components and Server Actions, recording visitor actions, and forwarding identity to another backend. Apply authorization checks in server-side code, including each protected Server Action and Route Handler.
 
 ## Draft Mode
 
@@ -686,13 +722,13 @@ When self-hosting, every request using Draft Mode hits the Next.js server, poten
 
 ### Draft Mode security
 
-Deployments on Vercel automatically secure Draft Mode behind the same authentication used for Preview Comments. In order to enable or disable Draft Mode, the viewer must be logged in as a member of the [Team](/docs/accounts). Once enabled, Vercel's CDN will bypass the ISR cache automatically and invoke the underlying [Vercel Function](/docs/functions).
+Deployments on Vercel automatically secure Draft Mode behind the same authentication used for Preview Comments. To enable or disable Draft Mode, the viewer must be logged in as a member of the [Team](/docs/accounts). Once enabled, Vercel's CDN will bypass the ISR cache automatically and invoke the underlying [Vercel Function](/docs/functions).
 
 ### Enabling Draft Mode in Preview Deployments
 
-You and your team members can toggle Draft Mode in the Vercel Toolbar in [production](/docs/vercel-toolbar/in-production-and-localhost/add-to-production), [localhost](/docs/vercel-toolbar/in-production-and-localhost/add-to-localhost), and [Preview Deployments](/docs/deployments/environments#preview-environment-pre-production#comments). When you do so, the toolbar will become purple to indicate Draft Mode is active.
+You and your team members can toggle Draft Mode in the Vercel Toolbar in [production](/docs/vercel-toolbar/in-production-and-localhost/add-to-production), [localhost](/docs/vercel-toolbar/in-production-and-localhost/add-to-localhost), and [Preview Deployments](/docs/deployments/environments#preview-environment-pre-production). When you do so, the toolbar will become purple to indicate Draft Mode is active.
 
-![Image](`/docs-assets/static/docs/workflow-collaboration/draft-mode/draft-toolbar1-light.png`)
+![The Vercel toolbar when Draft Mode is enabled.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/workflow-collaboration/draft-mode/draft-toolbar1-light.png)
 
 Users outside your Vercel team cannot toggle Draft Mode.
 
@@ -713,28 +749,29 @@ To use Web Analytics, navigate to the Analytics section in your project dashboar
 
 To track visitors and page views, we recommend first installing our `@vercel/analytics` package by running the terminal command below in the root directory of your Next.js project:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i @vercel/analytics
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i @vercel/analytics
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i @vercel/analytics
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i @vercel/analytics
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
+
+```bash
+pnpm i @vercel/analytics
+```
+
+**yarn**
+
+```bash
+yarn add @vercel/analytics
+```
+
+**npm**
+
+```bash
+npm i @vercel/analytics
+```
+
+**bun**
+
+```bash
+bun add @vercel/analytics
+```
 
 Then, follow the instructions below to add the `Analytics` component to your app either using the `pages` directory or the `app` directory.
 
@@ -838,7 +875,7 @@ On Vercel, you can track your Next.js app's Core Web Vitals in your project's da
 
 > For \['nextjs-app']:
 
-If you're self-hosting your app, you can use the [`useWebVitals`](https://nextjs.org/docs/app/guides/analytics#build-your-own) hook to send metrics to any analytics provider. The following example demonstrates a custom `WebVitals` component that you can use in your app's root `layout` file:
+If you're self-hosting your app, you can use the [`useReportWebVitals`](https://nextjs.org/docs/app/guides/analytics#build-your-own) hook to send metrics to any analytics provider. The following example demonstrates a custom `WebVitals` component that you can use in your app's root `layout` file:
 
 ```jsx filename="app/_components/web-vitals.jsx" framework=all
 'use client';
@@ -866,7 +903,7 @@ export function WebVitals() {
 
 You could then reference your custom `WebVitals` component like this:
 
-```ts filename="app/layout.ts" framework=all
+```tsx filename="app/layout.tsx" framework=all
 import { WebVitals } from './_components/web-vitals';
 
 export default function Layout({ children }) {
@@ -914,9 +951,6 @@ export function reportWebVitals(metric) {
     case 'CLS':
       // handle CLS results
       break;
-    case 'FID':
-      // handle FID results
-      break;
     case 'TTFB':
       // handle TTFB results
       break;
@@ -935,7 +969,7 @@ function MyApp({ Component, pageProps }) {
 export default MyApp;
 ```
 
-```ts filename="pages/_app.ts" framework=all
+```tsx filename="pages/_app.tsx" framework=all
 export function reportWebVitals(metric) {
   switch (metric.name) {
     case 'FCP':
@@ -946,9 +980,6 @@ export function reportWebVitals(metric) {
       break;
     case 'CLS':
       // handle CLS results
-      break;
-    case 'FID':
-      // handle FID results
       break;
     case 'TTFB':
       // handle TTFB results
@@ -972,7 +1003,7 @@ Next.js uses [Google's `web-vitals` library](https://github.com/GoogleChrome/web
 
 **To summarize, tracking Web Vitals with Next.js on Vercel:**
 
-- Enables you to track traffic performance metrics, such as [First Contentful Paint](/docs/speed-insights/metrics#first-contentful-paint-fcp), or [First Input Delay](/docs/speed-insights/metrics#first-input-delay-fid)
+- Enables you to track traffic performance metrics, such as [First Contentful Paint](/docs/speed-insights/metrics#first-contentful-paint-fcp), or [Interaction to Next Paint](/docs/speed-insights/metrics#interaction-to-next-paint-inp)
 - Enables you to view performance analytics by page name and URL for more granular analysis
 - Shows you [a score for your app's performance](/docs/speed-insights/metrics#how-the-scores-are-determined) on each recorded metric, which you can use to track improvements or regressions
 
@@ -1000,17 +1031,31 @@ Learn more about deploying Next.js projects on Vercel with the following resourc
 
 - [Build a fullstack Next.js app](/kb/guide/nextjs-prisma-postgres)
 - [Build a multi-tenant app](/docs/platforms)
-- [Next.js with Contenful](/kb/guide/integrating-next-js-and-contentful-for-your-headless-cms)
+- [Next.js with Contentful](/kb/guide/integrating-next-js-and-contentful-for-your-headless-cms)
 - [Next.js with Stripe Checkout and Typescript](/kb/guide/getting-started-with-nextjs-typescript-stripe)
 - [Next.js with Magic.link](/kb/guide/add-auth-to-nextjs-with-magic)
 - [Generate a sitemap with Next.js](/kb/guide/how-do-i-generate-a-sitemap-for-my-nextjs-app-on-vercel)
-- [Next.js ecommerce with Shopify](/kb/guide/deploying-locally-built-nextjs)
-- [Deploy a locally built Next.js app](/kb/guide/deploying-locally-built-nextjs)
+- [Deploy a locally built Next.js app](/docs/cli/deploying-from-cli#deploying-from-local-build-prebuilt)
 - [Deploying Next.js to Vercel](https://www.youtube.com/watch?v=AiiGjB2AxqA)
 - [Learn about combining static and dynamic rendering on the same page in Next.js 14](https://www.youtube.com/watch?v=wv7w_Zx-FMU)
 - [Learn about suspense boundaries and streaming when loading your UI](https://nextjs.org/docs/app/api-reference/file-conventions/loading)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

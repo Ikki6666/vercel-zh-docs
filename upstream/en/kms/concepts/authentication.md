@@ -3,7 +3,7 @@ title: Vercel KMS Authentication
 product: vercel
 url: /docs/kms/concepts/authentication
 canonical_url: "https://vercel.com/docs/kms/concepts/authentication"
-last_updated: 2018-10-20
+last_updated: 2026-08-18
 type: conceptual
 prerequisites:
   - /docs/kms/concepts
@@ -16,6 +16,7 @@ related:
   - /docs/kms/concepts/project-grants
 summary: How Vercel KMS authorizes signing requests with a deployment OIDC token, authorizes management requests with a Vercel access token, and how relying...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Vercel KMS Authentication
@@ -28,11 +29,12 @@ KMS authorizes requests differently depending on what you are doing. Signing is 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Quickstart](https://vercel.com/docs/kms/quickstart?from=related) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
-- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related)
-- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related)
-- [Create an issuer policy](https://vercel.com/docs/rest-api/kms/create-an-issuer-policy?from=related)
-- [Pricing and Limits](https://vercel.com/docs/kms/pricing?from=related) — How Vercel KMS is billed per signing operation, the platform limits that apply, and how to stop being billed.
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys)
+- [Vercel KMS Quickstart](https://vercel.com/docs/kms/quickstart) — Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
+- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token) — POST /v1/kms/issuers/{issuerId}/sign/token — Sign a JWT with a KMS issuer's active signing key. Authenticate the request
+- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key) — POST /v1/kms/issuers/{issuerId}/keys — Create a new signing key for a KMS issuer. Depending on the activation mode, the
+- [Create an issuer policy](https://vercel.com/docs/rest-api/kms/create-an-issuer-policy) — POST /v1/kms/issuers/{issuerId}/policies — Attach a policy to a KMS issuer that grants a project's deployments permissio
+- [Sign a message](https://vercel.com/docs/rest-api/kms/sign-a-message) — POST /v1/kms/issuers/{issuerId}/sign/message — Sign a raw message with a KMS issuer's active signing key. Authenticate t
 
 Full cross-link map for this page: [/docs/kms/concepts/authentication.graph.md](/docs/kms/concepts/authentication.graph.md)
 <!-- /docsgraph:related -->
@@ -41,7 +43,7 @@ Full cross-link map for this page: [/docs/kms/concepts/authentication.graph.md](
 
 Signing requests are authorized with a Vercel OIDC token in the `Authorization: Bearer <token>` header. Inside a Vercel Function, the deployment's OIDC token is used automatically, so you do not manage any credentials yourself. To learn more about the token, see [OIDC federation](/docs/oidc).
 
-The [`@vercel/kms`](/docs/kms/ts-sdk-reference) SDK resolves the function's OIDC token for you through [`@vercel/oidc`](/docs/oidc). Because the token is resolved at call time, call `signToken` and `signMessage` inside an active request context, not at the module top level.
+The [`@vercel/kms`](/docs/kms/ts-sdk-reference) SDK resolves the function's OIDC token for you through [`@vercel/oidc`](/docs/oidc). Because the token is resolved at call time, call `signJWT` and `signMessage` inside an active request context, not at the module top level.
 
 ## Authorize management with an access token
 
@@ -88,7 +90,22 @@ const { payload } = await jwtVerify(token, jwks, { issuer });
 - [Key rotation](/docs/kms/concepts/key-rotation)
 - [OIDC federation](/docs/oidc)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

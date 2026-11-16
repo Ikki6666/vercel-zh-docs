@@ -3,38 +3,24 @@ title: vercel.functions API Reference (Python)
 product: vercel
 url: /docs/functions/functions-api-reference/vercel-sdk-python
 canonical_url: "https://vercel.com/docs/functions/functions-api-reference/vercel-sdk-python"
-last_updated: 2026-07-27
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/functions/functions-api-reference
   - /docs/functions
 related:
   - /docs/environment-variables/system-environment-variables
-  - /docs/caching/runtime-cache
+  - /docs/runtime-cache
   - /docs/incremental-static-regeneration
   - /docs/pricing/regional-pricing
 summary: Learn about available APIs when working with Vercel Functions in Python.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # vercel.functions API Reference (Python)
 
 ## Install and use the package
-
-
-<!-- docsgraph:related -->
-## Related pages
-
-> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
-
-- [Node.js](https://vercel.com/docs/functions/functions-api-reference/vercel-functions-package?from=related) — Learn about available APIs when working with Vercel Functions.
-- [Runtimes](https://vercel.com/docs/functions/runtimes?from=related) — Runtimes transform your source code into Functions, which are served by our CDN. Learn about the official runtimes suppo
-- [Python](https://vercel.com/docs/functions/runtimes/python?from=related) — Learn how to use the Python runtime to run Python applications on Vercel.
-- [Configuring Functions](https://vercel.com/docs/functions/configuring-functions?from=related) — Learn how to configure the runtime, region, maximum duration, and memory for Vercel Functions.
-- [Caching](https://vercel.com/docs/caching?from=related) — Learn how Vercel caches content across multiple layers to deliver fast responses and reduce load on your backend.
-
-Full cross-link map for this page: [/docs/functions/functions-api-reference/vercel-sdk-python.graph.md](/docs/functions/functions-api-reference/vercel-sdk-python.graph.md)
-<!-- /docsgraph:related -->
 
 1. Install the `vercel` package:
 
@@ -53,6 +39,23 @@ Full cross-link map for this page: [/docs/functions/functions-api-reference/verc
 ### `get_env`
 
 **Description**: Gets the [System Environment Variables](/docs/environment-variables/system-environment-variables#system-environment-variables) exposed by Vercel.
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Vercel Python SDK is now available in beta](https://vercel.com/changelog/vercel-python-sdk-in-beta)
+- [Introducing the Runtime Cache API](https://vercel.com/changelog/introducing-the-runtime-cache-api)
+- [Using the Python Runtime with Vercel Functions](https://vercel.com/docs/functions/runtimes/python) — Learn how to use the Python runtime to run Python applications on Vercel.
+- [Runtimes](https://vercel.com/docs/functions/runtimes) — Runtimes transform your source code into Functions, which are served by our CDN. Learn about the official runtimes suppo
+- [Configuring the Runtime for Vercel Functions](https://vercel.com/docs/functions/configuring-functions/runtime) — Learn how to configure the runtime for Vercel Functions.
+- [Deploy a FastAPI app on Vercel](https://vercel.com/docs/frameworks/backend/fastapi) — Deploy a FastAPI app on Vercel. Learn how the Python runtime, ASGI, static assets, and Vercel Functions work together.
+- [API Reference](https://vercel.com/docs/queues/api) — HTTP API reference for Vercel Queues. Publish, consume, acknowledge, and manage messages.
+
+Full cross-link map for this page: [/docs/functions/functions-api-reference/vercel-sdk-python.graph.md](/docs/functions/functions-api-reference/vercel-sdk-python.graph.md)
+<!-- /docsgraph:related -->
 
 ```python filename="src/example.py"
 from vercel.functions import get_env
@@ -130,7 +133,7 @@ async def get_ip_address(request: Request):
 | Method       | Description                                                                                                                                                                                     | Parameters                                                                                                                                                                                       |
 | :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `get`        | Retrieves a value from the Vercel Runtime Cache.                                                                                                                                                | `key: str`: The cache key                                                                                                                                                                        |
-| `set`        | Stores a value in the Vercel Runtime Cache with optional `ttl` and/or `tags`. The `name` option allows a human-readable label to be associated with the cache entry for observability purposes. |  |
+| `set`        | Stores a value in the Vercel Runtime Cache with optional `ttl` and/or `tags`. The `name` option allows a human-readable label to be associated with the cache entry for observability purposes. | `key: str`: The cache key`value: object`: The value to store`options?: { name?: str; tags?: list[str]; ttl?: int }`<br /> Configuration object (not required) |
 | `delete`     | Removes a value from the Vercel Runtime Cache by key                                                                                                                                            | `key: str`: The cache key to delete                                                                                                                                                              |
 | `expire_tag` | Expires all cache entries associated with one or more tags                                                                                                                                      | `tag: str \| Sequence[str]`: Tag or sequence of tags to expire                                                                                                                                   |
 
@@ -191,7 +194,7 @@ def expire_blog(request: Request):
 
 #### Limits and usage
 
-The Runtime Cache is isolated per deployment environment (`preview` and `production`). On Pro and Enterprise, each project uses its own cache. On Hobby, all projects in your team share a single cache. See [storage scope by plan](/docs/caching/runtime-cache#storage-scope-by-plan). Cached data is persisted across deployments and can be invalidated either through time-based expiration or by calling `expire_tag`. However, TTL (time-to-live) and tag updates aren't reconciled between deployments. In those cases, we recommend either purging the runtime cache or modifying the cache key.
+The Runtime Cache is isolated per deployment environment (`preview` and `production`). On Pro and Enterprise, each project uses its own cache. On Hobby, all projects in your team share a single cache. See [storage scope by plan](/docs/runtime-cache#storage-scope-by-plan). Cached data is persisted across deployments and can be invalidated either through time-based expiration or by calling `expire_tag`. However, TTL (time-to-live) and tag updates aren't reconciled between deployments. In those cases, we recommend either purging the runtime cache or modifying the cache key.
 
 The Runtime Cache API does not have first class integration with [Incremental Static Regeneration](/docs/incremental-static-regeneration). This means that:
 
@@ -206,7 +209,22 @@ The following Runtime Cache limits apply:
 
 Usage of the Vercel Runtime Cache is charged, learn more about pricing in the [regional pricing docs](/docs/pricing/regional-pricing).
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

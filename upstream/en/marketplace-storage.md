@@ -3,7 +3,7 @@ title: Storage on Vercel Marketplace
 product: vercel
 url: /docs/marketplace-storage
 canonical_url: "https://vercel.com/docs/marketplace-storage"
-last_updated: 2026-07-29
+last_updated: 2026-09-17
 type: conceptual
 prerequisites:
   []
@@ -15,11 +15,14 @@ related:
   - /docs/functions/configuring-functions/region
 summary: Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data, and inspect schemas from the...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Storage on Vercel Marketplace
 
-> **🔒 Permissions Required**: Marketplace Storage Integrations
+> Marketplace Storage Integrations are available on all plans
+
+The [Vercel Marketplace](https://vercel.com/marketplace?category=storage) provides integrations with different storage providers to provision databases and data stores directly from your Vercel dashboard.
 
 
 <!-- docsgraph:related -->
@@ -27,25 +30,24 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud?from=related) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
-- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel?from=related) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [Overview](https://vercel.com/docs/storage?from=related) — Store large files and global configuration with Vercel's storage products.
-- [Databases](https://v0.app/docs/databases?from=related) — Build full-stack applications with v0's database integrations.
-- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
-- [Marketplace Vercel API](https://vercel.com/docs/integrations/create-integration/marketplace-api/reference/vercel?from=related) — Learn about marketplace vercel api on Vercel.
-- [Install an Integration](https://vercel.com/docs/integrations/install-an-integration?from=related) — Learn how to pair Vercel's functionality with a third-party service to streamline observability, integrate with testing
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
+- [Introducing the Vercel Marketplace](https://vercel.com/blog/introducing-the-vercel-marketplace)
+- [Native Marketplace integrations now support custom environments](https://vercel.com/changelog/custom-environments-support-for-marketplace-integrations)
+- [Vercel Marketplace database browser now supports Redis](https://vercel.com/changelog/vercel-marketplace-database-browser-now-supports-redis)
+- [Astro on Vercel vs Webflow Cloud](https://vercel.com/kb/guide/astro-on-vercel-vs-webflow-cloud) — Compare running Astro on Vercel Functions with Fluid compute against Webflow Cloud on Cloudflare Workers. Learn how Astr
+- [How to deploy Medusa on Vercel](https://vercel.com/kb/guide/deploy-medusa-on-vercel) — Deploy a Medusa storefront on Vercel, including where the backend runs, which environment variables the current starter
+- [How Docker Compose concepts map to Vercel](https://vercel.com/kb/guide/docker-compose-concepts-on-vercel) — Translate your Docker Compose file to Vercel: Compose services become Vercel Services, networks become bindings, and vol
+- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
+- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
+- [Integrated billing for Supabase, Redis, and EdgeDB](https://vercel.com/changelog/integrated-billing-for-supabase-redis-and-edgedb)
+- [Introducing storage on Vercel](https://vercel.com/blog/vercel-storage)
+- [Query and manage Marketplace databases from the dashboard](https://vercel.com/changelog/query-and-manage-marketplace-databases-from-the-dashboard)
+- [Vercel Storage overview](https://vercel.com/docs/storage) — Store files with Vercel Blob, runtime configuration with Global Config, and application data with Marketplace databases.
 
 Full cross-link map for this page: [/docs/marketplace-storage.graph.md](/docs/marketplace-storage.graph.md)
 <!-- /docsgraph:related -->
 
-The [Vercel Marketplace](https://vercel.com/marketplace?category=storage) provides integrations with different storage providers to provision databases and data stores directly from your Vercel dashboard.
-
-- For Postgres, you can use providers like Neon, Supabase, or AWS Aurora Postgres.
-- For KV (key-value stores), you can use Upstash Redis.
+- For Postgres, you can use providers like Neon, Prisma Postgres, Supabase, or AWS Aurora Postgres.
+- For KV (key-value stores), you can use Redis or Upstash Redis.
 
 The integration automatically injects credentials into your projects as environment variables.
 
@@ -76,10 +78,10 @@ The command installs the integration if it isn't already on your team, provision
 To skip prompts in CI or scripted agent flows, pass options as flags:
 
 ```bash filename="terminal"
-vercel install neon --name my-database --plan free -e production -e preview
+vercel install neon --name my-database --billing-plan free -e production -e preview
 ```
 
-Run `vercel install <integration-name> --help` to see the available products, metadata keys, and billing plans for a specific integration. For the full reference, see [`vercel integration add`](/docs/cli/integration#vercel-integration-add).
+Run `vercel install <integration-name> --help` to see the available products, metadata keys, and billing plans for a specific integration. To choose a billing plan, pass its ID from that output to `--billing-plan`. For the full reference, see [`vercel integration add`](/docs/cli/integration#vercel-integration-add).
 
 ### From the dashboard
 
@@ -93,6 +95,52 @@ Once connected, the integration automatically adds environment variables to your
 
 For detailed steps, see [Add a Native Integration](/docs/integrations/install-an-integration/product-integration).
 
+## Use a Marketplace resource in a Custom Environment
+
+Vercel can scope a Native Marketplace resource's project environment variables to an exact Custom Environment. For example, a `staging` deployment can use a staging database without adding the database variables to Production, Preview, or Development in Project Settings.
+
+### Connect the resource
+
+1. Open the project in the Vercel dashboard.
+2. Select **Settings**, and then select [**Environments**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fenvironments\&title=Go+to+Environments+settings). Create the Custom Environment if the project does not have one.
+3. Open **Integrations**, select **Manage** for the integration, and open the resource.
+4. Select **Projects**, and then select **Connect Project**.
+5. Select the project. Under **Environments**, clear all selected built-in environments, including Production and Preview. Then select only the Custom Environment, such as `staging`. Select a built-in environment only when that environment must also use the resource.
+6. Select **Connect Project**.
+
+You can also connect a resource from the CLI. `vercel integration add` (also available as `vercel install`) and `vercel integration resource connect` accept a Custom Environment slug or stable ID. When you pass a slug, the CLI resolves it to the stable ID before it sends the connection request. `vercel integration add` resolves the environment against the linked project. `vercel integration resource connect` resolves the environment against the project argument, or the linked project if you omit the argument.
+
+```bash filename="terminal"
+# Provision a resource and connect it to staging in the linked project
+vercel integration add neon --environment staging
+
+# Connect an existing resource to staging in the linked project
+vercel integration resource connect my-database --environment staging
+```
+
+Repeat `--environment` to connect more environments. If you omit the option, the commands connect `production`, `preview`, and `development`. The default does not include Custom Environments.
+
+### Deploy and verify isolation
+
+1. Open **Project Settings**, and then select [**Environment Variables**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fenvironment-variables\&title=Go+to+Environment+Variables). Confirm that the integration variables have the exact Custom Environment scope.
+2. Deploy to the Custom Environment. For a Custom Environment with the `staging` slug, run `vercel deploy --environment=staging`.
+3. Verify that the deployment can connect to the resource. Do not print secret values.
+4. Create a deployment in an environment that you did not select. When no Preview Deployment Action fallback applies, confirm that the environment variables provided by the resource are not available.
+
+> **💡 Note:** A Preview Deployment Action can use a resource’s Preview connection if that
+> resource has no connection for the deployment’s Custom Environment. In that
+> case, the action can add the environment variables from the Preview
+> connection to the deployment even though the Custom Environment is not
+> selected on that connection.
+
+For a Custom Environment, Vercel first uses the provider's Preview secret value. If the provider did not set a Preview value, Vercel uses the default secret value.
+
+Existing deployments do not get new or changed variables. Create a new deployment after you connect a resource, change the environment scope, or rotate a secret.
+
+### Change or disconnect the scope
+
+Open the resource's **Projects** section to change the selected environments. Removing one environment keeps the other selected environments connected. Create a new deployment after each change.
+
 ### Managing storage integrations
 
 After installation, you can manage your storage resources from the Vercel dashboard:
@@ -101,21 +149,25 @@ After installation, you can manage your storage resources from the Vercel dashbo
 - **Monitor usage**: Track storage consumption and costs
 - **Update configuration**: Modify settings or upgrade plans
 - **Access provider dashboard**: Link directly to the provider's management interface
-- [**Browse and query your database**](#browsing-and-querying-your-database): For supported Postgres integrations, run queries, edit data, and inspect your schema directly from the dashboard
+- [**Browse and query your database**](#browsing-and-querying-your-database): For supported integrations, run queries or commands, view and edit data, and inspect your schema directly from the dashboard
 - **Transfer resources**: For supported integrations, [move a resource to a different team](/docs/integrations/install-an-integration/product-integration#transfer-a-resource-to-another-team)
 
 For more details, see [Manage Native Integrations](/docs/integrations/install-an-integration/product-integration#manage-native-integrations).
 
 ## Browsing and querying your database
 
-For supported Marketplace Postgres integrations, you can run SQL queries, view and edit data, and inspect your database schema directly from the Vercel dashboard. You no longer need external tools like `psql` or third-party database UIs.
+You can browse, edit, and manage your data directly from the Vercel dashboard, without external tools like `psql`, `redis-cli`, or third-party database UIs.
 
 This feature is available for the following integrations:
 
-- [AWS Aurora Postgres](/marketplace/aws/aws-apg)
-- [Neon](/marketplace/neon)
-- [Prisma Postgres](/marketplace/prisma)
-- [Supabase](/marketplace/supabase)
+- Postgres
+  - [AWS Aurora Postgres](/marketplace/aws/aws-apg)
+  - [Neon](/marketplace/neon)
+  - [Prisma Postgres](/marketplace/prisma)
+  - [Supabase](/marketplace/supabase)
+- Redis
+  - [Redis](/marketplace/redis)
+  - [Upstash for Redis](/marketplace/upstash)
 
 Support for more integrations will be added over time.
 
@@ -125,29 +177,42 @@ To access the database browser:
 
 1. Open your project in the Vercel dashboard
 2. Navigate to the **Storage** tab and select your database resource
-3. Go to the **Browser** section of the database page
+3. Go to the **Database** section of the database page
 
 You need **Owner** permissions to access the database browser.
 
+The tabs available in the database section depend on the type of database.
+
 ### Query editor
 
-The **Query** tab lets you run SQL queries and view results in a table. You can copy results as CSV, JSON, or Markdown for use in other tools.
+For Postgres integrations, the **Query** tab lets you run SQL queries and view results in a table. You can copy results as CSV, JSON, or Markdown for use in other tools.
 
 ### Data editor
 
-The **Data** tab displays your table data in a spreadsheet-like interface where you can:
+For Postgres integrations, the **Data Editor** tab displays your table data in a spreadsheet-like interface where you can:
 
-- Sort rows
-- Copy cell values
+- Sort and filter rows
+- Copy data as CSV, JSON, or Markdown
 - Edit data
-- Insert new rows
-- Delete rows
+- Insert and delete rows
 
 When you confirm your changes, the data editor applies them to the database as a single transaction.
 
 ### Schema viewer
 
-The **Schema** tab shows your tables and their relations in a visual graph layout. Use it to understand your database structure without writing queries.
+For Postgres integrations, the **Schema** tab shows your tables and their relations in a visual graph layout. Use it to understand your database structure without writing queries.
+
+### Redis CLI
+
+For Redis integrations, the **CLI** tab allows you to run Redis commands and inspect the results. Run multiple commands by separating them with newlines or semicolons, with support for `MULTI`/`EXEC` to run commands in a transaction.
+
+### Redis data browser
+
+For Redis integrations, the data **Browser** lets you:
+
+- List keys (optionally grouped by prefix), and filter by type and pattern
+- View values for String, JSON, Hash, List, Set, and Sorted set data types
+- Inspect metadata for a key, including type, TTL, encoding, and size
 
 ## Choosing a storage solution
 
@@ -166,7 +231,7 @@ Consider these factors when selecting a storage provider:
 - **Locate data close to your Functions:** Deploy databases in [regions](/docs/functions/configuring-functions/region) near your Functions to minimize latency.
 - **Use connection pooling:** In serverless environments, use [connection pooling](/kb/guide/connection-pooling-with-functions) (e.g., built-in pooling or PgBouncer) to manage database connections efficiently.
 - **Implement caching strategies:**
-  - [Data Cache](/docs/caching/runtime-cache/data-cache) to cache fetch responses and reduce load
+  - [Data Cache](/docs/runtime-cache/data-cache) to cache fetch responses and reduce load
   - [Global Config](/docs/global-config) for low-latency reads of config data
   - Redis for frequently accessed, periodically changing data
   - CDN caching with [cache headers](/docs/caching/cdn-cache) for static content
@@ -181,7 +246,22 @@ Consider these factors when selecting a storage provider:
 - [Environment Variables](/docs/environment-variables)
 - [Functions Regions](/docs/functions/configuring-functions/region)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

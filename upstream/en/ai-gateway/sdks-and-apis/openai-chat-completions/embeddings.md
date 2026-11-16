@@ -1,10 +1,10 @@
 ---
-title: Embeddings with the OpenAI-Compatible API
+title: OpenAI-Compatible Embeddings API with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/openai-chat-completions/embeddings
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/embeddings"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
   - /docs/ai-gateway/sdks-and-apis
@@ -12,9 +12,10 @@ related:
   - /docs/ai-gateway/modalities/embeddings
 summary: Generate vector embeddings with the OpenAI-compatible /embeddings endpoint through Vercel AI Gateway, including the dimensions parameter and response...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
-# Embeddings with the OpenAI-Compatible API
+# OpenAI-Compatible Embeddings API with AI Gateway
 
 Generate vector embeddings from input text using the OpenAI-compatible `/embeddings` endpoint, for semantic search, similarity matching, and retrieval-augmented generation (RAG).
 
@@ -24,12 +25,11 @@ Generate vector embeddings from input text using the OpenAI-compatible `/embeddi
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Embeddings](https://ai-sdk.dev/docs/ai-sdk-core/embeddings?from=related)
-- [OpenResponses API](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses?from=related) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/images?from=related) — Send images and PDF documents for analysis using the OpenAI Responses API through AI Gateway.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
-- [Images](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/images?from=related) — Send images and PDF documents for analysis using the OpenResponses API.
-- [OpenAI](https://vercel.com/docs/agent-resources/integrations-for-models/openai?from=related) — Integrate your Vercel project with OpenAI's powerful suite of models.
+- [OpenAI Responses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses) — Use the OpenAI Responses API with AI Gateway to generate text, call tools, stream tokens, and more across any supported
+- [AI Gateway OIDC Authentication](https://vercel.com/docs/ai-gateway/authentication-and-byok/oidc) — Authenticate AI Gateway requests from Vercel deployments with OIDC tokens. Configure the AI SDK or send bearer tokens di
+- [OpenAI Responses Images and PDFs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/images) — Send images and PDF documents for analysis using the OpenAI Responses API through AI Gateway.
+- [OpenResponses API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses) — Use the OpenResponses API specification with AI Gateway for a unified, provider-agnostic interface.
+- [Go with AI Gateway: OpenAI and Anthropic SDKs](https://vercel.com/docs/ai-gateway/sdks-and-apis/go) — Use AI Gateway from any Go application with the OpenAI or Anthropic Go SDKs, including model fallbacks, cost tracking, a
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/openai-chat-completions/embeddings.graph.md](/docs/ai-gateway/sdks-and-apis/openai-chat-completions/embeddings.graph.md)
 <!-- /docsgraph:related -->
@@ -43,18 +43,6 @@ POST /embeddings
 ```
 
 Example request
-
-#### cURL
-
-```bash filename="embeddings.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/embeddings" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "openai/text-embedding-3-small",
-    "input": "Sunny day at the beach"
-  }'
-```
 
 #### TypeScript
 
@@ -97,7 +85,21 @@ response = client.embeddings.create(
 print(response.data[0].embedding)
 ```
 
+#### cURL
+
+```bash filename="embeddings.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/embeddings" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/text-embedding-3-small",
+    "input": "Sunny day at the beach"
+  }'
+```
+
 Response format
+
+The following response truncates the embedding vector for readability:
 
 ```json
 {
@@ -106,8 +108,8 @@ Response format
     {
       "object": "embedding",
       "index": 0,
-      "embedding": [-0.0038, 0.021, ...]
-    },
+      "embedding": [-0.0038, 0.021]
+    }
   ],
   "model": "openai/text-embedding-3-small",
   "usage": {
@@ -116,7 +118,7 @@ Response format
   },
   "providerMetadata": {
     "gateway": {
-      "routing": { ... }, // Detailed routing info
+      "routing": {},
       "cost": "0.00000012"
     }
   }
@@ -126,19 +128,6 @@ Response format
 Dimensions parameter
 
 You can set the root-level `dimensions` field (from the [OpenAI Embeddings API spec](https://platform.openai.com/docs/api-reference/embeddings/create)) and the gateway will auto-map it to each provider's expected field; `providerOptions.[provider]` still passes through as-is and isn't required for `dimensions` to work.
-
-#### cURL
-
-```bash filename="embeddings-dimensions.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/embeddings" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "openai/text-embedding-3-small",
-    "input": "Sunny day at the beach",
-    "dimensions": 768
-  }'
-```
 
 #### TypeScript
 
@@ -175,7 +164,35 @@ response = client.embeddings.create(
 )
 ```
 
+#### cURL
+
+```bash filename="embeddings-dimensions.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/embeddings" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/text-embedding-3-small",
+    "input": "Sunny day at the beach",
+    "dimensions": 768
+  }'
+```
+
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

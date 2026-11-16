@@ -3,7 +3,7 @@ title: Encryption and TLS
 product: vercel
 url: /docs/cdn-security/encryption
 canonical_url: "https://vercel.com/docs/cdn-security/encryption"
-last_updated: 2026-07-02
+last_updated: 2026-09-15
 type: conceptual
 prerequisites:
   - /docs/cdn-security
@@ -11,6 +11,7 @@ related:
   - /docs/caching/cache-control-headers
 summary: Learn how Vercel encrypts data in transit and at rest.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Encryption and TLS
@@ -23,11 +24,15 @@ Every **deployment** on Vercel is served over an HTTPS connection. Vercel automa
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Working with SSL](https://vercel.com/docs/domains/working-with-ssl?from=related) — Learn how Vercel uses SSL certification to keep your site secure.
-- [Overview](https://vercel.com/docs/security?from=related) — Vercel provides built-in and customizable features to ensure that your site is secure.
-- [How Vercel CDN works](https://vercel.com/docs/how-vercel-cdn-works?from=related) — Learn how Vercel's CDN processes requests through routing, caching, and compute layers to deliver your content with low
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Overview](https://vercel.com/docs/cdn?from=related) — Vercel's CDN is a globally distributed platform that handles routing, caching, security, and compression for every deplo
+- [Deprecating the DHE cipher suite for TLS connections](https://vercel.com/changelog/deprecating-the-dhe-cipher-suite-for-tls-connections)
+- [Encrypted Client Hello (ECH) is now supported on Vercel CDN](https://vercel.com/changelog/encrypted-client-hello-now-supported-on-vercel-cdn)
+- [How to set up local HTTPS for Next.js and other dev servers](https://vercel.com/kb/guide/access-nextjs-localhost-https-certificate-self-signed) — Learn when you need local HTTPS, how to enable it with next dev --experimental-https, and how to clear certificate warni
+- [Automatic SSL with Vercel and Let's Encrypt](https://vercel.com/blog/automatic-ssl-with-vercel-lets-encrypt)
+- [Working with SSL Certificates](https://vercel.com/docs/domains/working-with-ssl) — Learn how Vercel uses SSL certification to keep your site secure.
+- [Vercel security overview](https://vercel.com/docs/security) — Vercel provides built-in and customizable features to ensure that your site is secure.
+- [Security & Compliance Measures](https://vercel.com/docs/security/compliance) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
+- [How Vercel CDN Works](https://vercel.com/docs/how-vercel-cdn-works) — Learn how Vercel's CDN processes requests through routing, caching, and compute layers to deliver your content with low
+- [How requests flow through Vercel](https://vercel.com/docs/fundamentals/infrastructure) — Learn how Vercel routes, secures, and serves requests from your users to your application.
 
 Full cross-link map for this page: [/docs/cdn-security/encryption.graph.md](/docs/cdn-security/encryption.graph.md)
 <!-- /docsgraph:related -->
@@ -35,7 +40,7 @@ Full cross-link map for this page: [/docs/cdn-security/encryption.graph.md](/doc
 The CDN automatically forwards any HTTP requests to your **deployment** to HTTPS using the `308` status code:
 
 ```bash
-HTTP/1.1 308 Moved Permanently
+HTTP/1.1 308 Permanent Redirect
 Content-Type: text/plain
 Location: https://<your-deployment-host>
 ```
@@ -53,7 +58,7 @@ HTTPS redirection is an industry standard and can't be disabled. This ensures th
 
 ## TLS resumption
 
-​Vercel supports both Session Identifiers and Session Tickets for [TLS session resumption](https://hpbn.co/transport-layer-security-tls/#tls-session-resumption). This improves Time to First Byte (TTFB) for returning visitors.
+​Vercel supports Session Tickets for [TLS session resumption](https://hpbn.co/transport-layer-security-tls/#tls-session-resumption). This improves Time to First Byte (TTFB) for returning visitors.
 
 ## OCSP stapling
 
@@ -123,7 +128,7 @@ You can set the `max-age` parameter to a different value. It controls how long t
 
 ## How Vercel handles certificates
 
-Vercel uses a wildcard certificate issued for `.vercel.app` to handle all deployment URLs. Vercel generates these certificates through [LetsEncrypt](https://letsencrypt.org/) and keeps them updated automatically.
+Vercel uses a wildcard certificate issued for `.vercel.app` to handle all deployment URLs. Vercel generates these certificates through [Let's Encrypt](https://letsencrypt.org/) and keeps them updated automatically.
 
 When you generate custom certificates with `vercel certs issue`, Vercel stores the keys in the database and [encrypts them at rest](https://en.wikipedia.org/wiki/Data_at_rest#Encryption) within the CDN.
 
@@ -131,9 +136,24 @@ When a hostname is requested, the CDN reads the certificate and key from the dat
 
 ## Full specification
 
-For a complete breakdown, see the [SSL Labs report for vercel.com](https://www.ssllabs.com/ssltest/analyze.html?d=vercel.com). You can select any IP address — the results are the same for all.
+For a complete breakdown, see the [SSL Labs report for vercel.com](https://www.ssllabs.com/ssltest/analyze.html?d=vercel.com). You can select any IP address. The results are the same for all.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

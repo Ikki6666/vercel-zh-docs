@@ -3,7 +3,7 @@ title: Using Web Analytics
 product: vercel
 url: /docs/analytics/using-web-analytics
 canonical_url: "https://vercel.com/docs/analytics/using-web-analytics"
-last_updated: 2026-06-26
+last_updated: 2026-09-16
 type: how-to
 prerequisites:
   - /docs/analytics
@@ -12,8 +12,10 @@ related:
   - /docs/analytics/accessing-metrics-with-vercel-cli
   - /docs/analytics/filtering
   - /docs/analytics/limits-and-pricing
+  - /docs/deployments/environments
 summary: "Learn how to use Vercel's Web Analytics to understand how visitors are using your website."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Using Web Analytics
@@ -24,24 +26,26 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 > CLI](/docs/analytics/accessing-metrics-with-vercel-cli) to query production
 > metrics, filter events, and compare projects from your terminal.
 
+## Accessing Web Analytics
+
+To access Web Analytics:
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Getting Started](https://vercel.com/docs/analytics/quickstart?from=related) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
-- [Troubleshooting](https://vercel.com/docs/analytics/troubleshooting?from=related) — Learn how to troubleshoot common issues with Vercel Web Analytics.
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Privacy](https://vercel.com/docs/analytics/privacy-policy?from=related) — Learn how Vercel supports privacy and data compliance standards with Vercel Web Analytics.
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
+- [Vercel Web Analytics is now generally available](https://vercel.com/blog/vercel-web-analytics-is-now-generally-available)
+- [Web Analytics is now generally available](https://vercel.com/changelog/web-analytics-is-now-generally-available)
+- [Getting started with Vercel Web Analytics](https://vercel.com/docs/analytics/quickstart) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
+- [get_web_analytics](https://vercel.com/docs/agent-resources/vercel-mcp/tools/web-analytics/get_web_analytics) — Use get_web_analytics with Vercel MCP.
+- [Vercel Web Analytics Troubleshooting](https://vercel.com/docs/analytics/troubleshooting) — Learn how to troubleshoot common issues with Vercel Web Analytics.
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
+- [Manage and optimize usage for Observability](https://vercel.com/docs/manage-and-optimize-observability) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
 
 Full cross-link map for this page: [/docs/analytics/using-web-analytics.graph.md](/docs/analytics/using-web-analytics.graph.md)
 <!-- /docsgraph:related -->
-
-## Accessing Web Analytics
-
-To access Web Analytics:
 
 1. Select a project from your [dashboard](/dashboard) and open [**Analytics**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fanalytics\&title=Go+to+Analytics) in the sidebar.
 2. Select the [timeframe](/docs/analytics/using-web-analytics#specifying-a-timeframe) and [environment](/docs/analytics/using-web-analytics#viewing-environment-specific-data) you want to view data for.
@@ -61,7 +65,7 @@ To access Web Analytics:
    - **Devices**: Distinction between mobile, tablet, and desktop devices.
    - **Operating System**: Your visitors' operating systems.
 
-![Image](https://vercel.com/front/docs/observability/page-panel-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/observability/page-panel-light.png)
 
 ## Specifying a timeframe
 
@@ -71,7 +75,10 @@ To access Web Analytics:
 ## Viewing environment-specific data
 
 1. Select a project from your [dashboard](/dashboard) and open [**Analytics**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fanalytics\&title=Go+to+Analytics) in the sidebar.
-2. Select the environments dropdown in the top-right of the page to choose **Production**, **Preview**, or **All Environments**. Production is selected by default.
+2. Select the environments dropdown in the top-right of the page to choose **Production**, **Preview**, **All Environments**, or any of your project's [custom environments](/docs/deployments/environments#custom-environments), such as `staging`. Production is selected by default.
+
+Custom environments are available on the Pro and Enterprise plans. Data that
+arrives without an environment is attributed to **Production**.
 
 ## Exporting data as CSV
 
@@ -86,12 +93,25 @@ The export will include up to 250 entries from the panel, not just the top entri
 ## Disabling Web Analytics
 
 1. Select a project from your [dashboard](/dashboard) and open [**Analytics**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fanalytics\&title=Go+to+Analytics) in the sidebar.
-2. Remove the `@vercel/analytics` package from your codebase and dependencies in order to prevent your app from sending analytics events to Vercel.
-3. If events have been collected, click on the ellipsis on the top-right of the **Web Analytics** page and select **Disable Web Analytics**. If no data has been collected yet then you will see an **Awaiting Data** popup. From here you can click the **Disable Web Analytics** button:
+2. Remove the `@vercel/analytics` package from your codebase and dependencies to prevent your app from sending analytics events to Vercel.
+3. Click on the ellipsis on the top-right of the **Web Analytics** page and select **Disable Web Analytics**.
 
-![Image](`/docs-assets/static/docs/concepts/web-analytics/getting-started-light.png`)
+## Search the docs from your terminal
 
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: Manage Billing and Refunds for Integrations
 product: vercel
 url: /docs/integrations/create-integration/billing
 canonical_url: "https://vercel.com/docs/integrations/create-integration/billing"
-last_updated: 2026-05-12
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/integrations/create-integration
@@ -16,6 +16,7 @@ related:
   - /docs/integrations/create-integration/marketplace-api/reference/vercel/update-invoice
 summary: Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Manage Billing and Refunds for Integrations
@@ -28,11 +29,11 @@ When a Vercel user installs your native integration, you manage billing through 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice?from=related) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
-- [Submit Invoice](https://vercel.com/docs/rest-api/marketplace/submit-invoice?from=related)
-- [Billing FAQ](https://vercel.com/docs/plans/enterprise/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Native integration concepts](https://vercel.com/docs/integrations/create-integration/native-integration?from=related) — As an integration provider, understanding how your service interacts with Vercel's platform will help you create and opt
+- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
+- [Submit Invoice](https://vercel.com/docs/rest-api/marketplace/submit-invoice) — POST /v1/installations/{integrationConfigurationId}/billing/invoices — This endpoint allows the partner to submit an inv
+- [Get Invoice](https://vercel.com/docs/rest-api/marketplace/get-invoice) — GET /v1/installations/{integrationConfigurationId}/billing/invoices/{invoiceId} — Get Invoice details and status for a g
+- [Billing FAQ for Enterprise Plan](https://vercel.com/docs/plans/enterprise/billing) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
+- [Submit Billing Data](https://vercel.com/docs/rest-api/marketplace/submit-billing-data) — POST /v1/installations/{integrationConfigurationId}/billing — Sends the billing and usage data. The partner should do th
 
 Full cross-link map for this page: [/docs/integrations/create-integration/billing.graph.md](/docs/integrations/create-integration/billing.graph.md)
 <!-- /docsgraph:related -->
@@ -81,6 +82,30 @@ Vercel users can configure a different payment method for each integration insta
 
 Invoices move through several states as they're processed:
 
+```mermaid
+flowchart TD
+    pending["pending"]
+    scheduled["scheduled"]
+    invoiced["invoiced"]
+    paid["paid"]
+    notpaid["notpaid"]
+    overdue["overdue"]
+    refund_requested["refund_requested"]
+    refunded["refunded"]
+    pending -->|"Queued for<br>processing"| scheduled
+    scheduled -->|"Processing<br>complete"| invoiced
+    invoiced -->|"Payment<br>successful"| paid
+    invoiced -->|"Payment<br>failed"| notpaid
+    invoiced -->|"Payment<br>period<br>elapsed"| overdue
+    paid -->|"Refund<br>initiated"| refund_requested
+    notpaid -->|"Payment<br>successful"| paid
+    notpaid -->|"Payment<br>period<br>elapsed"| overdue
+    notpaid -->|"Refund<br>initiated"| refund_requested
+    overdue -->|"Payment<br>successful"| paid
+    overdue -->|"Refund<br>initiated"| refund_requested
+    refund_requested -->|"Refund<br>complete"| refunded
+```
+
 ### Invoice states
 
 | State         | Description                                                                                                       |
@@ -91,6 +116,7 @@ Invoices move through several states as they're processed:
 | **paid**      | Vercel received payment successfully.                                                                             |
 | **notpaid**   | Payment failed on first attempt. Vercel continues retrying up to 9 times while the invoice remains in this state. |
 | **overdue**   | The 15 day payment period has elapsed. Automatic payment attempts will not continue. A customer may still pay.    |
+| **refund\_requested** | Vercel received a refund request for the invoice and has not completed the refund yet. |
 | **refunded**  | Vercel fully or partially refunded the invoice.                                                                   |
 
 > **💡 Note:** When an invoice enters `notpaid` status, Vercel does not automatically
@@ -286,7 +312,7 @@ When you request a refund, Vercel handles it as follows:
 3. If the payment method isn't working, Vercel creates a support ticket
 4. If anything goes wrong with the refund attempt, Vercel creates a support ticket
 
-For invoices in `notpaid` or `overdue` status, a refund request succeeds and moves the status to `refund_requested`, then to `refunded` once the funds are returned. Only invoices already in `refund_requested` status are blocked from additional refund requests.
+For invoices in `notpaid` or `overdue` status, a refund request succeeds and moves the status to `refund_requested`, then to `refunded` once the funds are returned. You can request more than one refund for the same invoice. Vercel rejects a refund request when the sum of all refunds for the invoice is more than the invoice total.
 
 ### Refunds after installation deletion
 
@@ -308,7 +334,22 @@ Only Vercel users with **Owner** or **Billing** roles can view invoices for your
 2. Selecting **Manage** next to your integration
 3. Navigating to the **Invoices** section
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

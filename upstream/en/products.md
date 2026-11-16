@@ -3,7 +3,7 @@ title: Products
 product: vercel
 url: /docs/products
 canonical_url: "https://vercel.com/docs/products"
-last_updated: 2026-07-29
+last_updated: 2026-09-09
 type: conceptual
 prerequisites:
   []
@@ -13,8 +13,9 @@ related:
   - /docs/sandbox
   - /docs/container-registry
   - /docs/workflows
-summary: Explore all Vercel products and capabilities.
+summary: Browse Vercel products for building, deploying, securing, observing, and scaling web applications.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Products
@@ -23,7 +24,7 @@ Browse every Vercel product. Build with AI, deploy and scale your apps, and oper
 
 ## Build with AI
 
-- [AI Gateway](/docs/ai-gateway): One endpoint, all models
+- [AI Gateway](/docs/ai-gateway): Access 400+ models for text, image, and video generation, realtime voice, speech to text, text to speech, embeddings, and reranking through one API. Use provider routing and automatic fallbacks, built-in observability and cost tracking, spending controls, coding agent support, and no markup on token prices.
 - [AI SDK](/docs/ai-sdk): AI toolkit
 - [Sandbox](/docs/sandbox): Run AI code safely
 - [Container Registry](/docs/container-registry): Store OCI images
@@ -38,8 +39,8 @@ Browse every Vercel product. Build with AI, deploy and scale your apps, and oper
 - [Deployments](/docs/deployments): Ship every git push
 - [CLI](/docs/cli): Command-line tools
 - [Functions](/docs/functions): Serverless compute
-- [Delivery Network](/docs/cdn): Global edge cache
-- [Storage](/docs/storage): Postgres, Blob, KV
+- [Delivery Network](/docs/cdn): Global CDN cache
+- [Storage](/docs/storage): Blob, Global Config, Marketplace storage
 - [Integrations](/docs/integrations): Connect 100+ services
 - [Microfrontends](/docs/microfrontends): Compose apps
 - [Domains](/docs/domains): Manage domains
@@ -55,6 +56,22 @@ Browse every Vercel product. Build with AI, deploy and scale your apps, and oper
 - [Deployment Protection](/docs/deployment-protection): Guard deploys
 - [Compliance](/docs/security/compliance): SOC 2, HIPAA, ISO
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
+
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

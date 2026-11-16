@@ -3,7 +3,7 @@ title: Vercel KMS Quickstart
 product: vercel
 url: /docs/kms/quickstart
 canonical_url: "https://vercel.com/docs/kms/quickstart"
-last_updated: 2018-10-20
+last_updated: 2026-08-18
 type: tutorial
 prerequisites:
   - /docs/kms
@@ -15,6 +15,7 @@ related:
   - /docs/kms/concepts/key-rotation
 summary: Create a KMS issuer, sign a JWT from a Vercel Function with @vercel/kms, and verify it against the published JWKS.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Vercel KMS Quickstart
@@ -27,11 +28,12 @@ Sign a JWT from a Vercel Function with a Vercel-managed key, then verify it agai
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Concepts](https://vercel.com/docs/kms/concepts?from=related) — Understand how Vercel KMS rotates signing keys and how it authorizes signing, management, and verification.
-- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token?from=related)
-- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key?from=related)
-- [Pricing and Limits](https://vercel.com/docs/kms/pricing?from=related) — How Vercel KMS is billed per signing operation, the platform limits that apply, and how to stop being billed.
-- [Activate a signing key](https://vercel.com/docs/rest-api/kms/activate-a-signing-key?from=related)
+- [Sign JWTs from your Functions without managing private keys](https://vercel.com/changelog/sign-jwts-from-your-functions-without-managing-private-keys)
+- [Vercel KMS Concepts](https://vercel.com/docs/kms/concepts) — Understand how Vercel KMS rotates signing keys and how it authorizes signing, management, and verification.
+- [Sign a token](https://vercel.com/docs/rest-api/kms/sign-a-token) — POST /v1/kms/issuers/{issuerId}/sign/token — Sign a JWT with a KMS issuer's active signing key. Authenticate the request
+- [Create a signing key](https://vercel.com/docs/rest-api/kms/create-a-signing-key) — POST /v1/kms/issuers/{issuerId}/keys — Create a new signing key for a KMS issuer. Depending on the activation mode, the
+- [Sign a message](https://vercel.com/docs/rest-api/kms/sign-a-message) — POST /v1/kms/issuers/{issuerId}/sign/message — Sign a raw message with a KMS issuer's active signing key. Authenticate t
+- [Activate a signing key](https://vercel.com/docs/rest-api/kms/activate-a-signing-key) — POST /v1/kms/issuers/{issuerId}/keys/{keyId}/activate — Activate a pending signing key so the issuer starts signing with
 
 Full cross-link map for this page: [/docs/kms/quickstart.graph.md](/docs/kms/quickstart.graph.md)
 <!-- /docsgraph:related -->
@@ -55,16 +57,16 @@ Full cross-link map for this page: [/docs/kms/quickstart.graph.md](/docs/kms/qui
   ```
 
 - #### Sign a token from a Vercel Function
-  Call `signToken` inside a route handler. Inside a Vercel Function, the deployment's [OIDC token](/docs/oidc) authorizes the request automatically, so you pass no credentials:
-  > **⚠️ Warning:** `signToken` resolves the function's OIDC token at call time, which requires an
+  Call `signJWT` inside a route handler. Inside a Vercel Function, the deployment's [OIDC token](/docs/oidc) authorizes the request automatically, so you pass no credentials:
+  > **⚠️ Warning:** `signJWT` resolves the function's OIDC token at call time, which requires an
   > active request context. Call it inside a [route
   > handler](https://nextjs.org/docs/app/getting-started/route-handlers) or Server
   > Component, not at the module top level.
   ```ts filename="app/api/sign/route.ts"
-  import { signToken } from '@vercel/kms';
+  import { signJWT } from '@vercel/kms';
 
   export async function GET() {
-    const token = await signToken({
+    const { token } = await signJWT({
       issuerId: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
       claims: { sub: 'user_123', scope: 'read:data' },
       ttl: 300, // seconds
@@ -92,7 +94,22 @@ Full cross-link map for this page: [/docs/kms/quickstart.graph.md](/docs/kms/qui
 - [Authentication](/docs/kms/concepts/authentication): how signing and management requests are authorized.
 - [Key rotation](/docs/kms/concepts/key-rotation): rotate signing keys without breaking verification.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

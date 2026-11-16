@@ -3,7 +3,7 @@ title: Git Configuration
 product: vercel
 url: /docs/project-configuration/git-configuration
 canonical_url: "https://vercel.com/docs/project-configuration/git-configuration"
-last_updated: 2025-12-19
+last_updated: 2026-08-25
 type: reference
 prerequisites:
   - /docs/project-configuration
@@ -14,6 +14,7 @@ related:
   - /docs/deployments/promoting-a-deployment
 summary: Learn how to configure Git for your project through vercel.json or vercel.ts.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Git Configuration
@@ -26,12 +27,16 @@ The following configuration options can be used through a `vercel.json` file via
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel?from=related) — Learn how to deploy based on tags/releases on Vercel.
-- [Git Settings](https://vercel.com/docs/project-configuration/git-settings?from=related) — Use the project settings to manage the Git connection, enable Git LFS, and create deploy hooks.
-- [Git Integrations](https://vercel.com/docs/git?from=related) — Vercel allows for automatic deployments on every branch push and merges onto the production branch of your GitHub, GitLa
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [Bitbucket](https://vercel.com/docs/git/vercel-for-bitbucket?from=related) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
-- [System Environment Variables](https://vercel.com/docs/environment-variables/system-environment-variables?from=related) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [How to reduce build costs on Vercel](https://vercel.com/kb/guide/how-reduce-build-costs) — Find which projects drive your Build CPU Minutes, then lower them by skipping unneeded builds, shortening each build, an
+- [Migrate from Railway to Vercel](https://vercel.com/kb/guide/migrate-railway-to-vercel) — Migrate an app from Railway to Vercel. Choose a deployment path, configure services, plan for stored data, and test befo
+- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel) — Learn how to deploy based on tags/releases on Vercel.
+- [Granular branch matching for Git configuration in vercel.json](https://vercel.com/changelog/granular-branch-matching-for-git-configuration-in-vercel-json)
+- [Deploying Git Repositories with Vercel](https://vercel.com/docs/git) — Vercel automatically deploys supported Git repositories on every branch push and when changes merge into the production
+- [Deploying GitLab Projects with Vercel](https://vercel.com/docs/git/vercel-for-gitlab) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
+- [Git settings](https://vercel.com/docs/project-configuration/git-settings) — Use the project settings to manage the Git connection, enable Git LFS, and create deploy hooks.
+- [System environment variables](https://vercel.com/docs/environment-variables/system-environment-variables) — System environment variables are automatically populated by Vercel, such as the URL of the deployment or the name of the
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
 
 Full cross-link map for this page: [/docs/project-configuration/git-configuration.graph.md](/docs/project-configuration/git-configuration.graph.md)
 <!-- /docsgraph:related -->
@@ -44,7 +49,7 @@ Full cross-link map for this page: [/docs/project-configuration/git-configuratio
 
 Specify branches that should not trigger a deployment upon commits. By default, any unspecified branch is set to `true`.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -57,7 +62,7 @@ Specify branches that should not trigger a deployment upon commits. By default, 
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -77,7 +82,7 @@ Use [minimatch syntax](https://github.com/isaacs/minimatch) to define behavior f
 
 The example below prevents automated deployments for any branch that starts with `internal-`.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -90,7 +95,7 @@ The example below prevents automated deployments for any branch that starts with
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -108,7 +113,7 @@ export const config: VercelConfig = {
 
 If a branch matches multiple rules and at least one rule is `true`, a deployment will occur.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -122,7 +127,7 @@ If a branch matches multiple rules and at least one rule is `true`, a deployment
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -143,7 +148,7 @@ A branch named `experiment-my-branch-dev` will create a deployment.
 
 To turn off automatic deployments for all branches, set the property value to `false`.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -154,7 +159,7 @@ To turn off automatic deployments for all branches, set the property value to `f
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -176,7 +181,7 @@ When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will creat
 > build](/docs/deployments/promoting-a-deployment#staging-and-promoting-a-production-deployment)
 > workflow instead of this setting.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -187,7 +192,7 @@ When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will creat
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -205,7 +210,7 @@ export const config: VercelConfig = {
 
 When set to false, [Vercel for GitHub](/docs/git/vercel-for-github) will always build pushes in sequence without cancelling a build for the most recent commit.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -216,7 +221,7 @@ When set to false, [Vercel for GitHub](/docs/git/vercel-for-github) will always 
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -238,7 +243,7 @@ The `github.silent` property has been deprecated in favor of the new settings in
 
 When set to `true`, [Vercel for GitHub](/docs/git/vercel-for-github) will stop commenting on pull requests and commits.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -249,7 +254,7 @@ When set to `true`, [Vercel for GitHub](/docs/git/vercel-for-github) will stop c
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -269,7 +274,7 @@ The `github.enabled` property has been deprecated in favor of [git.deploymentEna
 
 When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will not deploy the given project regardless of the GitHub app being installed.
 
-#### \['vercel.json'
+#### vercel.json
 
 ```json filename="vercel.json"
 {
@@ -280,7 +285,7 @@ When set to `false`, [Vercel for GitHub](/docs/git/vercel-for-github) will not d
 }
 ```
 
-#### 'vercel.ts']
+#### vercel.ts
 
 ```typescript filename="vercel.ts"
 import type { VercelConfig } from '@vercel/config/v1';
@@ -292,7 +297,22 @@ export const config: VercelConfig = {
 };
 ```
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

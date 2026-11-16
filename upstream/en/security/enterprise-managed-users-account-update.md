@@ -3,7 +3,7 @@ title: Transition your Hobby team after EMU enrollment
 product: vercel
 url: /docs/security/enterprise-managed-users-account-update
 canonical_url: "https://vercel.com/docs/security/enterprise-managed-users-account-update"
-last_updated: 2026-07-16
+last_updated: 2026-08-20
 type: how-to
 prerequisites:
   - /docs/security
@@ -14,6 +14,7 @@ related:
   - /docs/directory-sync
 summary: Explains the account update screen EMU members see at SSO sign-in and how to complete it.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Transition your Hobby team after EMU enrollment
@@ -26,20 +27,17 @@ Enabling [Enterprise Managed Users](/docs/security/enterprise-managed-users) (EM
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Teams](https://v0.app/docs/teams?from=related) — Collaborate with your team on projects with shared resources.
-- [Enterprise](https://v0.app/docs/enterprise?from=related) — Learn how to manage v0 seats, access, and more in your Vercel Enterprise account.
-- [Account](https://v0.app/docs/account?from=related) — Manage your account and billing information.
-- [How do I transfer ownership of a Vercel team?](https://vercel.com/kb/guide/how-do-i-transfer-ownership-of-a-vercel-team?from=related) — Learn how to transfer ownership of a Vercel team, including the exact dashboard steps to promote a new Owner and remove
-- [Account Management](https://vercel.com/docs/accounts?from=related) — Learn how to manage your Vercel account and team members.
-- [Transferring a project](https://vercel.com/docs/projects/transferring-projects?from=related) — Learn how to transfer a project between Vercel teams.
-- [Manage from Dashboard](https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard?from=related) — Learn how to manage Sign in with Vercel from the Dashboard
-- [Global Configs & Dashboard](https://vercel.com/docs/global-config/global-config-dashboard?from=related) — Learn how to create, view and update your Global Configs and the data inside them in your Vercel Dashboard at the Hobby
-- [Managing Team Members](https://vercel.com/docs/rbac/managing-team-members?from=related) — Learn how to manage team members on Vercel, and how to assign roles to each member with role-based access control \\(RBAC
+- [Enterprise Managed Users is now generally available](https://vercel.com/changelog/enterprise-managed-users)
+- [Account Management](https://vercel.com/docs/accounts) — Learn how to manage your Vercel account and team members.
+- [Manage Sign in with Vercel from the Dashboard](https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard) — Learn how to manage Sign in with Vercel from the Dashboard
+- [Managing Team Members](https://vercel.com/docs/rbac/managing-team-members) — Learn how to manage team members on Vercel, and how to assign roles to each member with role-based access control \\(RBAC
+- [Access tokens](https://vercel.com/docs/accounts/access-tokens) — Create and scope Vercel access tokens to your full account, a team, or a single project, then use them to authenticate A
+- [Transferring a project](https://vercel.com/docs/projects/transferring-projects) — Learn how to transfer a project between Vercel teams.
 
 Full cross-link map for this page: [/docs/security/enterprise-managed-users-account-update.graph.md](/docs/security/enterprise-managed-users-account-update.graph.md)
 <!-- /docsgraph:related -->
 
-> **🔒 Permissions Required**: Hobby team transition
+> Hobby team transition is available in Beta on Enterprise plans upon request from your account team.
 
 ## Who sees the account update screen
 
@@ -51,7 +49,7 @@ You see the account update screen only if your account has personal content or a
 
 The flow starts with an intro screen, then asks you to make one choice about your existing personal account: keep it on a personal email, or delete it. You can also transfer work projects to your enterprise team first.
 
-![Image](https://vercel.com/docs-assets/static/docs/enterprise-managed-users/emu-account-update-intro-light.png?v=3)
+![The account update intro screen.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/enterprise-managed-users/emu-account-update-intro-light.png?v=3)
 
 The first screen is titled "Your team is now Enterprise Managed" (or "Your teams are now Enterprise Managed"). It tells you:
 
@@ -67,7 +65,7 @@ The Manage Account screen lists the projects on your account and asks you to cho
 
 Before you choose, you can transfer work projects to your enterprise team. Transfer works with either option.
 
-![Image](https://vercel.com/docs-assets/static/docs/enterprise-managed-users/emu-account-update-manage-light.png?v=3)
+![The Manage Account screen.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/enterprise-managed-users/emu-account-update-manage-light.png?v=3)
 
 ### Transfer work projects first (optional)
 
@@ -170,7 +168,22 @@ If a partner returns an error because your old identity is still linked under th
 - [SAML SSO](/docs/saml)
 - [Directory Sync](/docs/directory-sync)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

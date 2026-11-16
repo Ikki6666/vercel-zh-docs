@@ -3,20 +3,28 @@ title: Speed Insights Metrics
 product: vercel
 url: /docs/speed-insights/metrics
 canonical_url: "https://vercel.com/docs/speed-insights/metrics"
-last_updated: 2026-02-18
+last_updated: 2026-09-01
 type: conceptual
 prerequisites:
   - /docs/speed-insights
 related:
+  - /docs/speed-insights/limits-and-pricing
   - /docs/speed-insights/migrating-from-legacy
   - /docs/speed-insights/using-speed-insights
 summary: Learn what each performance metric on Speed Insights means and how the scores are calculated.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Speed Insights Metrics
 
+> **💡 Note:** [Speed Insights Plus](/docs/speed-insights/limits-and-pricing) is required to see detailed breakdowns for all Core Web Vitals.
+
 ## Real Experience Score (RES)
+
+### Real user monitoring
+
+While many performance measurement tools, like [Lighthouse](https://web.dev/measure/), estimate user experience based on lab simulations, Vercel's Real Experience Score (RES) uses real data points collected from your users' devices.
 
 
 <!-- docsgraph:related -->
@@ -24,30 +32,27 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Improve Cumulative Layout Shift \\(CLS\\) on Vercel](https://vercel.com/kb/guide/cls-on-vercel?from=related) — Read, diagnose, and fix Cumulative Layout Shift on Vercel using Speed Insights and Next.js best practices.
-- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime?from=related) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
-- [How to improve Core Web Vitals](https://vercel.com/kb/guide/how-to-improve-core-web-vitals?from=related) — Improve Core Web Vitals \\(INP, LCP, CLS\\) with metric-specific fixes, field-data measurement, and Next.js/Vercel perform
-- [Why site performance matters](https://vercel.com/kb/guide/why-site-performance-matters?from=related) — How site speed, Core Web Vitals, and SEO combine to drive user retention, conversion rates, and revenue growth.
-- [First Input Delay \\(FID\\) vs. Interaction to Next Paint \\(INP\\)](https://vercel.com/kb/guide/first-input-delay-vs-interaction-to-next-paint?from=related) — Learn about the differences between FID and INP and how to optimize your website's INP score.
-- [Analytics](https://nextjs.org/docs/app/guides/analytics?from=related) — Measure and track page performance using Next.js Speed Insights
-- [Using with CLI](https://vercel.com/docs/speed-insights/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Speed Insights metrics from your terminal.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
-- [Checks Reference](https://vercel.com/docs/checks/creating-checks?from=related) — Learn how to create your own Checks with Vercel Integrations. You can build your own Integration in order to register an
-- [Astro](https://vercel.com/docs/frameworks/frontend/astro?from=related) — Learn how to use Vercel's features with Astro
-- [Create React App](https://vercel.com/docs/frameworks/frontend/create-react-app?from=related) — Learn how to use Vercel's features with Create React App
+- [How Core Web Vitals affect SEO](https://vercel.com/blog/how-core-web-vitals-affect-seo)
+- [Speed Insights deprecates First Input Delay on November 1st](https://vercel.com/changelog/speed-insights-deprecates-first-input-delay-on-november-first)
+- [Improve Cumulative Layout Shift \\(CLS\\) on Vercel](https://vercel.com/kb/guide/cls-on-vercel) — Read, diagnose, and fix Cumulative Layout Shift on Vercel using Speed Insights and Next.js best practices.
+- [A/B testing on ecommerce storefronts without hurting Core Web Vitals](https://vercel.com/kb/guide/ecommerce-ab-testing-core-web-vitals) — Client-side A/B tools can worsen LCP and CLS on the pages you're testing. Run ecommerce A/B tests at the edge with Routi
+- [How to handle order-ahead traffic spikes on Vercel](https://vercel.com/kb/guide/handle-order-ahead-traffic-spikes-on-vercel) — Order-ahead traffic spikes hit the same routes every lunch hour. Learn how to scale, cache, queue, and test a restaurant
+- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
+- [Latency numbers every frontend developer should know](https://vercel.com/blog/latency-numbers-every-web-developer-should-know)
+- [How Core Web Vitals Will Impact Google Rankings in 2021](https://vercel.com/blog/core-web-vitals)
+- [Why site performance matters](https://vercel.com/kb/guide/why-site-performance-matters) — How site speed, Core Web Vitals, and SEO combine to drive user retention, conversion rates, and revenue growth.
+- [First Input Delay (FID) vs. Interaction to Next Paint (INP)](https://vercel.com/blog/first-input-delay-vs-interaction-to-next-paint)
+- [Improved Speed Insights experience](https://vercel.com/changelog/improved-speed-insights-experience)
+- [Query Speed Insights from the Vercel CLI](https://vercel.com/changelog/query-speed-insights-from-the-vercel-cli)
 
 Full cross-link map for this page: [/docs/speed-insights/metrics.graph.md](/docs/speed-insights/metrics.graph.md)
 <!-- /docsgraph:related -->
-
-### Real user monitoring
-
-While many performance measurement tools, like [Lighthouse](https://web.dev/measure/), estimate user experience based on lab simulations, Vercel's Real Experience Score (RES) uses real data points collected from your users' devices.
 
 As a result, RES shows how real users experience your application. This real-time data helps you understand your application's performance and track changes as they happen.
 
 You can use these insights to see how new deployments affect performance, helping you improve your application's user experience.
 
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/res-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/speed-insights/v2/res-light.png)
 
 *An example of a Real Experience Score over time.*
 
@@ -61,15 +66,13 @@ The Core Web Vitals, as defined by Google and the [Web Performance Working Group
 > criteria as explained in [Updated Scoring
 > Criteria](/docs/speed-insights/migrating-from-legacy#updated-scoring-criteria)
 
-| Metric                                                            | Description                                                                                                                          | Target Value             |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
-| [Largest Contentful Paint (LCP)](#largest-contentful-paint-lcp)   | Measures the time from page start to when the largest content element is fully visible.                                              | 2.5 seconds or less      |
-| [Cumulative Layout Shift (CLS)](#cumulative-layout-shift-cls)     | Quantifies the fraction of layout shift experienced by the user over the lifespan of the page.                                       | 0.1 or less              |
-| [Interaction to Next Paint (INP)](#interaction-to-next-paint-inp) | Measures the time from user interaction to when the browser renders the next frame.                                                  | 200 milliseconds or less |
-| [First Contentful Paint (FCP)](#first-contentful-paint-fcp)       | Measures the time from page start to the rendering of the first piece of DOM content.                                                | 1.8 seconds or less      |
-| [First Input Delay (FID)](#first-input-delay-fid)                 | Measures the time from a user's first interaction to the time the browser is able to respond.                                        | 100 milliseconds or less |
-| [Total Blocking Time (TBT)](#total-blocking-time-tbt)             | Measures the total amount of time between FCP and TTI where the main thread was blocked long enough to prevent input responsiveness. | Under 800 milliseconds   |
-| [Time to First Byte (TTFB)](#time-to-first-byte-ttfb)             | Measures the time from the request of a resource to when the first byte of a response begins to arrive.                              | Under 800 milliseconds   |
+| Metric                                                            | Description                                                                                              | Target Value             |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------ |
+| [Largest Contentful Paint (LCP)](#largest-contentful-paint-lcp)   | Measures the time from page start to when the largest content element is fully visible.                  | 2.5 seconds or less      |
+| [Cumulative Layout Shift (CLS)](#cumulative-layout-shift-cls)     | Quantifies the fraction of layout shift experienced by the user over the lifespan of the page.           | 0.1 or less              |
+| [Interaction to Next Paint (INP)](#interaction-to-next-paint-inp) | Measures the time from user interaction to when the browser renders the next frame.                      | 200 milliseconds or less |
+| [First Contentful Paint (FCP)](#first-contentful-paint-fcp)       | Measures the time from page start to the rendering of the first piece of DOM content.                    | 1.8 seconds or less      |
+| [Time to First Byte (TTFB)](#time-to-first-byte-ttfb)             | Measures the time from the request of a resource to when the first byte of a response begins to arrive.  | Under 800 milliseconds   |
 
 ### Largest Contentful Paint (LCP)
 
@@ -110,20 +113,6 @@ Time to First Byte (TTFB) measures the time between the request for a resource a
 
 **Lower TTFB times are better, with a good TTFB time being considered as under 800 milliseconds**.
 
-### First Input Delay (FID)
-
-[First Input Delay](https://web.dev/articles/fid) (FID) measures the time from when a user first interacts with your site (by selecting a link for example) to the time when the browser is able to respond to that interaction. This metric is important on pages where the user needs to do something, because it captures some of the delay that users feel when trying to interact with the page.
-
-**A good FID score is 100 milliseconds or less**.
-
-As [stated by Google](https://web.dev/vitals/#lab-tools-to-measure-core-web-vitals), simulating an environment to measure Web Vitals necessitates a different approach since no real user request is involved.
-
-### Total Blocking Time (TBT)
-
-Total Blocking Time (TBT) quantifies how non-interactive a page is. It measures the total time between the First Contentful Paint (FCP) and Time to Interactive (TTI) where the main thread was blocked for long enough to prevent user input. Long tasks (over 50 ms) block the main thread, preventing the user from interacting with the page. The sum of the time portions exceeding 50 ms constitutes the TBT.
-
-**Lower TBT times are better, with a good TBT time being considered as under 800 milliseconds**.
-
 > **💡 Note:** For more in-depth information related to performance metrics, visit the
 > PageSpeed Insights [
 > documentation](https://developers.google.com/speed/docs/insights/v5/about).
@@ -142,15 +131,15 @@ In the context of Vercel's Speed Insights, a data point is a single unit of info
 
 Data points are collected on hard navigations, which in the case of Next.js apps, are only the first-page view in a session. During a user's visit, data points are gathered during the initial page load, user interaction, and upon leaving the page.
 
-As of now, up to 6 data points can be potentially tracked per visit:
+As of now, up to 5 data points can be potentially tracked per visit:
 
 - On page load: Time to First Byte ([TTFB](#time-to-first-byte-ttfb)) and First Contentful Paint ([FCP](#first-contentful-paint-fcp))
-- On interaction: First Input Delay ([FID](#first-input-delay-fid)) and Largest Contentful Paint ([LCP](#largest-contentful-paint-lcp))
+- On interaction: Largest Contentful Paint ([LCP](#largest-contentful-paint-lcp))
 - On leave: Interaction to Next Paint ([INP](#interaction-to-next-paint-inp)), Cumulative Layout Shift ([CLS](#cumulative-layout-shift-cls)), and, if not already sent, Largest Contentful Paint ([LCP](#largest-contentful-paint-lcp)).
 
-The collection of metrics may vary depending on how users interact with or exit the page. On average, you can expect to collect between 3 and 6 metrics per visit.
+The collection of metrics may vary depending on how users interact with or exit the page. On average, you can expect to collect between 3 and 5 metrics per visit.
 
-These data points provide insights into various performance aspects of your website, such as the time it takes to display the first content ([FCP](#first-contentful-paint-fcp)) and the delay between user input and response ([FID](#first-input-delay-fid)). By analyzing these data points, you can gain valuable information to optimize and enhance the performance of your website.
+These data points provide insights into various performance aspects of your website, such as the time it takes to display the first content ([FCP](#first-contentful-paint-fcp)) and how quickly the page responds to user input ([INP](#interaction-to-next-paint-inp)). By analyzing these data points, you can gain valuable information to optimize and enhance the performance of your website.
 
 ### How the percentages are calculated?
 
@@ -175,6 +164,8 @@ Performance metrics, including the [Real Experience Score](#real-user-monitoring
 
 Aim for 'Good' scores (90 to 100) for both Real and Virtual Experience Scores. Keep in mind that reaching a score of 100 is extremely challenging due to diminishing returns. For example, improving from 99 to 100 is much harder than moving from 90 to 94, as the effort needed increases dramatically at higher scores.
 
+> **💡 Note:** Poor entries require [Speed Insights Plus](/docs/speed-insights/limits-and-pricing).
+
 ### Implications of scores for the end-user experience
 
 Higher Real Experience and Virtual Experience Scores generally translate to better end-user experiences, making it worthwhile to strive for improved Web Vital Scores. Performance scores are color-coded and improvements within the same color range will enhance user experience but don't significantly impact search engine rankings.
@@ -191,14 +182,29 @@ Setting up an integration supporting performance checks enables these checks to 
 
 Like RES, the VES draws from four separate Speed Insights, albeit with some variations:
 
-- In place of the First Input Delay ([FID](#first-input-delay-fid)) Core Web Vital, the Virtual Experience Score utilizes Total Blocking Time ([TBT](#total-blocking-time-tbt))
+- In place of the Interaction to Next Paint ([INP](#interaction-to-next-paint-inp)) Core Web Vital, the Virtual Experience Score utilizes Total Blocking Time (TBT), a lab metric that Speed Insights does not collect from real users
 - The specific device type used for checks depends on the Integration you've set up. For example, Checkly only uses "Desktop" for determining scores
 
 ## Breaking down data in Speed Insights
 
 Speed Insights offers a variety of views to help you analyze your application's performance data. This allows you to identify areas that need improvement and make informed decisions about how to optimize your site. To learn more, see [Using Speed Insights](/docs/speed-insights/using-speed-insights).
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

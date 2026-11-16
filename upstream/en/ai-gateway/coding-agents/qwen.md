@@ -1,0 +1,142 @@
+---
+title: Qwen Code with AI Gateway
+product: vercel
+url: /docs/ai-gateway/coding-agents/qwen
+canonical_url: "https://vercel.com/docs/ai-gateway/coding-agents/qwen"
+last_updated: 2026-09-13
+type: how-to
+prerequisites:
+  - /docs/ai-gateway/coding-agents
+  - /docs/ai-gateway
+related:
+  - /docs/cli/ai-gateway
+  - /docs/ai-gateway/observability-and-spend/observability
+  - /docs/ai-gateway/sdks-and-apis/openai-chat-completions
+  - /docs/ai-gateway/observability-and-spend/budgets
+summary: Connect Qwen Code to AI Gateway with the Vercel CLI or OpenAI-compatible model provider entries.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
+---
+
+# Qwen Code with AI Gateway
+
+[Qwen Code](https://github.com/QwenLM/qwen-code) is Alibaba's terminal coding agent, a fork of Gemini CLI adapted for Qwen models. Its `modelProviders.openai` entries support environment-variable keys, which you can point at AI Gateway for unified model access and spend monitoring.
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [Qwen4-Max now available on AI Gateway](https://vercel.com/changelog/qwen4-max-now-available-on-ai-gateway)
+- [Qwen3-Coder is now supported in Vercel AI Gateway](https://vercel.com/changelog/qwen3-coder-is-now-supported-in-vercel-ai-gateway)
+- [Qwen 3.8 Max 0902 now available on AI Gateway](https://vercel.com/changelog/qwen-3-8-max-0902-now-available-on-ai-gateway)
+- [ZCode with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/zcode) — Connect ZCode to AI Gateway with the Vercel CLI or an OpenAI-compatible custom provider.
+- [Xcode with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/xcode) — Connect Xcode's AI chat to AI Gateway through the Chat Completions API. Configure the provider, API key, and models in X
+- [Command Code with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/command-code) — Connect Command Code to AI Gateway with your own API key and a custom base URL. Configure models, switch between them, a
+
+Full cross-link map for this page: [/docs/ai-gateway/coding-agents/qwen.graph.md](/docs/ai-gateway/coding-agents/qwen.graph.md)
+<!-- /docsgraph:related -->
+
+## Set up with the Vercel CLI
+
+Run the [Vercel CLI setup command](/docs/cli/ai-gateway#setup) for Qwen Code:
+
+```bash filename="terminal"
+npx vercel@latest ai-gateway setup --agent qwen
+```
+
+The command writes `modelProviders.openai` entries in `~/.qwen/settings.json`, each with an `envKey` reference to `AI_GATEWAY_API_KEY` so the key never lands in the file. The entries list the newest Qwen models first, followed by the gateway's most-used models. Re-run the command to refresh the list.
+
+## Configuring Qwen Code
+
+If you can't use the Vercel CLI, configure Qwen Code manually:
+
+- ### Create an API key
+  Go to the [**AI Gateway**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) section in the Vercel dashboard sidebar and click **API keys** to create a new API key.
+
+- ### Export the key
+  Export the key in your shell:
+  ```bash filename="Terminal"
+  export AI_GATEWAY_API_KEY="your-ai-gateway-api-key"
+  ```
+  To persist the key, add the same line to your shell's startup file.
+
+- ### Add the model providers
+  Add the gateway entries to `~/.qwen/settings.json`:
+  ```json filename="~/.qwen/settings.json"
+  {
+    "modelProviders": {
+      "openai": [
+        {
+          "id": "openai/gpt-6-astra",
+          "name": "openai/gpt-6-astra",
+          "baseUrl": "https://ai-gateway.vercel.sh/coding-agent/v1",
+          "envKey": "AI_GATEWAY_API_KEY"
+        },
+        {
+          "id": "anthropic/claude-sonnet-5",
+          "name": "anthropic/claude-sonnet-5",
+          "baseUrl": "https://ai-gateway.vercel.sh/coding-agent/v1",
+          "envKey": "AI_GATEWAY_API_KEY"
+        }
+      ]
+    },
+    "security": {
+      "auth": {
+        "selectedType": "openai"
+      }
+    },
+    "model": {
+      "name": "openai/gpt-6-astra"
+    }
+  }
+  ```
+  The `openai` array defines the whole model universe. `model.name` resolves against it, so add one entry per gateway model you want available. `envKey` names the environment variable holding your key. Setting `security.auth.selectedType` to `"openai"` switches Qwen Code off its default Qwen OAuth login.
+
+- ### Start Qwen Code
+  Open a new terminal so the key is loaded, then run:
+  ```bash filename="Terminal"
+  qwen
+  ```
+  Switch models in-session.
+
+### Monitor usage and spend
+
+View your usage, spend, and request activity in the [**AI Gateway**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) section in the Vercel dashboard sidebar. See the [observability documentation](/docs/ai-gateway/observability-and-spend/observability) for more details.
+
+## Environment variables
+
+| Variable             | Description                                       |
+| -------------------- | ------------------------------------------------- |
+| `AI_GATEWAY_API_KEY` | Your AI Gateway API key, named by `envKey`. Required |
+
+> **💡 Note:** Qwen Code calls AI Gateway through the [OpenAI-compatible Chat Completions
+> API](/docs/ai-gateway/sdks-and-apis/openai-chat-completions), so any model
+> that supports Chat Completions works.
+
+## Next steps
+
+- Browse the [models catalog](/ai-gateway/models) for available models
+- Configure [spend limits](/docs/ai-gateway/observability-and-spend/budgets) on your API key
+- Read the [Qwen Code documentation](https://github.com/QwenLM/qwen-code) for commands and configuration
+
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
+
+---
+
+[View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

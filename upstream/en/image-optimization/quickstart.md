@@ -3,7 +3,7 @@ title: Getting started with Image Optimization
 product: vercel
 url: /docs/image-optimization/quickstart
 canonical_url: "https://vercel.com/docs/image-optimization/quickstart"
-last_updated: 2026-03-20
+last_updated: 2026-08-11
 type: tutorial
 prerequisites:
   - /docs/image-optimization
@@ -13,6 +13,7 @@ related:
   - /docs/image-optimization/managing-image-optimization-costs
 summary: Learn how you can leverage Vercel Image Optimization in your projects.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Getting started with Image Optimization
@@ -25,51 +26,55 @@ This guide will help you get started with using Vercel Image Optimization in you
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to Optimize Next.js + Sitecore JSS](https://vercel.com/kb/guide/how-to-optimize-next.js-sitecore-jss?from=related) — This guide covers performance and usage considerations when building and deploying your Next.js and Sitecore JSS applica
-- [Build with Vercel Blob on Nuxt](https://vercel.com/kb/guide/vercel-blob-nuxt?from=related) — Set up Vercel Blob in a Nuxt application with NuxtHub, upload and serve files, and deliver optimized images with Nuxt Im
-- [Images](https://nextjs.org/docs/pages/getting-started/images?from=related) — Optimize your images with the built-in `next/image` component.
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [Nuxt](https://vercel.com/docs/frameworks/full-stack/nuxt?from=related) — Learn how to use Vercel's features with Nuxt.
-- [Next.js](https://vercel.com/docs/frameworks/full-stack/nextjs?from=related) — Vercel is the native Next.js platform, designed to enhance the Next.js experience.
-- [Getting Started](https://vercel.com/docs/analytics/quickstart?from=related) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
-- [Getting Started](https://vercel.com/docs/speed-insights/quickstart?from=related) — Vercel Speed Insights provides you detailed insights into your website's performance. This quickstart guide will help yo
-- [SvelteKit](https://vercel.com/docs/frameworks/full-stack/sveltekit?from=related) — Learn how to use Vercel's features with SvelteKit
+- [How to Optimize Next.js + Sitecore JSS](https://vercel.com/kb/guide/how-to-optimize-next.js-sitecore-jss) — This guide covers performance and usage considerations when building and deploying your Next.js and Sitecore JSS applica
+- [OG Image Generation: The Complete Customization Guide](https://vercel.com/kb/guide/using-custom-font) — Learn how to use custom fonts in your Vercel OG image, plus emoji, external images, non-Latin text, dynamic titles, and
+- [How do I reduce my build time with Next.js on Vercel?](https://vercel.com/kb/guide/how-do-i-reduce-my-build-time-with-next-js-on-vercel) — Reduce Next.js build times on Vercel by pre-rendering fewer pages at build time, deferring generation with ISR and image
+- [What are the best practices for hosting videos on Vercel?](https://vercel.com/kb/guide/best-practices-for-hosting-videos-on-vercel-nextjs-mp4-gif) — Learn the ideal solutions for using video files like .mp4 and .gif on Vercel to prevent excess bandwidth consumption.
+- [Build with Vercel Blob on Nuxt](https://vercel.com/kb/guide/vercel-blob-nuxt) — Set up Vercel Blob in a Nuxt application with NuxtHub, upload and serve files, and deliver optimized images with Nuxt Im
+- [Building a fast, animated image gallery with Next.js](https://vercel.com/blog/building-a-fast-animated-image-gallery-with-next-js)
+- [Images on the web](https://vercel.com/blog/images-on-the-web)
+- [Getting started with Speed Insights](https://vercel.com/docs/speed-insights/quickstart) — Vercel Speed Insights provides you detailed insights into your website's performance. This quickstart guide will help yo
+- [Getting started with Vercel Web Analytics](https://vercel.com/docs/analytics/quickstart) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
+- [Supported Frameworks on Vercel](https://vercel.com/docs/frameworks/more-frameworks) — Learn about the frameworks that can be deployed to Vercel.
+- [Add the Vercel Toolbar to your local environment](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-localhost) — Learn how to use the Vercel Toolbar in your local environment.
+- [Astro on Vercel](https://vercel.com/docs/frameworks/frontend/astro) — Deploy Astro sites to Vercel and configure server-side rendering, ISR, Web Analytics, Image Optimization, and Routing Mi
 
 Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md](/docs/image-optimization/quickstart.graph.md)
 <!-- /docsgraph:related -->
+
+**Agent prompt**
+
+```text
+Help me set up image optimization in this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Use the next/image component (or Vercel image optimization for other frameworks) to serve optimized images with automatic format conversion and resizing. 2. Deploy with `vercel --prod` to verify images are optimized.
+```
 
 ## Prerequisites
 
 - A Vercel account. If you don't have one, you can [sign up for free](https://vercel.com/signup).
 - A Vercel project. If you don't have one, you can [create a new project](https://vercel.com/new).
 - The Vercel CLI installed. If you don't have it, you can install it using the following command:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i vercel
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i vercel
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i vercel
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i vercel
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm i -g vercel
+  ```
+  **yarn**
+  ```bash
+  yarn global add vercel
+  ```
+  **npm**
+  ```bash
+  npm i -g vercel
+  ```
+  **bun**
+  ```bash
+  bun add -g vercel
+  ```
 
 - ### Import images
   > For \['astro']:
   To use Astro, you must:
-  1. Enable [Vercel's image service](https://docs.astro.build/en/guides/integrations-guide/vercel/#imageservice) in&#x20;
+  1. Enable [Vercel's image service](https://docs.astro.build/en/guides/integrations-guide/vercel/#imageservice) in `astro.config.ts`
 
      ```js filename="astro.config.mjs" framework=all
      import { defineConfig } from 'astro/config';
@@ -127,21 +132,21 @@ Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md
   import Image from 'next/image';
   ```
   > For \['sveltekit']:
-  To use SvelteKit, use [`@sveltejs/adapter-vercel`](https://kit.svelte.dev/docs/adapter-vercel) within your  file.
+  To use SvelteKit, use [`@sveltejs/adapter-vercel`](https://kit.svelte.dev/docs/adapter-vercel) within your `svelte.config.ts` file.
   ```js filename="svelte.config.js" framework=all
   import adapter from '@sveltejs/adapter-vercel';
 
   export default {
     kit: {
-      adapter({
+      adapter: adapter({
         images: {
           sizes: [640, 828, 1200, 1920, 3840],
           formats: ['image/avif', 'image/webp'],
           minimumCacheTTL: 300,
           domains: ['example-app.vercel.app'],
-        }
-      })
-    }
+        },
+      }),
+    },
   };
   ```
   ```ts filename="svelte.config.ts" framework=all
@@ -149,15 +154,15 @@ Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md
 
   export default {
     kit: {
-      adapter({
+      adapter: adapter({
         images: {
           sizes: [640, 828, 1200, 1920, 3840],
           formats: ['image/avif', 'image/webp'],
           minimumCacheTTL: 300,
           domains: ['example-app.vercel.app'],
-        }
-      })
-    }
+        },
+      }),
+    },
   };
   ```
   This allows you to specify [configuration options](https://vercel.com/docs/build-output-api/configuration#images) for Vercel's native image optimization API.
@@ -166,16 +171,15 @@ Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md
   ```js filename="src/lib/image.js" framework=all
   import { dev } from '$app/environment';
 
-  export function optimize(src, widths = [640, 960, 1280], quality = 90) {
+  export function optimize(src, widths = [640, 828, 1200], quality = 90) {
     if (dev) return src;
 
     return widths
       .slice()
       .sort((a, b) => a - b)
-      .map((width, i) => {
+      .map((width) => {
         const url = `/_vercel/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`;
-        const descriptor = i < widths.length - 1 ? ` ${width}w` : '';
-        return url + descriptor;
+        return `${url} ${width}w`;
       })
       .join(', ');
   }
@@ -183,16 +187,15 @@ Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md
   ```ts filename="src/lib/image.ts" framework=all
   import { dev } from '$app/environment';
 
-  export function optimize(src: string, widths = [640, 960, 1280], quality = 90) {
+  export function optimize(src: string, widths = [640, 828, 1200], quality = 90) {
     if (dev) return src;
 
     return widths
       .slice()
       .sort((a, b) => a - b)
-      .map((width, i) => {
+      .map((width) => {
         const url = `/_vercel/image?url=${encodeURIComponent(src)}&w=${width}&q=${quality}`;
-        const descriptor = i < widths.length - 1 ? ` ${width}w` : '';
-        return url + descriptor;
+        return `${url} ${width}w`;
       })
       .join(', ');
   }
@@ -208,6 +211,22 @@ Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md
   > For \['nuxt']:
   Install the `@nuxt/image` package:
 
+  **pnpm**
+  ```bash
+  pnpm i @nuxt/image
+  ```
+  **yarn**
+  ```bash
+  yarn add @nuxt/image
+  ```
+  **npm**
+  ```bash
+  npm i @nuxt/image
+  ```
+  **bun**
+  ```bash
+  bun add @nuxt/image
+  ```
   Then, add the module to the `modules` array in your Nuxt config:
   ```js filename="nuxt.config.js" framework=all
   export default defineNuxtConfig({
@@ -332,10 +351,10 @@ Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md
   - `height`: The height of the image
   When using [local images](https://nextjs.org/docs/pages/api-reference/components/image#local-images "Local images") you **do not** need to provide the `width` and `height` props. These values will be automatically determined based on the imported image.
 
-  The below example uses a [remote image](https://nextjs.org/docs/pages/api-reference/components/image#remote-images "Remote Images") stored in a `/public/images/` folder, and has the `width` and `height` props applied:
+  The below example uses a [remote image](https://nextjs.org/docs/pages/api-reference/components/image#remote-images "Remote Images") with the `width` and `height` props applied:
   ```js filename="pages/index.jsx" framework=all
   <Image
-    src="https://unsplash.com/photos/MpL4w1vb798"
+    src="https://images.unsplash.com/photo-1627843240167-b1f9d28f732e"
     alt="Picture of a triangle"
     width={500}
     height={500}
@@ -343,7 +362,7 @@ Full cross-link map for this page: [/docs/image-optimization/quickstart.graph.md
   ```
   ```ts filename="pages/index.tsx" framework=all
   <Image
-    src="https://unsplash.com/photos/MpL4w1vb798"
+    src="https://images.unsplash.com/photo-1627843240167-b1f9d28f732e"
     alt="Picture of a triangle"
     width={500}
     height={500}
@@ -471,7 +490,22 @@ Now that you've set up Vercel Image Optimization, you can explore the following:
 - [Explore limits and pricing](/docs/image-optimization/limits-and-pricing)
 - [Managing costs](/docs/image-optimization/managing-image-optimization-costs)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

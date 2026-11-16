@@ -1,21 +1,24 @@
 ---
-title: Model Allowlist
+title: AI Gateway Model Allowlist
 product: vercel
 url: /docs/ai-gateway/security-and-compliance/model-allowlist
 canonical_url: "https://vercel.com/docs/ai-gateway/security-and-compliance/model-allowlist"
-last_updated: 2026-07-08
+last_updated: 2026-09-08
 type: conceptual
 prerequisites:
   - /docs/ai-gateway/security-and-compliance
   - /docs/ai-gateway
 related:
   - /docs/ai-gateway/security-and-compliance/provider-allowlist
+  - /docs/ai-gateway/models-and-providers/virtual-models
+  - /docs/ai-gateway/security-and-compliance/private-inference
   - /docs/ai-gateway/authentication-and-byok/byok
 summary: Restrict which AI models your team can use through AI Gateway. Available on Pro and Enterprise.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
-# Model Allowlist
+# AI Gateway Model Allowlist
 
 The model allowlist lets team owners restrict which models can be used through AI Gateway. A request returns a `403` when the requested model is not on the allowlist. The feature is opt-in and available on Pro and Enterprise plans.
 
@@ -25,11 +28,13 @@ The model allowlist lets team owners restrict which models can be used through A
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Models & Providers](https://vercel.com/docs/ai-gateway/models-and-providers?from=related) — Work with models and providers in AI Gateway: provider routing and fallbacks, filtering, timeouts, caching, service tier
-- [Provider Options](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options?from=related) — Configure provider routing, ordering, and fallback behavior in Vercel AI Gateway
-- [Pricing](https://vercel.com/docs/ai-gateway/pricing?from=related) — Learn about pricing for AI Gateway.
-- [Model Filtering](https://vercel.com/docs/ai-gateway/models-and-providers/model-filtering?from=related) — Restrict AI Gateway routing to models that have specific capabilities using the has option.
-- [Routing Rules](https://vercel.com/docs/ai-gateway/models-and-providers/routing-rules?from=related) — Define team-wide rules that rewrite requests from one model to another or deny specific models in AI Gateway.
+- [How to control AI provider data handling with AI Gateway](https://vercel.com/kb/guide/control-ai-provider-data) — Prevent AI providers from training on your prompts, enforce zero data retention, and restrict providers and models with
+- [Team-wide provider allowlist on AI Gateway](https://vercel.com/changelog/team-wide-provider-allowlist-on-ai-gateway)
+- [AI Gateway Models and Providers](https://vercel.com/docs/ai-gateway/models-and-providers) — Choose AI Gateway models and providers. Configure routing, fallbacks, timeouts, prompt caching, reasoning, and web searc
+- [AI Gateway FAQ](https://vercel.com/docs/ai-gateway/faq) — Answers to common questions about AI Gateway, including request errors, pricing and markup, caching, SDK and API compati
+- [AI Gateway Pricing](https://vercel.com/docs/ai-gateway/pricing) — Understand AI Gateway token pricing, free and paid credits, BYOK costs, add-on charges, and payment fees. Manage credit
+- [AI Gateway Rate Limits](https://vercel.com/docs/ai-gateway/rate-limits) — Learn how AI Gateway rate limits work on the free and paid tiers, what the 429 response looks like, and how to retry a r
+- [Adding a Model](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-model) — Learn how to add a new AI model to your Vercel projects
 
 Full cross-link map for this page: [/docs/ai-gateway/security-and-compliance/model-allowlist.graph.md](/docs/ai-gateway/security-and-compliance/model-allowlist.graph.md)
 <!-- /docsgraph:related -->
@@ -40,9 +45,9 @@ A common reason to enable this is governance: your team has approved a specific 
 
 | Option                    | Cost                                | Availability       |
 | ------------------------- | ----------------------------------- | ------------------ |
-| Team-wide model allowlist | $0.10 per 1,000 successful requests | Pro and Enterprise |
+| Team-wide model allowlist | $0.10 per 1,000 billed requests     | Pro and Enterprise |
 
-The surcharge applies only to successful responses. Requests blocked by the allowlist (`403`) and other failures are not charged.
+The surcharge applies to each request AI Gateway bills. That includes a request billed without completing normally, such as a response the provider blocks on safety grounds and still charges for. Requests blocked by the allowlist (`403`) and other failures that AI Gateway doesn't bill are not charged.
 
 If your team also has the [provider allowlist](/docs/ai-gateway/security-and-compliance/provider-allowlist) enabled, a request is charged a single restriction surcharge, not one per allowlist. You are never billed twice for having both active.
 
@@ -63,7 +68,7 @@ When a request targets a disabled model, AI Gateway returns:
 
 ```json
 {
-  "error": "Your team has restricted access to this model. Contact the owner of the account for more details.",
+  "error": "Your team has restricted access to this model. Team owners can edit AI Gateway Settings (https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fsettings&title=AI+Gateway+Settings) to enable this model in Model Allowlist. Model: example/model-name",
   "type": "no_providers_available",
   "statusCode": 403
 }
@@ -75,6 +80,14 @@ When AI Gateway adds a new model after you enable the allowlist, the new model i
 
 To clear the badges, decide which new models to enable and click **Save**. A save with no changes also counts as acknowledgment and clears the badges. Disabled new models stay disabled until you enable them.
 
+## Virtual models
+
+A request through a [virtual model](/docs/ai-gateway/models-and-providers/virtual-models) is evaluated against the underlying model it resolves to. If that model is not on the allowlist, the request is blocked, even though the virtual model itself is not listed in the settings.
+
+## Private models
+
+The allowlist applies to models in the AI Gateway model library. Your team's [private models](/docs/ai-gateway/security-and-compliance/private-inference) are endpoints you registered yourself, so they remain available and are not affected by the allowlist.
+
 ## Provider allowlist
 
 The model allowlist and the [provider allowlist](/docs/ai-gateway/security-and-compliance/provider-allowlist) are independent checks, and a request must pass both:
@@ -84,11 +97,11 @@ The model allowlist and the [provider allowlist](/docs/ai-gateway/security-and-c
 
 A model on your allowlist can still be blocked if every provider that serves it is disabled on the provider allowlist. Keep at least one of its providers enabled for each model you want to use.
 
-If both allowlists are enabled, you are charged a single restriction surcharge per successful request, as described in [Pricing](#pricing).
+If both allowlists are enabled, you are charged a single restriction surcharge per billed request, as described in [Pricing](#pricing).
 
 ## BYOK
 
-The allowlist applies to [BYOK](/docs/ai-gateway/authentication-and-byok/byok) requests too. Disabling a model means your team does not want any traffic to that model through AI Gateway, even with your own credentials.
+The allowlist applies to [BYOK](/docs/ai-gateway/authentication-and-byok/byok) requests too. Disabling a model means your team does not want any traffic to that model through AI Gateway, even with your own credentials. The [surcharge](#pricing) applies to BYOK requests too, charged to your AI Gateway Credits.
 
 ## Plan and role requirements
 
@@ -103,7 +116,22 @@ Team members on non-owner roles can view the current configuration but cannot mo
 > requests finish under the previous settings. Once the change has propagated,
 > new requests respect the updated allowlist.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

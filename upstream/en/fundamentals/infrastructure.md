@@ -3,7 +3,7 @@ title: How requests flow through Vercel
 product: vercel
 url: /docs/fundamentals/infrastructure
 canonical_url: "https://vercel.com/docs/fundamentals/infrastructure"
-last_updated: 2026-06-17
+last_updated: 2026-08-28
 type: conceptual
 prerequisites:
   - /docs/fundamentals
@@ -15,6 +15,7 @@ related:
   - /docs/routing-middleware
 summary: Learn how Vercel routes, secures, and serves requests from your users to your application.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # How requests flow through Vercel
@@ -27,21 +28,21 @@ When you deploy to Vercel, your code runs on a global network of servers. This n
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [Hosting your API on Vercel](https://vercel.com/kb/guide/hosting-backend-apis?from=related) — Learn how to build and scale performant APIs on Vercel.
-- [Migrate a Next.js app from Webflow Cloud to Vercel](https://vercel.com/kb/guide/migrate-a-next-js-app-from-webflow-cloud-to-vercel?from=related) — Move your Next.js app from Webflow Cloud to Vercel: remove the OpenNext Cloudflare adapter, drop the base path, map stor
-- [How Vercel CDN works](https://vercel.com/docs/how-vercel-cdn-works?from=related) — Learn how Vercel's CDN processes requests through routing, caching, and compute layers to deliver your content with low
-- [Build System](https://vercel.com/docs/fundamentals/builds?from=related) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
-- [Overview](https://vercel.com/docs/cdn?from=related) — Vercel's CDN is a globally distributed platform that handles routing, caching, security, and compression for every deplo
-- [Security & Compliance Measures](https://vercel.com/docs/security/compliance?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [Understanding Vercel Functions](https://vercel.com/blog/understanding-vercel-functions)
+- [How we run Vercel's CDN in front of Discourse](https://vercel.com/blog/how-we-run-vercels-cdn-in-front-of-discourse)
+- [Building secure and performant web applications on Vercel](https://vercel.com/blog/building-secure-and-performant-web-applications-on-vercel)
+- [How Vercel CDN Works](https://vercel.com/docs/how-vercel-cdn-works) — Learn how Vercel's CDN processes requests through routing, caching, and compute layers to deliver your content with low
+- [How Vercel builds your application](https://vercel.com/docs/fundamentals/builds) — Learn how Vercel transforms your source code into optimized assets ready to serve globally.
+- [Vercel CDN overview](https://vercel.com/docs/cdn) — Vercel's CDN is a globally distributed platform that handles routing, caching, security, and compression for every deplo
+- [Security & Compliance Measures](https://vercel.com/docs/security/compliance) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
+- [Backends on Vercel](https://vercel.com/docs/frameworks/backend) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
 
 Full cross-link map for this page: [/docs/fundamentals/infrastructure.graph.md](/docs/fundamentals/infrastructure.graph.md)
 <!-- /docsgraph:related -->
 
 The following sections walk through what happens from the moment a user presses **enter** on their keyboard to when your application appears on their screen. For a deeper technical dive, see [Life of a Vercel Request: What Happens When a User Presses Enter](https://vercel.com/blog/life-of-a-vercel-request-what-happens-when-a-user-presses-enter).
 
-![Image](https://vercel.com/docs-assets/static/docs/getting-started-with-vercel/vercel-infra-light.png)
+![The lifecycle of a request through Vercel's infrastructure.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/getting-started-with-vercel/vercel-infra-light.png)
 
 ## How requests enter Vercel's global network
 
@@ -109,13 +110,13 @@ Most applications serve a mix of static and dynamic content. For static assets, 
 
 | Cache Status        | What Happens                                                                        |
 | ------------------- | ----------------------------------------------------------------------------------- |
-| **Hit**             | Content returns immediately to the user from the PoP closest to them                |
+| **Hit**             | Content returns immediately to the user from the Vercel region closest to them      |
 | **Miss**            | Content generates in real time and populates the cache for future requests          |
 | **Stale hit (ISR)** | Stale content serves instantly while a background process regenerates fresh content |
 
 With [Incremental Static Regeneration (ISR)](/docs/incremental-static-regeneration), you can serve cached content instantly while keeping it fresh. The cache serves the existing version to your user and triggers regeneration in the background for the next visitor.
 
-**Caching**: Understand how Vercel's edge cache accelerates your applications. [Learn more →](/docs/caching/cdn-cache)
+**Caching**: Understand how Vercel's CDN cache accelerates your applications. [Learn more →](/docs/caching/cdn-cache)
 
 **Incremental Static Regeneration**: Update static content without rebuilding your entire site. [Learn more →](/docs/incremental-static-regeneration)
 
@@ -149,7 +150,22 @@ For more on what happens during deployment, see [Behind the Scenes of Vercel's I
 
 **Build Output API**: Understand the output format that powers Vercel deployments. [Learn more →](/docs/build-output-api)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

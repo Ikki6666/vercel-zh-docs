@@ -1,21 +1,25 @@
 ---
-title: Provider Allowlist
+title: AI Gateway Provider Allowlist
 product: vercel
 url: /docs/ai-gateway/security-and-compliance/provider-allowlist
 canonical_url: "https://vercel.com/docs/ai-gateway/security-and-compliance/provider-allowlist"
-last_updated: 2026-06-29
+last_updated: 2026-09-08
 type: conceptual
 prerequisites:
   - /docs/ai-gateway/security-and-compliance
   - /docs/ai-gateway
 related:
   - /docs/ai-gateway/models-and-providers/provider-options
+  - /docs/ai-gateway/security-and-compliance/zdr
+  - /docs/ai-gateway/security-and-compliance/disallow-prompt-training
+  - /docs/ai-gateway/security-and-compliance/regional-inference
   - /docs/ai-gateway/authentication-and-byok/byok
 summary: Restrict which AI providers your team can route through AI Gateway. Available on Pro and Enterprise.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
-# Provider Allowlist
+# AI Gateway Provider Allowlist
 
 The provider allowlist lets team owners restrict which AI providers can serve requests through AI Gateway. A request only returns a `403` when no allowed provider can serve it. The feature is opt-in and available on Pro and Enterprise plans.
 
@@ -25,11 +29,13 @@ The provider allowlist lets team owners restrict which AI providers can serve re
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Model Allowlist](https://vercel.com/docs/ai-gateway/security-and-compliance/model-allowlist?from=related) — Restrict which AI models your team can use through AI Gateway. Available on Pro and Enterprise.
-- [Filtering, Ordering & Sorting](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering?from=related) — Control which providers handle your requests, in what order, and how they are ranked using order, only, and sort options
-- [Advanced](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/advanced?from=related) — Configure provider routing, fallbacks, and restrictions using the OpenResponses API.
-- [Disallow Prompt Training](https://vercel.com/docs/ai-gateway/security-and-compliance/disallow-prompt-training?from=related) — Learn how to prevent AI providers from using your prompts and responses for model training through AI Gateway.
-- [Routing Rules](https://vercel.com/docs/ai-gateway/models-and-providers/routing-rules?from=related) — Define team-wide rules that rewrite requests from one model to another or deny specific models in AI Gateway.
+- [Team-wide provider allowlist on AI Gateway](https://vercel.com/changelog/team-wide-provider-allowlist-on-ai-gateway)
+- [ Routing rules now available on AI Gateway](https://vercel.com/changelog/ai-gateway-routing-rules)
+- [Set up coding agents in one command with AI Gateway](https://vercel.com/changelog/set-up-coding-agents-in-one-command-with-ai-gateway)
+- [How to control AI provider data handling with AI Gateway](https://vercel.com/kb/guide/control-ai-provider-data) — Prevent AI providers from training on your prompts, enforce zero data retention, and restrict providers and models with
+- [AI Gateway Model Allowlist](https://vercel.com/docs/ai-gateway/security-and-compliance/model-allowlist) — Restrict which AI models your team can use through AI Gateway. Available on Pro and Enterprise.
+- [AI Gateway Provider Headquarters](https://vercel.com/docs/ai-gateway/security-and-compliance/provider-headquarters) — Limit AI Gateway routing to providers whose parent company is headquartered in the countries you choose.
+- [Adding a Provider](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-provider) — Learn how to add a new AI provider to your Vercel projects.
 
 Full cross-link map for this page: [/docs/ai-gateway/security-and-compliance/provider-allowlist.graph.md](/docs/ai-gateway/security-and-compliance/provider-allowlist.graph.md)
 <!-- /docsgraph:related -->
@@ -38,21 +44,21 @@ A common reason to enable this is compliance: your team has reviewed a specific 
 
 ## Pricing
 
-The provider allowlist is a team-wide setting that applies to every request. If you only need to restrict providers on individual requests, use the [`only` parameter](/docs/ai-gateway/models-and-providers/provider-options#provider-filtering-ordering-and-sorting) in `providerOptions` instead at no additional cost.
+The provider allowlist is a team-wide setting that applies to every request, and the [`only` parameter](/docs/ai-gateway/models-and-providers/provider-options#provider-filtering-ordering-and-sorting) in `providerOptions` applies the same kind of restriction per request at no additional cost. Both controls remove failover to providers outside the list, so reserve them for when you need to name the exact providers that can serve traffic. When the requirement is about data handling, [zero data retention](/docs/ai-gateway/security-and-compliance/zdr), [disallow prompt training](/docs/ai-gateway/security-and-compliance/disallow-prompt-training), and [regional inference](/docs/ai-gateway/security-and-compliance/regional-inference) filter by that requirement while keeping every qualifying provider eligible. Regional inference passes through the provider's [regional price](/docs/ai-gateway/security-and-compliance/regional-inference#regional-pricing), which can be higher.
 
 | Option                       | Cost                                | Availability       |
 | ---------------------------- | ----------------------------------- | ------------------ |
 | Per-request `only` filter    | No additional cost                  | All plans          |
-| Team-wide provider allowlist | $0.10 per 1,000 successful requests | Pro and Enterprise |
+| Team-wide provider allowlist | $0.10 per 1,000 billed requests     | Pro and Enterprise |
 
-The team-wide surcharge applies only to successful responses. Requests blocked by the allowlist (`403`) and other failures are not charged.
+The team-wide surcharge applies to each request AI Gateway bills. That includes a request billed without completing normally, such as a response the provider blocks on safety grounds and still charges for. Requests blocked by the allowlist (`403`) and other failures that AI Gateway doesn't bill are not charged.
 
 ## Enabling the allowlist
 
 Only team owners can change this setting.
 
 1. Open the [AI Gateway **Settings** tab](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fsettings\&title=AI+Gateway+Settings).
-2. Toggle on **Restrict allowed providers**.
+2. Toggle on **Provider Allowlist**.
 
 When you toggle on, every provider currently available on AI Gateway is added to the allowlist by default. This guarantees that turning the feature on never breaks existing traffic. You then remove providers you want to block as an explicit action.
 
@@ -64,7 +70,7 @@ Disabling a provider removes it from the routing candidates for any request. If 
 
 ```json
 {
-  "error": "Your team has restricted access to this provider. Contact the owner of the account for more details.",
+  "error": "Your team (acme) has restricted access to this provider. Owners of team acme can edit AI Gateway Settings (https://vercel.com/acme/~/ai-gateway/settings) to enable this provider in Provider Allowlist. Providers considered: provider-a, provider-b",
   "type": "no_providers_available",
   "statusCode": 403
 }
@@ -85,11 +91,11 @@ If you also use the request-level [`only`](/docs/ai-gateway/models-and-providers
 - The provider must be in the request's `only` list, and
 - The provider must be in your team's allowlist.
 
-If either filter rejects every candidate, the request returns a `403`.
+If the request's `only` list matches none of the providers that serve the model, the request returns a `400`. If your team's allowlist rejects every remaining candidate, the request returns a `403`.
 
 ## BYOK
 
-The allowlist applies to [BYOK](/docs/ai-gateway/authentication-and-byok/byok) requests too. Disabling a provider means your team does not want any traffic to that provider through AI Gateway, even with your own credentials.
+The allowlist applies to [BYOK](/docs/ai-gateway/authentication-and-byok/byok) requests too. Disabling a provider means your team does not want any traffic to that provider through AI Gateway, even with your own credentials. The team-wide [surcharge](#pricing) applies to BYOK requests too, charged to your AI Gateway Credits.
 
 ## Plan and role requirements
 
@@ -104,7 +110,22 @@ Team members on non-owner roles can view the current configuration but cannot mo
 > requests finish under the previous settings. Once the change has propagated,
 > new requests respect the updated allowlist.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

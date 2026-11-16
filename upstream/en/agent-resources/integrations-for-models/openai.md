@@ -3,7 +3,7 @@ title: Vercel & OpenAI Integration
 product: vercel
 url: /docs/agent-resources/integrations-for-models/openai
 canonical_url: "https://vercel.com/docs/agent-resources/integrations-for-models/openai"
-last_updated: 2026-02-24
+last_updated: 2026-09-01
 type: how-to
 prerequisites:
   - /docs/agent-resources/integrations-for-models
@@ -12,6 +12,7 @@ related:
   - /docs/environment-variables
 summary: "Integrate your Vercel project with OpenAI's powerful suite of models."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Vercel & OpenAI Integration
@@ -24,17 +25,17 @@ Vercel integrates with [OpenAI](https://platform.openai.com/overview) to enable 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [AI models](https://v0.app/docs/ai-models?from=related) — Add AI functionality to your v0 projects by integrating AI models and platforms.
-- [xAI](https://vercel.com/docs/agent-resources/integrations-for-models/xai?from=related) — Learn how to add the xAI native integration with Vercel.
-- [Adding a Model](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-model?from=related) — Learn how to add a new AI model to your Vercel projects
-- [Together AI](https://vercel.com/docs/agent-resources/integrations-for-models/togetherai?from=related) — Learn how to add Together AI connectable account integration with Vercel.
-- [AI SDK](https://vercel.com/docs/ai-sdk?from=related) — TypeScript toolkit for building AI-powered applications with React, Next.js, Vue, Svelte and Node.js
-- [Deep Infra](https://vercel.com/docs/agent-resources/integrations-for-models/deepinfra?from=related) — Learn how to add the Deep Infra native integration with Vercel.
+- [Introducing AI Integrations on Vercel](https://vercel.com/blog/ai-integrations)
+- [Vercel xAI Integration](https://vercel.com/docs/agent-resources/integrations-for-models/xai) — Learn how to add the xAI native integration with Vercel.
+- [Adding a Model](https://vercel.com/docs/agent-resources/integrations-for-models/adding-a-model) — Learn how to add a new AI model to your Vercel projects
+- [Vercel Together AI Integration](https://vercel.com/docs/agent-resources/integrations-for-models/togetherai) — Learn how to add Together AI connectable account integration with Vercel.
+- [OpenAI Chat Completions API with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions) — Use OpenAI SDKs with the AI Gateway Chat Completions API. Configure the base URL and authentication for chat, streaming,
+- [Go with AI Gateway: OpenAI and Anthropic SDKs](https://vercel.com/docs/ai-gateway/sdks-and-apis/go) — Use AI Gateway from any Go application with the OpenAI or Anthropic Go SDKs, including model fallbacks, cost tracking, a
 
 Full cross-link map for this page: [/docs/agent-resources/integrations-for-models/openai.graph.md](/docs/agent-resources/integrations-for-models/openai.graph.md)
 <!-- /docsgraph:related -->
 
-You can integrate with [any OpenAI model](https://platform.openai.com/docs/models/overview) using the [AI SDK](https://sdk.vercel.ai), including the following OpenAI models:
+You can integrate with [any OpenAI model](https://developers.openai.com/api/docs/models) using the [AI SDK](https://ai-sdk.dev), including the following OpenAI models:
 
 - **GPT-4o**: Understand and generate natural language or code
 - **GPT-4.5**: Latest language model with enhanced emotional intelligence
@@ -55,6 +56,8 @@ Before you begin, ensure you have an [OpenAI account](https://platform.openai.co
 
 - ### Generate API Key
   Click on **Create new secret key**. Copy the generated API key securely.
+
+  ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/openai/env-vars.png)
   > **💡 Note:** Always keep your API keys confidential. Do not expose them in client-side code. Use [Vercel Environment Variables](/docs/environment-variables) for safe storage and do not commit these values to git.
 
 - ### Set Environment Variable
@@ -65,42 +68,58 @@ Before you begin, ensure you have an [OpenAI account](https://platform.openai.co
 
 ## Building chat interfaces with the AI SDK
 
-Integrating OpenAI into your Vercel project is seamless with the [AI SDK](https://sdk.vercel.ai/docs).
+Integrating OpenAI into your Vercel project is seamless with the [AI SDK](https://ai-sdk.dev/docs).
 
 Install the AI SDK in your project with your favorite package manager:
 
-<CodeBlock>
-  <Code tab="pnpm">
-    ```bash
-    pnpm i ai
-    ```
-  </Code>
-  <Code tab="yarn">
-    ```bash
-    yarn i ai
-    ```
-  </Code>
-  <Code tab="npm">
-    ```bash
-    npm i ai
-    ```
-  </Code>
-  <Code tab="bun">
-    ```bash
-    bun i ai
-    ```
-  </Code>
-</CodeBlock>
+**pnpm**
 
-You can use the SDK to build AI applications with [React (Next.js)](https://sdk.vercel.ai/docs/getting-started/nextjs-app-router), [Vue (Nuxt)](https://sdk.vercel.ai/docs/getting-started/nuxt), [Svelte (SvelteKit)](https://sdk.vercel.ai/docs/getting-started/svelte), and [Node.js](https://sdk.vercel.ai/docs/getting-started/nodejs).
+```bash
+pnpm i ai
+```
+
+**yarn**
+
+```bash
+yarn add ai
+```
+
+**npm**
+
+```bash
+npm i ai
+```
+
+**bun**
+
+```bash
+bun add ai
+```
+
+You can use the SDK to build AI applications with [React (Next.js)](https://ai-sdk.dev/docs/getting-started/nextjs-app-router), [Vue (Nuxt)](https://ai-sdk.dev/docs/getting-started/nuxt), [Svelte (SvelteKit)](https://ai-sdk.dev/docs/getting-started/svelte), and [Node.js](https://ai-sdk.dev/docs/getting-started/nodejs).
 
 ## Using OpenAI Functions with Vercel
 
 The AI SDK also has **full support** for [OpenAI Functions (tool calling)](https://openai.com/blog/function-calling-and-other-api-updates).
 
-Learn more about using [tools with the AI SDK](https://sdk.vercel.ai/docs/foundations/tools).
+Learn more about using [tools with the AI SDK](https://ai-sdk.dev/docs/foundations/tools).
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.
