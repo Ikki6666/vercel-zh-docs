@@ -3,7 +3,7 @@ title: Billing FAQ for Enterprise Plan
 product: vercel
 url: /docs/plans/enterprise/billing
 canonical_url: "https://vercel.com/docs/plans/enterprise/billing"
-last_updated: 2026-07-15
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   - /docs/plans/enterprise
@@ -16,6 +16,7 @@ related:
   - /docs/vercel-firewall/attack-mode
 summary: This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Billing FAQ for Enterprise Plan
@@ -28,16 +29,17 @@ The Vercel Enterprise plan is perfect for [teams](/docs/accounts#creating-a-team
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Account](https://v0.app/docs/account?from=related) — Manage your account and billing information.
-- [Pricing](https://v0.app/docs/pricing?from=related) — Understand the v0 plans, pricing, and usage limits.
-- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice?from=related) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
-- [Billing and Refunds](https://vercel.com/docs/integrations/create-integration/billing?from=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
-- [Pricing](https://vercel.com/docs/pricing?from=related) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
-- [Manage and Optimize Usage](https://vercel.com/docs/pricing/manage-and-optimize-usage?from=related) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Vercel Billing CLI is now available](https://vercel.com/changelog/vercel-billing-cli-is-now-available)
+- [Billing FAQ for Pro Plan](https://vercel.com/docs/plans/pro-plan/billing) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
+- [Billing & Invoices](https://vercel.com/docs/pricing/understanding-my-invoice) — Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based
+- [vercel billing](https://vercel.com/docs/cli/billing) — Learn how to view your billing overview, usage, budgets, and invoices for your Vercel team using the vercel billing CLI
+- [Pricing on Vercel](https://vercel.com/docs/pricing) — Learn about Vercel's pricing model, including the resources and services that are billed, and how they are priced.
+- [List FOCUS billing charges](https://vercel.com/docs/rest-api/billing/list-focus-billing-charges) — GET /v1/billing/charges — Returns the billing charge data in FOCUS v1.3 JSONL format for a specified Vercel team, within
 
 Full cross-link map for this page: [/docs/plans/enterprise/billing.graph.md](/docs/plans/enterprise/billing.graph.md)
 <!-- /docsgraph:related -->
+
+To discuss Enterprise pricing or contract terms, [contact our sales team](/contact/sales).
 
 ## Payments
 
@@ -104,7 +106,7 @@ Yes. Learn more about [Roles and Permissions](/docs/rbac).
 
 ### How do I update my billing information?
 
-- ### Go to the  page
+- ### Go to the **Settings** page
   - Navigate to the [Dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard)
   - Select your team from the team switcher on the top left as explained [here](/docs/accounts#creating-a-team)
   - Open **Settings** in the sidebar
@@ -144,7 +146,22 @@ You can monitor usage in the [Vercel Dashboard](/dashboard) under the **Usage** 
 
 The billing cycle refers to the period of time between invoices. The start date depends on when you created the account. You will be billed every 1, 2, 3, 6, or 12 months depending on your contract.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

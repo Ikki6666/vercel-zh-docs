@@ -3,16 +3,19 @@ title: Deployment Checks
 product: vercel
 url: /docs/deployment-checks
 canonical_url: "https://vercel.com/docs/deployment-checks"
-last_updated: 2026-07-02
+last_updated: 2026-08-11
 type: reference
 prerequisites:
   []
 related:
+  - /docs/flags/flags-sdk-reference
+  - /docs/flags/vercel-flags
   - /docs/git/vercel-for-github
   - /docs/deployments/promoting-a-deployment
   - /docs/rolling-releases
 summary: Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Deployment Checks
@@ -25,14 +28,16 @@ Deployment Checks are conditions that must be met before promoting a production 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can you deploy based on tags/releases on Vercel?](https://vercel.com/kb/guide/can-you-deploy-based-on-tags-releases-on-vercel?from=related) — Learn how to deploy based on tags/releases on Vercel.
-- [How can I use GitHub Actions with Vercel?](https://vercel.com/kb/guide/how-can-i-use-github-actions-with-vercel?from=related) — GitHub Actions with Vercel works best when you skip duplicate builds. Learn the 4-command CLI pattern, --prebuilt flag,
-- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
-- [Checks](https://vercel.com/docs/checks?from=related) — Vercel automatically keeps an eye on various aspects of your web application using the Checks API. Learn how to use Chec
-- [Checks Reference](https://vercel.com/docs/checks/creating-checks?from=related) — Learn how to create your own Checks with Vercel Integrations. You can build your own Integration in order to register an
-- [Git Integrations](https://vercel.com/docs/git?from=related) — Vercel allows for automatic deployments on every branch push and merges onto the production branch of your GitHub, GitLa
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration?from=related) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [Block Vercel deployment promotions with GitHub Actions](https://vercel.com/changelog/block-vercel-deployment-promotions-with-github-actions)
+- [Native Deployment Checks are now available](https://vercel.com/changelog/native-deployment-checks)
+- [Vercel Microfrontends checks for missing configuration](https://vercel.com/changelog/vercel-microfrontends-checks-for-missing-configuration)
+- [Migrate from Railway to Vercel](https://vercel.com/kb/guide/migrate-railway-to-vercel) — Migrate an app from Railway to Vercel. Choose a deployment path, configure services, plan for stored data, and test befo
+- [Deploying safely on Vercel without merge queues](https://vercel.com/blog/deploy-safely-on-vercel-without-merge-queues)
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Anatomy of the Checks API](https://vercel.com/docs/checks/creating-checks) — Learn how to create your own Checks with Vercel Integrations. You can build your own Integration to register any arbitra
+- [Working with Checks](https://vercel.com/docs/checks) — Vercel automatically keeps an eye on various aspects of your web application using the Checks API. Learn how to use Chec
+- [List check runs for a deployment](https://vercel.com/docs/rest-api/checks-v2/list-check-runs-for-a-deployment) — GET /v2/deployments/{deploymentId}/check-runs — List all check runs for a deployment.
+- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
 
 Full cross-link map for this page: [/docs/deployment-checks.graph.md](/docs/deployment-checks.graph.md)
 <!-- /docsgraph:related -->
@@ -65,8 +70,66 @@ With Deployment Checks, you introduce a new step that ensures the safety of the 
 
 You can add Deployment Checks from multiple sources:
 
-- **GitHub Checks**: Import GitHub Actions workflow results as Deployment Checks. Vercel reads commit statuses and check run results to determine if a deployment should be promoted.
-- **Integration Checks**: Third-party integrations from the [Vercel Marketplace](/marketplace) can provide checks for testing, monitoring, and observability.
+- **Native Deployment Checks (Vercel)**: Vercel runs built-in checks for your deployment, including script-based lint and typecheck jobs, and Vercel-provided checks such as Microfrontends Config Present and Flag Definitions Present.
+
+* **GitHub Checks**: Import GitHub Actions workflow results as Deployment Checks. Vercel reads commit statuses and check run results to determine if a deployment should be promoted.
+* **Integration Checks**: Third-party integrations from the [Vercel Marketplace](/marketplace) can provide checks for testing, monitoring, and observability.
+
+## Native Deployment Checks
+
+Native Deployment Checks let Vercel run checks directly on your deployment, without requiring external CI configuration. Script-based checks clone your repository, install dependencies, and run the corresponding script from your `package.json`.
+
+### Available checks
+
+| Check                             | Script                                      | Description                                                                       |
+| --------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------- |
+| **Lint**                          | `lint`                                      | Catches code style issues and potential errors                                    |
+| **Typecheck**                     | `typecheck`, `type-check`, or `check-types` | Verifies type safety across your codebase                                         |
+| **Microfrontends Config Present** | —                                           | Verifies that `microfrontends.json` is included in the deployment's build outputs |
+
+### Requirements
+
+- Script-based checks require a `package.json` with a matching script for each check you enable. If no matching script is found, the check is automatically skipped.
+- Supported package managers: npm, pnpm, yarn, and bun (detected from your lock file).
+
+* Flag Definitions Present requires the [Flags SDK](/docs/flags/flags-sdk-reference) with a `FLAGS_SECRET` configured. It does not use `package.json` scripts.
+
+### Adding Native Deployment Checks
+
+- ### Navigate to Deployment Checks settings
+  Visit [your project's Deployment Checks settings](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fbuild-and-deployment%23deployment-checks) and select **Add Checks**.
+
+- ### Select Vercel as the provider
+  In the provider selection step, choose **Vercel**, then select **Next**.
+
+- ### Choose which checks to enable
+  Select **Lint**, **Typecheck**, or both. Each check corresponds to a script in your `package.json`. **Flag Definitions Present** also appears when it is available for your project. Then select **Add**.
+
+- ### Checks run on your next deployment
+  After adding, the selected checks will run on each new deployment. You can view check status, logs, and results directly in the deployment detail view.
+
+### Configuring environments
+
+By default, Native Deployment Checks run on all deployment environments. You can configure which environments each check runs on (for example, production only, or both production and preview) from the check's settings in the Deployment Checks list.
+
+### Viewing logs
+
+When a Native Deployment Check runs, you can view its real-time logs directly in the deployment detail view by selecting the **Logs** button next to the check. This streams output from the lint or typecheck command as it runs.
+
+### Flag Definitions Present
+
+The Flag Definitions Present check verifies that every feature flag your code declares with [Vercel Flags](/docs/flags/vercel-flags) has a definition in your project. This catches flags that were declared in code but never created in the dashboard before the deployment is promoted to production.
+
+When a deployment is ready, Vercel reads the deployment's [flags discovery endpoint](/docs/flags/flags-sdk-reference) (`/.well-known/vercel/flags`) and checks each flag declared with the Vercel provider against the project's flag definitions.
+
+The check passes when every declared Vercel flag has a definition in the project, including when the deployment declares no Vercel flags at all. Flags from other providers are ignored, as are flags whose SDK key belongs to a different project. If your project does not use Vercel Flags, the check also passes when the deployment has no `FLAGS_SECRET` or does not serve the discovery endpoint, because there is nothing to verify.
+
+The check fails when:
+
+- One or more declared flags have no definition in the project. The check output lists each missing flag with an action to create it.
+- Your project uses Vercel Flags, but flags cannot be discovered. For example, when `FLAGS_SECRET` is missing or invalid, the discovery endpoint is missing or returns an error, or the response is invalid.
+
+To resolve a failure, create the missing flag definitions or fix the discovery setup, then trigger a new deployment.
 
 ## GitHub Checks
 
@@ -111,6 +174,18 @@ You can bypass Deployment Checks by selecting [Force Promote](/docs/deployments/
 
 ## Limitations
 
+### Native Deployment Checks
+
+- Script-based Native Deployment Checks only run if your project has a compatible script in `package.json`. If no matching script is found, the check is automatically skipped.
+- The supported scripts are `lint` for lint checks, and `typecheck`, `type-check`, or `check-types` for typecheck.
+
+### Flag Definitions Present
+
+- Flag Definitions Present only verifies flags declared with the Vercel provider. Flags from other providers are not checked.
+- When a project uses Vercel Flags, a failed flag discovery (such as a missing or invalid `FLAGS_SECRET`) fails the Flag Definitions Present check rather than skipping it.
+
+### GitHub Checks
+
 GitHub and GitHub Actions have edge cases with status reporting. These behaviors are matched in GitHub-backed Deployment Checks.
 
 - To trigger a workflow in response to Vercel deployments using [`repository_dispatch`](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#repository_dispatch), use the [`vercel/repository-dispatch/actions/status@v1`](https://github.com/marketplace/actions/deployment-status-update) action to set a status on the commit for Vercel Deployment Checks. This ensures the commit that triggered the deployment is the one used to determine if the Deployment Checks are met.
@@ -119,7 +194,22 @@ GitHub and GitHub Actions have edge cases with status reporting. These behaviors
   - Each run of a GitHub Workflow should result in only one commit status. For example, when using [`repository_dispatch`](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#repository_dispatch), ensure the commit status includes the environment name to avoid writing to the same status for each of the triggered workflow runs.
 - Avoid using the same name for actions across multiple workflows. Due to GitHub's implementation of Check Runs, these will collide and introduce race conditions when used with GitHub branch protection rules, GitHub rulesets, and Vercel Deployment Checks.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

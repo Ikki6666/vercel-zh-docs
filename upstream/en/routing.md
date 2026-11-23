@@ -3,7 +3,7 @@ title: Routing
 product: vercel
 url: /docs/routing
 canonical_url: "https://vercel.com/docs/routing"
-last_updated: 2026-06-16
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   []
@@ -15,6 +15,7 @@ related:
   - /docs/caching/cdn-cache
 summary: "Learn how Vercel's CDN routes requests through firewall, project routes, and deployment routes before reaching your application."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Routing
@@ -27,13 +28,13 @@ Vercel's CDN evaluates routing rules on every request before checking any cache 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Can I use Vercel as a reverse proxy?](https://vercel.com/kb/guide/vercel-reverse-proxy-rewrites-external?from=related) — Learn how to use rewrites to proxy requests from Vercel to other deployments.
-- [Using Vercel as a Standalone CDN](https://vercel.com/kb/guide/using_vercel_as_a_cdn?from=related) — Use Vercel's external rewrites to proxy and cache content from external websites or APIs through Vercel's global edge ne
-- [Routing](https://vercel.com/docs/services/routing?from=related) — Learn how Vercel routes public requests to services and how each service handles its own routes.
-- [Routing Middleware](https://vercel.com/docs/routing-middleware?from=related) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
-- [Getting Started](https://vercel.com/docs/routing-middleware/getting-started?from=related) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
-- [vercel routes](https://vercel.com/docs/cli/routes?from=related) — Learn how to manage project-level routing rules using the vercel routes CLI command.
-- [Features](https://vercel.com/docs/build-output-api/features?from=related) — Learn how to implement common Vercel platform features through the Build Output API.
+- [Python projects now support routing rules](https://vercel.com/changelog/python-projects-now-support-routing-rules)
+- [Vercel's CDN now supports updating routing rules without a new deployment](https://vercel.com/changelog/vercels-cdn-now-supports-updating-routing-rules-without-a-new-deployment)
+- [vercel routes](https://vercel.com/docs/cli/routes) — Learn how to manage project-level routing rules using the vercel routes CLI command.
+- [Getting Started with Routing Middleware](https://vercel.com/docs/routing-middleware/getting-started) — Learn how you can use Routing Middleware, code that executes before a request is processed on a site, to provide speed a
+- [Get project routing rules](https://vercel.com/docs/rest-api/project-routes/get-project-routing-rules) — GET /v1/projects/{projectId}/routes — Get the routing rules for a project. Supports searching by name/ID/pattern, filter
+- [Services routing](https://vercel.com/docs/services/routing) — Learn how Vercel routes public requests to services and how each service handles its own routes.
+- [Add a routing rule](https://vercel.com/docs/rest-api/project-routes/add-a-routing-rule) — POST /v1/projects/{projectId}/routes — Add a single routing rule to a project at a specified position. Defaults to the e
 
 Full cross-link map for this page: [/docs/routing.graph.md](/docs/routing.graph.md)
 <!-- /docsgraph:related -->
@@ -95,6 +96,26 @@ Use external rewrites when you need to:
 
 Vercel can also [cache responses from external origins](/docs/caching/cdn-cache) to reduce load on your backend.
 
+## Replacing `.htaccess` rules
+
+Vercel doesn't run [Apache HTTP Server](https://httpd.apache.org/), so it ignores [`.htaccess`](https://httpd.apache.org/docs/2.4/howto/htaccess.html) files. When you move a site from Apache, recreate each rule with the Vercel feature that does the same job:
+
+| `.htaccess` rule                                                   | Vercel equivalent                                                                                                                                                    |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Redirect`, `RedirectMatch`, or `RewriteRule` with the `[R]` flag  | [`redirects`](/docs/project-configuration/vercel-json#redirects) in `vercel.json`, or [bulk redirects](/docs/routing/redirects/bulk-redirects) for thousands of URLs |
+| `RewriteRule` that serves a different path or proxies to an origin | [`rewrites`](/docs/project-configuration/vercel-json#rewrites) in `vercel.json`                                                                                      |
+| `RewriteCond` that checks a header, cookie, query string, or host  | [`has` and `missing` conditions](/docs/project-configuration/vercel-json#conditional-matching-with-has-and-missing) on a redirect, rewrite, or header                |
+| `Header set`                                                       | [`headers`](/docs/project-configuration/vercel-json#headers) in `vercel.json`                                                                                        |
+| `ExpiresByType` or a `Cache-Control` header                        | [`Cache-Control` headers](/docs/caching/cache-control-headers)                                                                                                       |
+| A rewrite that forces HTTPS                                        | Nothing to configure. The CDN [forwards HTTP requests to HTTPS](/docs/cdn-security/encryption) with a `308` status code                                              |
+| Rewrites that remove `.html` extensions or change trailing slashes | [`cleanUrls`](/docs/project-configuration/vercel-json#cleanurls) and [`trailingSlash`](/docs/project-configuration/vercel-json#trailingslash) in `vercel.json`       |
+| `Options -Indexes`                                                 | The [Directory Listing](/docs/directory-listing) project setting                                                                                                     |
+| `AuthType Basic` with a `.htpasswd` file                           | [Password Protection](/docs/deployment-protection/methods-to-protect-deployments/password-protection)                                                                |
+| `Deny from` or `Require not ip`                                    | [IP blocking](/docs/vercel-firewall/vercel-waf/ip-blocking) with the Vercel WAF                                                                                      |
+| `mod_deflate` compression rules                                    | Nothing to configure. The CDN [compresses responses](/docs/how-vercel-cdn-works/compression) with Brotli or Gzip                                                     |
+
+If you use a framework such as Next.js, you can define redirects, rewrites, and headers in the framework's configuration instead of `vercel.json`. To change rules without a new deployment, use [project-level routing rules](/docs/routing/project-routing-rules). For rules that need custom logic, use [Routing Middleware](/docs/routing-middleware).
+
 ## Learn more
 
 - [Redirects](/docs/routing/redirects)
@@ -105,7 +126,22 @@ Vercel can also [cache responses from external origins](/docs/caching/cdn-cache)
 - [Monitoring and logs](/docs/query/monitoring)
 - [Runtime logs](/docs/logs/runtime)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

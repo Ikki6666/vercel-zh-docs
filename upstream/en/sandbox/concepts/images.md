@@ -3,7 +3,7 @@ title: Images
 product: vercel
 url: /docs/sandbox/concepts/images
 canonical_url: "https://vercel.com/docs/sandbox/concepts/images"
-last_updated: 2026-08-03
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/sandbox/concepts
@@ -11,9 +11,12 @@ prerequisites:
 related:
   - /docs/container-registry
   - /docs/container-registry/public-and-shared-repositories
-  - /docs/container-registry/getting-started
-summary: Start sandboxes from custom OCI images stored in Vercel Container Registry to ship your own system packages, tooling, and filesystem layout.
+  - /docs/sandbox/concepts/snapshots
+  - /docs/security/shared-responsibility
+  - /docs/container-registry/limits-and-pricing
+summary: "Start sandboxes from Vercel's Managed Images, or custom OCI images stored in Vercel Container Registry to ship your own system packages, tooling, and..."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Images
@@ -26,15 +29,18 @@ Custom images give you full control over the sandbox environment. Define the Lin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Running Docker on Vercel](https://vercel.com/kb/guide/docker?from=related) — Learn how to run Docker on Vercel by deploying OCI container images as Vercel Functions, storing them in Vercel Containe
-- [How to use Vercel Container Registry](https://vercel.com/kb/guide/how-to-use-vercel-container-registry?from=related) — Push, store, and pull OCI container images with Vercel Container Registry, then deploy them to Vercel Functions and Verc
-- [How to migrate from GHCR to Vercel Container Registry](https://vercel.com/kb/guide/migrate-ghcr-to-vcr?from=related) — Migrate container images from GitHub Container Registry \\(GHCR\\) to Vercel Container Registry \\(VCR\\), including authent
-- [How to test a container image in Vercel Sandbox before deploying](https://vercel.com/kb/guide/test-container-image-vercel-sandbox?from=related) — Validate a container image before deploying by booting it as a custom Sandbox image from Vercel Container Registry \\(VCR
-- [Examples](https://vercel.com/docs/sandbox/working-with-sandbox?from=related) — Task-oriented examples for common Vercel Sandbox operations in TypeScript and Python.
-- [JS SDK Reference](https://vercel.com/docs/sandbox/sdk-reference?from=related) — A comprehensive reference for the Vercel Sandbox JavaScript SDK, which lets you run code in a secure, isolated environme
-- [Persistence](https://vercel.com/docs/sandbox/concepts/persistent-sandboxes?from=related) — Sandboxes automatically save their filesystem state when stopped and restore it when resumed. No manual snapshot managem
-- [vercel sandbox](https://vercel.com/docs/cli/sandbox?from=related) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Sandbox now runs on Vercel Managed Images](https://vercel.com/changelog/vercel-sandbox-managed-images)
+- [Python 3.15 now available as a Vercel Managed Image](https://vercel.com/changelog/python-3-15-now-available-as-a-vercel-managed-image)
+- [Share Vercel Container Registry repositories across teams](https://vercel.com/changelog/share-vercel-container-registry-repositories-across-teams)
+- [Push images to Vercel Container Registry from GitHub Actions](https://vercel.com/changelog/vcr-login-github-action)
+- [Vercel Container Registry now supports 2 GB compressed image layers](https://vercel.com/changelog/vercel-container-registry-now-supports-2-gb-compressed-image-layers-new)
+- [Run Cursor Cloud Agents on Vercel Sandbox](https://vercel.com/kb/guide/cursor-vercel-sandbox) — Learn how to run Cursor Cloud Agents on Vercel Sandbox with self-hosted worker pools, durable workflows, isolated microV
+- [Running Docker on Vercel](https://vercel.com/kb/guide/docker) — Run Docker on Vercel for HTTP apps and background workers, store images in Vercel Container Registry, and test container
+- [How to migrate from GHCR to Vercel Container Registry](https://vercel.com/kb/guide/migrate-ghcr-to-vcr) — Migrate container images from GitHub Container Registry \\(GHCR\\) to Vercel Container Registry \\(VCR\\), including authent
+- [vercel sandbox](https://vercel.com/docs/cli/sandbox) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
+- [Drives](https://vercel.com/docs/sandbox/concepts/drives) — Mount Vercel Drives into sandboxes for persistent storage that survives stops and is shared across runs.
+- [Gemini API Managed Agents](https://vercel.com/docs/sandbox/ecosystem/gemini-api) — Connect a Gemini API self-hosted environment to Vercel Sandbox so agent file and shell tools run in your own microVM.
+- [Hermes](https://vercel.com/docs/sandbox/ecosystem/hermes) — Run Hermes Agent terminal commands in isolated Vercel Sandbox microVMs, with models served through Vercel AI Gateway.
 
 Full cross-link map for this page: [/docs/sandbox/concepts/images.graph.md](/docs/sandbox/concepts/images.graph.md)
 <!-- /docsgraph:related -->
@@ -51,24 +57,47 @@ You can use a [Vercel Managed Image (VMI)](#vercel-managed-images), your own [cu
 
 Vercel maintains a set of managed images containing common tools and languages, published under the `vercel/sandbox` scope.
 
-| Image                                                                                             | Base                    | Contents                                                  |
-| ------------------------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------- |
-| [`vercel/sandbox/universal:latest`](https://github.com/vercel/sandbox/tree/main/images/universal) | `vercel/sandbox/ubuntu` | Node.js LTS (24), Python (3.14), coding agents, utilities |
-| [`vercel/sandbox/node:22\|24\|26`](https://github.com/vercel/sandbox/tree/main/images/node)       | `vercel/sandbox/ubuntu` | Node.js (major pinned), pnpm                              |
-| [`vercel/sandbox/python:3.14`](https://github.com/vercel/sandbox/tree/main/images/python)         | `vercel/sandbox/ubuntu` | Python 3.14 (pinned), pip, venv, uv                       |
-| [`vercel/sandbox/arch:latest`](https://github.com/vercel/sandbox/tree/main/images/arch)           | `archlinux:latest`      | Arch Linux, yay (AUR), base-devel, git                    |
-| [`vercel/sandbox/ubuntu:latest`](https://github.com/vercel/sandbox/tree/main/images/ubuntu)       | `ubuntu:26.04`          | Ubuntu + sudo                                             |
+| Image                                                                                                             | Base                                   | Contents                                                  |
+| ------------------------------------------------------------------------------------------------------------------ | -------------------------------------- | ---------------------------------------------------------- |
+| [`vcr.vercel.com/vercel/sandbox/universal:latest`](https://github.com/vercel/sandbox/tree/main/images/universal) | `vcr.vercel.com/vercel/sandbox/ubuntu` | Node.js LTS (24), Python (3.14), coding agents, utilities |
+| [`vcr.vercel.com/vercel/sandbox/node:22\|24\|26`](https://github.com/vercel/sandbox/tree/main/images/node)       | `vcr.vercel.com/vercel/sandbox/ubuntu` | Node.js (major pinned), pnpm                              |
+| [`vcr.vercel.com/vercel/sandbox/python:3.14`](https://github.com/vercel/sandbox/tree/main/images/python)         | `vcr.vercel.com/vercel/sandbox/ubuntu` | Python 3.14 (pinned), pip, venv, uv                       |
+| [`vcr.vercel.com/vercel/sandbox/arch:latest`](https://github.com/vercel/sandbox/tree/main/images/arch)           | `archlinux:latest`                     | Arch Linux, yay (AUR), base-devel, git                    |
+| [`vcr.vercel.com/vercel/sandbox/ubuntu:latest`](https://github.com/vercel/sandbox/tree/main/images/ubuntu)       | `ubuntu:26.04`                         | Ubuntu + sudo                                             |
 
-The `vercel/sandbox/universal:latest` image is the default for sandboxes that don't specify an image. You can pin to a specific tag or digest, or use any of the other available managed image:
+The `vcr.vercel.com/vercel/sandbox/universal:latest` image is the default for sandboxes that don't specify an image. You can pin to a specific tag or digest, or use any of the other available managed image:
+
+**index.ts**
 
 ```ts filename="index.ts"
 import { Sandbox } from '@vercel/sandbox';
 
 const sandbox = await Sandbox.create({
-  image: 'vercel/sandbox/universal@sha256:...', // Use a specific digest of the universal image
-  // image: 'vercel/sandbox/node:24',           // Use the Node.js 24 image
-  // image: 'vercel/sandbox/ubuntu',            // Use the latest Ubuntu image
+  image: 'vcr.vercel.com/vercel/sandbox/universal@sha256:...', // Use a specific digest of the universal image
+  // image: 'vcr.vercel.com/vercel/sandbox/node:24',           // Use the Node.js 24 image
+  // image: 'vcr.vercel.com/vercel/sandbox/ubuntu',            // Use the latest Ubuntu image
 });
+```
+
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+
+
+async def main() -> None:
+    box = await sandbox.create_sandbox(
+        # Use a specific digest of the universal image
+        image="vcr.vercel.com/vercel/sandbox/universal@sha256:...",
+        # image="vcr.vercel.com/vercel/sandbox/node:24",  # Use the Node.js 24 image
+        # image="vcr.vercel.com/vercel/sandbox/ubuntu",  # Use the latest Ubuntu image
+    )
+    print(box.image)
+
+
+asyncio.run(main())
 ```
 
 ### Release cadence
@@ -76,6 +105,12 @@ const sandbox = await Sandbox.create({
 Every managed image gets a nightly release. Rolling tags (e.g. `universal:latest`) and the major-version tags (`node:26` or `python:3.14`) pick up operating system updates automatically, including security patches. New releases of Node.js, Python, preinstalled coding agents and other dependencies are picked up in nightly releases via an automated pipeline.
 
 Images are open source, with their source code [available on GitHub](https://github.com/vercel/sandbox/tree/main/images). To propose changes, open a pull request.
+
+## Security responsibilities for images and snapshots
+
+Vercel publishes nightly Vercel Managed Image releases and updates rolling or major-version tags with operating system patches and dependency releases. You are responsible for software you add, including packages installed in a sandbox and software in custom images. If you pin a managed image to a digest, update that pinned reference when you want a newer image release.
+
+[Snapshots](/docs/sandbox/concepts/snapshots) preserve the filesystem and installed packages from an earlier session. A new managed image release does not change the contents of an existing snapshot. When you restore an older snapshot, check its installed software and update it as needed. For the broader division of responsibilities, see [Vercel's shared responsibility model](/docs/security/shared-responsibility).
 
 ## Custom images
 
@@ -88,6 +123,7 @@ VCR only serves an image to Sandbox once it has prepared an optimized `linux/amd
 | `Ready`       | VCR prepared the image and Sandbox can use it.                                             |
 | `Preparing`   | VCR is preparing a `linux/amd64` image.                                                    |
 | `Unoptimized` | The image is pullable from VCR, but it is not `linux/amd64` and cannot be used in Sandbox. |
+| `Error`       | Preparation failed, for example because the image exceeds the [optimization limits](/docs/container-registry/limits-and-pricing#optimization-limits). You can still pull the image, but Sandbox can't use it. |
 
 If `Sandbox.create()` returns `image_not_ready`, retry after preparation finishes.
 
@@ -108,6 +144,8 @@ vercel vcr build docker . my-repository:latest --push
 
 After the image is pushed, create the sandbox with the repository reference for the authenticated project:
 
+**index.ts**
+
 ```ts filename="index.ts"
 import { Sandbox } from '@vercel/sandbox';
 
@@ -123,9 +161,28 @@ try {
 }
 ```
 
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+
+
+async def main() -> None:
+    async with sandbox.create_sandbox(image="my-repository:latest") as box:
+        result = await box.run_command("pwd", capture_output=True, check=True)
+        print(result.stdout.decode())
+
+
+asyncio.run(main())
+```
+
 ### Use a shared image
 
 A team can [share a VCR repository](/docs/container-registry/public-and-shared-repositories#share-a-repository) to give other teams read access to its images. Once a repository is shared with your team, create sandboxes from its images with a team-scoped reference:
+
+**index.ts**
 
 ```ts filename="index.ts"
 import { Sandbox } from '@vercel/sandbox';
@@ -135,7 +192,26 @@ const sandbox = await Sandbox.create({
 });
 ```
 
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+
+
+async def main() -> None:
+    await sandbox.create_sandbox(
+        image="other-team/their-project/shared-repository:latest",
+    )
+
+
+asyncio.run(main())
+```
+
 Sharing also works within a team. VCR repositories belong to a single project, so by default a sandbox can only use images from its own project. To use a repository's images from other projects in your team, share the repository with your own team:
+
+**index.ts**
 
 ```ts filename="index.ts"
 import { Sandbox } from '@vercel/sandbox';
@@ -146,9 +222,29 @@ const sandbox = await Sandbox.create({
 });
 ```
 
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+
+
+async def main() -> None:
+    # Created in a different project of my-team
+    await sandbox.create_sandbox(
+        image="my-team/other-project/my-repository:latest",
+    )
+
+
+asyncio.run(main())
+```
+
 ### Use a public image
 
 A team can [mark a VCR repository as public](/docs/container-registry/public-and-shared-repositories#public-repositories) to give any other team read access to its images. Anyone on Vercel can then create sandboxes from the repository's images with a team-scoped reference:
+
+**index.ts**
 
 ```ts filename="index.ts"
 import { Sandbox } from '@vercel/sandbox';
@@ -156,6 +252,23 @@ import { Sandbox } from '@vercel/sandbox';
 const sandbox = await Sandbox.create({
   image: 'other-team/their-project/public-repository:latest',
 });
+```
+
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+
+
+async def main() -> None:
+    await sandbox.create_sandbox(
+        image="other-team/their-project/public-repository:latest",
+    )
+
+
+asyncio.run(main())
 ```
 
 Vercel uses that approach to make [Vercel Managed Images (VMI)](#vercel-managed-images) accessible to any team.
@@ -178,7 +291,22 @@ The `vcr.vercel.com/` prefix is optional and works with any team-scoped form, in
 
 A team-scoped reference resolves against the referenced team and project. It works when the reference points at the authenticated project, or at a repository that has been [shared with your team](/docs/container-registry/public-and-shared-repositories#share-a-repository) or [marked as public](/docs/container-registry/public-and-shared-repositories#public-repositories). If the repository doesn't exist or isn't shared with your team, `Sandbox.create()` returns `not_found`.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

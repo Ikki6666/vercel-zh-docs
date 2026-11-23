@@ -1,10 +1,10 @@
 ---
-title: Image Generation with AI SDK
+title: AI Gateway Image Generation with AI SDK
 product: vercel
 url: /docs/ai-gateway/modalities/image-generation/ai-sdk
 canonical_url: "https://vercel.com/docs/ai-gateway/modalities/image-generation/ai-sdk"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: how-to
 prerequisites:
   - /docs/ai-gateway/modalities/image-generation
   - /docs/ai-gateway/modalities
@@ -12,9 +12,10 @@ related:
   []
 summary: Generate and edit images using AI models through Vercel AI Gateway with the AI SDK.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
-# Image Generation with AI SDK
+# AI Gateway Image Generation with AI SDK
 
 AI Gateway supports image generation using the [AI SDK](https://ai-sdk.dev/docs/ai-sdk-core/image-generation) for the models listed under the **Image Gen** filter at the [AI Gateway Models
 page](/ai-gateway/models?type=image), including multimodal LLMs and image-only models.
@@ -25,21 +26,21 @@ page](/ai-gateway/models?type=image), including multimodal LLMs and image-only m
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation?from=related) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
-- [Video Generation](https://ai-sdk.dev/docs/ai-sdk-core/video-generation?from=related)
-- [Image](https://vercel.com/docs/ai-gateway/getting-started/image?from=related) — Generate images from text prompts using AI Gateway.
-- [DeepInfra](https://ai-sdk.dev/providers/ai-sdk-providers/deepinfra?from=related)
-- [Google Gemini Image Generation](https://ai-sdk.dev/cookbook/guides/google-gemini-image-generation?from=related)
-- [Azure OpenAI](https://ai-sdk.dev/providers/ai-sdk-providers/azure?from=related)
-- [Using Chat Completions API](https://vercel.com/docs/ai-gateway/modalities/image-generation/openai?from=related) — Generate and edit images using AI models through Vercel AI Gateway with the Chat Completions API.
-- [Image Generation](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/image-generation?from=related) — Generate images using AI models that support multimodal output through the Chat Completions API.
-- [AI SDK](https://vercel.com/docs/ai-sdk?from=related) — TypeScript toolkit for building AI-powered applications with React, Next.js, Vue, Svelte and Node.js
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [FLUX 3 Image now available on AI Gateway](https://vercel.com/changelog/flux-3-image-now-available-on-ai-gateway)
+- [MAI-Image-2.6 and MAI-Image-2.6-Flash now available on AI Gateway](https://vercel.com/changelog/mai-image-2-6-and-mai-image-2-6-flash-now-available-on-ai-gateway)
+- [MAI-Image-2.7 and MAI-Image-2.7-Flash now available on AI Gateway](https://vercel.com/changelog/mai-image-2-7-and-mai-image-2-7-flash-now-available-on-ai-gateway)
+- [Nano Banana 2.1 now available on AI Gateway](https://vercel.com/changelog/nano-banana-2-1-now-available-on-ai-gateway)
+- [Generate videos with AI SDK](https://vercel.com/kb/guide/ai-sdk-video-generation) — Use experimental_generateVideo in the AI SDK to generate videos from a text prompt or an image, set aspect ratio, resolu
+- [Image-only models available in Vercel AI Gateway](https://vercel.com/changelog/image-only-models-available-in-vercel-ai-gateway)
+- [AI Gateway Image Generation via Chat Completions](https://vercel.com/docs/ai-gateway/modalities/image-generation/openai) — Generate and edit images using AI models through Vercel AI Gateway with the Chat Completions API.
+- [AI SDK for Python with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/ai-sdk-python) — Build AI-powered Python applications using the AI SDK for Python with AI Gateway for unified access to 400+ models.
 
 Full cross-link map for this page: [/docs/ai-gateway/modalities/image-generation/ai-sdk.graph.md](/docs/ai-gateway/modalities/image-generation/ai-sdk.graph.md)
 <!-- /docsgraph:related -->
 
 ## Multimodal LLMs
+
+For SDK options and result types, see [AI SDK image generation](https://ai-sdk.dev/docs/ai-sdk-core/image-generation) and [Python image generation](https://ai-python.dev/docs/basics/model-operations#generate-images).
 
 These models can generate both text and images in their responses. They use `generateText` or `streamText` functions with special configuration to enable image outputs.
 
@@ -85,7 +86,7 @@ async function main() {
   });
 
   // Stream text output as it arrives
-  for await (const delta of result.fullStream) {
+  for await (const delta of result.stream) {
     if (delta.type === 'text-delta') {
       process.stdout.write(delta.text);
     }
@@ -93,8 +94,8 @@ async function main() {
 
   // Access generated images after streaming completes
   const finalResult = await result;
-  console.log(`\nGenerated ${finalResult.files.length} image(s)`);
-  console.log('Usage:', JSON.stringify(finalResult.usage, null, 2));
+  console.log(`\nGenerated ${(await finalResult.files).length} image(s)`);
+  console.log('Usage:', JSON.stringify(await finalResult.usage, null, 2));
 }
 
 main().catch(console.error);
@@ -142,7 +143,7 @@ async function main() {
   });
 
   // Stream text output as it arrives
-  for await (const delta of result.fullStream) {
+  for await (const delta of result.stream) {
     if (delta.type === 'text-delta') {
       process.stdout.write(delta.text);
     }
@@ -150,8 +151,8 @@ async function main() {
 
   // Access generated images after streaming completes
   const finalResult = await result;
-  console.log(`\nGenerated ${finalResult.files.length} image(s)`);
-  console.log('Usage:', JSON.stringify(finalResult.usage, null, 2));
+  console.log(`\nGenerated ${(await finalResult.files).length} image(s)`);
+  console.log('Usage:', JSON.stringify(await finalResult.usage, null, 2));
 }
 
 main().catch(console.error);
@@ -159,7 +160,7 @@ main().catch(console.error);
 
 ### Nano Banana (`google/gemini-2.5-flash-image`)
 
-The original Nano Banana model — Gemini 2.5's flash image variant. Still available for workloads on the older generation. Images are returned as content parts in `result.files`.
+The original Nano Banana model uses Gemini 2.5's flash image variant. You can still use it for workloads on the older generation. The response includes images as content parts in `result.files`.
 
 ```typescript filename="generate-nanobanana.ts"
 import { generateText } from 'ai';
@@ -208,7 +209,7 @@ if (imageFiles.length > 0) {
 
 You can generate images through OpenAI in two ways:
 
-- **Through a multimodal LLM**: [GPT-5 variants](/ai-gateway/models/gpt-5.5) and a few other OpenAI models accept a provider-defined `image_generation` tool alongside regular text prompts. The tool uses an OpenAI image model (for example, `openai/gpt-image-1` or `openai/gpt-image-2`) behind the scenes, and images are returned as tool results in `result.staticToolResults` (for `generateText`) or as `tool-result` events (for `streamText`).
+- **Through a multimodal LLM**: [GPT-5 variants](/ai-gateway/models/openai/gpt-5.5) and a few other OpenAI models accept a provider-defined `image_generation` tool alongside regular text prompts. The tool uses an OpenAI image model (for example, `openai/gpt-image-1` or `openai/gpt-image-2`) behind the scenes, and images are returned as tool results in `result.staticToolResults` (for `generateText`) or as `tool-result` events (for `streamText`).
 - **Through the image-only model**: Call `openai/gpt-image-2` directly with `generateImage`. See [OpenAI GPT Image 2](#openai-gpt-image-2) under image-only models.
 
 Learn more about the [OpenAI Image Generation Tool](https://ai-sdk.dev/providers/ai-sdk-providers/openai#image-generation-tool) in the AI SDK documentation.
@@ -222,7 +223,7 @@ import { openai } from '@ai-sdk/openai';
 
 async function main() {
   const result = await generateText({
-    model: 'openai/gpt-5.1-instant',
+    model: 'openai/gpt-6-astra',
     prompt: `Generate an image of a black shiba inu dog eating a cake in a green grass field`,
     tools: {
       image_generation: openai.tools.imageGeneration({
@@ -258,7 +259,7 @@ import { openai } from '@ai-sdk/openai';
 
 async function main() {
   const result = streamText({
-    model: 'openai/gpt-5.1-instant',
+    model: 'openai/gpt-6-astra',
     prompt: `Generate an image of a corgi puppy playing with colorful balloons in a sunny garden`,
     tools: {
       image_generation: openai.tools.imageGeneration({
@@ -268,7 +269,7 @@ async function main() {
     },
   });
 
-  for await (const part of result.fullStream) {
+  for await (const part of result.stream) {
     if (part.type === 'tool-result' && !part.dynamic) {
       if (part.toolName === 'image_generation') {
         const base64Image = part.output.result;
@@ -362,6 +363,8 @@ These models are specialized for image generation and use the `generateImage` fu
 
 OpenAI's `openai/gpt-image-2` is an image-only model you can call directly with `generateImage`. This is the same model the OpenAI [image generation tool](#openai-models-with-image-generation-tool) invokes behind the scenes, but calling it directly skips the multimodal LLM and returns images without an intermediate tool call.
 
+#### TypeScript
+
 ```typescript filename="generate-gpt-image-2.ts"
 import { generateImage } from 'ai';
 
@@ -373,29 +376,26 @@ const result = await generateImage({
 console.log(`Generated ${result.images.length} image(s)`);
 ```
 
-### Google Vertex Imagen
+#### Python (beta)
 
-Google's Imagen models provide high-quality image generation with fine-grained control over output parameters. Multiple Imagen models are available, including but not limited to:
+```python filename="generate-image.py"
+import asyncio
+import ai
+import base64
+from pathlib import Path
 
-- `google/imagen-4.0-ultra-generate-001`
-- `google/imagen-4.0-generate-001`
+async def main():
+    result = await ai.ops.generate_image(
+        ai.get_model('openai/gpt-image-2'),
+        'A watercolor cabin at sunset.',
+        params=ai.ops.ImageParams(size="1024x1024"),
+    )
+    image = result.value[0]
+    data = image.data if isinstance(image.data, bytes) else base64.b64decode(image.data)
+    Path("cabin.png").write_bytes(data)
+    print("Saved cabin.png")
 
-```typescript filename="generate-imagen.ts"
-import { generateImage } from 'ai';
-import 'dotenv/config';
-
-async function main() {
-  const result = await generateImage({
-    model: 'google/imagen-4.0-ultra-generate-001',
-    prompt: `A majestic Bengal tiger drinking water from a crystal-clear mountain stream at golden hour`,
-    n: 2,
-    aspectRatio: '16:9',
-  });
-
-  console.log(`Generated ${result.images.length} image(s)`);
-}
-
-main().catch(console.error);
+asyncio.run(main())
 ```
 
 ### Black Forest Labs
@@ -433,13 +433,13 @@ SpaceXAI's Grok Imagine models generate high-quality images from text prompts wi
 > **💡 Note:** SpaceXAI image models do not support the `size` parameter. Use `aspectRatio`
 > instead.
 
-```typescript filename="generate-xai.ts"
+```typescript filename="generate-spacexai.ts"
 import { generateImage } from 'ai';
 import 'dotenv/config';
 
 async function main() {
   const result = await generateImage({
-    model: 'xai/grok-imagine-image',
+    model: 'spacexai/grok-imagine-image',
     prompt: `A serene Japanese garden with a koi pond, stone lanterns, and cherry blossoms in full bloom`,
     aspectRatio: '16:9',
   });
@@ -483,7 +483,22 @@ for (const [index, image] of result.images.entries()) {
 
 For more information on generating images with the AI SDK, see the [AI SDK documentation](https://ai-sdk.dev/docs/ai-sdk-core/image-generation).
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

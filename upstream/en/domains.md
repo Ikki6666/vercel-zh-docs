@@ -3,7 +3,7 @@ title: Domains Overview
 product: vercel
 url: /docs/domains
 canonical_url: "https://vercel.com/docs/domains"
-last_updated: 2026-06-16
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   []
@@ -15,6 +15,7 @@ related:
   - /docs/domains/working-with-domains
 summary: Learn the fundamentals of how domains, DNS, and nameservers work on Vercel.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Domains Overview
@@ -27,20 +28,20 @@ A **domain** is a user-friendly way of referring to the address access a website
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Custom domain](https://v0.app/docs/custom-domains?from=related) — Add custom domains to your v0 deployments to give your applications a professional, branded URL.
-- [Debug routing on Vercel](https://vercel.com/kb/guide/debug-routing-on-vercel?from=related) — Learn how to debug how Vercel decides where to route your request
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [Why am I no longer receiving email after adding my domain to Vercel?](https://vercel.com/kb/guide/why-has-email-stopped-working?from=related) — Fix email that stopped working after adding your domain to Vercel, with a concrete MX record table and the DNS preset cl
-- [Configuring Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains?from=related) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
-- [vercel domains](https://vercel.com/docs/cli/domains?from=related) — Learn how to buy, sell, transfer, and manage your domains using the vercel domains CLI command.
-- [List all the domains](https://vercel.com/docs/rest-api/domains/list-all-the-domains?from=related)
-- [Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference?from=related) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
-- [Get a Domain's configuration](https://vercel.com/docs/rest-api/domains/get-a-domain-s-configuration?from=related)
+- [Custom domain](https://v0.app/docs/custom-domains) — Add custom domains to your v0 deployments to give your applications a professional, branded URL.
+- [Improved experience for managing project domains](https://vercel.com/changelog/improved-experience-for-managing-project-domains)
+- [Configuring Custom Domains](https://vercel.com/docs/platforms/multi-tenant-platforms/configuring-domains) — Add, verify, redirect, and remove wildcard and custom domains for a multi-tenant application using the Vercel SDK.
+- [Get a Domain's configuration](https://vercel.com/docs/rest-api/domains/get-a-domain-s-configuration) — GET /v6/domains/{domain}/config — Get a Domain's configuration.
+- [List all the domains](https://vercel.com/docs/rest-api/domains/list-all-the-domains) — GET /v5/domains — Retrieves a list of domains registered for the authenticated user or team. By default it returns the l
+- [Multi-tenant Reference](https://vercel.com/docs/platforms/multi-tenant-platforms/reference) — Reference for the Vercel domain API, error codes, troubleshooting, and FAQ for multi-tenant platforms.
+- [Domains and DNS](https://vercel.com/docs/agent-resources/vercel-mcp/tools/domains) — Vercel MCP tools for domains and dns.
 
 Full cross-link map for this page: [/docs/domains.graph.md](/docs/domains.graph.md)
 <!-- /docsgraph:related -->
 
 The system that manages the details about where a site is located on the internet, is known as **DNS or the Domain Name System**. At its most basic, DNS maps human-readable domain names to computer-friendly IP addresses. When you request a site in your browser, the first step is converting the domain address to an IP address. That process is handled by DNS and called **DNS Resolution**. Understanding how DNS works is important to ensure that you are configuring your domain correctly.
+
+![Diagram showing a browser resolving vercel.com through recursive, root, TLD, and authoritative DNS servers](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/projects/custom-domains/dns-request.png)
 
 *Diagram showing a basic DNS query.*
 
@@ -66,6 +67,8 @@ This overview shows a point of view of a user visiting your site. Here's what th
 
 When you've created a project and deployed it on Vercel, your site is served from Vercel's anycast network. It's reachable at whatever IP address the domain's DNS records point to. In this example we'll use `76.76.21.21`. The value you should actually use is the one on [your project's **Domains** settings](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fdomains\&title=Project+Domains) in your dashboard. None of this is visible from your user's perspective, because the browser only knows the domain, so it performs a DNS Lookup to map `yoursiteaddress.com` to the IP.
 
+![Diagram showing a browser resolving a custom domain to a Vercel-hosted deployment](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/projects/custom-domains/vercel-dns-request.png)
+
 *Diagram showing the Vercel-hosted query.*
 
 This is where, as a developer, you may have to configure the DNS settings to tell the authoritative server exactly where your site lives. Vercel [guides you through](/docs/domains/add-a-domain) exactly what information you need to set, within [your dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fdomains\&title=Project+Domains). There are a number of different settings that you should be aware of:
@@ -83,7 +86,29 @@ This is where, as a developer, you may have to configure the DNS settings to tel
 - [Manage domains programmatically with the registrar API](/docs/domains/registrar-api)
 - [Troubleshooting domains](/docs/domains/troubleshooting)
 
+## Related guides
+
+- [How to fix a domain suspended by serverHold or clientHold](https://vercel.com/kb/guide/how-to-fix-a-domain-suspended-by-serverhold-or-clienthold): What serverHold and clientHold mean, why they happen, and how to resolve them.
+- [Lifecycle of a domain](https://vercel.com/kb/guide/lifecycle-of-a-domain): Understand the states a .com domain passes through from registration to deletion, and how to renew or recover it at each stage.
+- [Troubleshooting Cross-Origin Errors (net::ERR\_BLOCKED\_BY\_ORB) with Deployment Protection](https://vercel.com/kb/guide/troubleshooting-cross-origin-errors-neterr-blocked-by-orb-with-deployment-protection): Learn to resolve \`net::ERR\_BLOCKED\_BY\_ORB\` errors on protected Vercel deployments. This guide explains how cross-origin asset requests conflict with Vercel Authentication and shows the fix for Sitecore JSS apps using the \`PUBLIC\_URL\` environment variable.
+- [How can I serve multiple projects under a single domain?](https://vercel.com/kb/guide/how-can-i-serve-multiple-projects-under-a-single-domain): Learn how to serve multiple Vercel projects from a single domain.
+
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

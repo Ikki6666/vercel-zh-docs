@@ -3,7 +3,7 @@ title: Billing & Invoices
 product: vercel
 url: /docs/pricing/understanding-my-invoice
 canonical_url: "https://vercel.com/docs/pricing/understanding-my-invoice"
-last_updated: 2026-06-26
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/pricing
@@ -11,9 +11,11 @@ related:
   - /docs/pricing
   - /docs/plans/pro-plan
   - /docs/plans/enterprise
-  - /docs/pricing/manage-and-optimize-usage
+  - /docs/cli/billing
+  - /docs/rest-api/billing/list-focus-billing-charges
 summary: Learn how Vercel invoices are structured for Pro and Enterprise plans, including plan charges, credits, and usage-based resources.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Billing & Invoices
@@ -26,12 +28,15 @@ You can view your current invoice from the **Settings** section in your dashboar
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Where can I get copies of my Vercel Invoices?](https://vercel.com/kb/guide/where-can-i-get-copies-of-my-vercel-invoices?from=related) — Learn about how you can get access to your Vercel invoices.
-- [Billing FAQ](https://vercel.com/docs/plans/enterprise/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
-- [Billing FAQ](https://vercel.com/docs/plans/pro-plan/billing?from=related) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
-- [Billing and Refunds](https://vercel.com/docs/integrations/create-integration/billing?from=related) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
-- [Plans](https://vercel.com/docs/plans?from=related) — Learn about the different plans available on Vercel.
-- [Spend Management](https://vercel.com/docs/spend-management?from=related) — Learn how to get notified about your account spend and configure a webhook.
+- [Threshold billing is now enabled for Pro teams](https://vercel.com/changelog/threshold-billing-is-now-enabled-for-pro-teams)
+- [Updates to Legal Terms](https://vercel.com/changelog/updates-to-legal-terms-june-2026)
+- [Vercel Billing CLI is now available](https://vercel.com/changelog/vercel-billing-cli-is-now-available)
+- [Access billing usage and cost data via API](https://vercel.com/changelog/access-billing-usage-cost-data-api)
+- [Billing FAQ for Enterprise Plan](https://vercel.com/docs/plans/enterprise/billing) — This page covers frequently asked questions around payments, invoices, and billing on the Enterprise plan.
+- [Billing FAQ for Pro Plan](https://vercel.com/docs/plans/pro-plan/billing) — This page covers frequently asked questions around payments, invoices, and billing on the Pro plan.
+- [Manage Billing and Refunds for Integrations](https://vercel.com/docs/integrations/create-integration/billing) — Learn how billing works for native integrations, including invoice lifecycle, pricing models, and refunds.
+- [Account Plans on Vercel](https://vercel.com/docs/plans) — Learn about the different plans available on Vercel.
+- [Submit Invoice](https://vercel.com/docs/rest-api/marketplace/submit-invoice) — POST /v1/installations/{integrationConfigurationId}/billing/invoices — This endpoint allows the partner to submit an inv
 
 Full cross-link map for this page: [/docs/pricing/understanding-my-invoice.graph.md](/docs/pricing/understanding-my-invoice.graph.md)
 <!-- /docsgraph:related -->
@@ -46,7 +51,7 @@ Your invoice is a breakdown of the charges you have incurred for the current bil
 > **💡 Note:** In addition to your regular billing cycle invoice, you may receive [partial
 > invoices](#partial-invoices) before your cycle ends.
 
-![Image](https://vercel.com/front/docs/pricing/full-invoice-light.png)
+![Invoice overview](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/pricing/full-invoice-light.png)
 
 When you access your invoice through the **Invoice** tab:
 
@@ -68,7 +73,7 @@ When viewing an invoice, Pro plan users see a section called **[On-demand Charge
 
 For Pro plan users, on-demand charges incur in two ways: when usage under [Managed Infrastructure](/docs/pricing#managed-infrastructure-billable-resources) exceeds any applicable allowance or credit, or when you purchase a product from [Developer Experience Platform](/docs/pricing#dx-platform-billable-resources) during the period of the invoice.
 
-![Image](https://vercel.com/front/docs/pricing/pro-plan-invoice-light.jpg)
+![Pro plan invoice with on-demand charges](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/pricing/pro-plan-invoice-light.jpg)
 
 ### Enterprise plan invoices
 
@@ -78,13 +83,15 @@ The top of the invoice shows a summary of the commitment period, the total MIUs 
 
 #### Managed Infrastructure Units (MIU)
 
-MIUs are a measure of the infrastructure consumption of an Enterprise project. These consist of a variety of resources like [Fast Data Transfer, Edge Requests, and more](/docs/pricing#managed-infrastructure-billable-resources).
+MIUs are a measure of the infrastructure consumption of an Enterprise project. These consist of a variety of resources like [Fast Data Transfer, CDN Requests, and more](/docs/pricing#managed-infrastructure-billable-resources).
 
 #### Enterprise on-demand charges
 
 When Enterprise customers exceed their commitment for a period, they will see individual line items for the on-demand amount under the **On-demand Charges** section. This is the same as for Pro plan users.
 
-![Image](https://vercel.com/front/docs/pricing/ent-on-demand-light.jpg)
+![Enterprise plan invoice with Managed Infrastructure Units commitment and on-demand charges](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/front/docs/pricing/ent-on-demand-light.jpg)
+
+**Interested in the Enterprise plan?**
 
 ## Partial invoices
 
@@ -141,6 +148,17 @@ You can download any partial invoice as a PDF from the row's `…` menu, the sam
 
 If you believe a partial invoice was issued in error, or you have questions about a specific charge, [contact support](/help) with the invoice number and the affected team.
 
+## Retrieve invoice data from the CLI or REST API
+
+You can get your team's invoices from the terminal with the [`vercel billing invoices`](/docs/cli/billing#vercel-billing-invoices) CLI commands, and its billing charges from the REST API. Every `vercel billing invoices` subcommand supports `--json` output:
+
+- `vercel billing invoices list`: Lists your team's invoices with each invoice's number, status, total, and invoice ID. By default, it shows open, paid, and uncollectible invoices. Use `--status` to show other statuses.
+- `vercel billing invoices inspect <INVOICE_ID>`: Shows an invoice's status, dates, subtotal, total, and line items, including the period each line item covers.
+- `vercel billing invoices download <INVOICE_ID>`: Saves an invoice as a PDF.
+- `vercel billing invoices upcoming`: Shows an estimate of your team's next invoice. It requires Vercel CLI 65.10.0 or later, a team with an active paid subscription, and access to the team's invoices. Amounts can change until the end of the billing period. Upcoming invoice estimates have no invoice ID or PDF, so you can't pass them to `inspect` or `download`.
+
+For charge data instead of invoices, use the [List FOCUS billing charges](/docs/rest-api/billing/list-focus-billing-charges) endpoint, `GET /v1/billing/charges`. It returns your team's billing charges in FOCUS v1.3 newline-delimited JSON (JSONL) format for the date range you set with the `from` and `to` query parameters. `from` is inclusive, `to` is exclusive, and both are ISO 8601 date-times in UTC.
+
 ## More resources
 
 For more information on Vercel's pricing, and guidance on optimizing consumption, see the following resources:
@@ -148,7 +166,22 @@ For more information on Vercel's pricing, and guidance on optimizing consumption
 - [Vercel Pricing](/docs/pricing)
 - [Manage and optimize usage](/docs/pricing/manage-and-optimize-usage)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,22 +3,26 @@ title: Custom error pages
 product: vercel
 url: /docs/custom-error-pages
 canonical_url: "https://vercel.com/docs/custom-error-pages"
-last_updated: 2026-06-23
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   []
 related:
   - /docs/errors/function_invocation_timeout
   - /docs/errors/function_throttled
+  - /docs/routing/custom-404-pages
   - /docs/headers/request-headers
   - /docs/errors
 summary: Learn how to configure custom error pages for 5xx server errors on Vercel.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Custom error pages
 
-> **🔒 Permissions Required**: Custom error pages
+> Custom error pages are available on Enterprise plans
+
+Custom error pages let you replace Vercel's platform error pages with your own branded experience. These include errors like [function invocation timeouts](/docs/errors/function_invocation_timeout) or [when your functions are throttled](/docs/errors/function_throttled).
 
 
 <!-- docsgraph:related -->
@@ -26,21 +30,17 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Custom 404 Page](https://vercel.com/kb/guide/custom-404-page?from=related) — Create a custom 404 page and deploy with Vercel.
-- [Custom Errors](https://nextjs.org/docs/pages/building-your-application/routing/custom-error?from=related) — Override and extend the built-in Error page to handle custom errors.
-- [How to debug 404 errors](https://vercel.com/kb/guide/how-to-debug-404-errors?from=related) — Learn the systematic steps to identify and resolve 404 issues.
-- [Avoiding duplicate-content SEO with vercel.app URLs and custom domains](https://vercel.com/kb/guide/avoiding-duplicate-content-with-vercel-app-urls?from=related) — Discover why search engines may treat your vercel.app URL and custom domain as separate pages, and how to consolidate ra
-- [What can I do when I run into build output limits with Next.js on Vercel?](https://vercel.com/kb/guide/what-can-i-do-when-i-run-into-build-output-limits-with-next-js-on-vercel?from=related) — Learn how to work with build output limits for Next.js on Vercel.
-- [Custom Subpaths](https://vercel.com/docs/platforms/multi-tenant-platforms/custom-subpaths?from=related) — Host platform content on custom subpaths of customer domains while maintaining a single Next.js application.
-- [Configuration Redirects](https://vercel.com/docs/routing/redirects/configuration-redirects?from=related) — Learn how to define static redirects in your framework configuration or vercel.json with support for wildcards, pattern
-- [Redirects](https://vercel.com/docs/routing/redirects?from=related) — Learn how to use redirects on Vercel to instruct Vercel's platform to redirect incoming requests to a new URL.
-- [Features](https://vercel.com/docs/build-output-api/features?from=related) — Learn how to implement common Vercel platform features through the Build Output API.
-- [Build Features](https://vercel.com/docs/builds/build-features?from=related) — Learn how to customize your deployments using Vercel's build features.
+- [Vercel now supports customizing platform error pages](https://vercel.com/changelog/vercel-now-supports-customizing-platform-error-pages)
+- [Add a routing rule](https://vercel.com/docs/rest-api/project-routes/add-a-routing-rule) — POST /v1/projects/{projectId}/routes — Add a single routing rule to a project at a specified position. Defaults to the e
+- [Configuring Custom Subpaths](https://vercel.com/docs/platforms/multi-tenant-platforms/custom-subpaths) — Host platform content on custom subpaths of customer domains while maintaining a single Next.js application.
+- [Features](https://vercel.com/docs/build-output-api/features) — Learn how to implement common Vercel platform features through the Build Output API.
+- [Debugging production 500 errors](https://vercel.com/docs/observability/debug-production-errors) — Find, fix, and verify production 500 errors using the Vercel CLI.
+- [Advanced Configuration](https://vercel.com/docs/functions/configuring-functions/advanced-configuration) — Learn how to add utility files to the /api directory, and bundle Vercel Functions.
 
 Full cross-link map for this page: [/docs/custom-error-pages.graph.md](/docs/custom-error-pages.graph.md)
 <!-- /docsgraph:related -->
 
-Custom error pages let you replace Vercel's platform error pages with your own branded experience. These include errors like [function invocation timeouts](/docs/errors/function_invocation_timeout) or [when your functions are throttled](/docs/errors/function_throttled).
+These pages cover platform errors with `5xx` status codes. To show your own page when a visitor requests a URL that doesn't exist, see [custom 404 pages](/docs/routing/custom-404-pages), which work on all plans.
 
 Custom error pages help you:
 
@@ -110,7 +110,22 @@ For example, if you add only two custom error pages (`500.html` and `504.html`),
 
 - Custom error pages must be static. Since these pages handle platform errors, they can't rely on server-side rendering or dynamic content that might also fail.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

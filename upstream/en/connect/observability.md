@@ -3,8 +3,8 @@ title: Observability
 product: vercel
 url: /docs/connect/observability
 canonical_url: "https://vercel.com/docs/connect/observability"
-last_updated: 2018-10-20
-type: conceptual
+last_updated: 2026-08-11
+type: reference
 prerequisites:
   - /docs/connect
 related:
@@ -13,8 +13,9 @@ related:
   - /docs/plans/pro
   - /docs/plans/enterprise
   - /docs/drains
-summary: Learn about observability on Vercel.
+summary: Monitor token requests, authorizations, revocations, and trigger deliveries for your connectors.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Observability
@@ -27,13 +28,14 @@ Every connector has an **Observability** tab that shows runtime events for token
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Give your agents secure access to third-party APIs](https://vercel.com/kb/guide/vercel-connect?from=related) — Use Vercel Connect to call provider APIs like Slack, GitHub, Linear, Discord, Notion, Figma, Snowflake, and Salesforce f
-- [Vercel Connect](https://chat-sdk.dev/docs/vercel-connect?from=related) — Authenticate Slack, Discord, GitHub, Linear, Notion, and Telegram adapters with Vercel Connect — short-lived runtime tok
-- [Triggers](https://vercel.com/docs/connect/concepts/triggers?from=related) — Incoming webhooks from third-party services, verified by Vercel Connect and forwarded to your projects.
-- [Authentication](https://vercel.com/docs/connect/concepts/authentication?from=related) — Every Vercel Connect token request has two legs that both have to authenticate: the caller calling Vercel Connect, and V
-- [Tokens](https://vercel.com/docs/connect/concepts/tokens?from=related) — Short-lived provider credentials issued by Vercel Connect. Each token request specifies a subject, optional installation
-- [SDK Reference](https://vercel.com/docs/connect/ts-sdk-reference?from=related) — API reference for @vercel/connect, the TypeScript SDK for requesting runtime tokens from Vercel Connect.
-- [Overview](https://vercel.com/docs/observability?from=related) — Observability on Vercel provides framework-aware insights enabling you to optimize infrastructure and application perfor
+- [Using TanStack AI with Vercel AI Gateway](https://vercel.com/kb/guide/tanstack-ai-vercel-ai-gateway) — Connect TanStack AI to Vercel AI Gateway with the @tanstack/ai-vercel-gateway adapter to stream chat, route across provi
+- [The Complete Guide to Vercel Connect](https://vercel.com/kb/guide/vercel-connect) — Use Vercel Connect to call provider APIs like Slack, GitHub, Linear, Microsoft, Discord, Snowflake, and Salesforce from
+- [Vercel Connect adds observability support](https://vercel.com/changelog/vercel-connect-adds-observability-support)
+- [Authentication in Vercel Connect](https://vercel.com/docs/connect/concepts/authentication) — Every Vercel Connect token request has two legs that both have to authenticate: the caller calling Vercel Connect, and V
+- [Webhook triggers for Vercel Connect](https://vercel.com/docs/connect/concepts/triggers) — Incoming webhooks from third-party services, verified by Vercel Connect and forwarded to your projects.
+- [Observability](https://vercel.com/docs/observability) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
+- [List connectors for a project](https://vercel.com/docs/rest-api/connect/list-connectors-for-a-project) — GET /v2/connect/projects/{projectId}/connectors — List the connectors connected to a project and the environments where
+- [List projects for a connector](https://vercel.com/docs/rest-api/connect/list-projects-for-a-connector) — GET /v2/connect/connectors/{connector}/projects — List the projects connected to a connector and the environments where
 
 Full cross-link map for this page: [/docs/connect/observability.graph.md](/docs/connect/observability.graph.md)
 <!-- /docsgraph:related -->
@@ -136,7 +138,6 @@ Logged when a token is requested through `getToken` (SDK), `vercel connect token
 | `userId`               | `string` | no       | The Vercel user ID associated with the request.                             |
 | `installationId`       | `string` | no       | The ID of the client installation associated with the token request. |
 | `expiresAt`            | `number` | no       | The token expiration timestamp.                                      |
-| `refreshTokenExpiresAt`| `number` | no       | The expiration timestamp of the refresh token.                       |
 
 ### Completed Authorization Request
 
@@ -153,7 +154,6 @@ Logged when a user or app completes an OAuth authorization flow and obtains a gr
 | `userId`               | `string` | no       | The Vercel user ID associated with the request.                             |
 | `installationId`       | `string` | no       | The ID of the client installation.                                   |
 | `externalTenantId`     | `string` | no       | The external tenant ID from the provider.                            |
-| `refreshTokenExpiresAt`| `number` | no       | The expiration timestamp of the refresh token.                       |
 
 ### Revoked Token Request
 
@@ -171,7 +171,6 @@ Logged when a token is revoked from the dashboard, CLI, or REST API.
 | `userId`               | `string` | no       | The Vercel user ID associated with the request.                             |
 | `installationId`       | `string` | no       | The ID of the client installation.                                   |
 | `tokenExpiresAt`       | `number` | no       | The expiration timestamp of the revoked token.                       |
-| `refreshTokenExpiresAt`| `number` | no       | The expiration timestamp of the refresh token.                       |
 | `revokedAt`            | `number` | yes      | The timestamp when the token was revoked.                            |
 
 ### Inbound Trigger
@@ -201,7 +200,22 @@ Logged when Connect forwards an inbound trigger to a registered project destinat
 | `reason`             | `string` | no       | The reason for the status outcome, e.g., failure reason. |
 | `statusCode`         | `number` | no       | The HTTP status code returned by the destination.        |
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

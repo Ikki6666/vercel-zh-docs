@@ -3,7 +3,7 @@ title: Configuring a Build
 product: vercel
 url: /docs/builds/configure-a-build
 canonical_url: "https://vercel.com/docs/builds/configure-a-build"
-last_updated: 2026-07-15
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   - /docs/builds
@@ -12,9 +12,10 @@ related:
   - /docs/functions/runtimes/node-js/node-js-versions
   - /docs/builds/managing-builds
   - /docs/project-configuration/vercel-json
-  - /docs/deployments/troubleshoot-a-build
+  - /docs/projects
 summary: Vercel automatically configures the build settings for many front-end frameworks, but you can also customize the build according to your requirements.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Configuring a Build
@@ -27,16 +28,18 @@ When you make a [deployment](/docs/deployments), Vercel **builds** your project.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Does Vercel support Yarn 2?](https://vercel.com/kb/guide/does-vercel-support-yarn-2?from=related) — Information on Vercel's support for Yarn 2.
-- [Does Vercel support Yarn 3?](https://vercel.com/kb/guide/does-vercel-support-yarn-3?from=related) — Information on Vercel's support for Yarn 3.
-- [Does Vercel support Yarn 4?](https://vercel.com/kb/guide/does-vercel-support-yarn-4?from=related) — Information on Vercel's support for Yarn 4.
-- [How to pin a specific Bun version for Vercel builds?](https://vercel.com/kb/guide/how-to-pin-a-specific-bun-version-for-vercel-builds?from=related) — Learn how to use a specific Bun version for Vercel builds.
-- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare?from=related) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
-- [Supported Frameworks](https://vercel.com/docs/frameworks?from=related) — Vercel supports a wide range of the most popular frameworks, optimizing how your application builds and runs no matter w
-- [All Frameworks](https://vercel.com/docs/frameworks/more-frameworks?from=related) — Learn about the frameworks that can be deployed to Vercel.
-- [Build Output API](https://vercel.com/docs/build-output-api?from=related) — The Build Output API is a file-system-based specification for a directory structure that can produce a Vercel deployment
-- [Frontends](https://vercel.com/docs/frameworks/frontend?from=related) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
-- [vercel deploy](https://vercel.com/docs/cli/deploy?from=related) — Learn how to deploy your Vercel projects using the vercel deploy CLI command.
+- [Vercel now supports Build Commands for FastAPI and Flask](https://vercel.com/changelog/vercel-now-supports-build-commands-for-fastapi-and-flask)
+- [Yarn 2+ dependency caching now supported](https://vercel.com/changelog/yarn-2-dependency-caching-now-supported)
+- [Deploying React with Vercel](https://vercel.com/kb/guide/deploying-react-with-vercel) — Deploy React with Vercel to replace your build pipeline and shared staging. See how framework detection, previews, and F
+- [Does Vercel Support Yarn? \\(Versions 2, 3, and 4\\)](https://vercel.com/kb/guide/does-vercel-support-yarn-4) — Vercel supports Yarn 1, 2, 3, and 4. Learn which version your build uses by default, and how to pin Yarn 4 with Corepack
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [Migrate Fly.io worker processes to Vercel Daemons](https://vercel.com/kb/guide/migrate-fly-io-workers-to-vercel-daemons) — Migrate Fly.io workers to Vercel Daemons with your existing Dockerfile. Map process settings, preserve queue state, and
+- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
+- [Announcing the Build Output API](https://vercel.com/blog/build-output-api)
+- [Run multiple frameworks in one project with Vercel Services](https://vercel.com/changelog/run-multiple-frameworks-in-one-project-with-vercel-services)
+- [Frameworks on Vercel](https://vercel.com/docs/frameworks) — Vercel supports a wide range of the most popular frameworks, optimizing how your application builds and runs no matter w
+- [Supported Frameworks on Vercel](https://vercel.com/docs/frameworks/more-frameworks) — Learn about the frameworks that can be deployed to Vercel.
+- [Frontends on Vercel](https://vercel.com/docs/frameworks/frontend) — Vercel supports a wide range of the most popular frontend frameworks, optimizing how your application builds and runs no
 
 Full cross-link map for this page: [/docs/builds/configure-a-build.graph.md](/docs/builds/configure-a-build.graph.md)
 <!-- /docsgraph:related -->
@@ -56,9 +59,9 @@ The **Build and Deployment** section of the Settings tab offers the following op
 ## Framework Settings
 
 If you'd like to override the settings or specify a different framework, you can do so from
-the **Build & Development Settings** section.
+the **Framework Settings** section.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/build-step/framework-settings-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/build-step/framework-settings-light.png)
 
 *Framework settings.*
 
@@ -96,6 +99,8 @@ Inside the Framework Preset settings, use the drop-down menu to select the frame
   - [Deploy](https://vercel.com/new/clone?demo-title=eve+Chat+Template&demo-description=A+persisted+Next.js+chat+template+for+eve%2C+built+with+shadcn%2Fui%2C+Tailwind+CSS%2C+Streamdown%2C+Better+Auth%2C+Drizzle%2C+and+Neon.&demo-url=https%3A%2F%2Feve-chat-template.labs.vercel.dev%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2FYXYTquqpBmvVFbASdIvrC%2F04d5a87ebe706ed31adc65193f3b4cdd%2Feve-chat__1_.png&project-name=eve+Chat+Template&repository-name=eve-chat-template&repository-url=https%3A%2F%2Fgithub.com%2Fvercel-labs%2Feve-chat-template&from=templates&skippable-integrations=1) | [View Demo](https://eve-chat-template.labs.vercel.dev/)
 - **Express**: Fast, unopinionated, minimalist web framework for Node.js
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/express) | [View Demo](https://express-vercel-example-demo.vercel.app/)
+- **Factory (Eve)**: A software factory built with Eve.
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/factory-eve)
 - **FastAPI**: FastAPI framework, high performance, easy to learn, fast to code, ready for production
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/fastapi) | [View Demo](https://vercel-fastapi-gamma-smoky.vercel.app/)
 - **FastHTML**: The fastest way to create an HTML app
@@ -200,6 +205,18 @@ However, if no framework is detected, "Other" will be selected. In this case, th
 
 If you would like to override Framework Preset for a **specific deployment**, add [`framework`](/docs/project-configuration/vercel-json#framework) to your `vercel.json` configuration.
 
+#### Deploying Storybook alongside your application
+
+[Storybook](https://storybook.js.org) has its own Framework Preset. Storybook usually lives in the same repository as an application that uses another framework, so Vercel selects the application's framework when it detects both. To deploy Storybook as its own site:
+
+1. Create a second [project](/docs/projects) from the same Git repository, and set its [root directory](#root-directory) to the directory that contains your `.storybook` folder
+2. In the new project's **Framework Settings**, select **Storybook** as the Framework Preset
+3. Deploy the project
+
+With the Storybook preset, Vercel runs `storybook build` as the Build Command and serves the static site from the `storybook-static` Output Directory. If your Storybook build uses a different command or output directory, override the [Build Command](#build-command) and [Output Directory](#output-directory) in the same settings.
+
+Each push then creates a deployment for both projects, so every pull request gets a preview URL for the application and another for your component library.
+
 ### Build Command
 
 Vercel automatically configures the Build Command based on the framework. Depending on the framework, the Build Command can refer to the project’s `package.json` file.
@@ -213,8 +230,28 @@ If you'd like to override the Build Command for **all deployments** in your Proj
 
 If you would like to override the Build Command for a **specific deployment**, add [`buildCommand`](/docs/project-configuration/vercel-json#buildcommand) to your `vercel.json` configuration.
 
-> **💡 Note:** If you update the  setting, it will be applied on your next
+> **💡 Note:** If you update the **Override** setting, it will be applied on your next
 > deployment.
+
+#### Set a custom build timeout
+
+Vercel ends a build when it reaches the [maximum build duration](/docs/builds#limits-and-resources). To fail a build sooner, wrap your Build Command with the Linux [`timeout`](https://man7.org/linux/man-pages/man1/timeout.1.html) command. `timeout` runs a command and ends it after the duration you set.
+
+For example, this Build Command stops a Next.js build that runs for longer than 15 minutes:
+
+```bash filename="Build Command"
+timeout 15m next build
+```
+
+The duration is a number with an optional unit: `s` for seconds, `m` for minutes, or `h` for hours. Without a unit, `timeout` reads the number as seconds.
+
+When the build runs past the duration, `timeout` ends it with exit status `124`. The deployment fails, and the build logs show this error:
+
+```txt
+Error: Command "timeout 15m next build" exited with 124
+```
+
+To find the command to wrap, check the Build Command in your project settings or the [`buildCommand`](/docs/project-configuration/vercel-json#buildcommand) value in `vercel.json`. If neither is set, wrap your framework's default build command.
 
 ### Output Directory
 
@@ -222,7 +259,7 @@ After building a project, most frameworks output the resulting build in a direct
 
 If Vercel detects a framework, the output directory will automatically be configured.
 
-> **💡 Note:** If you update the  setting, it will be applied on your next
+> **💡 Note:** If you update the **Override** setting, it will be applied on your next
 > deployment.
 
 For projects that [do not require building](#skip-build-step), you might want to serve the files in the root directory. In this case, do the following:
@@ -235,7 +272,7 @@ If you would like to override the Output Directory for a **specific deployment**
 
 ### Install Command
 
-Vercel auto-detects the install command during the build step. It installs dependencies from `package.json`, including `devDependencies` ([which can be excluded](/docs/deployments/troubleshoot-a-build#excluding-development-dependencies)). The install path is set by the [root directory](#root-directory).
+Vercel auto-detects the install command during the build step. It installs dependencies from `package.json`, including `devDependencies` ([which can be excluded](/docs/deployments/troubleshoot-a-build#excluding-development-dependencies)). If `devDependencies` are missing during a build, see [Missing development dependencies](/docs/deployments/troubleshoot-a-build#missing-development-dependencies). The install path is set by the [root directory](#root-directory).
 
 The install command can be managed in two ways: through a project override, or per-deployment. See [manually specifying a package manager](/docs/package-managers#manually-specifying-a-package-manager) for more details.
 
@@ -263,11 +300,30 @@ Then, set the [`packageManager`](https://nodejs.org/docs/latest-v16.x/api/packag
 *A \`package.json\` file with pnpm
 version 7.5.1*
 
+If an install step that uses Corepack fails with `Cannot find matching keyid`, see [Corepack cannot find matching keyid](/docs/errors/error-list#corepack-cannot-find-matching-keyid).
+
 #### Custom Install Command for your API
 
 The Install Command defined in the Project Settings will be used for front-end frameworks that support Vercel functions for APIs.
 
-If you're using [Vercel functions](/docs/functions) defined in the natively supported `api` directory, a different Install Command will be used depending on the language of the Vercel Function. You cannot customize this Install Command.
+If you're using [Vercel functions](/docs/functions) defined in the natively supported `api` directory, a different Install Command will be used depending on the language of the Vercel Function.
+
+For Node.js functions, you can replace this Install Command in `vercel.json`. Add the `installCommand` property to the [`functions`](/docs/project-configuration/vercel-json#functions) entry whose glob pattern matches your functions. An empty string skips the install. You cannot customize the Install Command for other runtimes.
+
+For example, this configuration installs dependencies with `pnpm install` for the JavaScript functions in the `api` directory:
+
+```json filename="vercel.json"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/**/*.js": {
+      "installCommand": "pnpm install"
+    }
+  }
+}
+```
+
+This property is separate from the top-level [`installCommand`](/docs/project-configuration/vercel-json#installcommand) property, which overrides the Install Command in Project Settings.
 
 ### Development Command
 
@@ -301,7 +357,7 @@ In some projects, the top-level directory of the repository may not be the root 
 
 For such cases, you can specify the project Root Directory. If you do so, please note the following:
 
-- Your app will not be able to access files outside of that directory. You also cannot use `..` to move up a level
+- By default, your build can access files outside of that directory, and your commands can use `..` to move up a level. If you turn off **Include files outside the root directory in the Build Step** in the **Root Directory** settings, your build cannot access files outside of that directory
 - This setting also applies to [Vercel CLI](/docs/cli). Instead of running `vercel <directory-name>` to deploy, specify `<directory-name>` here so you can just run `vercel`
 
 To configure the Root Directory:
@@ -322,7 +378,22 @@ In a monorepo, you can [skip deployments](/docs/monorepos#skipping-unaffected-pr
 2. Scroll down to **Root Directory**
 3. Enable the **Skip deployment** switch
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

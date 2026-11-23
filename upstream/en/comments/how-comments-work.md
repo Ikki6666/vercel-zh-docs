@@ -3,7 +3,7 @@ title: Enabling and Disabling Comments
 product: vercel
 url: /docs/comments/how-comments-work
 canonical_url: "https://vercel.com/docs/comments/how-comments-work"
-last_updated: 2025-09-24
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/comments
@@ -14,6 +14,7 @@ related:
   - /docs/deployments/sharing-deployments
 summary: Learn when and where Comments are available, and how to enable and disable Comments at the account, project, and session or interface levels.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Enabling and Disabling Comments
@@ -26,12 +27,13 @@ Comments are enabled by default for all preview deployments on all new projects.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I prevent the Vercel for GitHub integration comments?](https://vercel.com/kb/guide/how-to-prevent-vercel-github-comments?from=related) — Information on how to prevent the Vercel for GitHub integration from adding comments.
-- [Managing Comments](https://vercel.com/docs/comments/managing-comments?from=related) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
-- [Using Comments](https://vercel.com/docs/comments/using-comments?from=related) — This guide will help you get started with using Comments with your Vercel Preview Deployments.
-- [Toolbar](https://vercel.com/docs/vercel-toolbar?from=related) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
-- [Add to Production](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-production?from=related) — Learn how to add the Vercel Toolbar to your production environment and how your team members can use tooling to access t
-- [Integrations](https://vercel.com/docs/comments/integrations?from=related) — Learn how Comments integrates with Git providers like GitHub, GitLab, and BitBucket, as well as the Vercel app for Slack
+- [Manage Vercel Toolbar comments from the CLI](https://vercel.com/changelog/manage-vercel-toolbar-comments-from-the-cli)
+- [@vercel/toolbar available to use collaboration features in production](https://vercel.com/changelog/vercel-toolbar-now-available-to-use-collaboration-features-in-production)
+- [Managing Comments on Preview Deployments](https://vercel.com/docs/comments/managing-comments) — Learn how to manage Comments on your Preview Deployments from Team members and invited collaborators.
+- [Using Comments with Preview Deployments](https://vercel.com/docs/comments/using-comments) — This guide will help you get started with using Comments with your Vercel Preview Deployments.
+- [Vercel Toolbar](https://vercel.com/docs/vercel-toolbar) — Learn how to use the Vercel Toolbar to leave feedback, navigate through important dashboard pages, share deployments, us
+- [Add the Vercel Toolbar to your production environment](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-production) — Learn how to add the Vercel Toolbar to your production environment and how your team members can use tooling to access t
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
 
 Full cross-link map for this page: [/docs/comments/how-comments-work.graph.md](/docs/comments/how-comments-work.graph.md)
 <!-- /docsgraph:related -->
@@ -47,22 +49,25 @@ You can enable or disable comments at the account level with certain permissions
 1. Navigate to [your Vercel dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard) and make sure that you have selected your team from the team switcher.
 2. From your [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard), open **Settings** in the sidebar.
 3. In the **General** section, find **Vercel Toolbar**.
-4. Under each environment (**Preview** and **Production**), select either **On** or **Off** from the dropdown to determine the visibility of the Vercel Toolbar for that environment.
+4. Under **Pre-Production Deployments** and **Production Deployments**, select an option from the dropdown to determine the visibility of the Vercel Toolbar for those deployments. The options are:
+   - **Default (on)**: Keep the Vercel default, which enables the toolbar.
+   - **On**: Enable the toolbar.
+   - **Off**: Disable the toolbar.
 5. You can optionally choose to allow the setting to be overridden at the project level.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/team-level-toolbar-management-light.png`)
+![The dashboard setting to enable or disable the toolbar at the team level.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/team-level-toolbar-management-light.png)
 
 ### At the project level
 
 1. From your [dashboard](/dashboard), select the project you want to enable or disable Vercel Toolbar for.
 2. Navigate to [**General**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fgeneral\&title=Go+to+General+settings) in **Settings**.
 3. Find **Vercel Toolbar**.
-4. Under each environment (**Preview** and **Production**), select either an option from the dropdown to determine the visibility of Vercel Toolbar for that environment. The options are:
+4. Under **Pre-Production Deployments** and **Production Deployments**, select an option from the dropdown to determine the visibility of Vercel Toolbar for those deployments. The options are:
    - **Default**: Respect team-level visibility settings.
    - **On**: Enable the toolbar for the environment.
    - **Off**: Disable the toolbar for the environment.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/project-level-toolbar-management-light.png`)
+![The dashboard setting to enable or disable the toolbar in a project.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/project-level-toolbar-management-light.png)
 
 ### At the session or interface level
 
@@ -84,7 +89,22 @@ See [Managing the toolbar](/docs/vercel-toolbar/managing-toolbar) for more infor
 
 To learn how to share deployments with comments enabled, see the [Sharing Deployments](/docs/deployments/sharing-deployments) docs.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

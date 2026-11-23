@@ -3,7 +3,7 @@ title: Filtering Analytics
 product: vercel
 url: /docs/analytics/filtering
 canonical_url: "https://vercel.com/docs/analytics/filtering"
-last_updated: 2026-06-26
+last_updated: 2026-09-16
 type: how-to
 prerequisites:
   - /docs/analytics
@@ -14,11 +14,12 @@ related:
   - /docs/flags
 summary: "Learn how filters allow you to explore insights about your website's visitors."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Filtering Analytics
 
-Web Analytics provides you with a way to filter your data in order to gain a deeper understanding of your website
+Web Analytics provides you with a way to filter your data to gain a deeper understanding of your website
 traffic. This guide will show you how to use the filtering feature and provide examples of how
 to use it to answer specific questions.
 
@@ -28,11 +29,16 @@ to use it to answer specific questions.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Using Web Analytics](https://vercel.com/docs/analytics/using-web-analytics?from=related) — Learn how to use Vercel's Web Analytics to understand how visitors are using your website.
-- [Web Analytics API](https://vercel.com/docs/analytics/web-analytics-api?from=related) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
-- [Using with CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli?from=related) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
-- [Troubleshooting](https://vercel.com/docs/analytics/troubleshooting?from=related) — Learn how to troubleshoot common issues with Vercel Web Analytics.
-- [Privacy](https://vercel.com/docs/analytics/privacy-policy?from=related) — Learn how Vercel supports privacy and data compliance standards with Vercel Web Analytics.
+- [Bounce rate support in Web Analytics](https://vercel.com/changelog/bounce-rate-support-in-web-analytics)
+- [Device type support and improved breakdowns in Web Analytics](https://vercel.com/changelog/device-type-support-and-improved-breakdowns-in-web-analytics)
+- [Hostname support in Web Analytics](https://vercel.com/changelog/hostname-support-in-web-analytics)
+- [Web Analytics now has route support](https://vercel.com/changelog/web-analytics-now-has-route-support)
+- [Filter Analytics traffic data](https://vercel.com/changelog/filter-analytics-traffic-data)
+- [Using Web Analytics](https://vercel.com/docs/analytics/using-web-analytics) — Learn how to use Vercel's Web Analytics to understand how visitors are using your website.
+- [Query Web Analytics with the API](https://vercel.com/docs/analytics/web-analytics-api) — Learn how Web Analytics concepts map to API queries for custom reports, dashboards, and insights.
+- [Accessing Metrics with Vercel CLI](https://vercel.com/docs/analytics/accessing-metrics-with-vercel-cli) — Use the Vercel CLI to query Web Analytics metrics from your terminal.
+- [get_web_analytics](https://vercel.com/docs/agent-resources/vercel-mcp/tools/web-analytics/get_web_analytics) — Use get_web_analytics with Vercel MCP.
+- [Aggregates page views](https://vercel.com/docs/rest-api/web-analytics/aggregates-page-views) — GET /v1/query/web-analytics/visits/aggregate — Counts pageviews on a project, within the requested date range. Results a
 
 Full cross-link map for this page: [/docs/analytics/filtering.graph.md](/docs/analytics/filtering.graph.md)
 <!-- /docsgraph:related -->
@@ -63,7 +69,7 @@ visitors from the United States:
 1. Search for "United States" within the **Country** panel.
 2. Click on the row:
 
-![Image](https://vercel.com/docs-assets/static/docs/concepts/web-analytics/filter-us-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/web-analytics/filter-us-light.png)
 
 ## Examples of using filters
 
@@ -119,7 +125,22 @@ To use it:
 
 Twitter search might not always be able to resolve to the original post of that link, and it may appear multiple times.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: SAML Single Sign-On
 product: vercel
 url: /docs/saml
 canonical_url: "https://vercel.com/docs/saml"
-last_updated: 2026-07-28
+last_updated: 2026-08-28
 type: reference
 prerequisites:
   []
@@ -14,11 +14,16 @@ related:
   - /docs/rbac/access-roles/team-level-roles
 summary: Learn how to configure SAML SSO for your organization on Vercel.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # SAML Single Sign-On
 
-> **🔒 Permissions Required**: SAML
+> SAML is available on Enterprise and Pro plans
+>
+> Those with the owner role can access this feature
+
+To manage the [members](/docs/rbac/managing-team-members) of your team through a third-party identity provider like [Okta](https://www.okta.com/) or [Auth0](https://auth0.com/), you can set up the Security Assertion Markup Language (SAML) [feature](#configuring-saml-sso) from your team's settings.
 
 
 <!-- docsgraph:related -->
@@ -26,25 +31,24 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide?from=related) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
-- [Does Vercel have a SOC 2 Type 2 attestation?](https://vercel.com/kb/guide/is-vercel-soc-2-compliant?from=related) — Vercel holds a SOC 2 Type 2 attestation for Security, Confidentiality, and Availability. See what the report covers, how
-- [The Complete Guide to Vercel Passport](https://vercel.com/kb/guide/vercel-passport?from=related) — Vercel Passport protects deployments behind your own identity provider, such as Okta or Auth0. Learn how Passport works,
-- [Sign in with Vercel](https://vercel.com/docs/sign-in-with-vercel?from=related) — Learn how to Sign in with Vercel
-- [Manage from Dashboard](https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard?from=related) — Learn how to manage Sign in with Vercel from the Dashboard
-- [Access Control](https://vercel.com/docs/security/access-control?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [OIDC](https://vercel.com/docs/oidc?from=related) — Secure the access to your backend using OIDC Federation to enable auto-generated, short-lived, and non-persistent creden
-- [Two-factor Enforcement](https://vercel.com/docs/two-factor-enforcement?from=related) — Learn how to enforce two-factor authentication \\(2FA\\) for your Vercel team members to enhance security.
+- [SAML SSO is now available to Pro teams](https://vercel.com/changelog/saml-sso-is-now-available-to-pro-teams)
+- [Durable agent approval workflows on Vercel](https://vercel.com/kb/guide/agent-approval-workflow-stack-guide) — How enterprise architects choose a stack and decide where to run durable, human-in-the-loop agent approval workflows on
+- [Does Vercel have a SOC 2 Type 2 attestation?](https://vercel.com/kb/guide/is-vercel-soc-2-compliant) — Vercel holds a SOC 2 Type 2 attestation for Security, Confidentiality, and Availability. See what the report covers, how
+- [SAML Single Sign-On and Directory Sync now fully available](https://vercel.com/changelog/saml-single-sign-on-and-directory-sync-now-fully-available)
+- [Manage Sign in with Vercel from the Dashboard](https://vercel.com/docs/sign-in-with-vercel/manage-from-dashboard) — Learn how to manage Sign in with Vercel from the Dashboard
+- [OIDC Federation Reference](https://vercel.com/docs/oidc/reference) — Review helper libraries to help you connect with your backend and understand the structure of an OIDC token.
+- [vercel teams](https://vercel.com/docs/cli/teams) — Learn how to list, create, switch, invite, and manage your teams with the vercel teams CLI command.
+- [Project settings](https://vercel.com/docs/project-configuration/project-settings) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [Invite a user](https://vercel.com/docs/rest-api/teams/invite-a-user) — POST /v2/teams/{teamId}/members — Invite a user to join the team specified in the URL. The authenticated user needs to b
 
 Full cross-link map for this page: [/docs/saml.graph.md](/docs/saml.graph.md)
 <!-- /docsgraph:related -->
-
-To manage the [members](/docs/rbac/managing-team-members) of your team through a third-party identity provider like [Okta](https://www.okta.com/) or [Auth0](https://auth0.com/), you can set up the Security Assertion Markup Language (SAML) [feature](#configuring-saml-sso) from your team's settings.
 
 Once enabled, all team members will be able to log in or access [Preview](/docs/deployments/environments#preview-environment-pre-production) and Production Deployments using your [selected identity provider](/docs/saml#saml-providers). Any new users signing up with SAML will automatically be added to your team.
 
 For Enterprise customers, you can also automatically manage team member roles and provisioning by setting up [Directory Sync](/docs/directory-sync).
 
-![Image](`/docs-assets/static/docs/concepts/teams/saml-settings.png`)
+![The SAML SSO settings for a Team.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/teams/saml-settings.png)
 
 ## Configuring SAML SSO
 
@@ -60,7 +64,7 @@ For Enterprise customers, you can also automatically manage team member roles an
 
 ### Session lifetime
 
-Use the optional `session_lifetime` attribute in your identity provider's SAML configuration to customize how long SAML SSO sessions last. Its value is an integer number of seconds between 86,400 (1 day) and 2,592,000 (30 days), inclusive, applied when the team member logs in. When `session_lifetime` is not used, sessions last 24 hours by default, after which team members must re-authenticate with the third-party SAML provider.
+Use the optional `session_lifetime` attribute in your identity provider's SAML configuration to customize how long SAML SSO sessions last. Its value is an integer number of seconds between 3,600 (1 hour) and 2,592,000 (30 days), inclusive, applied when the team member logs in. When `session_lifetime` is not used, sessions last 24 hours by default, after which team members must re-authenticate with the third-party SAML provider.
 
 ## Enforcing SAML
 
@@ -70,7 +74,7 @@ For additional security, SAML SSO can be enforced for a team so that all [team m
 2. From your [dashboard](https://vercel.com/d?to=%2Fdashboard\&title=Open+Dashboard), open **Settings** in the sidebar and select [**Security & Privacy**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fsecurity\&title=Go+to+Security+settings). Then go to the **Authentication and User Provisioning** section
 3. Toggle the **Require Team Members to login with SAML** switch to **Enabled**
 
-![Image](`/docs-assets/static/docs/concepts/teams/saml-enforced.png`)
+![SAML SSO configured and enforced.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/teams/saml-enforced.png)
 
 > **💡 Note:** When modifying your SAML configuration, the option for enforcing will
 > automatically be turned off. Please verify your new configuration is working
@@ -94,11 +98,11 @@ To use this page, you can set the `saml` query param to your team URL. For examp
 https://vercel.com/login?saml=team_id
 ```
 
-![Image](`/docs-assets/static/docs/concepts/teams/saml-login-custom-light.png`)
+![Vercel's login page showing only the SAML SSO login button.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/teams/saml-login-custom-light.png)
 
 ## Managing team members
 
-When using SAML SSO, team members can authenticate through your identity provider, but team membership must be managed manually through the Vercel dashboard.
+When using SAML SSO, team members authenticate through your identity provider, and new users who sign up with SAML are added to your team. After that, you manage team member roles and removals manually through the Vercel dashboard.
 
 For automatic provisioning and de-provisioning of team members based on your identity provider, consider upgrading to [Directory Sync](/docs/directory-sync), which is available on Enterprise plans.
 
@@ -130,7 +134,22 @@ Vercel supports the following third-party SAML providers:
 - [Cloudflare](https://developers.cloudflare.com/cloudflare-one/applications/configure-apps/dash-sso-apps/)
 - [SimpleSAMLphp](https://simplesamlphp.org/)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

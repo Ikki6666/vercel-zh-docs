@@ -1,10 +1,10 @@
 ---
-title: Streaming
+title: Anthropic Messages Streaming with AI Gateway
 product: vercel
 url: /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming
 canonical_url: "https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming"
-last_updated: 2026-07-28
-type: conceptual
+last_updated: 2026-09-08
+type: reference
 prerequisites:
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api
   - /docs/ai-gateway/sdks-and-apis
@@ -13,11 +13,12 @@ related:
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/tool-calling
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/reasoning
   - /docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced
-summary: Stream Anthropic Messages API responses token by token as they are generated.
+summary: Stream Anthropic Messages API responses token by token as they are generated through AI Gateway.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
-# Streaming
+# Anthropic Messages Streaming with AI Gateway
 
 Set `stream: true` on a [Messages](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/messages) request to receive tokens as the model produces them, instead of waiting for the complete response.
 
@@ -27,42 +28,17 @@ Set `stream: true` on a [Messages](/docs/ai-gateway/sdks-and-apis/anthropic-mess
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Streaming responses from LLMs](https://vercel.com/kb/guide/streaming-from-llm?from=related) — Learn how to use the AI SDK to stream LLM responses.
-- [Streaming in web applications](https://vercel.com/kb/guide/what-is-streaming?from=related) — Learn how streaming works in web applications. Explore benefits, use cases, and implementation details with Vercel Funct
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming?from=related) — Stream OpenAI Chat Completions responses token by token as they are generated.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming?from=related) — Stream responses token by token using the OpenResponses API.
-- [Streaming](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming?from=related) — Stream tokens as they are generated with the OpenAI Responses API.
-- [Streaming](https://chat-sdk.dev/docs/streaming?from=related) — Stream real-time text responses from AI models and other async sources to chat platforms.
-- [Processing Data Chunks](https://vercel.com/kb/guide/processing-data-chunks?from=related) — Learn how to create an API endpoint that processes data chunks.
-- [Stream Protocols](https://ai-sdk.dev/docs/ai-sdk-ui/stream-protocol?from=related)
-- [Create Chat (Streaming)](https://v0.app/docs/api/v2/reference/chats/create-chat-streaming?from=related) — Creates a new chat with a user message and returns a Server-Sent Events stream. Events include initial chat state, title
-- [Streaming](https://vercel.com/docs/functions/streaming-functions?from=related) — Learn how to stream responses from Vercel Functions.
-- [Python](https://vercel.com/docs/ai-gateway/sdks-and-apis/python?from=related) — Use the AI Gateway with Python through OpenAI or Anthropic SDKs with full streaming, tool calling, and async support.
+- [Streaming in web applications](https://vercel.com/kb/guide/what-is-streaming) — Learn how streaming works in web applications. Explore benefits, use cases, and implementation details with Vercel Funct
+- [OpenAI Chat Completions Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openai-chat-completions/streaming) — Stream OpenAI Chat Completions responses token by token as they are generated through AI Gateway.
+- [OpenResponses Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/openresponses/streaming) — Stream responses token by token using the OpenResponses API through AI Gateway.
+- [OpenAI Responses Streaming with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/responses/streaming) — Stream tokens as they are generated with the OpenAI Responses API through AI Gateway.
+- [Anthropic Messages Images and PDFs with AI Gateway](https://vercel.com/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/images) — Send images and PDF documents as part of your Anthropic API message requests through AI Gateway.
+- [Streaming](https://vercel.com/docs/functions/streaming-functions) — Learn how to stream responses from Vercel Functions.
 
 Full cross-link map for this page: [/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming.graph.md](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/streaming.graph.md)
 <!-- /docsgraph:related -->
 
 Create a streaming message that delivers tokens as they are generated.
-
-#### cURL
-
-```bash filename="stream.sh"
-curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
-  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "anthropic/claude-opus-5",
-    "max_tokens": 150,
-    "messages": [
-      {
-        "role": "user",
-        "content": "Write a one-sentence bedtime story about a unicorn."
-      }
-    ],
-    "temperature": 0.7,
-    "stream": true
-  }'
-```
 
 #### TypeScript
 
@@ -126,6 +102,26 @@ with client.messages.stream(
         print(text, end='', flush=True)
 ```
 
+#### cURL
+
+```bash filename="stream.sh"
+curl -X POST "https://ai-gateway.vercel.sh/v1/messages" \
+  -H "Authorization: Bearer $AI_GATEWAY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "anthropic/claude-opus-5",
+    "max_tokens": 150,
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a one-sentence bedtime story about a unicorn."
+      }
+    ],
+    "temperature": 0.7,
+    "stream": true
+  }'
+```
+
 ## Streaming event types
 
 Streaming responses use [Server-Sent Events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events). The key event types are:
@@ -143,7 +139,22 @@ Streaming responses use [Server-Sent Events (SSE)](https://developer.mozilla.org
 - [Extended thinking](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/reasoning) - Configure how much Claude thinks before answering
 - [Advanced](/docs/ai-gateway/sdks-and-apis/anthropic-messages-api/advanced) - Web search, provider timeouts, and automatic caching
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: What is Compute?
 product: vercel
 url: /docs/fundamentals/what-is-compute
 canonical_url: "https://vercel.com/docs/fundamentals/what-is-compute"
-last_updated: 2026-08-04
+last_updated: 2026-08-11
 type: conceptual
 prerequisites:
   - /docs/fundamentals
@@ -15,6 +15,7 @@ related:
   - /docs/functions/functions-api-reference/vercel-functions-package
 summary: Learn how compute works on Vercel with Fluid compute, and how it compares to traditional server and serverless models.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # What is Compute?
@@ -27,16 +28,18 @@ Compute is the work a server performs to respond to a request, such as rendering
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Efficiently manage database connection pools with Fluid compute](https://vercel.com/kb/guide/efficiently-manage-database-connection-pools-with-fluid-compute?from=related) — How to create high-performance database connection pools without leaking connections
-- [How Vercel Services run on Fluid compute](https://vercel.com/kb/guide/vercel-services-fluid-compute?from=related) — The backends in a Vercel Services project run as Vercel Functions on Fluid compute by default. Learn how optimized concu
-- [How to stop Vercel Functions from timing out](https://vercel.com/kb/guide/what-can-i-do-about-vercel-serverless-functions-timing-out?from=related) — Vercel Functions that time out usually trace back to a few causes. Learn how Fluid Compute fixes most of them and how to
-- [How can I reduce my Vercel Functions usage on Vercel?](https://vercel.com/kb/guide/how-can-i-reduce-my-serverless-execution-usage-on-vercel?from=related) — Reduce Vercel Functions usage and cost under Fluid compute pricing with caching, rendering strategies, and function conf
-- [Hosting your API on Vercel](https://vercel.com/kb/guide/hosting-backend-apis?from=related) — Learn how to build and scale performant APIs on Vercel.
-- [Functions](https://vercel.com/docs/functions?from=related) — Run server-side code on Vercel without managing a server.
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
-- [SvelteKit](https://vercel.com/docs/frameworks/full-stack/sveltekit?from=related) — Learn how to use Vercel's features with SvelteKit
-- [Request Lifecycle](https://vercel.com/docs/fundamentals/infrastructure?from=related) — Learn how Vercel routes, secures, and serves requests from your users to your application.
-- [Deploy MCP servers](https://vercel.com/docs/mcp/deploy-mcp-servers-to-vercel?from=related) — Learn how to deploy Model Context Protocol \\(MCP\\) servers on Vercel with OAuth authentication and efficient scaling.
+- [Introducing Fluid compute](https://vercel.com/blog/introducing-fluid-compute)
+- [How Fluid compute works on Vercel](https://vercel.com/blog/how-fluid-compute-works-on-vercel)
+- [How to stop Vercel Functions from timing out](https://vercel.com/kb/guide/what-can-i-do-about-vercel-serverless-functions-timing-out) — Vercel Functions that time out usually trace back to a few causes. Learn how Fluid Compute fixes most of them and how to
+- [Hosting your API on Vercel](https://vercel.com/kb/guide/hosting-backend-apis) — Learn how to build and scale performant APIs on Vercel.
+- [Fluid: How we built serverless servers](https://vercel.com/blog/fluid-how-we-built-serverless-servers)
+- [How Vercel Services run on Fluid compute](https://vercel.com/kb/guide/vercel-services-fluid-compute) — The backends in a Vercel Services project run as Vercel Functions on Fluid compute by default. Learn how optimized concu
+- [Vercel Functions can now run on Fluid compute](https://vercel.com/changelog/vercel-functions-can-now-run-on-fluid-compute)
+- [Fluid compute is now the default for new projects](https://vercel.com/changelog/fluid-compute-is-now-the-default-for-new-projects)
+- [Vercel Functions](https://vercel.com/docs/functions) — Build API routes, webhooks, and agent request handlers with Vercel Functions, then test and debug them with Vercel CLI.
+- [Backends on Vercel](https://vercel.com/docs/frameworks/backend) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [SvelteKit on Vercel](https://vercel.com/docs/frameworks/full-stack/sveltekit) — Deploy SvelteKit applications to Vercel and configure the adapter, rendering, streaming, ISR, analytics, and Routing Mid
+- [How requests flow through Vercel](https://vercel.com/docs/fundamentals/infrastructure) — Learn how Vercel routes, secures, and serves requests from your users to your application.
 
 Full cross-link map for this page: [/docs/fundamentals/what-is-compute.graph.md](/docs/fundamentals/what-is-compute.graph.md)
 <!-- /docsgraph:related -->
@@ -51,15 +54,15 @@ Web applications involve two main locations:
   - **CDN (Content Delivery Network)**: This stores static content, such as HTML, in multiple locations around the globe, placed between the client who is requesting and the origin server that is responding. When a user sends a request, the closest CDN will respond with its cached response.
   - **Global Network**: Vercel's global network consists of Points of Presence (PoPs) and compute regions distributed around the world. This architecture allows Vercel to cache content and execute code in the region closest to the user, reducing latency and improving performance.
 
-![Image](`/docs-assets/static/docs/concepts/functions/request-response.png`)
+![The request-response cycle between client and server.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/functions/request-response.png)
 
 ## Compute in practice
 
 To demonstrate an example of what this looks like in practice, we'll use the example of a Next.js app deployed to Vercel.
 
-When you start a deployment of your Next.js app to Vercel, Vercel's [build process](/docs/builds#build-process) creates a build output that contains artifacts such as [bundled Vercel Functions](/docs/functions/configuring-functions/advanced-configuration#bundling-vercel-functions) or static assets. It will then deploy either to Vercel's CDN or, in the case of a function, to a [specified region](/docs/functions/configuring-functions/region).
+When you start a deployment of your Next.js app to Vercel, Vercel's [build process](/docs/builds#build-infrastructure) creates a build output that contains artifacts such as [bundled Vercel Functions](/docs/functions/configuring-functions/advanced-configuration#bundling-vercel-functions) or static assets. It will then deploy either to Vercel's CDN or, in the case of a function, to a [specified region](/docs/functions/configuring-functions/region).
 
-Now that the deployment is ready to serve traffic, a user can visit your site. When they do, the request is sent to the closest region, which will then either serve the static assets or execute the function. The function will then run, and the response will be sent back to the user. At a very high-level this looks like:
+Now that the deployment is ready to serve traffic, a user can visit your site. When they do, the request is sent to the closest CDN region, which will then either serve the static assets or route the request to the region where the function is deployed. The function will then run, and the response will be sent back to the user. At a very high-level this looks like:
 
 1. **User Action**: The user interacts with a website by clicking a link, submitting a form, or entering a URL.
 2. **HTTP Request**: The user's browser sends a request to the server, asking for the resources needed to display the webpage.
@@ -76,11 +79,11 @@ Fluid compute is the execution model for Vercel Functions, and the default for n
 
 In the traditional serverless model, one instance processes one request at a time. When traffic increases, the platform starts more instances, even though a single instance rarely uses all of its resources while it waits on I/O. You pay for that unused capacity.
 
-![Image](`/docs-assets/static/docs/fluid/serverless-light.png`)
+![How multiple requests are processed in the traditional serverless compute model.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/fluid/serverless-light.png)
 
 Fluid compute starts a new instance only when no running instance has spare capacity. Additional requests reuse existing instances while they're still processing work, so one instance serves many invocations concurrently. Vercel calls this *optimized concurrency*, and it's available with the Node.js and Python runtimes. Optimized concurrency reduces the number of running instances, makes fuller use of each instance's CPU, and lowers compute costs.
 
-![Image](`/docs-assets/static/docs/fluid/optimized-concurrency-light.png`)
+![How multiple requests are processed in the Fluid compute model with optimized concurrency.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/fluid/optimized-concurrency-light.png)
 
 ### Benefits of Fluid compute
 
@@ -177,7 +180,22 @@ Traditional serverless platforms share three structural drawbacks:
 
 Fluid compute addresses each of these drawbacks with [optimized concurrency](#optimized-concurrency), [automatic failover](#automatic-failover), and [background processing](#background-processing).
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

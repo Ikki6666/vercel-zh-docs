@@ -3,7 +3,7 @@ title: Using the Integrations REST API
 product: vercel
 url: /docs/integrations/create-integration/marketplace-api
 canonical_url: "https://vercel.com/docs/integrations/create-integration/marketplace-api"
-last_updated: 2026-07-10
+last_updated: 2026-09-17
 type: reference
 prerequisites:
   - /docs/integrations/create-integration
@@ -12,10 +12,11 @@ related:
   - /docs/integrations/create-integration/marketplace-api/reference/partner
   - /docs/integrations/create-integration/marketplace-api/reference/vercel
   - /docs/integrations/create-integration/marketplace-flows
+  - /docs/integrations/create-integration/short-lived-access-tokens
   - /docs/integrations/create-integration/marketplace-api/reference/partner/upsert-installation
-  - /docs/integrations/create-integration/submit-integration
 summary: Learn how to authenticate and use the Integrations REST API to build your integration server.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Using the Integrations REST API
@@ -28,19 +29,19 @@ Learn how to authenticate and use the Integrations REST API to build your native
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to add and manage environment variables on Vercel](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables?from=related) — Add environment variables to Vercel through the dashboard, CLI, or REST API, scope them to each environment, and pull th
-- [vercel integration](https://vercel.com/docs/cli/integration?from=related) — Learn how to manage marketplace native integrations, provision resources, manage individual resources, and discover avai
-- [Building Integrations with Vercel REST API](https://vercel.com/docs/integrations/create-integration/vercel-api-integrations?from=related) — Learn how to use Vercel REST API to build your integrations and work with redirect URLs.
-- [Audit Logs](https://vercel.com/docs/audit-log?from=related) — Learn how to track and analyze your team members' activities.
-- [Add a Native Integration](https://vercel.com/docs/integrations/install-an-integration/product-integration?from=related) — Learn how you can add a product to your Vercel project through a native integration.
-- [Update Resource Secrets](https://vercel.com/docs/rest-api/marketplace/update-resource-secrets?from=related)
+- [Native Marketplace integrations now support custom environments](https://vercel.com/changelog/custom-environments-support-for-marketplace-integrations)
+- [Update Installation](https://vercel.com/docs/rest-api/marketplace/update-installation) — PATCH /v1/installations/{integrationConfigurationId} — This endpoint updates an integration installation.
+- [Integration Approval Checklist](https://vercel.com/docs/integrations/create-integration/approval-checklist) — Review this checklist before submitting your native or connectable account integration for approval on the Vercel Market
+- [Finalize Installation](https://vercel.com/docs/rest-api/marketplace/finalize-installation) — POST /v1/installations/{integrationConfigurationId}/billing/finalize — This endpoint allows the partner to mark an insta
+- [Get Member Information](https://vercel.com/docs/rest-api/marketplace/get-member-information) — GET /v1/installations/{integrationConfigurationId}/member/{memberId} — Returns the member role and other information for
+- [Upgrade an Integration](https://vercel.com/docs/integrations/create-integration/upgrade-integration) — Lean more about when you may need to upgrade your Integration.
 
 Full cross-link map for this page: [/docs/integrations/create-integration/marketplace-api.graph.md](/docs/integrations/create-integration/marketplace-api.graph.md)
 <!-- /docsgraph:related -->
 
 ## How it works
 
-When a  uses your integration, the following two
+When a customer uses your integration, the following two
 APIs are used for interaction and communication between the user,
 Vercel and the provider integration:
 
@@ -89,9 +90,59 @@ Review the [user authentication](/docs/integrations/create-integration/marketpla
 
 ### Vercel API authentication
 
-When your integration calls Vercel's API, you authenticate using an access token. You receive this token during the installation process when you call the [Upsert Installation API](/docs/integrations/create-integration/marketplace-api/reference/partner/upsert-installation). The response includes a `credentials` object with an `access_token` that you use as a bearer token for subsequent API calls.
+> **⚠️ Warning:** Long-lived access tokens are deprecated. Don't build new integrations that
+> store or reuse the access token from the Upsert Installation request. If your
+> integration uses long-lived tokens today, [migrate to short-lived access
+> tokens](/docs/integrations/create-integration/short-lived-access-tokens).
+
+#### Use short-lived access tokens
+
+Authenticate your integration's calls to the Vercel API with short-lived access tokens, which expire after one hour. To get and use one:
+
+1. When a call needs a token, request one with the `client_credentials` grant, using your integration's client ID and client secret.
+2. Set `installation_id` to the `installationId` from the [Upsert Installation](/docs/integrations/create-integration/marketplace-api/reference/partner/upsert-installation) request path.
+3. Cache the token per installation, reuse it until it's about to expire, and send it as a bearer token.
+
+For the full request and response format, see [Request a short-lived token](/docs/integrations/create-integration/short-lived-access-tokens#request-a-short-lived-token).
+
+If you're building a new integration, turn on **Issue Only Short-Lived Access Tokens** when you create it. That way every token is short-lived from the start, and there's nothing to migrate later.
+
+These tokens are only for your calls to Vercel. When Vercel calls your API, keep verifying Vercel's OIDC tokens as before.
+
+#### Long-lived access tokens (deprecated)
+
+The Upsert Installation request also includes an access token in `credentials.access_token`. Until you turn on **Expire Long-Lived Access Tokens**, that token is long-lived, so don't use it to call Vercel APIs, even during installation. Request a short-lived token with `client_credentials` instead.
+
+To update an integration that stores installation tokens today:
+
+1. Follow [Migrating to short-lived access tokens](/docs/integrations/create-integration/short-lived-access-tokens) to move every caller to short-lived tokens.
+2. Complete the [cutover checklist](/docs/integrations/create-integration/short-lived-access-tokens#cutover-checklist), then turn on **Expire Long-Lived Access Tokens**.
+
+An hour after you turn on the setting, every long-lived token for your integration stops working. From then on, the token in each Upsert Installation request expires within one hour, and `credentials.expires_in` gives its remaining lifetime.
 
 You can also use OAuth2 to obtain access tokens for user-specific operations.
+
+### Email verification
+
+Vercel generally ensures that email addresses included in Marketplace tokens and member information are verified. You usually don't need an additional email verification flow.
+
+#### How Vercel verifies emails
+
+Vercel verifies user email addresses through one of the following methods:
+
+- **Direct verification by Vercel**: When users sign up or sign in with an email, Vercel sends a verification email. Users must click the verification link before they can use the platform.
+- **Trusted social identity providers**: When users authenticate through social login with a trusted identity provider for the email domain, Vercel accepts the email as verified. For example, Vercel trusts Google for `gmail.com` addresses and Apple for `icloud.com` addresses.
+- **Enterprise Managed Users (EMU)**: When an Enterprise team verifies a domain and a user authenticates through the team's SAML identity provider with an email on that domain, Vercel accepts the email as verified. Directory Sync can provision and manage the user, but verification comes from the verified domain and SAML-authenticated identity.
+
+#### Check the latest verification status
+
+Marketplace tokens also include either a `user_email_verified` or `email_verified` claim with Vercel's most up-to-date verification status. If your integration needs to adjust its behavior based on this status, check the applicable claim instead of assuming that the email remains verified.
+
+This guidance applies to:
+
+- User authentication JWT tokens received when [Vercel calls your API](/docs/integrations/create-integration/marketplace-api/reference/partner#user-authentication)
+- Tokens received through the [SSO Token Exchange](/docs/integrations/create-integration/marketplace-api/reference/vercel/exchange-sso-token) endpoint
+- Member information returned from the [Get Member](/docs/integrations/create-integration/marketplace-api/reference/vercel/get-member) endpoint
 
 ### Authentication with SSO
 
@@ -160,7 +211,7 @@ const response = await fetch(
         title: 'Review your usage',
         message: 'Your monthly usage report is ready',
         href: 'sso:https://your-integration.com/dashboard/usage',
-        type: 'info',
+        level: 'info',
       },
     }),
   },
@@ -284,11 +335,8 @@ async function getMemberInfo(
 ```json filename="get-member-info-response.json"
 {
   "id": "member_abc123",
-  "name": "Timmy Triangle",
-  "email": "timmy@example.com",
   "role": "ADMIN",
-  "avatar": "https://example.com/avatar.jpg",
-  "createdAt": "2025-01-15T10:00:00Z"
+  "userEmail": "timmy@example.com"
 }
 ```
 
@@ -314,7 +362,7 @@ interface Notification {
   title: string;
   message: string;
   href?: string;
-  type?: 'info' | 'warning' | 'error';
+  level: 'info' | 'warn' | 'error';
 }
 
 async function updateInstallationNotification(
@@ -336,8 +384,6 @@ async function updateInstallationNotification(
   if (!response.ok) {
     throw new Error(`Failed to update notification: ${response.statusText}`);
   }
-
-  return response.json();
 }
 
 // Example usage with regular URL:
@@ -345,31 +391,21 @@ await updateInstallationNotification('icfg_abc123', {
   title: 'Action Required',
   message: 'Please complete your account setup',
   href: 'https://your-integration.com/setup',
-  type: 'warning',
+  level: 'warn',
 });
 
 // Or with SSO-enabled URL for authenticated access:
 // href: 'sso:https://your-integration.com/setup',
 ```
 
-```json filename="update-installation-notification-response.json"
-{
-  "id": "icfg_abc123",
-  "notification": {
-    "title": "Action Required",
-    "message": "Please complete your account setup",
-    "href": "https://your-integration.com/setup",
-    "type": "warning"
-  }
-}
-```
+A successful request returns a `204` status code with no response body.
 
 ### Notification types
 
-Use different notification types to indicate severity:
+Set the required `level` field to indicate severity:
 
-- `info` - Informational message (default)
-- `warning` - Warning that requires attention
+- `info` - Informational message
+- `warn` - Warning that requires attention
 - `error` - Error that needs immediate action
 
 ### SSO-enabled notification links
@@ -395,7 +431,7 @@ await updateInstallationNotification('icfg_abc123', {
   title: 'Review your usage',
   message: 'Your monthly usage report is ready',
   href: 'sso:https://your-integration.com/dashboard/usage',
-  type: 'info',
+  level: 'info',
 });
 ```
 
@@ -419,35 +455,36 @@ async function clearInstallationNotification(installationId: string) {
     }
   );
 
-  return response.json();
+  if (!response.ok) {
+    throw new Error(`Failed to clear notification: ${response.statusText}`);
+  }
 }
 ```
 
 ### Get installation with notification
 
-You can find the value of the notification field by calling the [`/v1/installations/{installationId}`](/docs/integrations/create-integration/marketplace-api/reference/partner/get-installation) endpoint as shown below:
+Vercel also reads the notification from your integration server. When **Supports Installation Billing Plans** is enabled in the Integration Console, Vercel calls the [Get Installation](/docs/integrations/create-integration/marketplace-api/reference/partner/get-installation) endpoint (`GET /v1/installations/{installationId}`) on your integration server to fetch the installation state. Return the current notification in the `notification` field of the response, together with the rest of the installation state, or set the field to `null` to remove the notification. This example shows only the `notification` field of the response:
 
-```ts filename="get-installation-with-notification.ts"
-async function getInstallation(installationId: string) {
-  const response = await fetch(
-    `https://api.vercel.com/v1/installations/${installationId}`,
-    {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    }
-  );
-
-  const installation = await response.json();
-
-  if (installation.notification) {
-    console.log(`Notification: ${installation.notification.title}`);
-    console.log(`Message: ${installation.notification.message}`);
+```json filename="get-installation-notification.json"
+{
+  "notification": {
+    "level": "warn",
+    "title": "Action Required",
+    "message": "Please complete your account setup",
+    "href": "https://your-integration.com/setup"
   }
-
-  return installation;
 }
 ```
+
+## Custom Environment connections
+
+> **💡 Note:** The REST API resource connection request accepts `production`, `preview`,
+> `development`, or a Custom Environment slug or ID from the target project in
+> `envVarEnvironments`. Vercel validates each Custom Environment against the
+> target project. If the request uses a stable ID, Vercel stores the matching
+> slug in the connection record. If the request omits `envVarEnvironments`,
+> Vercel uses all three built-in environments. The default does not include
+> Custom Environments.
 
 ## Environment variable prefixes
 
@@ -481,6 +518,14 @@ Users can also set a custom prefix when connecting a resource to a project. Lear
 ## Secrets rotation
 
 When your integration provisions resources with credentials, you should implement secrets rotation to allow users to update credentials securely. Learn how to [implement secrets rotation](/docs/integrations/create-integration/secrets-rotation) in your integration.
+
+## Project connection events
+
+Vercel can send `integration-resource.project-connected` and `integration-resource.project-disconnected` events after a resource connection changes. These webhooks describe provider-facing targets, not every environment scope change. If only the Custom Environment scope changes and the provider-facing target set remains unchanged, Vercel does not send either webhook event. For example, replacing `qa` with `staging` keeps the provider-facing target as `preview` and does not produce either event.
+
+When Vercel sends either event, the `payload.targets` field contains a deduplicated list of `production`, `preview`, and `development` targets. Vercel maps each Custom Environment to `preview`. The field does not include the exact Custom Environment slug or ID. For example, `qa` produces `['preview']`. A selection of `production`, `preview`, and `qa` produces `['production', 'preview']`.
+
+See the [Webhooks API reference](/docs/webhooks/webhooks-api#integration-resource.project-connected) for all project connection payload fields.
 
 ## Working with billing events through webhooks
 
@@ -543,7 +588,7 @@ async function handleInvoiceCreated(webhook: WebhookPayload) {
     "configuration": {
       "id": "icfg_def456"
     },
-    "installationId": "oac_ghi789",
+    "installationId": "icfg_def456",
     "invoiceId": "inv_xyz987",
     "externalInvoiceId": "1234-5678",
     "period": {
@@ -595,7 +640,7 @@ async function handleInvoicePaid(webhook: WebhookPayload) {
     "configuration": {
       "id": "icfg_def456"
     },
-    "installationId": "oac_ghi789",
+    "installationId": "icfg_def456",
     "invoiceId": "inv_xyz987",
     "externalInvoiceId": "1234-5678",
     "period": {
@@ -627,7 +672,7 @@ async function handleInvoiceNotPaid(webhook: WebhookPayload) {
   // Request fresh invoice
   const invoiceDetails = await getInvoiceDetails(invoiceId);
 
-  if (invocieDetails.state === 'notpaid') {
+  if (invoiceDetails.state === 'notpaid') {
     // Update invoice status
     await updateInvoiceRecord(invoiceId, {
       status: 'not_paid',
@@ -636,22 +681,22 @@ async function handleInvoiceNotPaid(webhook: WebhookPayload) {
 
     // Check if this is the final attempt (you may need to query invoice status)
     // Prefer `marketplace.invoice.overdue`
-    const isFinalAttempt = checkAttempts(inoviceId);
+    const isFinalAttempt = checkAttempts(invoiceId);
     if (isFinalAttempt) {
       // Suspend resources after final payment failure
       const resources = await getResourcesForInstallation(configuration.id);
       for (const resource of resources) {
         await suspendResource(resource.id, {
           reason: 'payment_failed',
-          invoiceId: inoviceId,
+          invoiceId,
         });
       }
 
       // Notify customer
-      await sendPaymentFailureNotification(configuration.id, inoviceId);
+      await sendPaymentFailureNotification(configuration.id, invoiceId);
     } else {
       // Schedule retry or send reminder
-      await schedulePaymentRetry(inoviceId);
+      await schedulePaymentRetry(invoiceId);
     }
   }
 }
@@ -665,7 +710,7 @@ async function handleInvoiceNotPaid(webhook: WebhookPayload) {
     "configuration": {
       "id": "icfg_def456"
     },
-    "installationId": "oac_ghi789",
+    "installationId": "icfg_def456",
     "invoiceId": "inv_xyz987",
     "externalInvoiceId": "1234-5678",
     "period": {
@@ -723,7 +768,7 @@ async function handleInvoiceOverdue(webhook: WebhookPayload) {
     "configuration": {
       "id": "icfg_def456"
     },
-    "installationId": "oac_ghi789",
+    "installationId": "icfg_def456",
     "invoiceId": "inv_xyz987",
     "externalInvoiceId": "1234-5678",
     "period": {
@@ -775,7 +820,7 @@ async function handleInvoiceRefunded(webhook: WebhookPayload) {
     "configuration": {
       "id": "icfg_def456"
     },
-    "installationId": "oac_ghi789",
+    "installationId": "icfg_def456",
     "invoiceId": "inv_xyz987",
     "externalInvoiceId": "1234-5678",
     "period": {
@@ -788,7 +833,22 @@ async function handleInvoiceRefunded(webhook: WebhookPayload) {
 }
 ```
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

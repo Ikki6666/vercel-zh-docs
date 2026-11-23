@@ -3,7 +3,7 @@ title: Deploy a Django app on Vercel
 product: vercel
 url: /docs/frameworks/full-stack/django
 canonical_url: "https://vercel.com/docs/frameworks/full-stack/django"
-last_updated: 2026-07-24
+last_updated: 2026-11-14
 type: how-to
 prerequisites:
   - /docs/frameworks/full-stack
@@ -12,10 +12,11 @@ related:
   - /docs/cli/init
   - /docs/project-configuration/vercel-json
   - /docs/cli/deploy
-  - /docs/cdn
-  - /docs/environment-variables
+  - /docs/deployments/deploy-without-logging-in
+  - /docs/services
 summary: Deploy a Django app on Vercel. Learn how the Python runtime, WSGI, ASGI, static assets, and Vercel Functions work together.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Deploy a Django app on Vercel
@@ -30,21 +31,21 @@ project settings.
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to ship a Flask app on Vercel](https://vercel.com/kb/guide/ship-a-flask-app-on-vercel?from=related) — Deploy a Flask app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
-- [How to ship a FastAPI app on Vercel](https://vercel.com/kb/guide/ship-a-fastapi-app-on-vercel?from=related) — Deploy a FastAPI app to Vercel with zero configuration. Learn how the Python runtime, Vercel Functions, streaming, middl
-- [Migrate a TanStack Start app from Cloudflare to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-cloudflare-to-vercel?from=related) — Move your TanStack Start app off Cloudflare Workers and onto Vercel Functions, where Fluid compute scales it automatical
-- [Deploy a Node.js Fastify app on Vercel with Docker](https://vercel.com/kb/guide/deploy-nodejs-on-vercel-with-docker?from=related) — Build a Node.js application with Fastify and Docker, then deploy it to Vercel Functions. Learn how to configure environm
-- [Migrate a TanStack Start app from Netlify to Vercel](https://vercel.com/kb/guide/migrate-a-tanstack-start-app-from-netlify-to-vercel?from=related) — Move your TanStack Start app off Netlify and onto Vercel Functions, where Fluid compute scales it automatically. Swap to
-- [Flask](https://vercel.com/docs/frameworks/backend/flask?from=related) — Deploy a Flask app on Vercel. Learn how the Python runtime, WSGI, static assets, and Vercel Functions work together.
-- [Celery](https://vercel.com/docs/frameworks/backend/celery?from=related) — Deploy Celery on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to run background tasks without
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Express](https://vercel.com/docs/frameworks/backend/express?from=related) — Deploy Express applications to Vercel with zero configuration. Learn about middleware and Vercel Functions.
-- [Backends](https://vercel.com/docs/frameworks/backend?from=related) — Vercel supports a wide range of the most popular backend frameworks, optimizing how your application builds and runs no
+- [How to ship a Flask app on Vercel](https://vercel.com/kb/guide/ship-a-flask-app-on-vercel) — Deploy a Flask app to Vercel with zero configuration. Learn how to ship from a template, the Vercel CLI, or Git, and con
+- [How to ship a FastAPI app on Vercel](https://vercel.com/kb/guide/ship-a-fastapi-app-on-vercel) — Deploy a FastAPI app to Vercel with zero configuration. Learn how the Python runtime, Vercel Functions, streaming, middl
+- [Zero-configuration Django support](https://vercel.com/changelog/zero-configuration-django-support)
+- [Deploy a Flask app on Vercel](https://vercel.com/docs/frameworks/backend/flask) — Deploy a Flask app on Vercel. Learn how the Python runtime, WSGI, static assets, and Vercel Functions work together.
+- [Using the Python Runtime with Vercel Functions](https://vercel.com/docs/functions/runtimes/python) — Learn how to use the Python runtime to run Python applications on Vercel.
+- [Deploy a FastAPI app on Vercel](https://vercel.com/docs/frameworks/backend/fastapi) — Deploy a FastAPI app on Vercel. Learn how the Python runtime, ASGI, static assets, and Vercel Functions work together.
+- [Deploying a project from the CLI](https://vercel.com/docs/projects/deploy-from-cli) — Set up and deploy a Vercel project using the CLI, from linking to production.
+- [Projects overview](https://vercel.com/docs/projects) — A project is where you deploy and operate frontend apps, APIs, backends, containers, and agent workloads on Vercel.
 
 Full cross-link map for this page: [/docs/frameworks/full-stack/django.graph.md](/docs/frameworks/full-stack/django.graph.md)
 <!-- /docsgraph:related -->
 
 ## Create or import your project
+
+To move an existing Django project from another platform, follow the Python API migration guide for [Heroku](/kb/guide/migrate-a-python-api-from-heroku-to-vercel), [Render](/kb/guide/migrate-a-python-api-from-render-to-vercel), or [Railway](/kb/guide/migrate-a-python-api-from-railway-to-vercel).
 
 Create a Django project or use an existing one:
 
@@ -156,6 +157,20 @@ vc deploy
 
 > **💡 Note:** Minimum CLI version required: 50.38.0
 
+## Deploy without an account
+
+To deploy your Django app without an account or login, run this command in the project root:
+
+```bash filename="terminal"
+vercel deploy --temporary
+```
+
+The CLI builds the project, deploys it to production, and prints a claim URL. Claim the project to keep it live. See [Deploying without logging in](/docs/deployments/deploy-without-logging-in).
+
+## Deploy with a frontend
+
+Use [Vercel Services](/docs/services) to deploy a Django backend and a frontend in one project. Configure [service routing](/docs/services/routing) to expose the backend at a public path, or use [service bindings](/docs/services/bindings) for private calls from the frontend's server code.
+
 ## Serving static assets
 
 When your Django project has `STATIC_ROOT` configured, Vercel automatically runs `collectstatic` during the build and serves the collected files from the [Vercel CDN](/docs/cdn). Files are served at `STATIC_URL` (Django's default is `/static/`).
@@ -215,10 +230,10 @@ else:
 
 ### Loading environment variables locally
 
-To use environment variables locally (for example, to run migrations), first pull them with [`vercel pull`](/docs/cli/pull):
+To use environment variables locally (for example, to run migrations), first pull them with [`vercel env pull`](/docs/cli/env):
 
 ```bash filename="terminal"
-vercel pull
+vercel env pull
 ```
 
 This saves your environment variables to `.env.local`. Then load them in `manage.py` using `dotenv` or `django-environ`:
@@ -345,6 +360,12 @@ channel layer. `InMemoryChannelLayer` only coordinates connections within one
 function instance. Learn more about [managing persistent state](/docs/functions/websockets#manage-persistent-state), [handling
 reconnects](/docs/functions/websockets#handle-disconnections-and-reconnects), and [WebSocket limits](/docs/functions/websockets#limits-and-pricing).
 
+## Run background tasks
+
+Enqueue background work from Django views with [Celery](/docs/frameworks/backend/celery) or [Dramatiq](/docs/frameworks/backend/dramatiq). Their Vercel integrations run tasks in queue-triggered functions independently of the request that enqueues them.
+
+For a worker that must run continuously, compare [Functions, containers, and Daemons](/kb/guide/vercel-functions-containers-daemons) before choosing how to deploy it.
+
 ## Limitations
 
 All [Vercel Functions limitations](/docs/functions/limitations) apply to Django applications, including:
@@ -359,7 +380,22 @@ For more about deploying Django on Vercel, see:
 - [Vercel Functions documentation](/docs/functions)
 - [Backend templates on Vercel](https://vercel.com/templates?type=backend)
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

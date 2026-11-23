@@ -3,7 +3,7 @@ title: WAF Custom Rules
 product: vercel
 url: /docs/vercel-firewall/vercel-waf/custom-rules
 canonical_url: "https://vercel.com/docs/vercel-firewall/vercel-waf/custom-rules"
-last_updated: 2026-07-17
+last_updated: 2026-09-10
 type: how-to
 prerequisites:
   - /docs/vercel-firewall/vercel-waf
@@ -16,6 +16,7 @@ related:
   - /docs/vercel-firewall/firewall-concepts
 summary: Learn how to add and manage custom rules to configure the Vercel Web Application Firewall (WAF).
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # WAF Custom Rules
@@ -28,23 +29,27 @@ You can [configure](#custom-rule-configuration) specific rules to log, deny, cha
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Avoiding duplicate-content SEO with vercel.app URLs and custom domains](https://vercel.com/kb/guide/avoiding-duplicate-content-with-vercel-app-urls?from=related) — Discover why search engines may treat your vercel.app URL and custom domain as separate pages, and how to consolidate ra
-- [Can I get a fixed IP address for my Vercel deployments?](https://vercel.com/kb/guide/can-i-get-a-fixed-ip-address?from=related) — Vercel deployments use dynamic IPs by default. Learn how Static IPs, Secure Compute, and AWS PrivateLink give you a fixe
-- [How to build a honeypot with Vercel Web Application Firewall](https://vercel.com/kb/guide/how-to-build-a-honeypot-with-vercel-web-application-firewall?from=related) — Learn how to build a honeypot with Vercel Web Application Firewall \\(WAF\\) that catches bots ignoring your robots.txt. C
-- [How to conduct PCI scans on Vercel: A complete guide to IP safelisting](https://vercel.com/kb/guide/how-to-conduct-pci-scans-on-vercel-guide?from=related) — Scan and verify your Vercel deployments for secure, PCI-compliant payment processing.
-- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime?from=related) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
-- [WAF Managed Rulesets](https://vercel.com/docs/vercel-firewall/vercel-waf/managed-rulesets?from=related) — Learn how to use WAF Managed Rulesets with the Vercel Web Application Firewall \\(WAF\\)
-- [Rate Limiting SDK](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting-sdk?from=related) — Learn how to configure a custom rule with rate limit in your code.
-- [vercel firewall](https://vercel.com/docs/cli/firewall?from=related) — Learn how to manage your project's custom firewall rules, IP blocks, system bypass rules, attack challenge mode, and sys
-- [Routing Rules](https://vercel.com/docs/ai-gateway/models-and-providers/routing-rules?from=related) — Define team-wide rules that rewrite requests from one model to another or deny specific models in AI Gateway.
-- [Project Routing Rules](https://vercel.com/docs/routing/project-routing-rules?from=related) — Add redirects, rewrites, headers, and status codes to your project from the dashboard or API, without deploying new code
+- [Protect Sensitive Routes with Vercel WAF: Challenge and Deny Rule Recipes](https://vercel.com/kb/guide/suspicious-traffic-in-specific-countries) — Use Vercel WAF custom rules to block or challenge unwanted traffic by country, ASN, IP address, user agent, path, or coo
+- [Create custom WAF rules directly from the Vercel Firewall tab](https://vercel.com/changelog/create-custom-waf-rules-directly-from-the-vercel-firewall-tab)
+- [Create Vercel Firewall rules with natural language](https://vercel.com/changelog/create-vercel-waf-custom-rules-using-natural-language)
+- [Manage Vercel Firewall in the CLI](https://vercel.com/changelog/manage-vercel-firewall-in-the-cli)
+- [Microfrontends Routing is now free for Firewall-mitigated traffic](https://vercel.com/changelog/microfrontends-routing-is-now-free-for-firewall-mitigated-traffic)
+- [New firewall challenge metrics now available](https://vercel.com/changelog/new-firewall-challenge-metrics-now-available)
+- [Making your catalog discoverable to AI agents](https://vercel.com/kb/guide/agentic-commerce-readiness) — Agentic commerce readiness starts with the initial HTML response. Server-render your product catalog, ship JSON-LD, and
+- [How to keep your storefront running through Black Friday](https://vercel.com/kb/guide/black-friday-reliability) — Learn how to tune alerts, bot rules, and spend limits. Rehearse rollback so your team can recover quickly from checkout
+- [How to conduct PCI scans on Vercel: A complete guide to IP safelisting](https://vercel.com/kb/guide/how-to-conduct-pci-scans-on-vercel-guide) — Scan and verify your Vercel deployments for secure, PCI-compliant payment processing.
+- [How to migrate from Fastly to Vercel with zero downtime](https://vercel.com/kb/guide/how-to-migrate-from-fastly-to-vercel-with-zero-downtime) — Consolidate your CDN infrastructure on Vercel to reduce latency, simplify your configuration, and improve your developer
+- [How Vercel Agent accesses production safely](https://vercel.com/blog/how-vercel-agent-accesses-production-safely)
+- [Rate Limiting SDK](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting-sdk) — Learn how to configure a custom rule with rate limit in your code.
 
 Full cross-link map for this page: [/docs/vercel-firewall/vercel-waf/custom-rules.graph.md](/docs/vercel-firewall/vercel-waf/custom-rules.graph.md)
 <!-- /docsgraph:related -->
 
 [Get started](#get-started) by reviewing the [Best practices for applying rules](#best-practices-for-applying-rules) section.
 
-> **🔒 Permissions Required**: WAF Custom Rules
+> WAF Custom Rules are available on all plans
+>
+> Those with the member, viewer, developer, administrator and security roles can access this feature
 
 ## Access roles
 
@@ -71,9 +76,11 @@ After a **Log** rule runs, the rule execution continues. If no other rule matche
 
 When you apply a [rate limiting](/docs/vercel-firewall/vercel-waf/rate-limiting) rule, include a follow-up action that logs, denies, challenges, or returns a 429 response.
 
+Custom rules can also match the requests Vercel sends to invoke your [Cron Jobs](/docs/cron-jobs). When a deny or challenge rule matches a cron request, the rule blocks the job before it reaches your function. To keep a cron job running, exclude its path from rules that deny or challenge traffic, for example with a **Request Path** condition that uses the **Does not start with** [operator](/docs/vercel-firewall/vercel-waf/rule-configuration#operators). For other reasons a cron job might not run, see [Troubleshooting cron jobs](/docs/cron-jobs/manage-cron-jobs#troubleshooting-cron-jobs).
+
 ## Persistent actions
 
-> **🔒 Permissions Required**: Persistent Actions
+> Persistent Actions are available on Enterprise and Pro plans
 
 When a custom rule blocks a client's request, future requests from the same client can still pass through if they do not match the rule's condition. To deny all requests from that client, identify the client through [traffic monitoring](/docs/vercel-firewall/vercel-waf) and create an IP Address rule.
 
@@ -91,7 +98,7 @@ You can enable persistent actions for any challenge, deny or rate limit action w
 1. Open [**Firewall**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Ffirewall\&title=Go+to+Firewall) in the sidebar followed by **Configure** on the top right of the Firewall overview page.
 2. Select a Custom Rule you would like to edit from the list or select **+ New Rule** and follow the [steps](#get-started) for configuring a rule.
 
-When you select challenge, deny or rate limit for the [action](/docs/vercel-firewall/vercel-waf/rule-configuration#actions) dropdown (**Then**) of any condition, you will see an additional dropdown for timeframe (**for**) that defaults to **1 minute**. You have the following options:
+When you select challenge, deny or rate limit for the [action](/docs/vercel-firewall/vercel-waf/rule-configuration#actions) dropdown (**Then**) of any condition, you will see an additional **Add Persistent Action** dropdown for the timeframe. No timeframe is set by default. You have the following options:
 
 3. Select a time value from the available options
 4. Remove the timeframe (If you don't want to enable persistent actions)
@@ -124,7 +131,7 @@ Learn how to create, test, and apply a Custom Rule.
 
 5. In the **Configure** section, add as many **If** conditions as needed. For each condition you add, choose how you will combine it with the previous condition using the **AND** (Both conditions need to be met) or the **OR** operator (One of the conditions need to be met)
 
-   ![Image](`/docs-assets/static/docs/security/vercel-waf-custom-rule-configure-and-or-light.png`)
+   ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/vercel-waf-custom-rule-configure-and-or-light.png)
 
 6. Select **Log** for the **Then** action
    - For **Rate Limit**, review [WAF Rate Limiting](/docs/vercel-firewall/vercel-waf/rate-limiting#get-started)
@@ -136,9 +143,9 @@ Learn how to create, test, and apply a Custom Rule.
    - Select **Review Changes** and review the changes to be applied
    - Select **Publish** to apply the changes to your production deployment
 
-9. Go to the Firewall overview page, select your Custom Rule from the traffic grouping drop-down and select the paramater(s) related to the condition(s) of your Custom Rule to observe the traffic:
+9. Go to the Firewall overview page, select your Custom Rule from the traffic grouping drop-down and select the parameter(s) related to the condition(s) of your Custom Rule to observe the traffic:
 
-   ![Image](`/docs-assets/static/docs/security/waf-overview-custom-rule-light.png`)
+   ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/waf-overview-custom-rule-light.png)
 
 10. If you are satisfied with the traffic behavior, select **Configure**
 
@@ -151,6 +158,41 @@ Learn how to create, test, and apply a Custom Rule.
 14. Apply the changes with the **Review Changes** button
 
 Review [Common Examples](/docs/vercel-firewall/vercel-waf/examples) for the application of specific rules in common situations.
+
+## Bot conditions with Priority projects
+
+[Priority projects](/docs/vercel-firewall/priority-projects) unlock additional match conditions for classifying and acting on bot traffic:
+
+- `bot_name`: Match requests by a specific bot name, such as blocking `Bytespider` or allowing `Googlebot`.
+- `bot_category`: Match requests by [bot category](/docs/bot-management#bot-categories), such as rate-limiting all `automated_browser` traffic or denying all `scanner` requests.
+- `bot_status`: Match by verification status, one of `identified`, `verified`, `impersonation`, or `unknown`.
+- `bot_protection`: Match on whether bot protection was triggered.
+
+Rules that use bot conditions become inactive if you downgrade the project off Priority. Their configuration is preserved, and upgrading the project again reactivates them.
+
+## Traffic source conditions with Priority projects
+
+[Priority projects](/docs/vercel-firewall/priority-projects) can match requests by the type of network they come from with the `traffic_source` condition, labeled **Traffic Source** in the rule builder. Vercel classifies the public IP address of the client that sent each request, and the `traffic_source` condition matches these values:
+
+| Value       | Rule builder label | Description                                                    |
+| ----------- | ------------------ | -------------------------------------------------------------- |
+| `tor`       | Tor                | A known Tor exit node.                                         |
+| `vpn`       | VPN                | The egress IP address of a commercial VPN.                     |
+| `proxy`     | Proxy              | A known open or anonymizing proxy.                             |
+| `res-proxy` | Residential Proxy  | An IP address offered through a residential proxy network.     |
+| `abuse`     | Abuse              | An IP address with a high-confidence history of abuse.         |
+
+A traffic source describes the network a request came through, and how much risk it carries depends on the source. VPNs carry substantial legitimate traffic, so a traffic source works best as one signal in a rule rather than the only reason to block a request. Residential proxy and abuse sources more often indicate attacks or scraping.
+
+The `traffic_source` condition supports the **Equals** (`eq`), **Does not equal** (`neq`), **Is any of** (`inc`), and **Is not any of** (`ninc`) operators. A request can have more than one traffic source, and the condition matches when any one of them matches the operator.
+
+**Does not equal** and **Is not any of** only match requests that have a traffic source. For example, a rule with Traffic Source **Does not equal** `tor` matches a request from a VPN, but not a request from an IP address with no traffic source.
+
+To act on requests from anonymizing networks, use **Is any of** with `tor`, `vpn`, `proxy`, and `res-proxy`. Start with the **Log** action to see how much of your traffic matches before you switch to **Challenge** or **Deny**.
+
+Your application can read the same classification from the [`x-vercel-waf-source`](/docs/headers/request-headers#x-vercel-waf-source) request header.
+
+Rules that use the `traffic_source` condition become inactive if you downgrade the project off Priority. Their configuration is preserved, and upgrading the project again reactivates them.
 
 ## Create a rule with natural language
 
@@ -225,7 +267,22 @@ In this example:
 
 For complete documentation on route configuration options, including `has`, `missing`, and other conditional matching properties, see the [routes documentation](/docs/project-configuration/vercel-json#routes).
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

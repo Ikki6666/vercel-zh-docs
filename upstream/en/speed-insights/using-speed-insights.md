@@ -3,7 +3,7 @@ title: Using Speed Insights
 product: vercel
 url: /docs/speed-insights/using-speed-insights
 canonical_url: "https://vercel.com/docs/speed-insights/using-speed-insights"
-last_updated: 2026-06-25
+last_updated: 2026-09-01
 type: how-to
 prerequisites:
   - /docs/speed-insights
@@ -11,10 +11,11 @@ related:
   - /docs/speed-insights/accessing-metrics-with-vercel-cli
   - /docs/analytics/using-web-analytics
   - /docs/analytics/filtering
-  - /docs/speed-insights/metrics
   - /docs/speed-insights/limits-and-pricing
+  - /docs/speed-insights/metrics
 summary: "Learn how to use Speed Insights to analyze your application's performance data."
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Using Speed Insights
@@ -23,24 +24,27 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 > to query production metrics, filter Core Web Vitals, and compare projects from
 > your terminal.
 
+## Accessing Speed Insights
+
+To access Speed Insights:
+
 
 <!-- docsgraph:related -->
 ## Related pages
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Getting Started](https://vercel.com/docs/speed-insights/quickstart?from=related) — Vercel Speed Insights provides you detailed insights into your website's performance. This quickstart guide will help yo
-- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage?from=related) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
-- [@vercel/speed-insights](https://vercel.com/docs/speed-insights/package?from=related) — Learn how to configure your application to capture and send web performance metrics to Vercel using the @vercel/speed-in
-- [Privacy](https://vercel.com/docs/speed-insights/privacy-policy?from=related) — Learn how Vercel follows the latest privacy and data compliance standards with its Speed Insights feature.
-- [Manage & Optimize](https://vercel.com/docs/manage-and-optimize-observability?from=related) — Learn how to understand the different charts in the Vercel dashboard, how usage relates to billing, and how to optimize
+- [Speed Insights now has a free tier](https://vercel.com/changelog/speed-insights-free-tier)
+- [A/B testing on ecommerce storefronts without hurting Core Web Vitals](https://vercel.com/kb/guide/ecommerce-ab-testing-core-web-vitals) — Client-side A/B tools can worsen LCP and CLS on the pages you're testing. Run ecommerce A/B tests at the edge with Routi
+- [Improved Speed Insights experience](https://vercel.com/changelog/improved-speed-insights-experience)
+- [Getting started with Speed Insights](https://vercel.com/docs/speed-insights/quickstart) — Vercel Speed Insights provides you detailed insights into your website's performance. This quickstart guide will help yo
+- [Managing Usage & Costs](https://vercel.com/docs/speed-insights/managing-usage) — Learn how to measure and manage Speed Insights usage with this guide to reduce events and avoid unexpected costs.
+- [Speed Insights Configuration with @vercel/speed-insights](https://vercel.com/docs/speed-insights/package) — Learn how to configure your application to capture and send web performance metrics to Vercel using the @vercel/speed-in
+- [Observability Insights](https://vercel.com/docs/observability/insights) — List of available data sources that you can view and monitor with Observability on Vercel.
+- [Observability](https://vercel.com/docs/observability) — Find production errors, capture request traces, and discover queryable metrics with Vercel Observability and Vercel CLI.
 
 Full cross-link map for this page: [/docs/speed-insights/using-speed-insights.graph.md](/docs/speed-insights/using-speed-insights.graph.md)
 <!-- /docsgraph:related -->
-
-## Accessing Speed Insights
-
-To access Speed Insights:
 
 1. Select a project from your [dashboard](/dashboard) and open [**Speed Insights**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fspeed-insights\&title=Go+to+Speed+Insights) in the sidebar.
 2. Select the [timeframe](/docs/analytics/using-web-analytics#specifying-a-timeframe) and [environment](/docs/analytics/using-web-analytics#viewing-environment-specific-data) you want to view data for.
@@ -50,6 +54,9 @@ To access Speed Insights:
 
 Speed Insights offers a variety of views to help you analyze your application's performance data. This allows you to identify areas that need improvement and make informed decisions about how to optimize your site.
 
+> **💡 Note:** Poor entries, country breakdowns, and element selectors are only available on [Speed Insights
+> Plus](/docs/speed-insights/limits-and-pricing).
+
 ### Breakdown by route or path
 
 To view metrics for a specific route or path:
@@ -57,28 +64,31 @@ To view metrics for a specific route or path:
 1. Select a project from your [dashboard](/dashboard) and open [**Speed Insights**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fspeed-insights\&title=Go+to+Speed+Insights) in the sidebar.
 2. From the left-hand panel, select the [metric](/docs/speed-insights/metrics) you want to view data for.
 3. From the URL view, select the corresponding tab to view by the **Route** (the actual pages you built), or by **Path** (the URLs requested by the visitor).
-4. The information is organized by performance score and sorted by data points. Scroll the list to view more all paths or routes, or click the **View all** button to view and filter all data.
+4. The information is organized by performance score and sorted by data points. Scroll the list to view more paths or routes, or click the **View all** button to view and filter all data.
 5. You can also edit the [timeframe](/docs/analytics/using-web-analytics#specifying-a-timeframe) and [environment](/docs/analytics/using-web-analytics#viewing-environment-specific-data) you want to view data for.
 
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/kanban-light.png`)
+![Speed Insights URL view for routes and paths of your project.](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/speed-insights/v2/kanban-light.png)
 
 ### Breakdown by HTML elements
+
+> **💡 Note:** This view requires [Speed Insights Plus](/docs/speed-insights/limits-and-pricing).
 
 To view a detailed breakdown of the performance of individual HTML elements on your site:
 
 1. Select a project from your [dashboard](/dashboard) and open [**Speed Insights**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fspeed-insights\&title=Go+to+Speed+Insights) in the sidebar.
 2. From the left-hand panel, select the [metric](/docs/speed-insights/metrics) you want to view data for. HTML element attribution is only available for the following metrics:
    - **Interaction to Next Paint** (INP)
-   - **First Input Delay** (FID)
    - **Cumulative Layout Shift** (CLS)
    - **Largest Contentful Paint** (LCP)
 3. From the URL view, open **Selectors** in the sidebar.
-4. The information is organized by performance score and sorted by data points. Scroll the list to view more all elements, or click the **View all** button to view and filter all data.
+4. The information is organized by performance score and sorted by data points. Scroll the list to view more elements, or click the **View all** button to view and filter all data.
 5. You can also edit the [timeframe](/docs/analytics/using-web-analytics#specifying-a-timeframe) and [environment](/docs/analytics/using-web-analytics#viewing-environment-specific-data) you want to view data for.
 
 This view is particularly useful for identifying specific elements that may be causing performance issues.
 
 ### Breakdown by country
+
+> **💡 Note:** This view requires [Speed Insights Plus](/docs/speed-insights/limits-and-pricing).
 
 This view is helpful for identifying regions where your application may be underperforming.
 
@@ -89,48 +99,39 @@ To view a geographical breakdown of your application's performance:
 3. Scroll down to the **Countries** section.
 4. The map is colored based on the experience metric per country. Click on a country to view more detailed data.
 
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/country-map-light.png`)
+![Geographic map of the P75 score where the color intensity indicates the relative amount of data points per country](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/speed-insights/v2/country-map-light.png)
 
-## Disabling Speed Insights
+## Downgrading from Speed Insights Plus
 
-You may want to disable Speed Insights in your project if you find you no longer need it. You can disable Speed Insights from within the project settings in the Vercel dashboard. If you are unsure if a project has Speed Insights enabled, see [Identifying if Speed Insights is enabled](#identifying-if-speed-insights-is-enabled).
-
-> **💡 Note:** If you transfer a project with Speed Insights enabled from a Hobby team to a
-> Pro plan, it will continue to be enabled but with increased limits, as
-> documented in the [pricing docs](/docs/speed-insights/limits-and-pricing).
-> This means that Speed Insights will be added to your Pro plan invoice
-> automatically.
+If a project is on [Speed Insights Plus](/docs/speed-insights/limits-and-pricing) you can downgrade it to the Speed Insights free tier:
 
 1. Select a project from your [dashboard](/dashboard).
 2. Open [**Speed Insights**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fspeed-insights\&title=Go+to+Speed+Insights) in the sidebar.
-3. Click on the ellipsis on the top-right of the Speed Insights page and select **Disable Speed Insights**.
+3. Click on the ellipsis on the top-right of the Speed Insights page and select **Turn off Speed Insights Plus**.
 
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/disable-light.png`)
+When you downgrade, you retain access to Speed Insights Plus reports until the end of your billing cycle.
+The switch to your team's free [allocation](/docs/speed-insights/limits-and-pricing#limitations) can take up to 10 minutes. During this time, new events may still count toward Plus usage.
 
-When you disable Speed Insights in the middle of your billing cycle, it will not be removed instantly. Instead it will stop collecting new data points but will continue to show already collected data until the end of the cycle, see the [prorating docs](/docs/speed-insights/limits-and-pricing#prorating) for more information.
+## Stopping data collection
 
-> **💡 Note:** If you are on an Enterprise plan, check your contract entitlements as you may
-> have custom limits included. If you have any questions about your
-> billing/contract regarding Speed Insights you can reach out to your
-> Vercel account representative for further clarification.
+After downgrading, data collection continues under the Speed Insights free tier, subject to your team's [allocation limits](/docs/speed-insights/limits-and-pricing#limitations). To stop automatic collection from new visits to the updated deployment, remove the Speed Insights component or script from your application and redeploy.
 
-## Identifying if Speed Insights is enabled
+## Search the docs from your terminal
 
-If you have many projects on your Vercel account and are not sure which of them has Speed Insights enabled, you can see this from the [dashboard](/dashboard) without needing to check each project separately. The different circles in the right corner of each project card will show the Speed Insights status.
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
 
-If Speed Insights is not enabled, then the circle will be gray, with the speed insights logo. For example:
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
 
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/ready-to-enable-light.png`)
-
-If Speed Insights is enabled but no data points have been collected yet then it will show an empty circle, like the below:
-
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/enabled-no-data-light.png`)
-
-If Speed Insights is enabled and data points have been collected then the circle will be colored with a number inside, similar to the below image:
-
-![Image](`/docs-assets/static/docs/concepts/speed-insights/v2/enabled-light.png`)
-
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

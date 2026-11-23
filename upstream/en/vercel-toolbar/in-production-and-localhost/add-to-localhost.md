@@ -3,7 +3,7 @@ title: Add the Vercel Toolbar to your local environment
 product: vercel
 url: /docs/vercel-toolbar/in-production-and-localhost/add-to-localhost
 canonical_url: "https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-localhost"
-last_updated: 2026-02-17
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/vercel-toolbar/in-production-and-localhost
@@ -11,10 +11,11 @@ prerequisites:
 related:
   - /docs/cli/link
   - /docs/cli
-  - /docs/projects
+  - /docs/project-configuration/general-settings
   - /docs/accounts
 summary: Learn how to use the Vercel Toolbar in your local environment.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Add the Vercel Toolbar to your local environment
@@ -27,43 +28,38 @@ To enable the toolbar in your local environment, add it to your project using th
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Deploy a TanStack Start app to Vercel](https://vercel.com/kb/guide/deploy-a-tanstack-start-app-to-vercel?from=related) — Learn how to deploy a TanStack Start app to Vercel using the Nitro Vite plugin. Covers framework setup, Git and CLI depl
-- [Add to Production](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-production?from=related) — Learn how to add the Vercel Toolbar to your production environment and how your team members can use tooling to access t
-- [Managing Toolbar](https://vercel.com/docs/vercel-toolbar/managing-toolbar?from=related) — Learn how to enable or disable the Vercel Toolbar for your team, project, and session.
-- [Using Vercel Toolbar](https://vercel.com/docs/microfrontends/managing-microfrontends/vercel-toolbar?from=related) — Learn about using vercel toolbar on Vercel.
-- [Getting Started](https://vercel.com/docs/microfrontends/quickstart?from=related) — Learn about getting started on Vercel.
-- [React Router](https://vercel.com/docs/frameworks/frontend/react-router?from=related) — Learn how to use Vercel's features with React Router as a framework.
+- [Easier toolbar setup for SvelteKit and other Vite-based frameworks](https://vercel.com/changelog/easier-toolbar-setup-for-sveltekit-and-other-vite-based-frameworks)
+- [Add the Vercel Toolbar to your production environment](https://vercel.com/docs/vercel-toolbar/in-production-and-localhost/add-to-production) — Learn how to add the Vercel Toolbar to your production environment and how your team members can use tooling to access t
+- [Managing the visibility of the Vercel Toolbar](https://vercel.com/docs/vercel-toolbar/managing-toolbar) — Learn how to enable or disable the Vercel Toolbar for your team, project, and session.
+- [Getting started with microfrontends](https://vercel.com/docs/microfrontends/quickstart) — Learn how to get started with microfrontends on Vercel.
+- [Getting started with Vercel Web Analytics](https://vercel.com/docs/analytics/quickstart) — Vercel Web Analytics provides you detailed insights into your website's visitors. This quickstart guide will help you ge
+- [Supported Frameworks on Vercel](https://vercel.com/docs/frameworks/more-frameworks) — Learn about the frameworks that can be deployed to Vercel.
 
 Full cross-link map for this page: [/docs/vercel-toolbar/in-production-and-localhost/add-to-localhost.graph.md](/docs/vercel-toolbar/in-production-and-localhost/add-to-localhost.graph.md)
 <!-- /docsgraph:related -->
 
 - ### Install the `@vercel/toolbar` package and link your project
   Install the package using the following command:
-  <CodeBlock>
-    <Code tab="pnpm">
-      ```bash
-      pnpm i @vercel/toolbar
-      ```
-    </Code>
-    <Code tab="yarn">
-      ```bash
-      yarn i @vercel/toolbar
-      ```
-    </Code>
-    <Code tab="npm">
-      ```bash
-      npm i @vercel/toolbar
-      ```
-    </Code>
-    <Code tab="bun">
-      ```bash
-      bun i @vercel/toolbar
-      ```
-    </Code>
-  </CodeBlock>
+
+  **pnpm**
+  ```bash
+  pnpm i @vercel/toolbar
+  ```
+  **yarn**
+  ```bash
+  yarn add @vercel/toolbar
+  ```
+  **npm**
+  ```bash
+  npm i @vercel/toolbar
+  ```
+  **bun**
+  ```bash
+  bun add @vercel/toolbar
+  ```
   Then link your local project to your Vercel project with the [`vercel link`](/docs/cli/link) command using [Vercel CLI](/docs/cli).
   ```bash filename="terminal"
-  vercel link [path-to-directory]
+  vercel link --cwd [path-to-directory]
   ```
 
 - ### Add the toolbar to your project
@@ -73,6 +69,23 @@ Full cross-link map for this page: [/docs/vercel-toolbar/in-production-and-local
   To use the Vercel Toolbar locally in a SvelteKit project, add the `vercelToolbar` plugin to your `vite.config.js` file, as shown below:
   > For \['nuxt']:
   To use the Vercel Toolbar locally in a Nuxt project, install the Nuxt module:
+
+  **pnpm**
+  ```bash
+  pnpm dlx nuxt module add @vercel/toolbar
+  ```
+  **yarn**
+  ```bash
+  yarn dlx nuxt module add @vercel/toolbar
+  ```
+  **npm**
+  ```bash
+  npx nuxt module add @vercel/toolbar
+  ```
+  **bun**
+  ```bash
+  bunx nuxt module add @vercel/toolbar
+  ```
   > For \['other']:
   The toolbar works locally out of the box with Next.js. To use it with a framework other than Next.js, you can add the following script tag, filling in the relevant info where required:
   ```js filename="next.config.js" framework=nextjs-app
@@ -158,7 +171,12 @@ Full cross-link map for this page: [/docs/vercel-toolbar/in-production-and-local
   ></script>
   ```
   > For \['other']:
-  To find your project ID, see [project ID](/docs/projects#project-id). To find your user or team ID, see [Find your Team ID](/docs/accounts#find-your-team-id).
+  To find your project ID, see [project ID](/docs/project-configuration/general-settings#project-id). To find your user or team ID, see [Find your Team ID](/docs/accounts#find-your-team-id).
+  > **💡 Note:** If there are changes to your branch, you must refresh the page to see the
+  > latest comments in localhost.
+  <br />
+  > **💡 Note:** For frameworks using Vite, follow the SvelteKit setup steps: configure
+  > `vite.config.ts` and call `mountVercelToolbar` in your client's entry point.
   > For \['nextjs-app']:
   Then add the following code to your `layout.tsx` or `layout.jsx` file:
   ```tsx filename="app/layout.tsx" framework=nextjs-app
@@ -183,7 +201,7 @@ Full cross-link map for this page: [/docs/vercel-toolbar/in-production-and-local
   ```jsx filename="app/layout.jsx" framework=nextjs-app
   import { VercelToolbar } from '@vercel/toolbar/next';
 
-  export default function RootLayout(children) {
+  export default function RootLayout({ children }) {
     const shouldInjectToolbar = process.env.NODE_ENV === 'development';
     return (
       <html lang="en">
@@ -262,7 +280,22 @@ Full cross-link map for this page: [/docs/vercel-toolbar/in-production-and-local
   ```
   You do not need to configure anything else.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

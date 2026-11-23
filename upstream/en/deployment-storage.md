@@ -3,15 +3,17 @@ title: Deployment Storage
 product: vercel
 url: /docs/deployment-storage
 canonical_url: "https://vercel.com/docs/deployment-storage"
-last_updated: 2018-10-20
+last_updated: 2026-08-21
 type: conceptual
 prerequisites:
   []
 related:
   - /docs/deployment-retention
+  - /docs/spend-management
   - /docs/deployment-storage/optimize
-summary: Learn about deployment storage on Vercel.
+summary: Learn what Deployment Storage includes, how Vercel measures it, and how to control your usage.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Deployment Storage
@@ -24,12 +26,14 @@ Deployment Storage is cloud storage for the build output and Vercel Function bun
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I delete an individual deployment?](https://vercel.com/kb/guide/how-do-i-delete-an-individual-deployment?from=related) — Information on deleting an individual deployment.
-- [Overview](https://vercel.com/docs/storage?from=related) — Store large files and global configuration with Vercel's storage products.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments?from=related) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
-- [Builds](https://vercel.com/docs/builds?from=related) — Understand how the build step works when creating a Vercel Deployment.
-- [Marketplace](https://vercel.com/docs/marketplace-storage?from=related) — Connect Postgres, Redis, NoSQL, and other storage solutions through the Vercel Marketplace. Run SQL queries, edit data,
+- [Deployment Storage keeps your deployments rollback-ready](https://vercel.com/changelog/deployment-storage-keeps-your-deployments-rollback-ready)
+- [Deployment Storage billing begins for existing Pro teams](https://vercel.com/changelog/deployment-storage-pricing-expands-to-existing-teams)
+- [Hobby projects now retain fewer deployments to free up storage](https://vercel.com/changelog/hobby-projects-now-retain-fewer-deployments-to-free-up-storage)
+- [Managing Deployments](https://vercel.com/docs/deployments/managing-deployments) — Learn how to manage your current and previously deployed projects to Vercel through the dashboard. You can redeploy at a
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Vercel Storage overview](https://vercel.com/docs/storage) — Store files with Vercel Blob, runtime configuration with Global Config, and application data with Marketplace databases.
+- [Manage and optimize usage](https://vercel.com/docs/pricing/manage-and-optimize-usage) — Understand how to manage and optimize your usage on Vercel, learn how to track your usage, set up alerts, and optimize y
+- [Builds](https://vercel.com/docs/builds) — Understand how the build step works when creating a Vercel Deployment.
 
 Full cross-link map for this page: [/docs/deployment-storage.graph.md](/docs/deployment-storage.graph.md)
 <!-- /docsgraph:related -->
@@ -81,6 +85,12 @@ Vercel measures Deployment Storage and Functions Storage in GB-months. A GB-mont
 
 For each metric, Vercel records the maximum stored amount for each project on each billing day. It adds those daily project amounts across the billing period. Storing 1 GB every day in a 30-day month equals 1 GB-month.
 
+A deployment stops contributing to Deployment Storage and Functions Storage the moment it is first deleted, whether you delete it manually or a retention policy deletes it. You are not charged during the [recovery period](/docs/deployment-retention#restoring-a-deleted-deployment), the window after deletion when Vercel can still restore the deployment. A restored deployment counts toward Deployment Storage and Functions Storage again.
+
+Deleting a deployment doesn't change the amounts Vercel already recorded for earlier days. Because Vercel records each project's maximum stored amount for each billing day, the day you delete a deployment can still include that deployment's output, and lower amounts start on later days. After a deletion, a billing-period total grows more slowly instead of dropping.
+
+Deployment Storage and Functions Storage measure the output Vercel stores, so a retained deployment counts toward both metrics whether or not it receives requests. Storage charges continue while Spend Management pauses your production deployments, as described in [Pausing projects](/docs/spend-management#pausing-projects).
+
 Enterprise rates follow your contract. Your plan or contract may also include an allowance. Use **Usage** and your invoice to confirm your team's allowance, rate, and charge.
 
 ## Control retention
@@ -106,7 +116,22 @@ A change to one product does not always change usage for another product.
 
 For help reducing Deployment Storage usage, see the [optimization guide](/docs/deployment-storage/optimize).
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

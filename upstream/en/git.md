@@ -3,7 +3,7 @@ title: Deploying Git Repositories with Vercel
 product: vercel
 url: /docs/git
 canonical_url: "https://vercel.com/docs/git"
-last_updated: 2026-07-24
+last_updated: 2026-09-18
 type: conceptual
 prerequisites:
   []
@@ -11,15 +11,16 @@ related:
   - /docs/git/vercel-for-github
   - /docs/git/vercel-for-gitlab
   - /docs/git/vercel-for-bitbucket
+  - /docs/git/vercel-for-origin
   - /docs/git/vercel-for-azure-pipelines
-  - /docs/deployments/environments
-summary: Vercel allows for automatic deployments on every branch push and merges onto the production branch of your GitHub, GitLab, and Bitbucket projects.
+summary: Vercel automatically deploys supported Git repositories on every branch push and when changes merge into the production branch.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Deploying Git Repositories with Vercel
 
-Vercel allows for **automatic deployments on every branch push** and merges onto the [production branch](#production-branch) of your [GitHub](/docs/git/vercel-for-github), [GitLab](/docs/git/vercel-for-gitlab), [Bitbucket](/docs/git/vercel-for-bitbucket), and [Azure DevOps Pipelines](/docs/git/vercel-for-azure-pipelines) projects.
+Vercel allows for **automatic deployments on every branch push** and merges onto the [production branch](#production-branch) of your [GitHub](/docs/git/vercel-for-github), [GitLab](/docs/git/vercel-for-gitlab), [Bitbucket](/docs/git/vercel-for-bitbucket), [Origin](/docs/git/vercel-for-origin), and [Azure DevOps Pipelines](/docs/git/vercel-for-azure-pipelines) projects.
 
 
 <!-- docsgraph:related -->
@@ -27,23 +28,25 @@ Vercel allows for **automatic deployments on every branch push** and merges onto
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Avoiding duplicate-content SEO with vercel.app URLs and custom domains](https://vercel.com/kb/guide/avoiding-duplicate-content-with-vercel-app-urls?from=related) — Discover why search engines may treat your vercel.app URL and custom domain as separate pages, and how to consolidate ra
-- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop?from=related) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
-- [Build commission-free iOS checkouts with Vercel and Paddle](https://vercel.com/kb/guide/build-commission-free-ios-checkouts-with-vercel-and-paddle?from=related) — A new ruling allows iOS apps to use external checkouts. Learn how to deploy a secure, high-performance external checkout
-- [How to use a non-default branch for production deployments on Vercel](https://vercel.com/kb/guide/can-i-use-a-non-default-branch-for-production?from=related) — Learn how to set a non-default branch for production on Vercel. Open the Production environment, change branch tracking,
-- [Can I use Vercel to deploy to a private cloud?](https://vercel.com/kb/guide/can-i-use-vercel-to-deploy-to-a-private-cloud?from=related) — Learn about if it's possible to deploy to a private cloud with Vercel.
-- [Deployments](https://vercel.com/docs/deployments?from=related) — Learn how to create and manage deployments on Vercel.
-- [Deploy from CLI](https://vercel.com/docs/projects/deploy-from-cli?from=related) — Set up and deploy a Vercel project using the CLI, from linking to production.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Git Settings](https://vercel.com/docs/project-configuration/git-settings?from=related) — Use the project settings to manage the Git connection, enable Git LFS, and create deploy hooks.
-- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration?from=related) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [Git repositories can now be searched for and imported easily](https://vercel.com/changelog/git-repositories-can-now-be-searched-for-and-imported-easily)
+- [Projects can now be renamed](https://vercel.com/changelog/projects-can-now-be-renamed)
+- [Repository checkout and Git LFS downloads are now faster](https://vercel.com/changelog/repository-checkout-and-git-lfs-downloads-are-now-faster)
+- [Deploy a Bolt.new app with Vercel Drop](https://vercel.com/kb/guide/bolt-vercel-drop) — Export your Bolt.new project as a .zip and deploy it to Vercel with Vercel Drop. Vercel detects the framework and builds
+- [Build commission-free iOS checkouts with Vercel and Paddle](https://vercel.com/kb/guide/build-commission-free-ios-checkouts-with-vercel-and-paddle) — A new ruling allows iOS apps to use external checkouts. Learn how to deploy a secure, high-performance external checkout
+- [Deploy a Claude Design project to Vercel](https://vercel.com/kb/guide/claude-design) — Publish a Claude Design project to Vercel for a live production URL with the Vercel connector, or by exporting a .zip to
+- [Migrate to Vercel from Cloudflare](https://vercel.com/kb/guide/migrate-to-vercel-from-cloudflare) — Migrate your website's configuration from Cloudflare Pages or Workers to Vercel
+- [How to deploy a Python backend with Vercel Services ](https://vercel.com/kb/guide/python-backend-on-vercel) — Deploy a Python backend with a Next.js frontend on Vercel. Learn how to configure both apps with Vercel Services, use a
+- [Agentic Infrastructure](https://vercel.com/blog/agentic-infrastructure)
+- [Deploying to Vercel](https://vercel.com/docs/deployments) — Create, verify, and manage preview and production deployments on Vercel from Git, Vercel CLI, or the REST API.
+- [Git Configuration](https://vercel.com/docs/project-configuration/git-configuration) — Learn how to configure Git for your project through vercel.json or vercel.ts.
+- [Build Features for Customizing Deployments](https://vercel.com/docs/builds/build-features) — Learn how to customize your deployments using Vercel's build features.
 
 Full cross-link map for this page: [/docs/git.graph.md](/docs/git.graph.md)
 <!-- /docsgraph:related -->
 
 Using Git with Vercel provides the following benefits:
 
-- [Preview deployments](/docs/deployments/environments#preview-environment-pre-production#) for every push.
+- [Preview deployments](/docs/deployments/environments#preview-environment-pre-production) for every push.
 - [Production deployments](/docs/deployments/environments#production-environment) for the most recent changes from the [production branch](#production-branch).
 - Instant rollbacks when reverting changes assigned to a custom domain.
 
@@ -51,6 +54,29 @@ When working with Git, have a branch that works as your production branch, often
 Vercel will create a production deployment.
 
 You can choose to use a different branch as the [production branch](#production-branch).
+
+## Managing deployment notifications
+
+Choose where to change notification settings based on the source of the message:
+
+| Notification | Where to manage it |
+| --- | --- |
+| Email from GitHub, GitLab, or Bitbucket | Your Git provider's notification preferences. See [Git provider emails](#git-provider-emails). |
+| Vercel bot comments on GitHub pull requests or commits | Your project's **Git** settings. See [Silence GitHub comments](/docs/git/vercel-for-github#silence-github-comments). |
+| GitHub deployment activity on a pull request | The **deployment\_status Events** control in your project's **Git** settings. See [Silence deployment notifications on pull requests](/docs/git/vercel-for-github#silence-deployment-notifications-on-pull-requests). |
+| Notifications sent by Vercel | Your [Vercel notification preferences](/docs/notifications#managing-notifications). |
+
+### Git provider emails
+
+Your Git provider controls email delivery for repository activity and CI workflows. Adjust the preferences for the repository or event type generating the email:
+
+- **GitHub**: Configure email delivery for [watched repositories and conversations](https://docs.github.com/en/subscriptions-and-notifications/get-started/configuring-notifications). If you deploy through GitHub Actions, review [workflow-run notifications](https://docs.github.com/en/actions/concepts/workflows-and-actions/notifications-for-workflow-runs) separately.
+- **GitLab**: Configure [notification levels](https://docs.gitlab.com/user/profile/notifications/) globally, per group, or per project. Use a custom level to choose the events you receive, including pipeline events when you use GitLab CI/CD.
+- **Bitbucket**: Manage [email notifications and watched activity](https://support.atlassian.com/bitbucket-cloud/docs/manage-email-notifications-for-watched-objects/) in your personal Bitbucket settings.
+
+Changing your provider's email preferences affects your notifications. Changing Vercel's bot-comment or deployment-event settings affects the project's Git integration for everyone.
+
+Before disabling GitHub `deployment_status` events, check whether any GitHub Actions workflows depend on them. Follow the [migration instructions](/docs/git/vercel-for-github#migrating-from-deployment_status) to use `repository_dispatch` where appropriate.
 
 ## Supported Git Providers
 
@@ -65,19 +91,21 @@ You can choose to use a different branch as the [production branch](#production-
 - [Bitbucket Standard](https://www.atlassian.com/software/bitbucket/pricing)
 - [Bitbucket Premium](https://www.atlassian.com/software/bitbucket/pricing)
 
-* [Azure DevOps Pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines)
+* [Origin](/docs/git/vercel-for-origin) (public beta)
+
+- [Azure Pipelines](https://learn.microsoft.com/en-us/azure/devops/pipelines/get-started/what-is-azure-pipelines)
 
 ### Self-Hosted examples
 
 - [GitHub Enterprise Server](/kb/guide/how-can-i-use-github-actions-with-vercel)
 - [Self-Managed GitLab](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel)
-- [Bitbucket Data Center (Self-Hosted)](/kb/guide/how-can-i-use-bitbucket-pipelines-with-vercel)
+- [Bitbucket Data Center (Self-Hosted)](/docs/git/external-pipelines)
 
-If your provider is not listed here, you can also use the [Vercel CLI to deploy](/kb/guide/using-vercel-cli-for-custom-workflows) with any git provider.
+If your provider is not listed here, you can also use the [Vercel CLI to deploy](/docs/cli/deploying-from-cli#deploying-from-a-ci/cd-pipeline) with any git provider.
 
 ## Deploying a Git repository
 
-Setting up your GitHub, GitLab, or Bitbucket repository on Vercel is only a matter of clicking the ["New Project"](/new) button on the top right of your dashboard and following the steps.
+Setting up your GitHub, GitLab, Bitbucket, or Origin repository on Vercel is only a matter of clicking the ["New Project"](/new) button on the top right of your dashboard and following the steps.
 
 > **💡 Note:** For Azure DevOps repositories, use the [Vercel Deployment
 > Extension](/docs/git/vercel-for-azure-pipelines)
@@ -86,7 +114,7 @@ After clicking it, you'll be presented with a list of repositories available fro
 
 To select a different Git namespace or provider, you can use the dropdown list on the top left of the section.
 
-![Image](`/docs-assets/static/docs/concepts/deployments/git/index/repo-list-light.png`)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/concepts/deployments/git/index/repo-list-light.png)
 
 *A list of repositories available from your connected Git providers.*
 
@@ -116,7 +144,7 @@ To create a deployment from a Git reference:
 
 3. Depending on how you would like to deploy, enter the following:
    - **Targeted Deployments:** Provide the unique ID (SHA) of a commit to build a deployment based on that specific commit
-   - **Branch-Based Deployments:** Provide the full name of a branch when you want to build the most recent changes from that specific branch (for example, `https://github.com/vercel/examples/tree/deploy`)
+   - **Branch-Based Deployments:** Provide the full name or URL of a branch when you want to build the most recent changes from that specific branch (for example, `deploy` or `https://github.com/vercel/examples/tree/deploy`)
 
 4. Select **Create Deployment**. Vercel will build and deploy your commit or branch as usual
 
@@ -126,19 +154,19 @@ When the same commit appears in multiple branches, Vercel will prompt you to cho
 
 As an additional security measure, commits on private Git repositories (and commits of forks that are targeting those Git repositories) will only be deployed if the commit author also has access to the respective project on Vercel.
 
-Depending on whether the owner of the connected Vercel project is a Hobby or a Pro team, the behavior changes as mentioned in the sections below.
+Depending on whether the owner of the connected Vercel project is a Hobby team or a Pro or Enterprise team, the behavior changes as mentioned in the sections below.
 
 This only applies to commit authors on GitHub organizations, GitLab groups and non-personal Bitbucket workspaces. It does not apply to collaborators on personal Git accounts.
 
 For public Git repositories, [a different behavior](/docs/git#deploying-forks-of-public-git-repositories) applies.
 
-### Using Pro teams
+### Using Pro and Enterprise teams
 
-To deploy commits under a Vercel Pro team, the commit author must be a member of the team containing the Vercel project connected to the Git repository.
+To deploy commits under a Vercel Pro or Enterprise team, the commit author must be a member of the team containing the Vercel project connected to the Git repository.
 
-Membership is verified by finding the Vercel user associated with the commit author through [**Login Connections**](/docs/accounts#login-methods-and-connections). If a Vercel user is found, it checks if the account is a member of the Pro team.
+Membership is verified by finding the Vercel user associated with the commit author through [**Login Connections**](/docs/accounts#login-methods-and-connections). If a Vercel user is found, it checks if the account is a member of the team.
 
-If the commit author is not yet a member but has a Vercel account, they may be automatically added to the team or require approval, depending on your [collaboration settings](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fmembers%23collaboration-settings\&title=Collaboration+Settings). If the commit author does not have a Vercel account, they must create one and link their Git provider before they can deploy.
+If the commit author is not yet a member but has a Vercel account, they may be automatically added to the team or require approval, depending on your [collaboration settings](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fmembers%23collaboration-settings\&title=Collaboration+Settings). Both Pro and Enterprise teams can choose between **Auto Approval** and **Manual Approval** for private-repository committers. If the commit author does not have a Vercel account, they must create one and link their Git provider before they can deploy.
 
 ### Using Hobby teams
 
@@ -148,13 +176,62 @@ To deploy commits under a Hobby team, the commit author must be the owner of the
 
 If the commit author is not the owner of the destination Hobby team, the deployment will be prevented, and a recommendation to transfer the project to a Pro team will be displayed on the Git provider.
 
-After transferring the project to a Pro team, commit authors can be added as members of that team. The behavior mentioned in the [section above](/docs/git#using-pro-teams) will then apply to them whenever they commit.
+After transferring the project to a Pro team, commit authors can be added as members of that team. The behavior mentioned in the [section above](/docs/git#using-pro-and-enterprise-teams) will then apply to them whenever they commit.
 
 ## Deploying forks of public Git repositories
 
 When a public repository is forked, commits from it will usually deploy automatically. However, when you receive a pull request from a fork of your repository, Vercel will require authorization from you or a [team member](/docs/accounts#team-membership) to deploy the pull request. This is a security measure that protects you from leaking sensitive project information. A link to authorize the deployment will be posted as a comment on the pull request.
 
 The authorization step will be skipped if the commit author is already a [team member](/docs/accounts#team-membership) on Vercel.
+
+## Protected Git Scopes
+
+> Protected Git Scopes are available on Enterprise plans
+>
+> Those with the owner role can access this feature
+
+Teams often need control over who can deploy their repositories to which teams or accounts. For example, a user on your team may accidentally try to deploy your project on their personal Vercel Account. To control this, you can add a Protected Git Scope.
+
+Protected Git Scopes restrict Vercel account and team access to Organization-level Git repositories. This ensures that only authorized Vercel teams can deploy your repositories.
+
+If your team isn't on the Enterprise plan, [contact our sales team](/contact/sales) to get access to Protected Git Scopes.
+
+### Managing Protected Git Scopes
+
+You can [add](#adding-a-protected-git-scope) up to five Protected Git Scopes to your Vercel Team. Protected Git Scopes are configured at the team level, not per project. Multiple teams can specify the same scope, allowing both teams access.
+
+To add a Protected Git Scope to your Vercel Team, you must be an [Owner](/docs/rbac/access-roles#owner-role) of the Vercel Team, and have the required permission in the Git namespace.
+
+For GitHub you must be an `admin`, for GitLab you must be an `owner`, and for Bitbucket you must be an `owner`.
+
+### Adding a Protected Git Scope
+
+To add a Protected Git Scope:
+
+1. Go to your Team's dashboard and open **Settings** in the sidebar.
+2. In the **Security & Privacy** section, go to **Protected Git Scopes**.
+
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/protected-git-scopes-light.png)
+
+3. Select **Add Scope** to add a new Protected Git Scope.
+4. In the modal, select the Git provider you wish to add:
+
+   ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/protected-git-scopes-modal-1-light.png)
+5. In the modal, select the Git namespace you wish to add:
+
+   ![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/protected-git-scopes-modal-2-light.png)
+6. Select **Save**.
+
+### Removing a Protected Git Scope
+
+To remove a Protected Git Scope:
+
+1. Go to your Team's dashboard and open **Settings** in the sidebar.
+2. In the **Security & Privacy** section, go to **Protected Git Scopes**.
+
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/security/protected-git-scopes-light.png)
+
+3. Select **Remove** to remove the Protected Git Scope.
 
 ## Production branch
 
@@ -206,7 +283,22 @@ Alternatively, teams on the Pro plan can use [custom environments](/docs/deploym
 
 [Custom environments](/docs/deployments/environments#custom-environments) allow you to create and define a pre-production environment. As part of creating a custom environment, you can match specific branches or branch names, including `main`, to automatically deploy to that environment. You can also attach a domain to the environment.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

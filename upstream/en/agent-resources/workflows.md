@@ -3,7 +3,7 @@ title: CLI Workflows
 product: vercel
 url: /docs/agent-resources/workflows
 canonical_url: "https://vercel.com/docs/agent-resources/workflows"
-last_updated: 2026-05-25
+last_updated: 2026-11-14
 type: conceptual
 prerequisites:
   - /docs/agent-resources
@@ -15,6 +15,7 @@ related:
   - /docs/projects/deploy-from-cli
 summary: End-to-end workflows that show how to compose Vercel CLI commands into complete debugging, deployment, and recovery sessions.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # CLI Workflows
@@ -27,18 +28,16 @@ These workflows show how to compose multiple Vercel CLI commands into complete w
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How to build a durable AI code agent on Vercel](https://vercel.com/kb/guide/how-to-build-a-durable-ai-code-agent-on-vercel?from=related) — Build an AI agent that generates code, writes its own tests, and executes them in an isolated microVM with automatic ret
-- [How can I use the Vercel CLI for custom workflows?](https://vercel.com/kb/guide/using-vercel-cli-for-custom-workflows?from=related) — You can use the Vercel CLI to deploy any application, including custom git providers and restricted source code.
-- [Observability](https://workflow-sdk.dev/docs/observability?from=related) — Inspect and debug workflow runs using the CLI and web UI.
-- [Building stateful Slack bots with Vercel Workflow](https://vercel.com/kb/guide/stateful-slack-bots-with-vercel-workflow?from=related) — Learn how to build Slack bots that maintain state and handle long-running processes without managing queues, databases,
-- [Building Durable AI Agents](https://workflow-sdk.dev/docs/ai?from=related) — Convert a basic AI chat app into a durable, resumable agent using Workflow SDK.
-- [Python](https://workflow-sdk.dev/docs/getting-started/python?from=related) — Set up the Workflow Python SDK in your Python application.
-- [Build AI agents with AI Gateway and AI SDK](https://vercel.com/kb/guide/ai-gateway-and-ai-sdk?from=related) — Build AI agents on Vercel with AI Gateway and AI SDK, then make them reliable, capable, and durable with Sandbox, Chat S
-- [Testing](https://workflow-sdk.dev/docs/testing?from=related) — Unit test individual steps and integration test entire workflows using Vitest.
-- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations?from=related) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
-- [Getting Started](https://vercel.com/docs/getting-started-with-vercel?from=related) — Install the Vercel CLI, add the Vercel Plugin or agent skills, and deploy your first project.
-- [Python](https://vercel.com/docs/workflows/python?from=related) — Build durable workflows and AI agents in Python with the Vercel SDK.
-- [Concepts](https://vercel.com/docs/workflows/concepts?from=related) — Learn how workflows, steps, sleeps, and hooks work together to build durable applications.
+- [How to build a durable AI code agent on Vercel](https://vercel.com/kb/guide/how-to-build-a-durable-ai-code-agent-on-vercel) — Build an AI agent that generates code, writes its own tests, and executes them in an isolated microVM with automatic ret
+- [Running Durable Agents on Vercel](https://vercel.com/kb/guide/durable-ai-agents) — Design durable AI agents on Vercel with patterns for execution recovery, human approval, safe retries, deployment change
+- [How to migrate from Cloudflare Workflows to Vercel Workflows](https://vercel.com/kb/guide/migrate-cloudflare-workflows-to-vercel-workflows) — Migrate from Cloudflare Workflows to Vercel Workflows by mapping WorkflowEntrypoint, step.do, and waitForEvent to workfl
+- [How to migrate from DurableAgent to WorkflowAgent](https://vercel.com/kb/guide/durableagent-to-workflowagent) — Switch your app from \\`DurableAgent\\` \\(@workflow/ai\\) to \\`WorkflowAgent\\` \\(@ai-sdk/workflow\\) by updating imports, st
+- [Using coding agents to procure Vercel Marketplace integrations](https://vercel.com/kb/guide/using-coding-agents-to-procure-vercel-marketplace-integrations) — Coding agents can now discover, provision, and manage third-party services from the Vercel Marketplace using the Vercel
+- [Vercel Workflows](https://vercel.com/docs/workflows) — Build agents and applications that retry failed steps, wait for external events, and resume across crashes and deploymen
+- [Getting started with Vercel](https://vercel.com/docs/getting-started-with-vercel) — Install the Vercel CLI, add the Vercel Plugin or agent skills, connect Vercel MCP, and deploy your first project.
+- [Workflow Concepts](https://vercel.com/docs/workflows/concepts) — Learn how workflows, steps, sleeps, and hooks work together to build durable applications.
+- [Chat SDK with Vercel Workflows](https://vercel.com/docs/chat-sdk/integrations/workflows) — Use Vercel Workflows to pause Chat SDK tasks for human approval, resume after a decision, and inspect runs in the Vercel
+- [Ecosystem](https://vercel.com/docs/sandbox/ecosystem) — Use Vercel Sandbox with the agent frameworks, model SDKs, and agents you already work with.
 
 Full cross-link map for this page: [/docs/agent-resources/workflows.graph.md](/docs/agent-resources/workflows.graph.md)
 <!-- /docsgraph:related -->
@@ -59,6 +58,7 @@ Workflows are distributed throughout the docs, colocated with the features they 
 | Workflow                                                                                                     | Description                                                                             | Entry point           |
 | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- | --------------------- |
 | [Deploying a project from the CLI](/docs/projects/deploy-from-cli)                                           | Set up and deploy a project end-to-end, from linking to production with a custom domain | Projects              |
+| [Deploying without logging in](/docs/deployments/deploy-without-logging-in)                                  | Deploy with no account or token, then claim the project to keep it                      | Deployments           |
 | [Setting up a custom domain](/docs/domains/set-up-custom-domain)                                             | Add a custom domain, configure DNS records, and verify SSL certificates                 | Domains               |
 | [Managing environment variables across environments](/docs/environment-variables/manage-across-environments) | Add, sync, and verify environment variables across development, preview, and production | Environment Variables |
 | [Promoting a preview deployment to production](/docs/deployments/promote-preview-to-production)              | Test a preview deployment and promote it to production without rebuilding               | Deployments           |
@@ -75,7 +75,7 @@ Workflows are distributed throughout the docs, colocated with the features they 
 
 | Workflow                                                                             | Description                                                                    | Entry point    |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | -------------- |
-| [Running commands in a Vercel Sandbox](/docs/sandbox/run-commands-in-sandbox) | Create isolated sandbox environments to run builds, tests, and commands safely | Vercel Sandbox |
+| [Running commands in a Vercel Sandbox](/docs/sandbox/examples/run-commands-in-sandbox) | Create isolated sandbox environments to run builds, tests, and commands safely | Vercel Sandbox |
 
 ## Feature flags
 
@@ -96,6 +96,8 @@ These guides help you delegate code-generation tasks to a coding agent like Clau
 | [Sign in with Vercel agent quickstart](/docs/sign-in-with-vercel/getting-started) | Scaffold the full OAuth flow with PKCE, token handling, and a profile page    | Sign in with Vercel |
 | [Routing Middleware agent quickstart](/docs/routing-middleware/getting-started)   | Create routing middleware for redirects, auth checks, or geolocation rewrites | Routing Middleware  |
 
+For more tasks to delegate to your coding agent, browse the [prompt library](/kb/prompts). Use prompts to build an app, extend an agent, or improve an existing project.
+
 ## How these workflows help AI agents
 
 These workflows are designed as composition patterns. Each one shows a complete sequence of CLI commands with the reasoning that connects them. AI coding agents can use these patterns to:
@@ -105,7 +107,22 @@ These workflows are designed as composition patterns. Each one shows a complete 
 - Compose commands into multi-step sessions for novel situations
 - Follow the same debugging methodology that experienced Vercel users follow
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

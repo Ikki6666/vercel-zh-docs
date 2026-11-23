@@ -3,7 +3,7 @@ title: Automated & Agent Access
 product: vercel
 url: /docs/deployment-protection/automated-agent-access
 canonical_url: "https://vercel.com/docs/deployment-protection/automated-agent-access"
-last_updated: 2026-07-15
+last_updated: 2026-09-15
 type: how-to
 prerequisites:
   - /docs/deployment-protection
@@ -15,11 +15,12 @@ related:
   - /docs/deployment-protection/methods-to-protect-deployments/trusted-ips
 summary: Grant AI agents, CI/CD pipelines, MCP servers, and testing tools access to Vercel deployments that have Deployment Protection enabled.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Automated & Agent Access
 
-AI agents, CI/CD pipelines, MCP servers, and end-to-end testing tools can't complete browser-based authentication challenges. If your project has [Deployment Protection](/docs/deployment-protection) enabled, these automated systems receive a login page or a `403` response instead of your deployment content.
+AI agents, CI/CD pipelines, MCP servers, and end-to-end testing tools can't complete browser-based authentication challenges. If your project has [Deployment Protection](/docs/deployment-protection) enabled, these automated systems receive a login page or a `401` response instead of your deployment content.
 
 
 <!-- docsgraph:related -->
@@ -27,14 +28,14 @@ AI agents, CI/CD pipelines, MCP servers, and end-to-end testing tools can't comp
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I add password protection to my Vercel deployment?](https://vercel.com/kb/guide/how-do-i-add-password-protection-to-my-vercel-deployment?from=related) — Enable Password Protection on a Vercel deployment, configure automation and CORS bypasses, and verify the gate before yo
-- [How to test a Slack bot with your Vercel preview deployment](https://vercel.com/kb/guide/test-slack-bot-with-vercel-preview-deployment?from=related) — Learn how to build and test a Slack bot using Vercel preview deployments. This guide covers setting up your Slack app, c
-- [How to lock down deployments on Vercel and v0](https://vercel.com/kb/guide/locking-down-deployments?from=related) — Protect who can see your deployments.
-- [How to Utilize Vercel’s Bot Management Features](https://vercel.com/kb/guide/how-to-utilize-vercels-bot-management-features?from=related) — A practical, step-by-step guide to identifying unwanted automated traffic and securing your Vercel apps with Bot Protect
-- [Application authentication on Vercel](https://vercel.com/kb/guide/application-authentication-on-vercel?from=related) — Secure application authentication on Vercel across layers: proxy checks, the Data Access Layer, PPR-safe rendering, and
-- [Protect Deployments](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments?from=related) — Vercel offers several methods to protect your deployments: Vercel Authentication, Passport, Password Protection, and Tru
-- [Update Protection Bypass for Automation](https://vercel.com/docs/rest-api/projects/update-protection-bypass-for-automation?from=related)
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Choose between Vercel Passport and other Deployment Protection methods](https://vercel.com/kb/guide/vercel-passport-vs-deployment-protection) — Compare Vercel Passport with Vercel Authentication, Password Protection, and Trusted IPs to choose the right Deployment
+- [How to test a Slack bot with your Vercel preview deployment](https://vercel.com/kb/guide/test-slack-bot-with-vercel-preview-deployment) — Learn how to build and test a Slack bot using Vercel preview deployments. This guide covers setting up your Slack app, c
+- [Application authentication on Vercel](https://vercel.com/kb/guide/application-authentication-on-vercel) — Secure application authentication on Vercel across layers: proxy checks, the Data Access Layer, PPR-safe rendering, and
+- [Troubleshooting Cross-Origin Errors \\(net::ERR_BLOCKED_BY_ORB\\) with Deployment Protection](https://vercel.com/kb/guide/troubleshooting-cross-origin-errors-neterr-blocked-by-orb-with-deployment-protection) — Learn to resolve \\`net::ERR_BLOCKED_BY_ORB\\` errors on protected Vercel deployments. This guide explains how cross-origi
+- [How to enable CORS on Vercel](https://vercel.com/kb/guide/how-to-enable-cors) — Learn how to enable CORS on Vercel with vercel.json, Routing Middleware, framework config, and route handlers, plus how
+- [Restrict access to deployments with Vercel Authentication](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication) — Vercel Authentication restricts access to your deployments so only authorized users can view and comment on your site.
+- [Trusted Sources](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/trusted-sources) — Let other Vercel projects and external services reach your protected deployments by presenting a verified OIDC token.
+- [Environments](https://vercel.com/docs/deployments/environments) — Environments are for developing locally, testing changes in a pre-production environment, and serving end-users in produ
 
 Full cross-link map for this page: [/docs/deployment-protection/automated-agent-access.graph.md](/docs/deployment-protection/automated-agent-access.graph.md)
 <!-- /docsgraph:related -->
@@ -59,10 +60,10 @@ Automated systems making HTTP requests (with `fetch`, `curl`, or headless browse
 
 ## Choose the right bypass method
 
-| Method                                                                                                                                   | Best for                                                                            | Plan availability                                             |
-| ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [Protection Bypass for Automation](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation)     | CI/CD pipelines, testing tools, AI agents calling API routes, MCP servers, webhooks | All plans                                                     |
-| [Deployment Protection Exceptions](/docs/deployment-protection/methods-to-bypass-deployment-protection/deployment-protection-exceptions) | Making a specific preview domain permanently public for external integrations       | Enterprise, or Pro with Advanced Deployment Protection add-on |
+| Method                                                                                                                                   | Best for                                                                            | Plan availability |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------- |
+| [Protection Bypass for Automation](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation)     | CI/CD pipelines, testing tools, AI agents calling API routes, MCP servers, webhooks | All plans         |
+| [Deployment Protection Exceptions](/docs/deployment-protection/methods-to-bypass-deployment-protection/deployment-protection-exceptions) | Making a specific preview domain permanently public for external integrations       | All plans         |
 
 Use Protection Bypass for Automation for most automated access scenarios. It authenticates individual requests with a secret token without making any domain publicly accessible.
 
@@ -111,8 +112,6 @@ If your automated system needs to access a specific preview domain without any a
 > **💡 Note:** Deployment Protection Exceptions make the specified domain accessible to
 > anyone, not only your automated systems. Use this option only when public
 > access to that preview domain is acceptable.
-
-Deployment Protection Exceptions are available on Enterprise plans, or with the [Advanced Deployment Protection](/docs/deployment-protection#advanced-deployment-protection) add-on for Pro plans.
 
 To add an exception, follow the steps in [Deployment Protection Exceptions](/docs/deployment-protection/methods-to-bypass-deployment-protection/deployment-protection-exceptions).
 
@@ -284,7 +283,7 @@ jobs:
       - name: Run tests against preview
         env:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
-          DEPLOYMENT_URL: ${{ github.event.deployment_status.target_url }}
+          VERCEL_PREVIEW_URL: ${{ github.event.deployment_status.target_url }}
         run: npx playwright test
 ```
 
@@ -306,7 +305,7 @@ vercel curl /api/hello
 
 ## Troubleshooting
 
-### Automated requests still receive a login page or 403 response
+### Automated requests still receive a login page or 401 response
 
 Verify the bypass secret value matches what your project expects. The most common cause is a mismatch between the secret in your CI/CD environment and the one configured in Deployment Protection settings.
 
@@ -345,7 +344,22 @@ For these browser-based workflows, [Vercel's agent-browser](https://agent-browse
 - [Methods to bypass Deployment Protection](/docs/deployment-protection/methods-to-bypass-deployment-protection): All available bypass methods
 - [`vercel curl` CLI command](/docs/cli/curl): Test protected endpoints from the command line
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

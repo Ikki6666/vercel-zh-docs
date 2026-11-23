@@ -1,0 +1,119 @@
+---
+title: fx with AI Gateway
+product: vercel
+url: /docs/ai-gateway/coding-agents/fx
+canonical_url: "https://vercel.com/docs/ai-gateway/coding-agents/fx"
+last_updated: 2026-09-13
+type: how-to
+prerequisites:
+  - /docs/ai-gateway/coding-agents
+  - /docs/ai-gateway
+related:
+  - /docs/cli/ai-gateway
+  - /docs/ai-gateway/observability-and-spend/observability
+  - /docs/agent-harnesses/fx
+  - /docs/ai-gateway/coding-agents/harbor
+  - /docs/ai-gateway/observability-and-spend/budgets
+summary: Connect fx to AI Gateway with the Vercel CLI or the AI_GATEWAY_API_KEY environment variable.
+install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
+---
+
+# fx with AI Gateway
+
+[fx](https://fx.sh) is a terminal coding agent with native AI Gateway support. It reads `AI_GATEWAY_API_KEY` directly, so you only need to configure the credential. The whole gateway catalog is available without a provider definition.
+
+
+<!-- docsgraph:related -->
+## Related pages
+
+> **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
+
+- [fx is now available in the AI SDK harness layer](https://vercel.com/changelog/fx-ai-sdk-harness-adapter)
+- [Xcode with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/xcode) — Connect Xcode's AI chat to AI Gateway through the Chat Completions API. Configure the provider, API key, and models in X
+- [Getting Started with AI Gateway](https://vercel.com/docs/ai-gateway/getting-started) — Set up AI Gateway with a coding agent, route the agent through AI Gateway, or make your first request with cURL, TypeScr
+- [ForgeCode with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/forge) — Connect ForgeCode to AI Gateway with the Vercel CLI or custom provider and credential files.
+- [Aider with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/aider) — Connect Aider to AI Gateway with the Vercel CLI or an OpenAI-compatible base URL, API key, and model metadata.
+- [ZCode with AI Gateway](https://vercel.com/docs/ai-gateway/coding-agents/zcode) — Connect ZCode to AI Gateway with the Vercel CLI or an OpenAI-compatible custom provider.
+
+Full cross-link map for this page: [/docs/ai-gateway/coding-agents/fx.graph.md](/docs/ai-gateway/coding-agents/fx.graph.md)
+<!-- /docsgraph:related -->
+
+## Set up with the Vercel CLI
+
+Run the [Vercel CLI setup command](/docs/cli/ai-gateway#setup) for fx:
+
+```bash filename="terminal"
+npx vercel@latest ai-gateway setup --agent fx
+```
+
+The command exports `AI_GATEWAY_API_KEY` from a managed block in your shell startup file and pins `credential_source` in `~/.fx/settings.json` to that key, ahead of a stored `fx login` session.
+
+## Configuring fx
+
+If you can't use the Vercel CLI, configure fx manually:
+
+- ### Create an API key
+  Go to the [**AI Gateway**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) section in the Vercel dashboard sidebar and click **API keys** to create a new API key.
+
+- ### Export the key
+  Export the key in your shell:
+  ```bash filename="Terminal"
+  export AI_GATEWAY_API_KEY="your-ai-gateway-api-key"
+  ```
+  To persist the key, add the same line to your shell's startup file.
+
+- ### Pin the credential source
+  Set `credential_source` in `~/.fx/settings.json` so fx uses the exported key ahead of a stored `fx login` session:
+  ```json filename="~/.fx/settings.json"
+  {
+    "credential_source": "ai_gateway_api_key"
+  }
+  ```
+
+- ### Start fx
+  Open a new terminal so the key is loaded, then confirm the credential:
+  ```bash filename="Terminal"
+  fx status
+  ```
+  Pick a model with `/model`, or browse the catalog with `/models`. The whole gateway catalog is available.
+
+### Monitor usage and spend
+
+View your usage, spend, and request activity in the [**AI Gateway**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) section in the Vercel dashboard sidebar. See the [observability documentation](/docs/ai-gateway/observability-and-spend/observability) for more details.
+
+## Environment variables
+
+| Variable             | Description                                       |
+| -------------------- | ------------------------------------------------- |
+| `AI_GATEWAY_API_KEY` | Your AI Gateway API key. Required                 |
+
+## Run fx durably
+
+To deploy an fx agent as a service, use `libfx`, which has durability built in and routes model calls through AI Gateway. You don't need to install `durable-harness`. Follow the [durable fx guide](/docs/agent-harnesses/fx) to configure persistent sessions, a chat route, and deployment on Vercel.
+
+## Next steps
+
+- Run benchmark tasks with fx using [Harbor](/docs/ai-gateway/coding-agents/harbor)
+- Browse the [models catalog](/ai-gateway/models) for available models
+- Configure [spend limits](/docs/ai-gateway/observability-and-spend/budgets) on your API key
+
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
+
+---
+
+[View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

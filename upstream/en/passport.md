@@ -3,23 +3,26 @@ title: Restrict access to deployments with Passport
 product: vercel
 url: /docs/passport
 canonical_url: "https://vercel.com/docs/passport"
-last_updated: 2026-07-30
+last_updated: 2026-09-21
 type: how-to
 prerequisites:
   []
 related:
-  - /docs/passport/set-up-identity-provider
-  - /docs/passport/additional-identity-scopes
   - /docs/passport/read-identity
-  - /docs/passport/token-claims
-  - /docs/passport/verify-identity
+  - /docs/passport/set-up-identity-provider
+  - /docs/chat-sdk/integrations/passport
+  - /docs/microfrontends/routing
+  - /docs/deployment-protection/methods-to-protect-deployments
 summary: Learn how to protect deployments with Passport, read visitor identity, and verify Passport tokens in server-side code.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Restrict access to deployments with Passport
 
-> **🔒 Permissions Required**: Passport
+## Protect deployments with your identity provider
+
+Vercel Passport signs visitors in with your identity provider before they can view a deployment. Read each visitor's verified identity in your server-side code.
 
 
 <!-- docsgraph:related -->
@@ -27,20 +30,96 @@ install_vercel_plugin: npx plugins add vercel/vercel-plugin
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [The Complete Guide to Vercel Passport](https://vercel.com/kb/guide/vercel-passport?from=related) — Vercel Passport protects deployments behind your own identity provider, such as Okta or Auth0. Learn how Passport works,
-- [How to identify and authorize visitors with the Vercel Passport token in Next.js](https://vercel.com/kb/guide/vercel-passport-nextjs?from=related) — Read the Vercel Passport token server-side in a Next.js app to identify visitors with the external_sub claim and authori
-- [How to lock down deployments on Vercel and v0](https://vercel.com/kb/guide/locking-down-deployments?from=related) — Protect who can see your deployments.
-- [Access Control](https://vercel.com/docs/security/access-control?from=related) — Learn about the protection and compliance measures Vercel takes to ensure the security of your data, including DDoS miti
-- [Password Protection](https://vercel.com/docs/deployment-protection/methods-to-protect-deployments/password-protection?from=related) — Require visitors to enter a password before they can view your deployments.
-- [Bypass Deployment Protection](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection?from=related) — Learn how to bypass Deployment Protection for specific domains, or for all deployments in a project.
-- [sitemap.md](https://vercel.com/docs/sitemap.md?from=related) — Learn about sitemap.md on Vercel.
+- [Vercel Passport is now generally available](https://vercel.com/changelog/vercel-passport-generally-available)
+- [Vercel Passport is now in Public Beta](https://vercel.com/changelog/vercel-passport-is-now-in-public-beta)
+- [Vercel for Enterprise](https://vercel.com/blog/vercel-for-enterprise)
+- [Vercel Pricing](https://vercel.com/pricing) — Choose a Vercel plan and compare features and usage pricing.
+- [Application authentication on Vercel](https://vercel.com/kb/guide/application-authentication-on-vercel) — Secure application authentication on Vercel across layers: proxy checks, the Data Access Layer, PPR-safe rendering, and
+- [Trusted Sources](https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/trusted-sources) — Let other Vercel projects and external services reach your protected deployments by presenting a verified OIDC token.
+- [Auth.js with Vercel Connect](https://vercel.com/docs/connect/frameworks/authjs) — Add a Vercel Connect OAuth provider to Auth.js in a Next.js App Router application.
+- [Agent Checklist for Launch](https://vercel.com/docs/agent-checklist) — Prepare an eve, Mastra, or Flue agent for launch on Vercel. Check who can call the agent, what its tools can change, how
+- [Flue with AI Gateway](https://vercel.com/docs/ai-gateway/ecosystem/framework-integrations/flue) — Route Flue agent requests through Vercel AI Gateway with the built-in provider, using an API key or Vercel OIDC authenti
+- [Frameworks and Adapters for Vercel Connect](https://vercel.com/docs/connect/frameworks) — Use Vercel Connect with AI SDK, TanStack AI, MCP clients, eve, Chat SDK, Better Auth, and Auth.js.
 
 Full cross-link map for this page: [/docs/passport.graph.md](/docs/passport.graph.md)
 <!-- /docsgraph:related -->
 
-Passport lets you protect deployments with your own identity provider. Visitors authenticate with your identity provider before they can view a protected deployment.
+#### Read identity
+
+```ts filename="app/api/me/route.ts"
+import { getIdentity } from '@vercel/passport';
+
+export async function GET() {
+  // getIdentity() throws when the Passport token is invalid
+  const identity = await getIdentity().catch(() => null);
+
+  if (!identity) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  return Response.json({
+    issuer: identity.payload.iss,
+    subject: identity.subject,
+    externalSubject: identity.externalSubject,
+    email: identity.email,
+    name: identity.name,
+  });
+}
+```
+
+#### Forward identity
+
+```ts filename="app/api/report/route.ts"
+import { getIdentity } from '@vercel/passport';
+
+export async function POST() {
+  const identity = await getIdentity().catch(() => null);
+
+  if (!identity?.token) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const response = await fetch('https://api.example.com/do-stuff', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${identity.token}` },
+  });
+
+  return Response.json(await response.json(), {
+    status: response.status,
+  });
+}
+```
+
+#### Verify a token
+
+```ts filename="app/api/do-stuff/route.ts"
+import { verifyIdentity } from '@vercel/passport';
+
+export async function POST(request: Request) {
+  try {
+    const identity = await verifyIdentity(request, {
+      ownerId: 'team_your_team_id_here',
+      projectId: 'prj_your_project_id_here',
+      environment: 'production',
+    });
+
+    return Response.json({
+      issuer: identity.payload.iss,
+      subject: identity.subject,
+    });
+  } catch {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+}
+```
+
+> Passport is available on Enterprise plans
+>
+> Those with the owner role can manage Passport
 
 Use Passport when you want visitors to sign in with an external identity provider, such as Microsoft Entra ID, Okta, or another OpenID Connect compatible provider. Vercel Connect stores the OAuth application configuration that talks to your identity provider.
+
+The examples above use the [`@vercel/passport`](/docs/passport/read-identity#use-the-passport-helper) package. **Read identity** and **Forward identity** run in a Passport-protected deployment. **Verify a token** runs in the backend that receives the forwarded token. Replace its team ID and project ID with the values from the deployment that issued the token.
 
 ## How Passport works
 
@@ -52,6 +131,32 @@ Passport has two parts:
 When a visitor opens a protected deployment, Vercel redirects them to your identity provider. After the identity provider authenticates the visitor, Vercel validates the response and sets a session cookie for the protected deployment.
 
 New to Passport? [Set up Passport with an identity provider](/docs/passport/set-up-identity-provider) first, then return to the other guides when you need to use identity in application code.
+
+## Getting started
+
+Follow these guides to choose a protection method and connect your identity provider:
+
+- [Protect internal apps with Passport](/kb/guide/vercel-passport): Configure your identity provider, enable Passport for projects or a team, and read visitor identity.
+- [Compare Passport with other Deployment Protection methods](/kb/guide/vercel-passport-vs-deployment-protection): Choose between Passport, Vercel Authentication, Password Protection, and Trusted IPs.
+- [Set up Passport with Microsoft Entra ID](/kb/guide/vercel-passport-microsoft-entra-id): Configure an Entra ID application, restrict access to assigned users, and read identity in a Next.js app.
+
+## Use Passport with Chat SDK
+
+Use a verified Passport identity to keep a browser chatbot's conversation history associated with the signed-in visitor. With Chat SDK's History API, the bot can use messages from that visitor's earlier conversations as context for a reply.
+
+Follow [Chat SDK with Vercel Passport](/docs/chat-sdk/integrations/passport) to authenticate Web Adapter requests and derive a per-user history key from the verified issuer and subject. Sharing that history with Slack, Teams, or Discord requires a separate verified account link.
+
+## Use Passport with microfrontends
+
+For a URL that uses [microfrontends routing](/docs/microfrontends/routing), the default application's Passport configuration protects every path, including paths served by child applications. Configure Passport on the default application to protect the composed microfrontend experience.
+
+Passport completes authentication at `/.well-known/vercel/passport/callback` on the requested hostname. Vercel handles this callback before routing to your application, so you do not need to create the path in the default or child application.
+
+For URLs with microfrontends routing, child paths use the default application's Passport configuration. Child applications cannot have an independent Passport connection while they belong to the group.
+
+The default application's Passport configuration does not protect a child application's direct domains. Protect those domains with another [Deployment Protection method](/docs/deployment-protection/methods-to-protect-deployments). To configure Passport on the child project, remove it from the group first.
+
+Learn more about [Deployment Protection and microfrontends](/docs/microfrontends/managing-microfrontends/security#deployment-protection-and-microfrontends).
 
 ## Guides
 
@@ -67,6 +172,21 @@ New to Passport? [Set up Passport with an identity provider](/docs/passport/set-
 
 **Forward Passport identity to another backend**: Pass a Passport token to a backend you operate over HTTPS. [Learn more →](/docs/passport/forward-identity)
 
+## Framework examples
+
+Use verified Passport identity to personalize your application, restrict access by group, and attribute actions to visitors. These guides include local development, authorization, and identity forwarding examples:
+
+| Framework                         | Guide                                                                                                                            |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Next.js                           | [Identify visitors and control access in App Router pages, Route Handlers, and Server Actions](/kb/guide/vercel-passport-nextjs) |
+| Nuxt                              | [Read visitor identity and protect Nuxt server routes](/kb/guide/vercel-passport-nuxt)                                           |
+| TanStack Start                    | [Use identity in server functions, route context, and protected layouts](/kb/guide/vercel-passport-tanstack-start)               |
+| Express, Hono, Nitro, and FastAPI | [Read and verify identity in Node.js and Python backends](/kb/guide/vercel-passport-backend-frameworks)                          |
+
+## Govern internal apps
+
+Passport controls who can reach a deployment. Your application must also enforce which records each visitor can access and which actions they can perform. For employee-built apps and agents, assign an owner and define when changes require human review. Read [How do you govern AI apps and agents built by employees?](/i/govern-employee-built-ai-apps-and-agents) for guidance on ownership, data access, spending limits, and rollout reviews.
+
 ## Monitor Passport access
 
 When a visitor successfully authenticates to a Passport-protected project, Vercel records a `passport-access-granted` event in both the [Activity Log](/dashboard/activity?types=passport-access-granted) and [Audit Logs](/docs/audit-log). The event identifies the visitor and records the protected hostname and project context.
@@ -79,12 +199,28 @@ Passport is available as an Enterprise feature. Contact your Vercel account team
 
 ## Related resources
 
+- [Python SDK reference](/docs/passport/python-sdk-reference): Read and verify visitor identity with async and sync Python helpers.
 - [Deployment Protection](/docs/deployment-protection)
 - [Methods to protect deployments](/docs/deployment-protection/methods-to-protect-deployments)
 - [Vercel Authentication](/docs/deployment-protection/methods-to-protect-deployments/vercel-authentication)
 - [Protection Bypass for Automation](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation): Access a Passport-protected deployment without an identity provider session. Send the bypass secret with the original request because Passport runs before deployment routes and Next.js proxy functions.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

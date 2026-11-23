@@ -3,7 +3,7 @@ title: Tags
 product: vercel
 url: /docs/sandbox/concepts/tags
 canonical_url: "https://vercel.com/docs/sandbox/concepts/tags"
-last_updated: 2026-06-30
+last_updated: 2026-08-25
 type: conceptual
 prerequisites:
   - /docs/sandbox/concepts
@@ -15,6 +15,7 @@ related:
   - /docs/sandbox/cli-reference
 summary: Categorize sandboxes by environment, team, or any other criteria using key-value tags.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Tags
@@ -27,24 +28,27 @@ Tags let you categorize sandboxes by environment, team, or any other criteria. E
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Examples](https://vercel.com/docs/sandbox/working-with-sandbox?from=related) — Task-oriented examples for common Vercel Sandbox operations in TypeScript and Python.
-- [Run Commands in Vercel Sandbox](https://vercel.com/docs/sandbox/run-commands-in-sandbox?from=related) — Create isolated sandbox environments to run builds, tests, and commands safely.
-- [vercel sandbox](https://vercel.com/docs/cli/sandbox?from=related) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
-- [List sandboxes](https://vercel.com/docs/rest-api/sandboxes/list-sandboxes?from=related)
-- [Delete a sandbox](https://vercel.com/docs/rest-api/sandboxes/delete-a-sandbox?from=related)
+- [Custom tags available in beta on Vercel Sandbox](https://vercel.com/changelog/custom-tags-available-in-beta-on-vercel-sandbox)
+- [Running commands in a Vercel Sandbox](https://vercel.com/docs/sandbox/examples/run-commands-in-sandbox) — Create isolated sandbox environments to run builds, tests, and commands safely.
+- [Create a sandbox and run code](https://vercel.com/docs/sandbox/examples/create-a-sandbox-and-run-code) — Create a Vercel Sandbox, write a file into it, run the file, and inspect the command output in TypeScript, Python, or th
+- [vercel sandbox](https://vercel.com/docs/cli/sandbox) — Interact with Vercel Sandbox from the Vercel CLI: list, create, connect, exec, copy, stop, and snapshot sandboxes from y
+- [Quickstart](https://vercel.com/docs/sandbox/quickstart) — Learn how to run your first code in a Vercel Sandbox.
+- [Sandbox Examples](https://vercel.com/docs/sandbox/examples) — Task-oriented examples for common Vercel Sandbox operations in TypeScript, Python, and the Sandbox CLI.
 
 Full cross-link map for this page: [/docs/sandbox/concepts/tags.graph.md](/docs/sandbox/concepts/tags.graph.md)
 <!-- /docsgraph:related -->
 
 ## SDK usage
 
-Set, update, and filter on tags from the JS SDK using `Sandbox.create()`, `sandbox.update()`, and `Sandbox.list()`.
+Set, update, and filter on tags from the SDKs.
 
 ### Create a sandbox with tags
 
 Pass the `tags` field when creating a sandbox. You can assign up to five key-value tags:
 
-```ts filename="index.ts"  highlight={5}
+**index.ts**
+
+```ts filename="index.ts" highlight={5}
 import { Sandbox } from '@vercel/sandbox';
 
 const sandbox = await Sandbox.create({
@@ -53,9 +57,29 @@ const sandbox = await Sandbox.create({
 });
 ```
 
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+
+
+async def main() -> None:
+    await sandbox.create_sandbox(
+        name="my-sandbox",
+        tags={"env": "staging"},
+    )
+
+
+asyncio.run(main())
+```
+
 ### Update tags
 
-Use `sandbox.update()` to change a sandbox's tags at any time. The provided object replaces the existing tag set, so pass every tag you want to keep:
+Update a sandbox to change its tags at any time. The tags you provide replace the existing tag set, so pass every tag you want to keep:
+
+**index.ts**
 
 ```ts filename="index.ts"
 await sandbox.update({
@@ -63,9 +87,27 @@ await sandbox.update({
 });
 ```
 
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+
+
+async def main() -> None:
+    box = await sandbox.get_sandbox(name="my-sandbox")
+    await box.update(tags={"env": "production", "team": "infra"})
+
+
+asyncio.run(main())
+```
+
 ### Filter sandboxes by tag
 
-Pass a `tags` object to `Sandbox.list()` to filter results. You can filter by one tag at a time:
+Filter the list of sandboxes by tag. You can filter by one tag at a time:
+
+**index.ts**
 
 ```ts filename="index.ts"
 const productionSandboxes = await Sandbox.list({
@@ -75,6 +117,27 @@ const productionSandboxes = await Sandbox.list({
 for await (const sandbox of productionSandboxes) {
   console.log(sandbox.name);
 }
+```
+
+**main.py**
+
+```py filename="main.py"
+import asyncio
+
+from vercel import sandbox
+from vercel.sandbox import SandboxQueryByCreatedAt, TagFilter
+
+
+async def main() -> None:
+    query = SandboxQueryByCreatedAt(
+        tag=TagFilter(key="env", value="production")
+    )
+
+    async for box in sandbox.query_sandboxes(query=query):
+        print(box.name)
+
+
+asyncio.run(main())
 ```
 
 ## CLI usage
@@ -112,6 +175,8 @@ sandbox list --tag env=production
 Tags have a few hard limits to keep in mind when designing your tagging scheme:
 
 - Each sandbox supports a maximum of five tags.
+- Tag keys can contain only ASCII letters, numbers, hyphens, underscores, periods, and forward slashes, and can be up to 128 characters long.
+- Tag values can be up to 256 characters long.
 - `Sandbox.list()` and `sandbox list` support filtering by one tag at a time.
 
 ## Next steps
@@ -121,7 +186,22 @@ Tags have a few hard limits to keep in mind when designing your tagging scheme:
 - [Python SDK Reference](/docs/sandbox/python-sdk-reference): Full API documentation for the Python SDK.
 - [CLI Reference](/docs/sandbox/cli-reference): Command reference for the CLI.
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

@@ -3,7 +3,7 @@ title: Managing Global Configs with the Dashboard
 product: vercel
 url: /docs/global-config/global-config-dashboard
 canonical_url: "https://vercel.com/docs/global-config/global-config-dashboard"
-last_updated: 2026-07-29
+last_updated: 2026-08-11
 type: how-to
 prerequisites:
   - /docs/global-config
@@ -15,6 +15,7 @@ related:
   - /docs/global-config/global-config-limits
 summary: Learn how to create, view and update your Global Configs and the data inside them in your Vercel Dashboard at the Hobby team, team, and project...
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Managing Global Configs with the Dashboard
@@ -27,11 +28,12 @@ You can create, view and update your [Global Configs](/docs/global-config), and 
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [Getting Started](https://vercel.com/docs/global-config/get-started?from=related) — Learn how to create a Global Config store and read from it in your project.
-- [vercel global-config](https://vercel.com/docs/cli/global-config?from=related) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, remove, and manage items, read tokens, a
-- [Global Configs & REST API](https://vercel.com/docs/global-config/vercel-api?from=related) — Learn how to use the Vercel REST API to create and update Global Configs. You can also read data stored in Global Config
-- [LaunchDarkly](https://vercel.com/docs/global-config/global-config-integrations/launchdarkly-global-config?from=related) — Learn how to use Global Config with Vercel's LaunchDarkly integration.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
+- [Global Config](https://flags-sdk.dev/docs/providers/global-config)
+- [Getting started with Global Config](https://vercel.com/docs/global-config/get-started) — Learn how to create a Global Config store and read from it in your project.
+- [vercel global-config](https://vercel.com/docs/cli/global-config) — Manage Global Config stores from the Vercel CLI: list, create, inspect, update, delete, and manage items, read tokens, a
+- [@vercel/global-config](https://vercel.com/docs/global-config/global-config-sdk) — The Global Config client SDK is the most ergonomic way to read data from Global Configs. Learn how to set up the SDK so
+- [Create a Global Config](https://vercel.com/docs/rest-api/global-config/create-a-global-config) — POST /v1/global-config — Creates a Global Config.
+- [Get Global Configs](https://vercel.com/docs/rest-api/global-config/get-global-configs) — GET /v1/global-config — Returns all Global Configs.
 
 Full cross-link map for this page: [/docs/global-config/global-config-dashboard.graph.md](/docs/global-config/global-config-dashboard.graph.md)
 <!-- /docsgraph:related -->
@@ -46,9 +48,9 @@ To add a Global Config at the Hobby team or team level, follow these steps:
 
 2. Click on the **Storage** section in the sidebar
 
-3. Click the **Create Store** button
+3. Click the **Create Storage** button, select **Global Config**, and click **Continue**
 
-4. Type a name for your Global Config in the dialog and click **Create**. The name shouldn't exceed 32 characters and can only contain alphanumeric letters, "\_", and "-".
+4. Type a name for your Global Config in the dialog and click **Create**. The name shouldn't exceed 64 characters and can only contain alphanumeric letters, "\_", and "-".
 
 5. On creation, you are taken to the `my_global_config_id` config page. By default, a key-value pair of `"greeting": "hello world"` is created. On the detail page of the newly created Global Config you can:
    - View and manage stored items
@@ -63,9 +65,9 @@ Your Global Config is now ready to be used. You can also [create a Global Config
 
 ### At the project level
 
-1. Navigate to your [project](/docs/projects) page and click on the **Global Config** section in the sidebar
+1. Navigate to your [project](/docs/projects) page and open **Storage** in the sidebar
 
-2. Click **Create Project Store** and type a name slug for your Global Config in the dialog that opens. The name shouldn't exceed 32 characters and can only contain alphanumeric letters, "\_", and "-".
+2. Click **Create Storage**, select **Global Config**, and click **Continue**. Then type a name slug for your Global Config in the dialog that opens. The name shouldn't exceed 64 characters and can only contain alphanumeric letters, "\_", and "-".
 
 3. Click **Create**.
 
@@ -77,13 +79,13 @@ Your Global Config is now ready to be used. You can also [create a Global Config
 
 To view a list of all Global Configs available in your account or team, go to [**Storage**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fstores\&title=Go+to+Storage) then select **Global Config** from the drop-down.
 
-![Image](https://vercel.com/docs-assets/static/docs/storage/global-config/global-config-view-all-configs-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/storage/global-config/global-config-view-all-configs-light.png)
 
 *List of Global Configs in a team account*
 
-In the **Used by** column, you can see in which project(s) the Global Config is used. The right column shows the size of the data contained in the config. To manage the Global Config, its store and tokens, click on the Global Config's row to open the detail page.
+In the **Connected Projects** column, you can see in which project(s) the Global Config is used. To manage the Global Config, its store and tokens, click on the Global Config's row to open the detail page. The detail page also shows the **Storage Size** of the data in the config.
 
-![Image](https://vercel.com/docs-assets/static/docs/storage/global-config/config-details-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/storage/global-config/config-details-light.png)
 
 *Global Config detail page*
 
@@ -95,7 +97,7 @@ To delete the Global Config, select the **Settings** item in the sidebar, then s
 
 The default view of the Global Config's detail page shows the list of all items in the store. You will see an open accordion titled **Learn how to use this in code** if the Global Config is connected to at least one project. This accordion provides the steps with a code example on how to read your store items.
 
-To add, edit or delete any item in your store, edit the `json` object in the right panel and click **Save Items**.
+To add, edit or delete any item in your store, edit the `json` object in the right panel and click **Save**.
 
 ### Restoring Global Config backups
 
@@ -153,17 +155,17 @@ The following snippet is an example of a schema that allows you to set boolean f
 
 ## Managing connected projects
 
-![Image](https://vercel.com/docs-assets/static/docs/storage/global-config/global-config-projects-light.png)
+![Image](https://7nyt0uhk7sse4zvn.public.blob.vercel-storage.com/docs-assets/static/docs/storage/global-config/global-config-projects-light.png)
 
 *List of connected projects*
 
 Click on **Projects** in the left panel of the Global Config detail page to open a view that shows the projects connected with this Global Config.
 
-To delete a connection, click on the vertical ellipsis  icon on the right hand side of the row and click **Delete environment variable** and confirm by clicking **Delete connection** in the dialog.
+To delete a connection, click on the vertical ellipsis  icon on the right hand side of the row and click **Remove Project Connection** and confirm by clicking **Remove Connection** in the dialog.
 
 Deleting a connection does not delete the underlying token used by that Connection String. To learn how to delete tokens, review [Managing read access tokens](#managing-read-access-tokens).
 
-To connect the Global Config with another project, click **Connect Project**, find the project from the drop-down in the dialog and click **Connect**. If you receive a warning that this project already has a `GLOBAL_CONFIG` environment variable, open the **Advanced Options** and change the environment variable name in the corresponding field to a name other than `GLOBAL_CONFIG`. The **Connect** button will be enabled once the new environment variable does not already exist in the project.
+To connect the Global Config with another project, click **Connect Project**, find the project from the drop-down in the dialog and click **Connect**. If you receive a warning that this project already has a `GLOBAL_CONFIG` environment variable, open the **Advanced Options** and change the environment variable name in the corresponding field to a name other than `GLOBAL_CONFIG`. Then click **Connect** again.
 
 ## Managing read access tokens
 
@@ -184,7 +186,26 @@ If you no longer have the connection string for a token that was already created
 
 ## Up Next
 
+**Managing with the Vercel REST API** [→](/docs/global-config/vercel-api)
+
+Using the Vercel REST API, you can create and update Global Configs
+
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.

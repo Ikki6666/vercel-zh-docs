@@ -3,23 +3,24 @@ title: Deploying GitHub Projects with Vercel
 product: vercel
 url: /docs/git/vercel-for-github
 canonical_url: "https://vercel.com/docs/git/vercel-for-github"
-last_updated: 2026-07-24
+last_updated: 2026-09-17
 type: conceptual
 prerequisites:
   - /docs/git
 related:
-  - /docs/deployments/environments
+  - /docs/deployments/generated-urls
   - /docs/domains/working-with-domains
   - /docs/git
-  - /docs/projects
+  - /docs/project-configuration/project-settings
   - /docs/project-configuration/git-configuration
 summary: Vercel for GitHub automatically deploys your GitHub projects with Vercel, providing Preview Deployment URLs, and automatic Custom Domain updates.
 install_vercel_plugin: npx plugins add vercel/vercel-plugin
+search_with_vercel_cli: npx vercel@latest docs search "<query>"
 ---
 
 # Deploying GitHub Projects with Vercel
 
-Vercel for GitHub automatically deploys your GitHub projects with [Vercel](/), providing [Preview Deployment URLs](/docs/deployments/environments#preview-environment-pre-production#preview-urls), and automatic [Custom Domain](/docs/domains/working-with-domains) updates.
+Vercel for GitHub automatically deploys your GitHub projects with [Vercel](/), providing [Preview Deployment URLs](/docs/deployments/generated-urls#viewing-generated-urls), and automatic [Custom Domain](/docs/domains/working-with-domains) updates.
 
 
 <!-- docsgraph:related -->
@@ -27,16 +28,18 @@ Vercel for GitHub automatically deploys your GitHub projects with [Vercel](/), p
 
 > **For AI agents:** Follow these links to understand how this page connects to the rest of the Vercel ecosystem. For the full cross-link map (inbound, outbound, prerequisites, and semantic neighbors), see the .graph.md link below.
 
-- [How do I disable Git Notifications from Deployments?](https://vercel.com/kb/guide/how-do-i-disable-git-notifications-from-deployments?from=related) — If your project is connected via a Git account to your deployment, you will receive email notifications whenever the dep
-- [Migrate self-hosted Next.js and containers from AWS to Vercel](https://vercel.com/kb/guide/migrate-containers-from-aws-to-vercel?from=related) — Migrate containers from AWS to Vercel: deploy with Dockerfile.vercel, keep RDS, S3, and SQS in AWS over OIDC, and cut ov
-- [How to fix “unable to find your GitHub repository” on Vercel](https://vercel.com/kb/guide/unable-to-find-github-repository?from=related) — Learn how to check GitHub permissions to ensure your Vercel account has sufficient access to import your repository.
-- [Using Vercel Agent to review pull requests](https://vercel.com/kb/guide/vercel-agent-code-review?from=related) — Set up Vercel Agent Code Review to automatically review pull requests, apply validated fixes, request reviews with @verc
-- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel?from=related) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
-- [GitLab](https://vercel.com/docs/git/vercel-for-gitlab?from=related) — ​Vercel for GitLab automatically deploys your GitLab projects with Vercel, providing Preview Deployment URLs, and automa
-- [Git Settings](https://vercel.com/docs/project-configuration/git-settings?from=related) — Use the project settings to manage the Git connection, enable Git LFS, and create deploy hooks.
-- [Project Settings](https://vercel.com/docs/project-configuration/project-settings?from=related) — Use the project settings, to configure custom domains, environment variables, Git, integrations, deployment protection,
-- [Deployment Checks](https://vercel.com/docs/deployment-checks?from=related) — Set conditions that must be met before proceeding to the next phase of the deployment lifecycle.
-- [Integrations](https://vercel.com/docs/comments/integrations?from=related) — Learn how Comments integrates with Git providers like GitHub, GitLab, and BitBucket, as well as the Vercel app for Slack
+- [Consolidated Commit Status now available on GitHub](https://vercel.com/changelog/consolidated-commit-status-now-available-for-github)
+- [Optionally disable deployment_status webhook events for GitHub Actions](https://vercel.com/changelog/optionally-disable-deployment_status-webhook-events-for-github-actions)
+- [Trigger GitHub Actions with enriched deployment data from Vercel](https://vercel.com/changelog/trigger-github-actions-with-enriched-deployment-data-from-vercel)
+- [New GitHub App permissions for Actions and Workflows](https://vercel.com/changelog/vercel-github-app-updated-permissions)
+- [Using Vercel Agent to review pull requests](https://vercel.com/kb/guide/vercel-agent-code-review) — Set up Vercel Agent Code Review to automatically review pull requests, apply validated fixes, request reviews with @verc
+- [Introducing `vercel dev`: Serverless, on localhost](https://vercel.com/blog/vercel-dev)
+- [Deploy to Vercel with Self-Hosted Git Pipelines \\(GitLab & Bitbucket\\)](https://vercel.com/kb/guide/how-can-i-use-gitlab-pipelines-with-vercel) — Learn how to use GitLab Pipelines to deploy to Vercel including support for self-managed GitLab.
+- [Why aren't commits triggering deployments on Vercel?](https://vercel.com/kb/guide/why-aren-t-commits-triggering-deployments-on-vercel) — Commits not triggering deployments on Vercel? Walk the diagnostic checklist covering authentication, commit author acces
+- [Migrate from GitHub Actions to Vercel CI](https://vercel.com/kb/guide/github-actions-to-vercel-ci) — Move Turborepo tasks from GitHub Actions workflows to Vercel CI, migrate secrets to CI environment variables, and switch
+- [Conditional Build Commands: Environment, Branch, and Custom Workflows](https://vercel.com/kb/guide/dynamic-build-commands) — Run a different Vercel build command for each environment or Git branch using a shell script, vercel.json, or vercel.ts,
+- [GitHub](https://v0.app/docs/github) — Connect GitHub repositories to v0 and ship changes through branches, previews, pull requests, and CI.
+- [Deploying Bitbucket Projects with Vercel](https://vercel.com/docs/git/vercel-for-bitbucket) — ​Vercel for Bitbucket automatically deploys your Bitbucket projects with Vercel, providing Preview Deployment URLs, and
 
 Full cross-link map for this page: [/docs/git/vercel-for-github.graph.md](/docs/git/vercel-for-github.graph.md)
 <!-- /docsgraph:related -->
@@ -56,7 +59,7 @@ The [Deploying a Git repository](/docs/git#deploying-a-git-repository) guide out
 
 ## Changing the GitHub Repository of a Project
 
-If you'd like to connect your Vercel Project to a different GitHub repository or disconnect it, you can do so from the [Git section](/docs/projects#git) in the Project Settings.
+If you'd like to connect your Vercel Project to a different GitHub repository or disconnect it, you can do so from the [Git section](/docs/project-configuration/project-settings#git) in the Project Settings.
 
 ### A Deployment for Each Push
 
@@ -66,7 +69,20 @@ repository to preview changes made before they are pushed to production.
 
 With each new push, if Vercel is already building a previous commit on the same branch, the current build will complete and any commit pushed during this time will be queued. Once the first build completes, the most recent commit will begin deployment and the other queued builds will be cancelled. This ensures that you always have the latest changes deployed as quickly as possible.
 
-You can disable this feature for GitHub by configuring the [github.autoJobCancellation](/docs/project-configuration/git-configuration#github.autojobcancelation) option in your `vercel.json` file.
+You can disable this feature for GitHub by configuring the [github.autoJobCancelation](/docs/project-configuration/git-configuration#github.autojobcancelation) option in your `vercel.json` file.
+
+### Select Turbo for one deployment
+
+To select a [Turbo build machine](/docs/builds/managing-builds#build-machines) for one deployment, include the exact, case-sensitive marker `#VERCEL_BUILD_MACHINE=TURBO` in the Git commit message. This marker currently supports deployments triggered by Vercel's GitHub integration only. Vercel's GitLab and Bitbucket integrations don't support it.
+
+For example, create a commit with a subject and the marker in its body:
+
+```bash
+git commit -m "Test this change with Turbo" \
+  -m "#VERCEL_BUILD_MACHINE=TURBO"
+```
+
+The marker applies only to the deployment triggered by that commit. It doesn't change the project's build machine settings. You must have permission to update the project's build machine. If Turbo isn't available or you don't have permission, Vercel uses the project's normal build machine selection instead of failing the deployment. Normal Turbo plan eligibility and billing still apply.
 
 ### Updating the Production Domain
 
@@ -76,7 +92,7 @@ If you decide to revert a commit that has already been deployed to production, t
 
 ### Preview URLs for the Latest Changes for Each Pull Request
 
-The latest push to any pull request will automatically be made available at a unique [preview URL](/docs/deployments/environments#preview-environment-pre-production#preview-urls) based on the project name, branch, and team or username. These URLs will be provided through a comment on each pull request. Vercel also supports Comments on preview deployments made from PRs on GitHub. [Learn more about Comments on preview deployments in GitHub here](/docs/deployments/environments#preview-environment-pre-production#github-integration).
+The latest push to any pull request will automatically be made available at a unique [preview URL](/docs/deployments/generated-urls#viewing-generated-urls) based on the project name, branch, and team or username. These URLs will be provided through a comment on each pull request. Vercel also supports Comments on preview deployments made from PRs on GitHub. [Learn more about Comments on preview deployments in GitHub here](/docs/comments/integrations#git-provider-integration).
 
 ### Deployment Authorizations for Forks
 
@@ -84,7 +100,7 @@ If you receive a pull request from a fork of your repository, Vercel will requir
 
 This behavior protects you from leaking sensitive project information such as environment variables and the [OIDC Token](/docs/oidc).
 
-You can disable [Git Fork Protection](/docs/projects#git-fork-protection) in the Security section of your Project Settings.
+You can disable [Git Fork Protection](/docs/project-configuration/security-settings#git-fork-protection) in the Security section of your Project Settings.
 
 Vercel for GitHub uses the deployment API to bring you an extended user interface both in GitHub, when showing deployments, and Slack, if you have notifications setup using the [Slack GitHub app](https://slack.github.com).
 
@@ -100,163 +116,15 @@ To configure the Vercel for GitHub integration, see [the configuration reference
 
 You may want to use different workflows and APIs based on Git information. To support this, the following [System Environment Variables](/docs/environment-variables/system-environment-variables) are exposed to your Deployments:
 
-### `VERCEL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-An indicator to show that system environment variables have been exposed to your project's Deployments.
-
-```bash
-VERCEL=1
-```
-
-### `CI`
-
-**Available at:&#x20;**&#x42;uild time
-
-An indicator that the code is running in a Continuous Integration environment.
-
-```bash
-CI=1
-```
-
-### `VERCEL_ENV`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The environment that the app is deployed and running on. The value can be either production, preview, or development.
-
-```bash
-VERCEL_ENV=production
-```
-
-### `VERCEL_TARGET_ENV`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The system or custom environment that the app is deployed and running on. The value can be either production, preview, development, or the name of a custom environment.
-
-```bash
-VERCEL_TARGET_ENV=production
-```
-
-### `VERCEL_URL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The domain name of the generated deployment URL. Example: \*.vercel.app. The value does not include the protocol scheme https://.
-
-**Note:&#x20;**&#x54;his variable cannot be used in conjunction with Standard Deployment Protection. See Migrating to Standard Protection.
-
-```bash
-VERCEL_URL=my-site.vercel.app
-```
-
-### `VERCEL_BRANCH_URL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The domain name of the generated Git branch URL. Example: \*-git-\*.vercel.app. The value does not include the protocol scheme https://.
-
-```bash
-VERCEL_BRANCH_URL=my-site-git-improve-about-page.vercel.app
-```
-
-### `VERCEL_PROJECT_PRODUCTION_URL`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-A production domain name of the project. We select the shortest production custom domain, or vercel.app domain if no custom domain is available. Note, that this is always set, even in preview deployments. This is useful to reliably generate links that point to production such as OG-image URLs. The value does not include the protocol scheme https://.
-
-```bash
-VERCEL_PROJECT_PRODUCTION_URL=my-site.com
-```
-
-### `VERCEL_REGION`
-
-**Available at:&#x20;**&#x52;untime
-
-The ID of the Region where the app is running.
-
-```bash
-VERCEL_REGION=cdg1
-```
-
-### `VERCEL_DEPLOYMENT_ID`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The unique identifier for the deployment, which can be used to implement Skew Protection.
-
-```bash
-VERCEL_DEPLOYMENT_ID=dpl_7Gw5ZMBpQA8h9GF832KGp7nwbuh3
-```
-
-### `VERCEL_PROJECT_ID`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The unique identifier for the project.
-
-```bash
-VERCEL_PROJECT_ID=prj_Rej9WaMNRbffVm34MfDqa4daCEvZzzE
-```
-
-### `VERCEL_SKEW_PROTECTION_ENABLED`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-When Skew Protection is enabled in Project Settings, this value is set to 1.
-
-```bash
-VERCEL_SKEW_PROTECTION_ENABLED=1
-```
-
-### `VERCEL_AUTOMATION_BYPASS_SECRET`
-
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The Protection Bypass for Automation value, if the secret has been generated in the project's Deployment Protection settings.
-
-```bash
-VERCEL_AUTOMATION_BYPASS_SECRET=secret
-```
-
-### `VERCEL_OIDC_TOKEN`
-
-**Available at:&#x20;**&#x42;uild time
-
-When Secure Backend Access with OpenID Connect (OIDC) Federation is enabled in Project Settings, this value is set to a Vercel-issued OIDC token. At runtime, the token is set to thex-vercel-oidc-token header on your functions' Request object. In local development, you can download the token using the CLI commandvercel env pull.
-
-```bash
-VERCEL_OIDC_TOKEN=secret
-```
-
-### `VERCEL_HASH_SALT`
-
-**Available at:&#x20;**&#x42;uild time
-
-A salt to rotate the filenames of framework-generated content-addressed output. See also Immutable Static Files.
-
-```bash
-VERCEL_HASH_SALT=1783933175
-```
+<br />
 
 ### `VERCEL_GIT_PROVIDER`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The Git Provider the deployment is triggered from.
-
-```bash
-VERCEL_GIT_PROVIDER=github
-```
+The Git Provider the deployment is triggered from. In the case of GitHub, the value is always github.
 
 ### `VERCEL_GIT_REPO_SLUG`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The origin repository the deployment is triggered from.
+The origin repository of the app on GitHub.
 
 ```bash
 VERCEL_GIT_REPO_SLUG=my-site
@@ -264,9 +132,7 @@ VERCEL_GIT_REPO_SLUG=my-site
 
 ### `VERCEL_GIT_REPO_OWNER`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The account that owns the repository the deployment is triggered from.
+The GitHub organization that owns the repository the deployment is triggered from.
 
 ```bash
 VERCEL_GIT_REPO_OWNER=acme
@@ -274,9 +140,7 @@ VERCEL_GIT_REPO_OWNER=acme
 
 ### `VERCEL_GIT_REPO_ID`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The ID of the repository the deployment is triggered from.
+The ID of the GitHub repository the deployment is triggered from.
 
 ```bash
 VERCEL_GIT_REPO_ID=117716146
@@ -284,9 +148,7 @@ VERCEL_GIT_REPO_ID=117716146
 
 ### `VERCEL_GIT_COMMIT_REF`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The git branch of the commit the deployment was triggered by.
+The GitHub branch that the deployment was made from.
 
 ```bash
 VERCEL_GIT_COMMIT_REF=improve-about-page
@@ -294,9 +156,7 @@ VERCEL_GIT_COMMIT_REF=improve-about-page
 
 ### `VERCEL_GIT_COMMIT_SHA`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The git SHA of the commit the deployment was triggered by.
+The GitHub SHA of the commit the deployment was triggered by.
 
 ```bash
 VERCEL_GIT_COMMIT_SHA=fa1eade47b73733d6312d5abfad33ce9e4068081
@@ -304,9 +164,7 @@ VERCEL_GIT_COMMIT_SHA=fa1eade47b73733d6312d5abfad33ce9e4068081
 
 ### `VERCEL_GIT_COMMIT_MESSAGE`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The message attached to the commit the deployment was triggered by. The message is truncated if it exceeds 2048 bytes.
+The message attached to the GitHub commit the deployment was triggered by. The message is truncated if it exceeds 2048 bytes.
 
 ```bash
 VERCEL_GIT_COMMIT_MESSAGE=Update about page
@@ -314,9 +172,7 @@ VERCEL_GIT_COMMIT_MESSAGE=Update about page
 
 ### `VERCEL_GIT_COMMIT_AUTHOR_LOGIN`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The username attached to the author of the commit that the project was deployed by.
+The GitHub username belonging to the author of the commit that the project was deployed by.
 
 ```bash
 VERCEL_GIT_COMMIT_AUTHOR_LOGIN=timmytriangle
@@ -324,31 +180,15 @@ VERCEL_GIT_COMMIT_AUTHOR_LOGIN=timmytriangle
 
 ### `VERCEL_GIT_COMMIT_AUTHOR_NAME`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The name attached to the author of the commit that the project was deployed by.
+The GitHub name belonging to the author of the commit that the project was deployed by.
 
 ```bash
 VERCEL_GIT_COMMIT_AUTHOR_NAME=Timmy Triangle
 ```
 
-### `VERCEL_GIT_PREVIOUS_SHA`
-
-**Available at:&#x20;**&#x42;uild time
-
-The git SHA of the last successful deployment for the project and branch.
-
-**Note:&#x20;**&#x54;his variable is only exposed when an Ignored Build Step is provided.
-
-```bash
-VERCEL_GIT_PREVIOUS_SHA=fa1eade47b73733d6312d5abfad33ce9e4068080
-```
-
 ### `VERCEL_GIT_PULL_REQUEST_ID`
 
-**Available at:&#x20;**&#x42;oth build and runtime
-
-The pull request id the deployment was triggered by. If a deployment is created on a branch before a pull request is made, this value will be an empty string.
+The GitHub pull request id the deployment was triggered by. If a deployment is created on a branch before a pull request is made, this value will be an empty string.
 
 ```bash
 VERCEL_GIT_PULL_REQUEST_ID=23
@@ -371,6 +211,8 @@ Repository permissions allow us to interact with repositories belonging to or as
 | `Metadata`        | Y    | N     | Allows us to read basic repository metadata to provide a detailed dashboard.                                              |
 | `Web Hooks`       | Y    | Y     | Allows us to react to various GitHub events.                                                                              |
 | `Commit Statuses` | Y    | Y     | Allows us to synchronize commit status between GitHub and Vercel.                                                         |
+| `Actions`         | Y    | N     | Allows agents to read workflow run logs to help diagnose CI failures.                                                     |
+| `Workflows`       | Y    | Y     | Allows agents to configure and update CI workflow files on your behalf.                                                   |
 
 ### Organization Permissions
 
@@ -388,7 +230,7 @@ User permissions allow us to offer an enhanced experience through information ab
 | ----------------- | ---- | ----- | ------------------------------------------------------ |
 | `Email addresses` | Y    | N     | Allows us to associate an email with a GitHub account. |
 
-> **💡 Note:** We use the permissions above in order to provide you with the best possible
+> **💡 Note:** We use the permissions above to provide you with the best possible
 > deployment experience. If you have any questions or concerns about any of the
 > permission scopes, please [contact Vercel Support](/help#issues).
 
@@ -398,13 +240,39 @@ Then, restart the Vercel [signup process](/signup).
 
 ## Missing Git repository
 
-When you create a new project from a GitHub repository or connect an existing project to one, you need specific permissions. The required permissions depend on whether a personal GitHub account or a GitHub organization [owns the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories#about-repository-ownership).
+A GitHub repository can be missing from the import screen, or unavailable when you connect it to an existing project. This section explains why that happens and how to fix it.
 
-### Personal account repositories
+### Why can't I find my GitHub repository in Vercel?
+
+If you can't find your GitHub repository when you [create a project](/docs/git#deploying-a-git-repository) or connect an existing project, Vercel can't see it yet. Vercel connects to GitHub through the Vercel GitHub App, and the app only sees the repositories you grant it access to. Your role on the repository also controls whether you can import it.
+
+Check these causes in order. Missing GitHub App access is the most common one.
+
+### Check the selected Git account
+
+The import screen lists repositories for one GitHub account or organization at a time. If the repository belongs to a different account or organization, select it from the account selector at the top left of the repository list.
+
+### Grant the Vercel GitHub App access to the repository
+
+When you install the Vercel GitHub App, you choose **All repositories** or **Only select repositories**. If you chose **Only select repositories**, the app can't see repositories you didn't select, including any repositories you've created since.
+
+To grant access:
+
+1. On the import screen, click **Adjust GitHub App Permissions** below the repository list, or **Configure GitHub App** if no repositories appear. You can also open the app from your GitHub **Settings** > **Applications** > **Installed GitHub Apps**, then click **Configure** next to Vercel.
+2. Under **Repository access**, add the missing repository, or select **All repositories**.
+3. Click **Save**.
+
+For a repository that an organization owns, the Vercel GitHub App must be installed on that organization. If you aren't an organization Owner, GitHub sends your installation request to the Owners for approval.
+
+### Check your repository permissions
+
+If the Vercel GitHub App has access and you still can't see the repository, check who owns it and your role on it. The required permissions depend on whether a personal GitHub account or a GitHub organization [owns the repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories#about-repository-ownership).
+
+#### Personal account repositories
 
 To import or connect a GitHub repository owned by a [personal account](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/permission-levels-for-a-personal-account-repository), you must be the repository **Owner**. This allows Vercel to configure a webhook and automatically deploy your commits. A Collaborator on a personal repository cannot create new Vercel projects from that repository or connect it to existing projects.
 
-### Organization repositories
+#### Organization repositories
 
 If an organization owns the repository, you need one of the following permissions to import or connect a GitHub repository:
 
@@ -412,15 +280,19 @@ If an organization owns the repository, you need one of the following permission
 
 **OR**
 
-- **Member** of the GitHub organization *with access to the repository*. If you are a Member of the organization and do not see the repository as an option in Vercel, verify that you have an [access role](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization#repository-roles-for-organizations) to the repository in addition to being an organization Member.
+- **Member** of the GitHub organization *with write or admin access to the repository*. If you are a Member of the organization and do not see the repository as an option in Vercel, or you cannot connect it, verify that you have the Write, Maintain, or Admin [access role](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization#repository-roles-for-organizations) on the repository in addition to being an organization Member.
 
 If you have access to the repository but are only an [Outside Collaborator in the GitHub organization](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization), you cannot import or connect a GitHub repository in Vercel. You need to be an Owner or a Member of the GitHub organization.
 
 Contact your GitHub organization's Owner(s) to confirm your current role and repository-level access.
 
+### Import the repository after you update access
+
+After you update the GitHub App access or your repository role, return to the [import screen](/new) and search for the repository again. It now appears in the list, ready to import. If it still doesn't appear, work through the causes above again. Any one of them can block the repository, even when the others are correct.
+
 ## Silence GitHub comments
 
-By default, comments from the Vercel GitHub bot will appear on your pull requests and commits. You can silence these comments in your project's settings:
+By default, comments from the Vercel GitHub bot will appear on your pull requests and commits. You can disable these comments while continuing to create preview deployments. To silence comments for your project:
 
 1. From the Vercel [dashboard](/dashboard), select your project
 2. From the **Settings** tab, select **Git**
@@ -467,6 +339,16 @@ You can use GitHub Actions to build and deploy your Vercel Application. This app
 
 You'll need separate GitHub Actions for preview (non-`main` pushes) and production (`main` pushes) deployments. The preview workflow uses `vercel build` and `vercel deploy --prebuilt`; the production workflow uses `vercel build --prod` and `vercel deploy --prebuilt --prod`. [Learn more about how to configure GitHub Actions and Vercel](/kb/guide/how-can-i-use-github-actions-with-vercel) for custom CI/CD workflows.
 
+To deploy to production when you push a Git tag or publish a release, or to deploy hotfixes from a dedicated branch, see the [GitHub Actions workflows for release-based deployments](/docs/git/external-pipelines#github-actions).
+
+### Deploying with a GitHub IP allow list
+
+If your GitHub organization or enterprise uses an [IP allow list](https://docs.github.com/en/enterprise-cloud@latest/admin/configuring-settings/hardening-security-for-your-enterprise/restricting-network-traffic-to-your-enterprise-with-an-ip-allow-list), GitHub rejects API requests from IP addresses that aren't on the list. Vercel for GitHub uses the GitHub API to create projects, connect repositories, and fetch your source code for each build. Those requests come from Vercel's infrastructure, which uses dynamic IP addresses, so you can't add them to the allow list. The Git integration doesn't connect through your project's [Static IPs](/docs/networking/static-ips) either.
+
+To keep the IP allow list on, build and deploy from GitHub Actions, as described above, instead of the Git integration. The workflow runs `vercel build` on your runner and uploads the result with `vercel deploy --prebuilt`, so Vercel doesn't need to call the GitHub API and you don't need to allow any Vercel IP addresses. GitHub requires [self-hosted runners or larger runners with static IP address ranges](https://docs.github.com/en/enterprise-cloud@latest/admin/configuring-settings/hardening-security-for-your-enterprise/restricting-network-traffic-to-your-enterprise-with-an-ip-allow-list#using-github-actions-with-an-ip-allow-list) for GitHub Actions when an IP allow list is on, so add your runners' IP addresses to the list.
+
+On Enterprise plans, contact your Vercel account representative to discuss options for using the Git integration with an IP allow list.
+
 ### Repository dispatch events
 
 > **💡 Note:** This event will only trigger a workflow run if the workflow file exists on the
@@ -481,22 +363,61 @@ GitHub Actions can trigger on the following events:
 ```yaml
 on:
   repository_dispatch:
-    - 'vercel.deployment.ready'
-    - 'vercel.deployment.success'
-    - 'vercel.deployment.error'
-    - 'vercel.deployment.canceled'
-    # canceled as a result of the ignored build script
-    - 'vercel.deployment.ignored'
-    # canceled as a result of automatic deployment skipping https://vercel.com/docs/monorepos#skipping-unaffected-projects
-    - 'vercel.deployment.skipped'
-    - 'vercel.deployment.pending'
-    - 'vercel.deployment.failed'
-    - 'vercel.deployment.promoted'
+    types:
+      - 'vercel.deployment.ready'
+      - 'vercel.deployment.success'
+      - 'vercel.deployment.error'
+      - 'vercel.deployment.canceled'
+      # canceled as a result of the ignored build script
+      - 'vercel.deployment.ignored'
+      # canceled as a result of automatic deployment skipping https://vercel.com/docs/monorepos#skipping-unaffected-projects
+      - 'vercel.deployment.skipped'
+      - 'vercel.deployment.pending'
+      - 'vercel.deployment.failed'
+      - 'vercel.deployment.promoted'
 ```
 
 `repository_dispatch` events contain a JSON payload with information about the deployment, such as deployment `url` and deployment `environment`. GitHub Actions can access this payload through `github.event.client_payload`. For example, accessing the URL of your triggering deployment through `github.event.client_payload.url`.
 
-Read more and see the [full schema](https://github.com/vercel/repository-dispatch/blob/main/packages/repository-dispatch/src/types.ts) in [our `repository-dispatch` package](https://github.com/vercel/repository-dispatch), and see the [how can I run end-to-end tests after my Vercel preview deployment?](/kb/guide/how-can-i-run-end-to-end-tests-after-my-vercel-preview-deployment) guide for a practical example.
+Read more and see the [full schema](https://github.com/vercel/repository-dispatch/blob/main/packages/repository-dispatch/src/types.ts) in [our `repository-dispatch` package](https://github.com/vercel/repository-dispatch).
+
+#### Run end-to-end tests after a deployment
+
+To test every deployment, trigger a workflow on the `vercel.deployment.success` event and point your test runner at the deployment URL from the payload. This example runs a [Playwright](https://playwright.dev/) test suite:
+
+```yaml filename=".github/workflows/e2e.yml"
+name: End to End Tests
+
+on:
+  repository_dispatch:
+    types:
+      - 'vercel.deployment.success'
+
+jobs:
+  run-e2es:
+    if: github.event_name == 'repository_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.client_payload.git.sha }}
+      - name: Install dependencies
+        run: npm ci && npx playwright install --with-deps
+      - name: Run tests
+        run: npx playwright test
+        env:
+          BASE_URL: ${{ github.event.client_payload.url }}
+```
+
+GitHub runs `repository_dispatch` workflows against the last commit on the default branch. The `ref` input checks out the commit that Vercel deployed instead, so your tests come from the same commit as the deployment. Your Playwright configuration needs to read `BASE_URL` and use it as the [`baseURL`](https://playwright.dev/docs/api/class-testoptions#test-options-base-url).
+
+The event fires for both preview and production deployments. To test only one of them, check `github.event.client_payload.environment` in the job's `if` condition.
+
+If your project uses [Deployment Protection](/docs/deployment-protection), your tests need [Protection Bypass for Automation](/docs/deployment-protection/methods-to-bypass-deployment-protection/protection-bypass-automation) to reach the deployment. See [end-to-end tests with Playwright](/docs/deployment-protection/automated-agent-access#end-to-end-tests-with-playwright) for the configuration.
+
+If you use another CI provider, [configure a webhook](/docs/webhooks#configure-a-webhook) for the [`deployment.succeeded`](/docs/webhooks/webhooks-api#deployment.succeeded) event and start your test job when your CI provider receives it.
+
+To run the tests on Vercel instead of GitHub Actions, see [running end-to-end tests in Vercel CI](/docs/ci/guides/end-to-end-tests).
 
 #### Migrating from `deployment_status`
 
@@ -532,7 +453,22 @@ jobs:
 +         BASE_URL: ${{ github.event.client_payload.url }}
 ```
 
+## Search the docs from your terminal
+
+Search the Vercel docs and read pages as Markdown with the Vercel CLI. No login required.
+
+```bash
+# Find docs pages by keyword
+npx vercel@latest docs search "environment variables"
+npx vercel@latest docs search "function timeout"
+
+# Print a docs page as Markdown, by path or URL
+npx vercel@latest docs inspect <page>
+```
 
 ---
 
 [View full sitemap](/docs/sitemap)
+
+
+If you encounter incorrect information, can’t find what you need, need a capability Vercel doesn’t currently offer, or have any other feedback to report, please do it by following the instructions at https://vercel.com/feedback.md.
